@@ -17,6 +17,7 @@ parameters or resolved from the build context.
 
 from __future__ import annotations
 
+import json
 import logging
 from pathlib import Path
 from typing import Any
@@ -29,6 +30,9 @@ from openjiuwen.agent_teams.harness.manifest import (
     param_field,
 )
 
+from jiuwenswarm.agents.harness.common.opencli import (
+    OPENCLI_WEB_SKILL_NAME,
+)
 from jiuwenswarm.agents.harness.team.rails.team_member_skill_toolkit_rail import (
     MemberSkillToolkitRail,
 )
@@ -40,12 +44,54 @@ from jiuwenswarm.agents.harness.team.team_skill_links import (
     remove_skill_dir_link,
 )
 from jiuwenswarm.common.utils import get_agent_workspace_dir, get_agent_skills_dir
+from jiuwenswarm.server.runtime.skill import get_skill_enabled
 from jiuwenswarm.server.runtime.skill.skill_manager import SkillManager
 
 logger = logging.getLogger(__name__)
 
 # Provider name registered for the member-skill toolkit rail.
 MEMBER_SKILL_TOOLKIT = "swarm.member_skill_toolkit"
+
+
+def _resolve_member_skill_view(
+    selected_skills: list[str],
+    *,
+    role: str,
+    global_skills_dir: Path,
+) -> list[str]:
+    """Resolve the runtime skill view, including the managed OpenCLI router.
+
+    The OpenCLI router is preinstalled and must be discoverable by the team
+    leader without a UI/config selection. An explicit global disable still
+    wins. Invalid state fails closed for this automatic capability.
+    """
+    resolved = list(dict.fromkeys(selected_skills))
+    if role != "leader":
+        return resolved
+
+    skill_dir = global_skills_dir / OPENCLI_WEB_SKILL_NAME
+    auto_enabled = is_valid_skill_dir(skill_dir)
+    state_file = global_skills_dir / "skills_state.json"
+    if auto_enabled and state_file.is_file():
+        try:
+            state = json.loads(state_file.read_text(encoding="utf-8"))
+            if not isinstance(state, dict):
+                raise ValueError("skills state must be a JSON object")
+            auto_enabled = get_skill_enabled(state, OPENCLI_WEB_SKILL_NAME)
+        except (OSError, UnicodeError, ValueError, TypeError) as exc:
+            logger.warning(
+                "[swarm.member_skill_toolkit] invalid global skill state; "
+                "automatic OpenCLI exposure disabled: %s",
+                exc,
+            )
+            auto_enabled = False
+
+    resolved = [
+        name for name in resolved if name != OPENCLI_WEB_SKILL_NAME
+    ]
+    if auto_enabled:
+        resolved.append(OPENCLI_WEB_SKILL_NAME)
+    return resolved
 
 
 def _link_member_configured_skills(
@@ -187,8 +233,15 @@ def build_member_skill_toolkit(params: dict, ctx: Any) -> object | None:
         return None
 
     member_skills_dir = Path(root_path) / "skills"
-    selected_skills = [str(skill).strip() for skill in inp.skills if str(skill).strip()]
     global_skills_dir = Path(inp.global_skills_dir) if inp.global_skills_dir else get_agent_skills_dir()
+    configured_skills = [
+        str(skill).strip() for skill in inp.skills if str(skill).strip()
+    ]
+    selected_skills = _resolve_member_skill_view(
+        configured_skills,
+        role=str(getattr(ctx, "role", "") or ""),
+        global_skills_dir=global_skills_dir,
+    )
     agent_workspace_dir = get_agent_workspace_dir()
     session_id = inp.session_id
     channel = inp.channel
@@ -197,10 +250,9 @@ def build_member_skill_toolkit(params: dict, ctx: Any) -> object | None:
     # member's skill view (no copies, no per-member skills_state.json).
     try:
         member_skills_dir.mkdir(parents=True, exist_ok=True)
-        if selected_skills:
-            _link_member_configured_skills(
-                member_skills_dir, selected_skills, global_skills_dir
-            )
+        _link_member_configured_skills(
+            member_skills_dir, selected_skills, global_skills_dir
+        )
     except Exception as exc:
         logger.warning(
             "[swarm.member_skill_toolkit] skill link refresh failed: %s", exc

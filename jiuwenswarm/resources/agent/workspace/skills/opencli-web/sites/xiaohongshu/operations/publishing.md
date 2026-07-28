@@ -1,3 +1,13 @@
+---
+opencli_contract:
+  version: 1
+  site: xiaohongshu
+  operation: publishing
+  commands:
+    publish:
+      executor: xiaohongshu_guarded_publish
+---
+
 # Xiaohongshu Publishing Operation
 
 This operation contract is selected by the Xiaohongshu site router. It
@@ -6,13 +16,16 @@ confirmation, and fallback rules in force.
 
 | Command | Access | Exact usage | Purpose and important options |
 |---|---|---|---|
-| `publish` | write | `python -E "<opencli-web-directory>/sites/xiaohongshu/scripts/publish.py" --payload "<payload.json>"` | Create an image/text draft or publish after `social_post_confirm`. Always use the guarded wrapper and the contract below. |
+| `publish` | write | `opencli_execute(site="xiaohongshu", operation="publishing", command="publish", payload_path="<payload.json>")` | Create an image/text draft or publish after `social_post_confirm`. The structured tool owns the guarded executor and disclosure check. |
 
-Never invoke `opencli xiaohongshu publish` directly. The guarded wrapper
-validates the payload, defaults to draft mode, preserves argument boundaries,
-checks the shared OpenCLI runtime, classifies fallback safety, and invokes
-OpenCLI without a shell. Do not invoke `scripts/opencli_runtime.py` separately;
-the wrapper calls it internally before adapter dispatch.
+Never invoke `opencli xiaohongshu publish`, the bundled Python wrapper, or
+`scripts/opencli_runtime.py` directly. Call `opencli_execute` from the same main
+Agent that just read this operation file. The structured tool validates this
+file's hash and one-use disclosure receipt, constrains the payload to the
+trusted workspace, and launches the guarded executor without a shell. The
+guarded executor validates the payload, defaults to draft mode, preserves
+argument boundaries, checks the shared OpenCLI runtime, classifies fallback
+safety, and invokes OpenCLI.
 
 ## Build the payload
 
@@ -65,15 +78,20 @@ Example publish payload after final confirmation:
 3. After the user approves draft creation, write the selected values to a UTF-8
    JSON payload in the current session project directory. Omit `mode` or set it
    to `"draft"`.
-4. Invoke the wrapper once with its absolute installed path:
+4. Immediately after this Skill-tool read, invoke exactly once:
 
-   ```text
-   python -E "<opencli-web-directory>/sites/xiaohongshu/scripts/publish.py" --payload "<payload.json>"
+   ```json
+   {
+     "site": "xiaohongshu",
+     "operation": "publishing",
+     "command": "publish",
+     "payload_path": "<payload.json>"
+   }
    ```
 
-   Use the main agent's BashTool with `shell_type: "auto"`; do not force Git
-   Bash on Windows, keep the documented `-E` interpreter flag, and do not
-   delegate wrapper execution to a subagent.
+   Use `opencli_execute` in the main Agent. Do not delegate the call and do not
+   substitute BashTool, PowerShell, execute-code, a direct Python command, or a
+   direct OpenCLI command.
 5. Inspect the JSON envelope and report the draft result. Stop before public
    publishing.
 
@@ -144,7 +162,7 @@ known incompatible text-card media check before starting OpenCLI:
    }
    ```
 
-3. Run `scripts/publish.py` exactly once for that confirmation ID.
+3. Call `opencli_execute` exactly once for that confirmation ID.
 4. Respect `social_post_cancel` by stopping without running the wrapper.
 
 If publishing times out or returns an ambiguous failure, do not retry and do

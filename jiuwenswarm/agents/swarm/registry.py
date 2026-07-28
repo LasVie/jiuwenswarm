@@ -53,6 +53,7 @@ from jiuwenswarm.agents.swarm.providers import (
     code_subagents as _code_subagents,
     evolution_rails as _evolution_rails,
     member_rails as _member_rails,
+    opencli as _opencli,
     runtime_tools as _runtime_tools,
     skills as _skills,
     tools as _tools,
@@ -71,6 +72,8 @@ SYMPHONY_TOOLKIT = _tools.SYMPHONY_TOOLKIT
 CRON_TOOLS = _runtime_tools.CRON_TOOLS
 SEND_FILE = _runtime_tools.SEND_FILE
 MEMBER_SKILL_TOOLKIT = _skills.MEMBER_SKILL_TOOLKIT
+OPENCLI_EXECUTE = _opencli.OPENCLI_EXECUTE
+OPENCLI_DISCLOSURE = _opencli.OPENCLI_DISCLOSURE
 # Generic tools provided + registered by openjiuwen (referenced by bare name).
 WEB_SEARCH = _OJ_WEB_SEARCH
 WEB_FETCH = _OJ_WEB_FETCH
@@ -203,6 +206,8 @@ __all__ = [
     "CRON_TOOLS",
     "SEND_FILE",
     "MEMBER_SKILL_TOOLKIT",
+    "OPENCLI_EXECUTE",
+    "OPENCLI_DISCLOSURE",
     "RUNTIME_PROMPT",
     "TEAM_SKILL_STORAGE_POLICY",
     "TEAM_SHARED_SKILL_LINK_REFRESH",

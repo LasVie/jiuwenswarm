@@ -20,8 +20,12 @@ task. The user does not need to find, install, enable, or select a site Skill.
 5. In the main agent, use the Skill tool a third time with `skill_name` set to
    `opencli-web` and `relative_file_path` set to that operation module's full
    path.
-6. Execute only the command, arguments, output format, confirmation gate, and
-   fallback behavior documented by the loaded operation module.
+6. When the operation module declares an `opencli_contract`, call
+   `opencli_execute` with exactly its site, operation, command, and documented
+   payload. The main Agent must make this call immediately after its own
+   Skill-tool read so the short-lived disclosure receipt is still valid.
+   Operation modules without a structured entry retain their documented
+   execution contract until they are migrated.
 7. Use `browser_agent` only when no exact route exists or the loaded operation
    module explicitly permits fallback.
 
@@ -45,19 +49,20 @@ Skills in their own directories.
 
 ## Execute documented commands
 
-- On Windows, invoke documented OpenCLI adapter commands and guarded wrapper
-  scripts with the main agent's BashTool using `shell_type: "auto"`, unless the
-  loaded operation module explicitly requires another shell.
+- `opencli_execute` is the only authorized entry for an operation module that
+  declares an `opencli_contract`. Never invoke its underlying Python wrapper,
+  OpenCLI adapter command, or runtime probe through BashTool, PowerShell,
+  execute-code, a subagent, or a filesystem tool.
+- For an operation module not yet migrated to `opencli_execute`, follow only
+  its exact documented command. On Windows, use the main Agent's BashTool with
+  `shell_type: "auto"` unless the module explicitly requires another shell.
 - Do not force `bash` or `sh` merely to run Python, invoke OpenCLI, or translate
   Windows paths.
-- On Windows, run bundled Python wrapper scripts as
-  `python -E "<absolute-script-path>" ...` so an inherited `PYTHONHOME` cannot
-  bind a different Python executable to an incompatible standard library.
 - Preserve quoted absolute Windows paths and argument boundaries exactly as
   documented by the loaded operation module.
-- Do not invoke `scripts/opencli_runtime.py` separately. A documented guarded
-  wrapper must run the shared readiness check internally before adapter
-  dispatch and classify typed OpenCLI connection failures itself.
+- Do not invoke `scripts/opencli_runtime.py` separately. A structured or
+  documented guarded executor runs the shared readiness check internally
+  before adapter dispatch and classifies typed connection failures itself.
 
 ## Enforce one automation path
 
@@ -65,8 +70,8 @@ Skills in their own directories.
 - A route exists only when the root router lists the site, the site router
   lists the capability group, and the selected operation module documents the
   exact command. Do not infer write support from a read command.
-- Invoke only the exact OpenCLI command or guarded wrapper documented by the
-  loaded operation module. Inspecting
+- Invoke only the structured entry, exact OpenCLI command, or guarded executor
+  documented by the loaded operation module. Inspecting
   `opencli <site> <command> --help -f yaml` is allowed after disclosure;
   discovering an undocumented command does not authorize its use.
 - Preserve all channel-specific confirmation gates. An operation module cannot

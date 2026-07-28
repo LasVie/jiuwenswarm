@@ -1241,6 +1241,14 @@ def test_deep_adapter_build_agent_rails_adds_ask_user_for_agent_modes(monkeypatc
     assert orchestration_rail in fast_rails
     assert ask_user_rail in plan_rails
     assert ask_user_rail in fast_rails
+    assert any(
+        type(rail).__name__ == "OpenCLIDisclosureRail"
+        for rail in plan_rails
+    )
+    assert any(
+        type(rail).__name__ == "OpenCLIDisclosureRail"
+        for rail in fast_rails
+    )
 
 
 def test_deep_adapter_unregisters_evolution_runtime_rails_when_leaving_plan(monkeypatch):

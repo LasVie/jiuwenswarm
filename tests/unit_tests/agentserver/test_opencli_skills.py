@@ -12,7 +12,10 @@ from types import SimpleNamespace
 
 import pytest
 import yaml
-from openjiuwen.core.single_agent.rail.base import AgentCallbackContext
+from openjiuwen.core.single_agent.rail.base import (
+    AgentCallbackContext,
+    ToolCallInputs,
+)
 from openjiuwen.core.single_agent.skills.skill_manager import Skill
 from openjiuwen.harness.prompts import SystemPromptBuilder
 from openjiuwen.harness.prompts.prompt_attachment_manager import PromptAttachmentManager
@@ -21,6 +24,12 @@ from openjiuwen.harness.tools import SkillTool
 from jiuwenswarm.agents.harness.common.rails.runtime_prompt_rail import (
     RuntimePromptRail,
 )
+from jiuwenswarm.agents.harness.common.opencli import (
+    DisclosureReceiptStore,
+    OpenCLIDisclosureRail,
+    OpenCLIExecuteTool,
+)
+from jiuwenswarm.agents.harness.common.opencli.executor import OpenCLIExecutor
 from jiuwenswarm.common import utils as workspace_utils
 from jiuwenswarm.common.utils import (
     CopyDiffResult,
@@ -203,7 +212,7 @@ def test_opencli_web_is_preinstalled_with_nested_xiaohongshu_module(tmp_path):
     router_instructions = (MASTER_SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
     assert '`shell_type: "auto"`' in router_instructions
     assert "Do not force `bash` or `sh`" in router_instructions
-    assert 'python -E "<absolute-script-path>"' in router_instructions
+    assert "`opencli_execute` is the only authorized entry" in router_instructions
 
     agent_metadata = yaml.safe_load(
         (MASTER_SKILL_DIR / "agents" / "openai.yaml").read_text(encoding="utf-8")
@@ -438,8 +447,10 @@ def test_opencli_skill_uses_progressive_disclosure_and_complete_command_catalog(
 
     publishing = operation_documents["operations/publishing.md"]
     assert "social_post_confirm" in publishing
-    assert "scripts/publish.py" in publishing
-    assert 'python -E "<opencli-web-directory>' in publishing
+    assert "opencli_contract:" in publishing
+    assert "opencli_execute" in publishing
+    assert "xiaohongshu_guarded_publish" in publishing
+    assert 'python -E "<opencli-web-directory>' not in publishing
     assert "opencli_adapter_incompatible" in publishing
 
     assert "references/" not in master
@@ -510,7 +521,7 @@ async def test_acceptance_trace_reads_operation_module_then_invokes_opencli(tmp_
         }
     )
     assert operation.success is True
-    assert "scripts/publish.py" in operation.data["skill_content"]
+    assert "opencli_execute" in operation.data["skill_content"]
     trace.append(
         {
             "tool": "skill_tool",
@@ -519,21 +530,80 @@ async def test_acceptance_trace_reads_operation_module_then_invokes_opencli(tmp_
         }
     )
 
-    completed, result = _run_wrapper(
-        tmp_path,
-        {
-            "title": "Route test",
-            "content": "Main Skill to site router to operation contract to OpenCLI",
-            "card_text": "fake adapter",
-        },
-        wrapper=installed_root / "sites" / "xiaohongshu" / "scripts" / "publish.py",
+    store = DisclosureReceiptStore()
+    disclosure_rail = OpenCLIDisclosureRail(
+        scope="acceptance-main-agent",
+        skills_root=installed_skills_dir,
+        receipt_store=store,
     )
-    assert completed.returncode == 0
+    await disclosure_rail.after_tool_call(
+        AgentCallbackContext(
+            agent=None,
+            inputs=ToolCallInputs(
+                tool_name="skill_tool",
+                tool_args={
+                    "skill_name": "opencli-web",
+                    "relative_file_path": PUBLISH_OPERATION_PATH,
+                },
+                tool_result=operation,
+            ),
+            session=None,
+        )
+    )
+    payload_path = tmp_path / "xiaohongshu_draft_payload.json"
+    payload_path.write_text(
+        json.dumps(
+            {
+                "title": "Route test",
+                "content": (
+                    "Main Skill to site router to operation contract to OpenCLI"
+                ),
+                "card_text": "fake adapter",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    def _fake_guarded_executor(argv, **kwargs):
+        assert kwargs["shell"] is False
+        return subprocess.CompletedProcess(
+            argv,
+            0,
+            stdout=json.dumps(
+                {
+                    "ok": True,
+                    "mode": "draft",
+                    "attempted": True,
+                    "fallback_allowed": False,
+                    "result": {"argv": ["xiaohongshu", "publish"]},
+                }
+            ),
+            stderr="",
+        )
+
+    execute_tool = OpenCLIExecuteTool(
+        scope="acceptance-main-agent",
+        skills_root=installed_skills_dir,
+        workspace_roots=[tmp_path],
+        receipt_store=store,
+        language="en",
+        agent_id="main-agent",
+        executor=OpenCLIExecutor(process_runner=_fake_guarded_executor),
+    )
+    result = await execute_tool.invoke(
+        {
+            "site": "xiaohongshu",
+            "operation": "publishing",
+            "command": "publish",
+            "payload_path": str(payload_path),
+        }
+    )
+    assert result.success is True
     trace.append(
         {
-            "tool": "opencli",
-            "site": result["result"]["argv"][0],
-            "command": result["result"]["argv"][1],
+            "tool": "opencli_execute",
+            "site": result.data["site"],
+            "command": result.data["command"],
         }
     )
 
@@ -549,7 +619,11 @@ async def test_acceptance_trace_reads_operation_module_then_invokes_opencli(tmp_
             "skill": "opencli-web",
             "relative_file_path": PUBLISH_OPERATION_PATH,
         },
-        {"tool": "opencli", "site": "xiaohongshu", "command": "publish"},
+        {
+            "tool": "opencli_execute",
+            "site": "xiaohongshu",
+            "command": "publish",
+        },
     ]
     assert all(item["tool"] != "browser_agent" for item in trace)
 
@@ -575,6 +649,8 @@ async def test_web_runtime_prompt_automatically_routes_supported_sites_opencli_f
     assert "relative_file_path" in prompt
     assert "site module is a router" in prompt
     assert "read exactly one listed operation module" in prompt
+    assert "`opencli_execute` immediately from this main Agent" in prompt
+    assert "session/Agent-bound receipt" in prompt
     assert "provable pre-execution infrastructure failure" in prompt
     assert "Never run OpenCLI and `browser_agent` concurrently" in prompt
     assert "social_post_confirm" in prompt

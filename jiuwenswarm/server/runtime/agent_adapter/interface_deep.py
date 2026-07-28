@@ -149,6 +149,11 @@ from jiuwenswarm.agents.harness.common.rails.execution_guard import (
     CircuitBreakerRail,
     CircuitBreakerConfig,
 )
+from jiuwenswarm.agents.harness.common.opencli import (
+    OpenCLIDisclosureRail,
+    OpenCLIExecuteTool,
+    get_opencli_disclosure_store,
+)
 from jiuwenswarm.common.config import get_model_names
 from jiuwenswarm.common.hooks_config import load_hooks_config
 from jiuwenswarm.server.hooks.user_hook_rail import UserHookRail
@@ -793,6 +798,9 @@ class JiuWenSwarmDeepAdapter:
         self._config_cache: dict[str, Any] = {}
         self._filesystem_rail: SysOperationRail | None = None
         self._skill_rail: SkillUseRail | None = None
+        self._opencli_disclosure_rail: OpenCLIDisclosureRail | None = None
+        self._opencli_execute_tool: OpenCLIExecuteTool | None = None
+        self._opencli_agent_id: str = "jiuwenswarm"
         self._stream_event_rail: JiuSwarmStreamEventRail | None = None
         # Track session IDs currently executing on this adapter instance.
         # Used by process_interrupt to avoid aborting sessions that are not
@@ -3417,6 +3425,53 @@ class JiuWenSwarmDeepAdapter:
             skill_rail = None
         return skill_rail
 
+    def _opencli_scope(self) -> str:
+        """Return a trusted scope shared by this main Agent's tool and rail."""
+        return ":".join(
+            (
+                "single",
+                self._session_adapter_key(self._parent_session_id),
+                self._opencli_agent_id,
+            )
+        )
+
+    def _opencli_workspace_roots(self) -> list[Path]:
+        """Return payload boundaries owned by the current main-Agent session."""
+        if self._project_dir:
+            return [Path(self._project_dir)]
+        if self._parent_session_id:
+            return [
+                get_default_project_session_workspace_dir(
+                    self._parent_session_id
+                )
+            ]
+        return [Path(self._workspace_dir)]
+
+    def _build_opencli_disclosure_rail(
+        self,
+    ) -> OpenCLIDisclosureRail:
+        """Build the receipt rail on the standalone Web main Agent."""
+        return OpenCLIDisclosureRail(
+            scope=self._opencli_scope(),
+            skills_root=get_agent_skills_dir(),
+            receipt_store=get_opencli_disclosure_store(),
+        )
+
+    def _build_opencli_execute_tool(
+        self,
+        agent_id: str,
+    ) -> OpenCLIExecuteTool:
+        """Build the structured executor owned by this session-scoped Agent."""
+        self._opencli_agent_id = agent_id
+        return OpenCLIExecuteTool(
+            scope=self._opencli_scope(),
+            skills_root=get_agent_skills_dir,
+            workspace_roots=self._opencli_workspace_roots,
+            receipt_store=get_opencli_disclosure_store(),
+            language=self._resolve_runtime_language(),
+            agent_id=agent_id,
+        )
+
     def _build_skill_evolution_rail(self, config: dict[str, Any]) -> SkillEvolutionRail | None:
         """Build SkillEvolutionRail."""
         try:
@@ -3978,10 +4033,17 @@ class JiuWenSwarmDeepAdapter:
         )
         rail_infos.insert(
             3 if self._filesystem_rail_enabled_for_profile() else 2,
-            _RailBuildInfo("_skill_retrieval_prompt_rail", self._build_skill_retrieval_prompt_rail),
+            _RailBuildInfo(
+                "_opencli_disclosure_rail",
+                self._build_opencli_disclosure_rail,
+            ),
         )
         rail_infos.insert(
             4 if self._filesystem_rail_enabled_for_profile() else 3,
+            _RailBuildInfo("_skill_retrieval_prompt_rail", self._build_skill_retrieval_prompt_rail),
+        )
+        rail_infos.insert(
+            5 if self._filesystem_rail_enabled_for_profile() else 4,
             _RailBuildInfo(
                 "_symphony_orchestration_rail",
                 self._build_symphony_orchestration_rail,
@@ -4219,6 +4281,11 @@ class JiuWenSwarmDeepAdapter:
             if not Runner.resource_mgr.get_tool(wtool.card.id):
                 Runner.resource_mgr.add_tool(wtool)
             tool_cards.append(wtool.card)
+
+        self._opencli_execute_tool = self._build_opencli_execute_tool(agent_id)
+        if not Runner.resource_mgr.get_tool(self._opencli_execute_tool.card.id):
+            Runner.resource_mgr.add_tool(self._opencli_execute_tool)
+        tool_cards.append(self._opencli_execute_tool.card)
 
         # 付费搜索工具：有任意一个付费 key 就注册
         if is_paid_search_enabled():

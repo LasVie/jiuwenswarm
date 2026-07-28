@@ -29,6 +29,10 @@ authorize or describe exact adapter commands.
    capabilities from multiple groups.
 4. Follow only the loaded operation module's command, arguments, access class,
    confirmation gate, and fallback rules.
+5. If that module declares an `opencli_contract`, call `opencli_execute`
+   directly from this main Agent immediately after the Skill-tool read. The
+   execution tool rejects missing, expired, different-Agent, and stale-file
+   disclosure receipts.
 
 Do not use `task_tool`, `sessions_spawn`, a `general-purpose` subagent,
 `browser_agent`, or a filesystem tool to read or analyze an operation module.
@@ -50,8 +54,12 @@ in `opencli-web`. Never infer one operation from a nearby group.
 
 ## Apply common adapter rules
 
-- After loading the operation module, confirm its command against the installed
-  schema with `opencli xiaohongshu <command> --help -f yaml`.
+- For a structured operation, let `opencli_execute` validate the installed
+  operation hash, command, payload boundary, and reviewed executor. Do not
+  inspect or invoke its underlying wrapper with a shell.
+- For an operation not yet migrated to the structured tool, confirm its command
+  against the installed schema with
+  `opencli xiaohongshu <command> --help -f yaml`.
 - If the installed schema conflicts with the loaded contract, do not guess or
   copy an undocumented option from the adapter. Treat the OpenCLI route as
   unsupported.

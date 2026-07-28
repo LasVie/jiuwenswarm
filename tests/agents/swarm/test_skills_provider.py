@@ -11,6 +11,7 @@ unification, now link-based to match the shared-skill-link runtime model.
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from jiuwenswarm.agents.swarm.providers import skills
@@ -82,3 +83,54 @@ def test_extract_skill_name_from_tool_result_prefers_nested_skill():
     assert skills._extract_skill_name_from_tool_result({"skill_name": "beta"}) == "beta"
     assert skills._extract_skill_name_from_tool_result({"name": "gamma"}) == "gamma"
     assert skills._extract_skill_name_from_tool_result({}) == ""
+
+
+def test_opencli_router_is_automatic_for_leader_and_honors_disable(tmp_path):
+    """The leader sees the preinstalled router without selecting it."""
+    global_skills = tmp_path / "global"
+    _make_skill(global_skills, "opencli-web")
+
+    assert skills._resolve_member_skill_view(
+        ["alpha"],
+        role="leader",
+        global_skills_dir=global_skills,
+    ) == ["alpha", "opencli-web"]
+    assert skills._resolve_member_skill_view(
+        ["alpha"],
+        role="teammate",
+        global_skills_dir=global_skills,
+    ) == ["alpha"]
+
+    (global_skills / "skills_state.json").write_text(
+        json.dumps(
+            {"skill_configs": {"opencli-web": {"enabled": False}}}
+        ),
+        encoding="utf-8",
+    )
+
+    assert skills._resolve_member_skill_view(
+        ["alpha", "opencli-web"],
+        role="leader",
+        global_skills_dir=global_skills,
+    ) == ["alpha"]
+
+
+def test_empty_selection_prunes_stale_skill_links(tmp_path):
+    """Disabling an automatic skill removes its existing member link."""
+    global_skills = tmp_path / "global"
+    _make_skill(global_skills, "opencli-web")
+    member_skills = tmp_path / "member" / "skills"
+
+    skills._link_member_configured_skills(
+        member_skills,
+        ["opencli-web"],
+        global_skills,
+    )
+    assert (member_skills / "opencli-web").exists()
+
+    skills._link_member_configured_skills(
+        member_skills,
+        [],
+        global_skills,
+    )
+    assert not (member_skills / "opencli-web").exists()
