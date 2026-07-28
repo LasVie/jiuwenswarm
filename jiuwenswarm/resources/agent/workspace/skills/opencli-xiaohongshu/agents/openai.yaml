@@ -1,4 +1,0 @@
-interface:
-  display_name: "OpenCLI Xiaohongshu"
-  short_description: "Draft and publish Xiaohongshu posts through OpenCLI"
-  default_prompt: "Use $opencli-xiaohongshu for the guarded OpenCLI workflow for this Xiaohongshu task."

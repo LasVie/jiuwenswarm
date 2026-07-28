@@ -88,6 +88,12 @@ jiuwenswarm/agentserver/tools/browser-move/screenshots
 
 jiuwenswarm/workspace/.whatsapp-auth/
 jiuwenswarm/resources/agent/workspace/
+!jiuwenswarm/resources/agent/workspace/
+jiuwenswarm/resources/agent/workspace/*
+!jiuwenswarm/resources/agent/workspace/skills/
+jiuwenswarm/resources/agent/workspace/skills/*
+!jiuwenswarm/resources/agent/workspace/skills/opencli-web/
+!jiuwenswarm/resources/agent/workspace/skills/opencli-web/**
 jiuwenswarm/resources/tui/bin/
 packages/jiuwenswarm-tui/jiuwenswarm_tui/resources/tui/bin/
 packages/jiuwenswarm-tui/jiuwenswarm_tui/resources/tui-bin/

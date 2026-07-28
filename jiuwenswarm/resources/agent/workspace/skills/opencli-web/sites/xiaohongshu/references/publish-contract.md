@@ -22,10 +22,10 @@ Example draft:
 
 ```json
 {
-  "title": "OpenCLI M1",
+  "title": "OpenCLI draft",
   "content": "A deterministic draft.",
   "images": ["C:\\media\\cover.png"],
-  "topics": ["OpenCLI", "智能体"]
+  "topics": ["OpenCLI", "agents"]
 }
 ```
 
@@ -33,9 +33,9 @@ Example publish payload after final confirmation:
 
 ```json
 {
-  "title": "OpenCLI M1",
+  "title": "OpenCLI post",
   "content": "A confirmed post.",
-  "card_text": ["第一页", "第二页"],
+  "card_text": ["First card", "Second card"],
   "mode": "publish",
   "confirmation": {
     "action": "social_post_confirm",
@@ -43,6 +43,18 @@ Example publish payload after final confirmation:
   }
 }
 ```
+
+## Invocation
+
+Resolve the absolute path from the installed `opencli-web` Skill directory:
+
+```text
+python "<opencli-web-directory>/sites/xiaohongshu/scripts/publish.py" --payload "<payload.json>"
+```
+
+The wrapper accepts `--confirmation-dir` for an isolated confirmation store.
+`--opencli-bin` and `--opencli-prefix-arg` are test-only process-resolution
+controls and must not be supplied during ordinary agent execution.
 
 ## Output
 

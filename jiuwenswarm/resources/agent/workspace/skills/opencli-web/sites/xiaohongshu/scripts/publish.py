@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Guarded OpenCLI wrapper for the Xiaohongshu publish adapter."""
+"""Guarded OpenCLI wrapper for the bundled Xiaohongshu publish adapter."""
 
 from __future__ import annotations
 

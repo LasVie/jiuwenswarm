@@ -167,6 +167,8 @@ jiuwenbox = [
 jiuwenswarm = [
     "channels/web/frontend/node_modules/**",
     "channels/web/frontend/node_modules/*",
+    "**/__pycache__/*",
+    "**/*.pyc",
     "resources/agent/workspace/skills/project-maintainer/**/*",
     "resources/agent/workspace/skills/project-maintainer/*",
 ]

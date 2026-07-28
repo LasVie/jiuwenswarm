@@ -1,12 +1,16 @@
-# M1 site capability map
+# Site capability map
 
-Load exactly one matching site skill after `opencli-web`.
+Site modules are bundled under `opencli-web/sites/`. They are disclosed through
+the same installed Skill by using the Skill tool's `relative_file_path`
+argument; they are not separately installed or selected by the user.
 
-| Website | M1 operations | Site skill |
-|---|---|---|
-| Xiaohongshu / 小红书 (`creator.xiaohongshu.com`) | Create an image/text note draft; publish the confirmed note | `opencli-xiaohongshu` |
+| Website | Recognized domains | Coverage | Relative file path |
+|---|---|---|---|
+| Xiaohongshu / 小红书 | `www.xiaohongshu.com`, `creator.xiaohongshu.com`, Xiaohongshu note and profile links | All 25 commands documented in the bundled adapter catalog | `sites/xiaohongshu/SKILL.md` |
 
-Everything else is unsupported by M1, even if the locally installed OpenCLI
-catalog contains an adapter. Investigate catalog entries with `opencli list -f
-json`, but add and test a dedicated site skill before routing production work to
-them.
+For Xiaohongshu, call the Skill tool with `skill_name: opencli-web` and
+`relative_file_path: sites/xiaohongshu/SKILL.md`.
+
+An adapter reported by `opencli list -f json` is not automatically a production
+route. Until a site module documents its inputs, safety gates, fallback rules,
+and supported operations, use `browser_agent`.

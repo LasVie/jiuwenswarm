@@ -621,6 +621,7 @@ def _install_default_builtin_skills(
     默认安装的技能：
     - skill-creator: 技能创建助手
     - swarmskill-creator: Swarm技能创建助手
+    - opencli-web: OpenCLI 网站能力自动路由
 
     Args:
         builtin_dir: 内置技能目录路径
@@ -629,7 +630,7 @@ def _install_default_builtin_skills(
         cumulative_diff: 累积的文件变更追踪结果
     """
     # 定义默认安装的技能列表
-    default_skills = ["skill-creator", "swarmskill-creator"]
+    default_skills = ["skill-creator", "swarmskill-creator", "opencli-web"]
 
     if not builtin_dir.exists() or not builtin_dir.is_dir():
         logger.warning(f"内置技能目录不存在，跳过默认技能安装: {builtin_dir}")
@@ -1214,7 +1215,7 @@ def prepare_workspace(
     migrate_config_from_template(config_yaml_src, config_yaml_dest)
     set_preferred_language_in_config_file(config_yaml_dest, resolved_lang)
 
-    # ----- 默认安装内置技能: skill-creator 和 swarmskill-creator -----
+    # ----- 默认安装内置技能 -----
     _install_default_builtin_skills(
         builtin_dir=get_builtin_skills_dir(),
         user_skills_dir=agent_skills,
