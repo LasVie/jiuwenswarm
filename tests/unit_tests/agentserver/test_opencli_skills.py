@@ -37,33 +37,36 @@ MASTER_SKILL_DIR = BUILTIN_SKILLS_DIR / "opencli-web"
 XIAOHONGSHU_MODULE_DIR = MASTER_SKILL_DIR / "sites" / "xiaohongshu"
 XIAOHONGSHU_MODULE_PATH = "sites/xiaohongshu/SKILL.md"
 PUBLISH_WRAPPER = XIAOHONGSHU_MODULE_DIR / "scripts" / "publish.py"
-XIAOHONGSHU_COMMANDS = {
-    "ask",
-    "comments",
-    "creator-note-detail",
-    "creator-notes",
-    "creator-notes-summary",
-    "creator-profile",
-    "creator-stats",
-    "delete-note",
-    "download",
-    "draft-clear",
-    "draft-delete",
-    "draft-open",
-    "drafts",
-    "feed",
-    "follow",
-    "liked",
-    "login",
-    "note",
-    "notifications",
-    "publish",
-    "saved",
-    "search",
-    "unfollow",
-    "user",
-    "whoami",
+XIAOHONGSHU_OPERATION_COMMANDS = {
+    "operations/account.md": {"login", "whoami"},
+    "operations/discovery.md": {"ask", "feed", "search"},
+    "operations/notes.md": {
+        "comments",
+        "download",
+        "liked",
+        "note",
+        "notifications",
+        "saved",
+        "user",
+    },
+    "operations/creator-analytics.md": {
+        "creator-note-detail",
+        "creator-notes",
+        "creator-notes-summary",
+        "creator-profile",
+        "creator-stats",
+    },
+    "operations/drafts.md": {
+        "draft-clear",
+        "draft-delete",
+        "draft-open",
+        "drafts",
+    },
+    "operations/publishing.md": {"publish"},
+    "operations/social-actions.md": {"delete-note", "follow", "unfollow"},
 }
+XIAOHONGSHU_COMMANDS = set().union(*XIAOHONGSHU_OPERATION_COMMANDS.values())
+PUBLISH_OPERATION_PATH = "sites/xiaohongshu/operations/publishing.md"
 
 
 class _FakeSession:
@@ -170,6 +173,10 @@ def _run_wrapper(
         capture_output=True,
         text=True,
         encoding="utf-8",
+        env={
+            **os.environ,
+            "JIUWENSWARM_OPENCLI_DAEMON_STATUS_URL": "http://127.0.0.1:1/status",
+        },
         shell=False,
     )
     return completed, json.loads(completed.stdout)
@@ -208,6 +215,9 @@ def test_opencli_web_is_preinstalled_with_nested_xiaohongshu_module(tmp_path):
     installed_root = installed_skills_dir / "opencli-web"
     assert installed_root.is_dir()
     assert (installed_root / XIAOHONGSHU_MODULE_PATH).is_file()
+    assert (installed_root / "scripts" / "opencli_runtime.py").is_file()
+    for operation_path in XIAOHONGSHU_OPERATION_COMMANDS:
+        assert (installed_root / "sites" / "xiaohongshu" / operation_path).is_file()
     assert not (installed_skills_dir / "opencli-xiaohongshu").exists()
 
     state = json.loads(
@@ -356,6 +366,9 @@ def test_existing_workspace_startup_refreshes_managed_opencli_files(
     assert (installed_root / XIAOHONGSHU_MODULE_PATH).read_bytes() == (
         MASTER_SKILL_DIR / XIAOHONGSHU_MODULE_PATH
     ).read_bytes()
+    assert (installed_root / PUBLISH_OPERATION_PATH).read_bytes() == (
+        MASTER_SKILL_DIR / PUBLISH_OPERATION_PATH
+    ).read_bytes()
     assert user_extra.read_text(encoding="utf-8") == "preserve me\n"
     assert state_file.read_bytes() == state_before
     assert str(installed_root / "SKILL.md") in first_diff.overwritten_files
@@ -403,6 +416,12 @@ def test_service_entrypoints_use_shared_workspace_bootstrap(entrypoint):
 def test_opencli_skill_uses_progressive_disclosure_and_complete_command_catalog():
     master = (MASTER_SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
     xiaohongshu = (XIAOHONGSHU_MODULE_DIR / "SKILL.md").read_text(encoding="utf-8")
+    operation_documents = {
+        relative_path: (XIAOHONGSHU_MODULE_DIR / relative_path).read_text(
+            encoding="utf-8"
+        )
+        for relative_path in XIAOHONGSHU_OPERATION_COMMANDS
+    }
 
     assert "any task involving a live website" in master
     assert XIAOHONGSHU_MODULE_PATH in master
@@ -410,20 +429,38 @@ def test_opencli_skill_uses_progressive_disclosure_and_complete_command_catalog(
     assert "browser_agent" in master
     assert "general-purpose" in master
     assert "opencli-web" in xiaohongshu
-    assert "social_post_confirm" in xiaohongshu
-    assert "scripts/publish.py" in xiaohongshu
-    assert 'python -E "<opencli-web-directory>' in xiaohongshu
-    assert "opencli_adapter_incompatible" in xiaohongshu
     assert "general-purpose" in xiaohongshu
+    assert "site router" in xiaohongshu.lower()
+    assert "exactly one" in xiaohongshu
+    assert "relative_file_path" in xiaohongshu
+    for operation_path in XIAOHONGSHU_OPERATION_COMMANDS:
+        assert operation_path in xiaohongshu
+
+    publishing = operation_documents["operations/publishing.md"]
+    assert "social_post_confirm" in publishing
+    assert "scripts/publish.py" in publishing
+    assert 'python -E "<opencli-web-directory>' in publishing
+    assert "opencli_adapter_incompatible" in publishing
+
     assert "references/" not in master
     assert "references/" not in xiaohongshu
     assert not list((MASTER_SKILL_DIR / "references").glob("*.md"))
     assert not list((XIAOHONGSHU_MODULE_DIR / "references").glob("*.md"))
 
-    documented_commands = set(
-        re.findall(r"^\| `([a-z-]+)` \|", xiaohongshu, flags=re.MULTILINE)
-    )
+    documented_commands: set[str] = set()
+    for relative_path, expected_commands in XIAOHONGSHU_OPERATION_COMMANDS.items():
+        current_commands = set(
+            re.findall(
+                r"^\| `([a-z-]+)` \|",
+                operation_documents[relative_path],
+                flags=re.MULTILINE,
+            )
+        )
+        assert current_commands == expected_commands
+        assert documented_commands.isdisjoint(current_commands)
+        documented_commands.update(current_commands)
     assert documented_commands == XIAOHONGSHU_COMMANDS
+    assert not re.findall(r"^\| `([a-z-]+)` \|", xiaohongshu, flags=re.MULTILINE)
 
     milestone_token = "M" + "1"
     for path in MASTER_SKILL_DIR.rglob("*"):
@@ -432,7 +469,7 @@ def test_opencli_skill_uses_progressive_disclosure_and_complete_command_catalog(
 
 
 @pytest.mark.asyncio
-async def test_acceptance_trace_reads_nested_site_module_then_invokes_opencli(tmp_path):
+async def test_acceptance_trace_reads_operation_module_then_invokes_opencli(tmp_path):
     installed_skills_dir = _install_defaults(tmp_path)
     installed_root = installed_skills_dir / "opencli-web"
     skills = [
@@ -457,7 +494,7 @@ async def test_acceptance_trace_reads_nested_site_module_then_invokes_opencli(tm
         }
     )
     assert site.success is True
-    assert "scripts/publish.py" in site.data["skill_content"]
+    assert "operations/publishing.md" in site.data["skill_content"]
     trace.append(
         {
             "tool": "skill_tool",
@@ -466,11 +503,27 @@ async def test_acceptance_trace_reads_nested_site_module_then_invokes_opencli(tm
         }
     )
 
+    operation = await skill_tool.invoke(
+        {
+            "skill_name": "opencli-web",
+            "relative_file_path": PUBLISH_OPERATION_PATH,
+        }
+    )
+    assert operation.success is True
+    assert "scripts/publish.py" in operation.data["skill_content"]
+    trace.append(
+        {
+            "tool": "skill_tool",
+            "skill": "opencli-web",
+            "relative_file_path": PUBLISH_OPERATION_PATH,
+        }
+    )
+
     completed, result = _run_wrapper(
         tmp_path,
         {
             "title": "Route test",
-            "content": "Main Skill to site module to OpenCLI",
+            "content": "Main Skill to site router to operation contract to OpenCLI",
             "card_text": "fake adapter",
         },
         wrapper=installed_root / "sites" / "xiaohongshu" / "scripts" / "publish.py",
@@ -490,6 +543,11 @@ async def test_acceptance_trace_reads_nested_site_module_then_invokes_opencli(tm
             "tool": "skill_tool",
             "skill": "opencli-web",
             "relative_file_path": XIAOHONGSHU_MODULE_PATH,
+        },
+        {
+            "tool": "skill_tool",
+            "skill": "opencli-web",
+            "relative_file_path": PUBLISH_OPERATION_PATH,
         },
         {"tool": "opencli", "site": "xiaohongshu", "command": "publish"},
     ]
@@ -515,6 +573,8 @@ async def test_web_runtime_prompt_automatically_routes_supported_sites_opencli_f
     assert "do not search for, install, or ask the user to select it" in prompt
     assert "general-purpose" in prompt
     assert "relative_file_path" in prompt
+    assert "site module is a router" in prompt
+    assert "read exactly one listed operation module" in prompt
     assert "provable pre-execution infrastructure failure" in prompt
     assert "Never run OpenCLI and `browser_agent` concurrently" in prompt
     assert "social_post_confirm" in prompt

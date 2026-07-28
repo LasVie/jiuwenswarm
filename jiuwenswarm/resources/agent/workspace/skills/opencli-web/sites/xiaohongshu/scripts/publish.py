@@ -16,6 +16,17 @@ from pathlib import Path
 from typing import Any
 
 
+_OPENCLI_WEB_SCRIPTS_DIR = Path(__file__).resolve().parents[3] / "scripts"
+if str(_OPENCLI_WEB_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_OPENCLI_WEB_SCRIPTS_DIR))
+
+from opencli_runtime import (  # noqa: E402
+    is_browser_connect_failure,
+    probe_opencli_runtime,
+    select_opencli_profile,
+)
+
+
 _ALLOWED_FIELDS = {
     "title",
     "content",
@@ -515,6 +526,20 @@ def main(argv: list[str] | None = None) -> int:
             detail=adapter_issue,
         )
 
+    runtime = probe_opencli_runtime(
+        profile=select_opencli_profile(args.opencli_prefix_arg),
+    )
+    if not runtime.dispatch_allowed:
+        return _failure(
+            mode=request.mode,
+            code=runtime.error_code or "opencli_browser_unavailable",
+            message=runtime.message or "OpenCLI browser runtime is unavailable",
+            attempted=False,
+            fallback_allowed=request.mode == "draft",
+            detail=runtime.detail,
+            result={"runtime": runtime.public_result()},
+        )
+
     if request.mode == "publish":
         assert request.confirmation_id is not None
         try:
@@ -578,6 +603,19 @@ def main(argv: list[str] | None = None) -> int:
     result = _parse_child_output(completed.stdout)
     if completed.returncode != 0:
         child_exit = completed.returncode if 1 <= completed.returncode <= 255 else 1
+        if is_browser_connect_failure(completed.stdout, completed.stderr):
+            return _failure(
+                mode=request.mode,
+                code="opencli_browser_unavailable",
+                message=(
+                    "OpenCLI could not connect to the browser before adapter dispatch"
+                ),
+                attempted=False,
+                fallback_allowed=request.mode == "draft",
+                exit_code=child_exit,
+                detail=completed.stderr or completed.stdout or "",
+                result=result,
+            )
         return _failure(
             mode=request.mode,
             code="opencli_failed",
