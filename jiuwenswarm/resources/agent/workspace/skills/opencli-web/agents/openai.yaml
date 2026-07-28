@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenCLI Web Router"
+  short_description: "Route supported live website tasks through OpenCLI"
+  default_prompt: "Use $opencli-web to check OpenCLI coverage first and route this website task to the matching site skill."
