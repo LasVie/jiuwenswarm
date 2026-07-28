@@ -1,0 +1,35 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: ths
+display_name: Ths
+domains:
+- eq.10jqka.com.cn
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-b
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  private-content:
+    purpose: Read content that depends on an authenticated account.
+    commands:
+    - hot-rank
+commands:
+  hot-rank:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''

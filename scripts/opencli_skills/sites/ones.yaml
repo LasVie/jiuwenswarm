@@ -1,0 +1,163 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: ones
+display_name: Ones
+domains:
+- ones.cn
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-a
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  account:
+    purpose: Read account identity or account-scoped metadata.
+    commands:
+    - me
+  authentication:
+    purpose: Open, change, or clear an authenticated browser session.
+    commands:
+    - login
+    - logout
+  private-content:
+    purpose: Read content that depends on an authenticated account.
+    commands:
+    - my-tasks
+    - task
+    - tasks
+    - token-info
+  write-actions:
+    purpose: Change remote service state.
+    commands:
+    - worklog
+commands:
+  login:
+    operation: authentication
+    semantic_effect: auth_session_change
+    risk: high
+    auth: interactive
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  logout:
+    operation: authentication
+    semantic_effect: auth_session_change
+    risk: high
+    auth: interactive
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  me:
+    operation: account
+    semantic_effect: private_account_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - account identifiers
+    notes: ''
+  my-tasks:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  task:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  tasks:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  token-info:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  worklog:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''

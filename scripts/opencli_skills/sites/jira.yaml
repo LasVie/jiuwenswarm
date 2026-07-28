@@ -1,0 +1,100 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: jira
+display_name: Jira
+domains:
+- atlassian.net
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-b
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - attachments
+    - comments
+    - issue
+    - links
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
+commands:
+  attachments:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  comments:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  issue:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  links:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''

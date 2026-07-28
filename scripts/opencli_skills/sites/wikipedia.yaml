@@ -1,0 +1,117 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: wikipedia
+display_name: Wikipedia
+domains:
+- wikipedia.org
+aliases: []
+terminal: operation
+review:
+  status: reviewed
+  owner: agent-b
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  articles:
+    purpose: Read encyclopedia pages and summaries.
+    commands:
+    - page
+    - summary
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - random
+    - search
+    - trending
+commands:
+  page:
+    operation: articles
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+    arg_overrides:
+      lang:
+        pattern: ^[a-z]{2,3}(?:-[a-z0-9]+)?$
+      paragraphs:
+        minimum: 0
+  random:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+    arg_overrides:
+      limit:
+        minimum: 1
+        maximum: 50
+      lang:
+        pattern: ^[a-z]{2,3}(?:-[a-z0-9]+)?$
+  summary:
+    operation: articles
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  trending:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+    arg_overrides:
+      limit:
+        minimum: 1
+        maximum: 50
+      lang:
+        pattern: ^[a-z]{2,3}(?:-[a-z0-9]+)?$

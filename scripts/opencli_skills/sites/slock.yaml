@@ -1,0 +1,783 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: slock
+display_name: Slock
+domains:
+- app.slock.ai
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-a
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  account:
+    purpose: Read account identity or account-scoped metadata.
+    commands:
+    - whoami
+  account-actions:
+    purpose: Change reversible account relationship or saved state.
+    commands:
+    - bookmark-add
+    - thread-follow
+  authentication:
+    purpose: Open, change, or clear an authenticated browser session.
+    commands:
+    - login
+  destructive-actions:
+    purpose: Delete, remove, revoke, or perform administrative changes.
+    commands:
+    - bookmark-remove
+    - reaction-remove
+    - task-delete
+    - thread-unfollow
+  file-operations:
+    purpose: Create or download workspace files.
+    commands:
+    - attachment-download
+    - channel-archive
+  messaging:
+    purpose: Send messages, replies, comments, invitations, or contacts.
+    commands:
+    - message-send
+  private-content:
+    purpose: Read content that depends on an authenticated account.
+    commands:
+    - attachment-url
+    - bookmark-list
+    - channel-files
+    - channel-info
+    - channel-list
+    - channel-members
+    - dm-list
+    - inbox
+    - message-read
+    - message-search
+    - server-list
+    - task-get
+    - task-list
+    - task-list-server
+    - thread-list
+    - unread-summary
+  publishing:
+    purpose: Publish, create, edit, or upload remote content.
+    commands:
+    - attachment-upload
+    - channel-create
+    - task-create
+  write-actions:
+    purpose: Change remote service state.
+    commands:
+    - channel-join
+    - channel-leave
+    - channel-mark
+    - channel-unarchive
+    - inbox-done
+    - inbox-read-all
+    - reaction-add
+    - server-use
+    - task-claim
+    - task-convert
+    - task-status
+    - task-unclaim
+    - thread-done
+    - thread-undone
+commands:
+  attachment-download:
+    operation: file-operations
+    semantic_effect: local_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs:
+    - workspace-relative output
+    sensitive_output: []
+    notes: ''
+  attachment-upload:
+    operation: publishing
+    semantic_effect: public_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs:
+    - workspace-relative input when declared by adapter
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  attachment-url:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  bookmark-add:
+    operation: account-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  bookmark-list:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  bookmark-remove:
+    operation: destructive-actions
+    semantic_effect: destructive_or_admin
+    risk: critical
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  channel-archive:
+    operation: file-operations
+    semantic_effect: local_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs:
+    - workspace-relative output
+    sensitive_output: []
+    notes: ''
+  channel-create:
+    operation: publishing
+    semantic_effect: public_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs:
+    - workspace-relative input when declared by adapter
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  channel-files:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  channel-info:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  channel-join:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  channel-leave:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  channel-list:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  channel-mark:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  channel-members:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  channel-unarchive:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  dm-list:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  inbox:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  inbox-done:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  inbox-read-all:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  login:
+    operation: authentication
+    semantic_effect: auth_session_change
+    risk: high
+    auth: interactive
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  message-read:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  message-search:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  message-send:
+    operation: messaging
+    semantic_effect: message_send
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  reaction-add:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  reaction-remove:
+    operation: destructive-actions
+    semantic_effect: destructive_or_admin
+    risk: critical
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  server-list:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  server-use:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  task-claim:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  task-convert:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  task-create:
+    operation: publishing
+    semantic_effect: public_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs:
+    - workspace-relative input when declared by adapter
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  task-delete:
+    operation: destructive-actions
+    semantic_effect: destructive_or_admin
+    risk: critical
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  task-get:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  task-list:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  task-list-server:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  task-status:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  task-unclaim:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  thread-done:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  thread-follow:
+    operation: account-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  thread-list:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  thread-undone:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  thread-unfollow:
+    operation: destructive-actions
+    semantic_effect: destructive_or_admin
+    risk: critical
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  unread-summary:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  whoami:
+    operation: account
+    semantic_effect: private_account_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - account identifiers
+    notes: ''

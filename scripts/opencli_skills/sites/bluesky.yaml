@@ -1,0 +1,167 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: bluesky
+display_name: Bluesky
+domains:
+- public.api.bsky.app
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-b
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  account:
+    purpose: Read account identity or account-scoped metadata.
+    commands:
+    - profile
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - feeds
+    - followers
+    - following
+    - starter-packs
+    - thread
+    - user
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
+    - trending
+commands:
+  feeds:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  followers:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  following:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  profile:
+    operation: account
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  starter-packs:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  thread:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  trending:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  user:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''

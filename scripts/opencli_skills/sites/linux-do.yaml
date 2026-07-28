@@ -1,0 +1,200 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: linux-do
+display_name: Linux Do
+domains:
+- linux.do
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-b
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  account:
+    purpose: Read account identity or account-scoped metadata.
+    commands:
+    - whoami
+  authentication:
+    purpose: Open, change, or clear an authenticated browser session.
+    commands:
+    - login
+  private-content:
+    purpose: Read content that depends on an authenticated account.
+    commands:
+    - categories
+    - feed
+    - search
+    - tags
+    - topic
+    - topic-content
+    - user-posts
+    - user-topics
+commands:
+  categories:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  feed:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  login:
+    operation: authentication
+    semantic_effect: auth_session_change
+    risk: high
+    auth: interactive
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  tags:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  topic:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  topic-content:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  user-posts:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  user-topics:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  whoami:
+    operation: account
+    semantic_effect: private_account_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - account identifiers
+    notes: ''

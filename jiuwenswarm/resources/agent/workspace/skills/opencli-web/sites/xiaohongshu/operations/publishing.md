@@ -16,16 +16,14 @@ confirmation, and fallback rules in force.
 
 | Command | Access | Exact usage | Purpose and important options |
 |---|---|---|---|
-| `publish` | write | `opencli_execute(site="xiaohongshu", operation="publishing", command="publish", payload_path="<payload.json>")` | Create an image/text draft or publish after `social_post_confirm`. The structured tool owns the guarded executor and disclosure check. |
+| `publish` | write | `opencli_execute(site="xiaohongshu", operation="publishing", command="publish", payload_path="<payload.json>")` | Create an image/text draft through the guarded executor. Public `mode: publish` is rejected until the runtime supplies a trusted, scope- and payload-bound confirmation receipt. |
 
 Never invoke `opencli xiaohongshu publish`, the bundled Python wrapper, or
 `scripts/opencli_runtime.py` directly. Call `opencli_execute` from the same main
 Agent that just read this operation file. The structured tool validates this
-file's hash and one-use disclosure receipt, constrains the payload to the
-trusted workspace, and launches the guarded executor without a shell. The
-guarded executor validates the payload, defaults to draft mode, preserves
-argument boundaries, checks the shared OpenCLI runtime, classifies fallback
-safety, and invokes OpenCLI.
+file's hash and one-use disclosure receipt, snapshots the payload and any image
+files into owned staging, and launches the guarded executor without a shell.
+The original payload and media are never passed to the child process.
 
 ## Build the payload
 
@@ -40,7 +38,7 @@ Pass one UTF-8 JSON object through `--payload`.
 | card_style | no | string | Valid only with `card_text` |
 | topics | no | list of strings | No `#` or commas |
 | mode | no | `"draft"` or `"publish"` | Defaults to `"draft"` |
-| confirmation | publish only | object | Requires action `social_post_confirm` and a stable unique `id` |
+| confirmation | reserved | object | A model-supplied action or ID is never sufficient authority. Public publish remains rejected until a trusted runtime receipt is wired. |
 
 Unknown fields and ambiguous media combinations are rejected before OpenCLI
 starts.
@@ -56,7 +54,8 @@ Example draft:
 }
 ```
 
-Example publish payload after final confirmation:
+Reserved publish payload shape (documented for the future trusted-receipt
+integration; it is not currently executable):
 
 ```json
 {
@@ -116,9 +115,9 @@ The wrapper writes exactly one JSON envelope to stdout:
 `attempted` means OpenCLI adapter dispatch may have started. A daemon process
 may be started while `attempted` remains `false` when OpenCLI returns the typed
 pre-dispatch `BROWSER_CONNECT` error. Once adapter dispatch may have started, a
-failure or timeout remains non-fallback-safe. For publish mode, the confirmation
-ID is represented by a one-time SHA-256 marker; the original ID and post content
-are not written to that marker.
+failure or timeout remains non-fallback-safe. The current public tool rejects
+publish mode before OpenCLI starts. A model-generated confirmation ID,
+including one copied from this document, cannot bypass that gate.
 
 Before invoking OpenCLI, the wrapper queries daemon `/status` directly:
 
@@ -147,25 +146,15 @@ known incompatible text-card media check before starting OpenCLI:
 - Continue using OpenCLI normally for `images` payloads. A future adapter whose
   source no longer contains the incompatible check passes this preflight.
 
-## Publish publicly
+## Public publishing gate
 
-1. Render final A2UI confirmation with `social_post_confirm`. Its context must
-   exactly match the selected title, content, media or text cards, and topics.
-2. Only after confirmation, set `"mode": "publish"` and include:
+Do not call `opencli_execute` with `mode: "publish"` in the current runtime.
+An A2UI `social_post_confirm` event is presently converted into model context;
+it does not yet issue the server-side, scope- and payload-bound receipt required
+by this executor. Arbitrary non-empty IDs are therefore rejected as
+`opencli_confirmation_untrusted` before OpenCLI starts.
 
-   ```json
-   {
-     "confirmation": {
-       "action": "social_post_confirm",
-       "id": "stable-unique-confirmation-id"
-     }
-   }
-   ```
-
-3. Call `opencli_execute` exactly once for that confirmation ID.
-4. Respect `social_post_cancel` by stopping without running the wrapper.
-
-If publishing times out or returns an ambiguous failure, do not retry and do
-not switch to `browser_agent`. Verify with a loaded read-operation contract
-when possible; otherwise report that the outcome is unknown and require a new,
-explicit confirmation before any later attempt.
+Keep the exact final account, title, content, media/text cards, topics,
+visibility, and target audience available for the future confirmation binding.
+Respect `social_post_cancel` by stopping. Do not substitute direct OpenCLI,
+Bash, the bundled wrapper, or `browser_agent` to bypass this gate.

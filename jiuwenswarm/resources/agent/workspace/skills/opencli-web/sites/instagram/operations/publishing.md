@@ -1,0 +1,86 @@
+---
+opencli_contract:
+  version: 2
+  site: instagram
+  operation: publishing
+  policy_sha256: d42c25c598970ce1716e696af43fd6eb6c2acc1199441ba3a3b95731834e32ef
+  commands:
+    collection-create:
+      executor: none
+      execution_state: disabled
+      semantic_effect: public_write
+      risk: high
+      auth: required
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: write
+      args:
+      - help: Name of the collection to create
+        name: name
+        positional: true
+        required: true
+        type: str
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs:
+      - workspace-relative input when declared by adapter
+      file_outputs: []
+      sensitive_output: []
+    post:
+      executor: none
+      execution_state: disabled
+      semantic_effect: public_write
+      risk: high
+      auth: required
+      transport: browser_dom
+      strategy: ui
+      browser: true
+      opencli_version: 1.8.6
+      access: write
+      args:
+      - help: Comma-separated media paths (images/videos, up to 10)
+        name: media
+        required: false
+        type: str
+        valueRequired: true
+      - help: Caption text
+        name: content
+        positional: true
+        required: false
+        type: str
+      - default: 300
+        help: 'Max seconds for the overall command (default: 300)'
+        name: timeout
+        required: false
+        type: int
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs:
+      - workspace-relative input when declared by adapter
+      file_outputs: []
+      sensitive_output: []
+---
+
+# Instagram: publishing
+
+Publish, create, edit, or upload remote content.
+
+This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
+
+| Command | State | Effect / risk | Exact structured use | Exact arguments |
+|---|---|---|---|---|
+| `collection-create` | `disabled` | `public_write` / `high` | Not executable; use the declared fallback if permitted<br>Create a new Instagram saved-posts collection (folder) | `name` (str, required, positional) |
+| `post` | `disabled` | `public_write` / `high` | Not executable; use the declared fallback if permitted<br>Post an Instagram feed image or mixed-media carousel | `media` (str, optional); `content` (str, optional, positional); `timeout` (int, optional, default=300) |
+
+## Safety and fallback
+
+- Unknown commands and arguments are rejected before subprocess start.
+- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
+- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
+- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.

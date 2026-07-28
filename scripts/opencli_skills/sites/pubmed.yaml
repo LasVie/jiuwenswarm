@@ -1,0 +1,164 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: pubmed
+display_name: Pubmed
+domains:
+- pubmed.ncbi.nlm.nih.gov
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-c
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - article
+    - author
+    - citations
+    - clinical-trial
+    - journal
+    - mesh
+    - related
+    - review
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
+commands:
+  article:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  author:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  citations:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  clinical-trial:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  journal:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  mesh:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  related:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  review:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''

@@ -1,0 +1,22 @@
+---
+name: opencli-dockerhub
+description: Route reviewed Dockerhub website operations through the OpenCLI Web structured execution boundary.
+---
+
+# Dockerhub
+
+Catalog site slug: `dockerhub`.
+ Known domains: `hub.docker.com`.
+
+Read this file only through the main Agent's SkillTool. Do not delegate disclosure to a general-purpose or browser subagent and do not replace it with a filesystem read.
+
+## Capability groups
+
+This file is a router, not an execution receipt. Select exactly one operation and read its full path again with SkillTool from the same main Agent.
+
+| Operation | Purpose | Commands | Terminal contract path |
+|---|---|---|---|
+| `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/dockerhub/operations/discovery.md` |
+| `generation` | Generate remote content, start AI work, or consume quota. | `image` | `sites/dockerhub/operations/generation.md` |
+
+Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

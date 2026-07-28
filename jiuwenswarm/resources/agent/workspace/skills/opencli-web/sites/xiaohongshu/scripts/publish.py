@@ -20,6 +20,9 @@ _OPENCLI_WEB_SCRIPTS_DIR = Path(__file__).resolve().parents[3] / "scripts"
 if str(_OPENCLI_WEB_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_OPENCLI_WEB_SCRIPTS_DIR))
 
+# The managed Skill tree is package data, not a Python bytecode cache.
+sys.dont_write_bytecode = True
+
 from opencli_runtime import (  # noqa: E402
     is_browser_connect_failure,
     probe_opencli_runtime,

@@ -1,0 +1,49 @@
+---
+opencli_contract:
+  version: 2
+  site: geogebra
+  operation: arbitrary-execution
+  policy_sha256: 4100e839d5e4634680cce80bd2776781262b72dbd1fff454a67ae5f02ea2cc49
+  commands:
+    eval:
+      executor: none
+      execution_state: quarantined
+      semantic_effect: arbitrary_execution
+      risk: critical
+      auth: required
+      transport: browser_dom
+      strategy: public
+      browser: true
+      opencli_version: 1.8.6
+      access: write
+      args:
+      - help: GeoGebra command string (use ; to chain multiple commands)
+        name: command
+        positional: true
+        required: true
+        type: str
+      confirmation: unsupported
+      fallback:
+        before_dispatch: none
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output: []
+---
+
+# Geogebra: arbitrary-execution
+
+Adapter entry points that can execute arbitrary input.
+
+This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
+
+| Command | State | Effect / risk | Exact structured use | Exact arguments |
+|---|---|---|---|---|
+| `eval` | `quarantined` | `arbitrary_execution` / `critical` | Not executable; use the declared fallback if permitted<br>Execute one or more GeoGebra command strings (semicolon-separated) | `command` (str, required, positional) |
+
+## Safety and fallback
+
+- Unknown commands and arguments are rejected before subprocess start.
+- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
+- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
+- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.

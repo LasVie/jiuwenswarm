@@ -1,0 +1,132 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: coingecko
+display_name: Coingecko
+domains:
+- api.coingecko.com
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-c
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - coin
+    - derivatives
+    - exchanges
+    - global
+    - top
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - categories
+    - trending
+commands:
+  categories:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  coin:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  derivatives:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  exchanges:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  global:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  top:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  trending:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''

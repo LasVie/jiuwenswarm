@@ -19,11 +19,13 @@ from openjiuwen.harness.rails.base import DeepAgentRail
 from jiuwenswarm.agents.harness.common.opencli.contracts import (
     OPENCLI_WEB_SKILL_NAME,
     OpenCLIContractError,
-    load_operation_contract,
-    parse_operation_relative_path,
+    load_terminal_contract_by_path,
 )
 from jiuwenswarm.agents.harness.common.opencli.disclosure import (
     DisclosureReceiptStore,
+)
+from jiuwenswarm.agents.harness.common.opencli.security import (
+    load_skill_enabled_snapshot,
 )
 
 
@@ -56,11 +58,7 @@ class OpenCLIDisclosureRail(DeepAgentRail):
         args = self._mapping(inputs.tool_args)
         if args.get("skill_name") != OPENCLI_WEB_SKILL_NAME:
             return
-        parsed_path = parse_operation_relative_path(
-            str(args.get("relative_file_path") or "")
-        )
-        if parsed_path is None:
-            return
+        relative_path = str(args.get("relative_file_path") or "")
 
         result = self._mapping(inputs.tool_result)
         if result.get("success") is not True:
@@ -71,15 +69,11 @@ class OpenCLIDisclosureRail(DeepAgentRail):
         if not skill_directory or not isinstance(skill_content, str):
             return
 
-        installed_skill_root = (
-            self._skills_root / OPENCLI_WEB_SKILL_NAME
-        ).resolve()
+        installed_skill_root = (self._skills_root / OPENCLI_WEB_SKILL_NAME).resolve()
         allowed_skill_directories = {installed_skill_root}
         for directory in self._allowed_skill_directories:
             try:
-                allowed_skill_directories.add(
-                    Path(directory).expanduser().resolve()
-                )
+                allowed_skill_directories.add(Path(directory).expanduser().resolve())
             except (OSError, RuntimeError, ValueError):
                 continue
         try:
@@ -89,22 +83,34 @@ class OpenCLIDisclosureRail(DeepAgentRail):
         if result_skill_root not in allowed_skill_directories:
             return
 
-        site, operation = parsed_path
+        enabled_snapshot = load_skill_enabled_snapshot(self._skills_root)
+        if not enabled_snapshot.enabled:
+            return
         try:
-            contract = load_operation_contract(self._skills_root, site, operation)
+            contract = load_terminal_contract_by_path(
+                self._skills_root,
+                relative_path,
+            )
         except OpenCLIContractError:
             return
-        disclosed_sha256 = hashlib.sha256(
-            skill_content.encode("utf-8")
-        ).hexdigest()
-        if disclosed_sha256 != contract.operation_sha256:
+        if not any(
+            command.execution_state in {"enabled", "custom"}
+            and command.executor != "none"
+            for command in contract.command_specs.values()
+        ):
+            return
+        disclosed_sha256 = hashlib.sha256(skill_content.encode("utf-8")).hexdigest()
+        if disclosed_sha256 != contract.terminal_sha256:
             return
 
-        self._receipt_store.grant(
+        self._receipt_store.grant_bound(
             scope=self._scope,
-            site=site,
-            operation=operation,
-            operation_sha256=contract.operation_sha256,
+            site=contract.site,
+            operation=contract.operation,
+            terminal_relative_path=contract.terminal_relative_path,
+            terminal_sha256=contract.terminal_sha256,
+            policy_sha256=contract.policy_sha256,
+            enabled_state_sha256=enabled_snapshot.state_sha256,
         )
 
     @staticmethod

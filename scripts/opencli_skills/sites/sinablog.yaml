@@ -1,0 +1,90 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: sinablog
+display_name: Sinablog
+domains:
+- blog.sina.com.cn
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-a
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
+  private-content:
+    purpose: Read content that depends on an authenticated account.
+    commands:
+    - article
+    - hot
+    - user
+commands:
+  article:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  hot:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  search:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  user:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''

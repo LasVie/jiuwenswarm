@@ -1,0 +1,65 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: steam
+display_name: Steam
+domains:
+- store.steampowered.com
+aliases: []
+terminal: site
+review:
+  status: generated
+  owner: agent-a
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  public-data:
+    purpose: Read low-risk public data without browser state.
+    commands:
+    - app
+    - search
+    - top-sellers
+commands:
+  app:
+    operation: public-data
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: public-data
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  top-sellers:
+    operation: public-data
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''

@@ -45,7 +45,7 @@ Do not execute an OpenCLI adapter command from this router alone.
 | Notes | Read notes, comments, profiles, reactions, notifications, or download media | read | `sites/xiaohongshu/operations/notes.md` |
 | Creator analytics | Read creator profile, aggregate metrics, note metrics, or trends | read | `sites/xiaohongshu/operations/creator-analytics.md` |
 | Drafts | List, inspect, delete, or clear local drafts | read/write | `sites/xiaohongshu/operations/drafts.md` |
-| Publishing | Create an image/text draft or publish a post | write | `sites/xiaohongshu/operations/publishing.md` |
+| Publishing | Create a guarded image/text draft; public publish remains fail-closed until a trusted runtime confirmation receipt is available | write | `sites/xiaohongshu/operations/publishing.md` |
 | Social actions | Follow, unfollow, or delete a published note | write | `sites/xiaohongshu/operations/social-actions.md` |
 
 If no row exactly matches both the requested capability and intended side

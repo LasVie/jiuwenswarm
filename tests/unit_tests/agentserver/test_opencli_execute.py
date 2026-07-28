@@ -20,7 +20,7 @@ from jiuwenswarm.agents.harness.common.opencli import (
     OpenCLIExecuteTool,
 )
 from jiuwenswarm.agents.harness.common.opencli.contracts import (
-    load_operation_contract,
+    load_terminal_contract,
 )
 from jiuwenswarm.agents.harness.common.opencli.executor import OpenCLIExecutor
 
@@ -65,9 +65,7 @@ async def _disclose(
                 tool_result=ToolOutput(
                     success=result_success,
                     data={
-                        "skill_directory": str(
-                            skill_directory or installed_skill
-                        ),
+                        "skill_directory": str(skill_directory or installed_skill),
                         "skill_content": content,
                     },
                 ),
@@ -92,7 +90,14 @@ def _tool(
         receipt_store=store,
         language="en",
         agent_id="main-agent",
-        executor=OpenCLIExecutor(process_runner=process_runner),
+        executor=OpenCLIExecutor(
+            process_runner=process_runner,
+            launcher_resolver=lambda: [
+                "C:/trusted/node.exe",
+                "C:/trusted/opencli/main.js",
+            ],
+            launcher_version_probe=lambda _argv: "1.8.6",
+        ),
     )
 
 
@@ -105,6 +110,22 @@ def _inputs(payload_path: Path) -> dict[str, str]:
     }
 
 
+def _write_draft_payload(workspace: Path) -> Path:
+    payload_path = workspace / "payload.json"
+    payload_path.write_text(
+        json.dumps(
+            {
+                "title": "draft",
+                "content": "reviewed body",
+                "card_text": "reviewed card",
+                "mode": "draft",
+            }
+        ),
+        encoding="utf-8",
+    )
+    return payload_path
+
+
 @pytest.mark.asyncio
 async def test_opencli_execute_requires_exact_disclosure_and_consumes_it_once(
     tmp_path: Path,
@@ -112,12 +133,23 @@ async def test_opencli_execute_requires_exact_disclosure_and_consumes_it_once(
     skills_root, installed_skill = _install_skill(tmp_path)
     workspace = tmp_path / "workspace"
     workspace.mkdir()
-    payload_path = workspace / "payload.json"
-    payload_path.write_text('{"title":"draft"}', encoding="utf-8")
+    payload_path = _write_draft_payload(workspace)
     calls: list[list[str]] = []
+    staged_payload_paths: list[Path] = []
 
     def _runner(argv, **kwargs):
         calls.append(list(argv))
+        staged_payload = Path(argv[6])
+        staged_payload_paths.append(staged_payload)
+        assert staged_payload != payload_path
+        assert staged_payload.is_file()
+        assert json.loads(staged_payload.read_text(encoding="utf-8")) == {
+            "card_text": "reviewed card",
+            "content": "reviewed body",
+            "mode": "draft",
+            "title": "draft",
+            "topics": [],
+        }
         assert kwargs["shell"] is False
         return subprocess.CompletedProcess(
             argv,
@@ -163,11 +195,18 @@ async def test_opencli_execute_requires_exact_disclosure_and_consumes_it_once(
     assert completed.data["command"] == "publish"
     assert completed.data["attempted"] is True
     assert len(calls) == 1
-    assert calls[0][1] == "-E"
-    assert calls[0][-2:] == ["--payload", str(payload_path)]
-    assert Path(calls[0][2]).as_posix().endswith(
-        "sites/xiaohongshu/scripts/publish.py"
+    assert calls[0][1:4] == ["-E", "-I", "-m"]
+    assert calls[0][4] == (
+        "jiuwenswarm.agents.harness.common.opencli.executors.xiaohongshu_publish"
     )
+    assert calls[0][5:] == [
+        "--payload",
+        str(staged_payload_paths[0]),
+        "--expected-opencli-version",
+        "1.8.6",
+    ]
+    assert not staged_payload_paths[0].exists()
+    assert str(installed_skill) not in " ".join(calls[0])
 
     replay = await tool.invoke(_inputs(payload_path))
     assert replay.success is False
@@ -182,8 +221,7 @@ async def test_disclosure_is_scope_bound_and_rejects_non_skill_results(
     skills_root, installed_skill = _install_skill(tmp_path)
     workspace = tmp_path / "workspace"
     workspace.mkdir()
-    payload_path = workspace / "payload.json"
-    payload_path.write_text("{}", encoding="utf-8")
+    payload_path = _write_draft_payload(workspace)
 
     def _unexpected_runner(*args, **kwargs):
         raise AssertionError("executor must not run")
@@ -227,8 +265,7 @@ async def test_disclosure_accepts_declared_member_skill_copy(
     skills_root, installed_skill = _install_skill(tmp_path)
     workspace = tmp_path / "workspace"
     workspace.mkdir()
-    payload_path = workspace / "payload.json"
-    payload_path.write_text("{}", encoding="utf-8")
+    payload_path = _write_draft_payload(workspace)
     member_skill_copy = tmp_path / "member" / "skills" / "opencli-web"
     shutil.copytree(installed_skill, member_skill_copy)
     calls: list[list[str]] = []
@@ -238,7 +275,10 @@ async def test_disclosure_accepts_declared_member_skill_copy(
         return subprocess.CompletedProcess(
             argv,
             0,
-            stdout='{"ok":true,"attempted":true,"fallback_allowed":false}',
+            stdout=(
+                '{"ok":true,"mode":"draft","attempted":true,'
+                '"fallback_allowed":false,"result":{}}'
+            ),
             stderr="",
         )
 
@@ -286,7 +326,10 @@ async def test_opencli_execute_rejects_changed_contract_and_outside_payload(
         return subprocess.CompletedProcess(
             args[0],
             0,
-            stdout='{"ok":true,"attempted":true,"fallback_allowed":false}',
+            stdout=(
+                '{"ok":true,"mode":"draft","attempted":true,'
+                '"fallback_allowed":false,"result":{}}'
+            ),
             stderr="",
         )
 
@@ -316,19 +359,19 @@ async def test_opencli_execute_rejects_changed_contract_and_outside_payload(
         encoding="utf-8",
     )
     changed = await tool.invoke(_inputs(inside_payload))
-    assert changed.data["error"]["code"] == "opencli_disclosure_changed"
+    assert changed.data["error"]["code"] == "opencli_contract_hash_mismatch"
+    assert changed.data["fallback_allowed"] is False
     assert calls == []
 
 
 @pytest.mark.asyncio
-async def test_opencli_execute_preserves_guarded_failure_classification(
+async def test_opencli_execute_normalizes_started_process_failure_classification(
     tmp_path: Path,
 ) -> None:
     skills_root, installed_skill = _install_skill(tmp_path)
     workspace = tmp_path / "workspace"
     workspace.mkdir()
-    payload_path = workspace / "payload.json"
-    payload_path.write_text("{}", encoding="utf-8")
+    payload_path = _write_draft_payload(workspace)
 
     def _runner(argv, **kwargs):
         return subprocess.CompletedProcess(
@@ -368,9 +411,60 @@ async def test_opencli_execute_preserves_guarded_failure_classification(
     result = await tool.invoke(_inputs(payload_path))
 
     assert result.success is False
-    assert result.data["attempted"] is False
-    assert result.data["fallback_allowed"] is True
+    assert result.data["attempted"] is True
+    assert result.data["fallback_allowed"] is False
     assert result.data["error"]["code"] == "opencli_browser_unavailable"
+
+
+@pytest.mark.asyncio
+async def test_opencli_execute_rejects_model_supplied_publish_confirmation(
+    tmp_path: Path,
+) -> None:
+    skills_root, installed_skill = _install_skill(tmp_path)
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    payload_path = workspace / "payload.json"
+    payload_path.write_text(
+        json.dumps(
+            {
+                "title": "publish",
+                "content": "public body",
+                "card_text": "public card",
+                "mode": "publish",
+                "confirmation": {
+                    "action": "social_post_confirm",
+                    "id": "model-can-invent-this",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    def _unexpected_runner(*args, **kwargs):
+        raise AssertionError("untrusted publish confirmation must not execute")
+
+    store = DisclosureReceiptStore()
+    scope = "main"
+    rail = OpenCLIDisclosureRail(
+        scope=scope,
+        skills_root=skills_root,
+        receipt_store=store,
+    )
+    tool = _tool(
+        scope=scope,
+        skills_root=skills_root,
+        workspace=workspace,
+        store=store,
+        process_runner=_unexpected_runner,
+    )
+    await _disclose(rail, installed_skill)
+
+    result = await tool.invoke(_inputs(payload_path))
+
+    assert result.success is False
+    assert result.data["attempted"] is False
+    assert result.data["fallback_allowed"] is False
+    assert result.data["error"]["code"] == "opencli_confirmation_untrusted"
 
 
 @pytest.mark.asyncio
@@ -392,16 +486,26 @@ async def test_executor_cancellation_does_not_orphan_guarded_process(
         return subprocess.CompletedProcess(
             argv,
             0,
-            stdout='{"ok":true,"attempted":true,"fallback_allowed":false}',
+            stdout=(
+                '{"ok":true,"mode":"draft","attempted":true,'
+                '"fallback_allowed":false,"result":{}}'
+            ),
             stderr="",
         )
 
-    contract = load_operation_contract(
+    contract = load_terminal_contract(
         skills_root,
         "xiaohongshu",
         "publishing",
     ).command_contract("publish")
-    executor = OpenCLIExecutor(process_runner=_runner)
+    executor = OpenCLIExecutor(
+        process_runner=_runner,
+        launcher_resolver=lambda: [
+            "C:/trusted/node.exe",
+            "C:/trusted/opencli/main.js",
+        ],
+        launcher_version_probe=lambda _argv: "1.8.6",
+    )
     task = asyncio.create_task(
         executor.execute(
             contract,

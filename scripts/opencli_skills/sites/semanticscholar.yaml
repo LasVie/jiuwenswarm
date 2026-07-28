@@ -1,0 +1,84 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: semanticscholar
+display_name: Semanticscholar
+domains:
+- api.semanticscholar.org
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-c
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - citations
+    - paper
+    - recommendations
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
+commands:
+  citations:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  paper:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  recommendations:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''

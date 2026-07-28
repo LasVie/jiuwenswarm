@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openjiuwen.example/schemas/opencli-site-policy-v1.json",
+  "title": "OpenCLI site policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "catalog_version",
+    "site",
+    "display_name",
+    "domains",
+    "aliases",
+    "terminal",
+    "operations",
+    "commands"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "catalog_version": {
+      "const": "opencli-1.8.6"
+    },
+    "site": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "terminal": {
+      "enum": [
+        "site",
+        "operation"
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "generated",
+            "reviewed",
+            "quarantined"
+          ]
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "operations": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "purpose",
+          "commands"
+        ],
+        "properties": {
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          },
+          "commands": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]*$"
+            }
+          }
+        }
+      }
+    },
+    "commands": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation",
+          "semantic_effect",
+          "risk",
+          "auth",
+          "transport",
+          "execution_state",
+          "executor",
+          "confirmation",
+          "fallback_before",
+          "fallback_after",
+          "file_inputs",
+          "file_outputs",
+          "sensitive_output"
+        ],
+        "properties": {
+          "operation": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "semantic_effect": {
+            "enum": [
+              "public_read",
+              "private_account_read",
+              "private_content_read",
+              "auth_session_change",
+              "local_write",
+              "reversible_remote_write",
+              "public_write",
+              "message_send",
+              "destructive_or_admin",
+              "quota_consumption",
+              "financial_write",
+              "arbitrary_execution"
+            ]
+          },
+          "risk": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "auth": {
+            "enum": [
+              "none",
+              "optional",
+              "required",
+              "interactive"
+            ]
+          },
+          "transport": {
+            "enum": [
+              "public_http",
+              "browser_dom",
+              "browser_cookie",
+              "browser_intercept",
+              "local",
+              "mixed"
+            ]
+          },
+          "execution_state": {
+            "enum": [
+              "enabled",
+              "disabled",
+              "quarantined",
+              "custom"
+            ]
+          },
+          "executor": {
+            "enum": [
+              "generic_manifest_read",
+              "xiaohongshu_guarded_publish",
+              "none"
+            ]
+          },
+          "confirmation": {
+            "enum": [
+              "none",
+              "interactive_user",
+              "structured_receipt",
+              "unsupported"
+            ]
+          },
+          "fallback_before": {
+            "enum": [
+              "browser_agent",
+              "none"
+            ]
+          },
+          "fallback_after": {
+            "enum": [
+              "browser_agent",
+              "none"
+            ]
+          },
+          "file_inputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "file_outputs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "sensitive_output": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "notes": {
+            "type": "string"
+          },
+          "arg_overrides": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

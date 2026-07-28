@@ -1,0 +1,86 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: flomo
+display_name: Flomo
+domains:
+- flomoapp.com
+aliases: []
+terminal: operation
+review:
+  status: reviewed
+  owner: agent-b
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  account:
+    purpose: Read account identity or account-scoped metadata.
+    commands:
+    - whoami
+  authentication:
+    purpose: Open, change, or clear an authenticated browser session.
+    commands:
+    - login
+  memos:
+    purpose: Read private memo content.
+    commands:
+    - memos
+commands:
+  login:
+    operation: authentication
+    semantic_effect: auth_session_change
+    risk: high
+    auth: interactive
+    transport: browser_cookie
+    execution_state: quarantined
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+    arg_overrides:
+      timeout:
+        minimum: 1
+        maximum: 1800
+  memos:
+    operation: memos
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: quarantined
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+    arg_overrides:
+      limit:
+        minimum: 1
+        maximum: 200
+      since:
+        minimum: 0
+      slug:
+        pattern: ^[A-Za-z0-9_-]{1,256}$
+  whoami:
+    operation: account
+    semantic_effect: private_account_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    execution_state: quarantined
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - account identifiers
+    notes: ''

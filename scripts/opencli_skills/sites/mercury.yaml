@@ -1,0 +1,73 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: mercury
+display_name: Mercury
+domains:
+- app.mercury.com
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-b
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  authentication:
+    purpose: Open, change, or clear an authenticated browser session.
+    commands:
+    - check-login
+  financial-actions:
+    purpose: Financial or reimbursement state changes.
+    commands:
+    - reimbursement-draft
+  private-content:
+    purpose: Read content that depends on an authenticated account.
+    commands:
+    - reimbursement-plan
+commands:
+  check-login:
+    operation: authentication
+    semantic_effect: auth_session_change
+    risk: high
+    auth: interactive
+    transport: browser_dom
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  reimbursement-draft:
+    operation: financial-actions
+    semantic_effect: financial_write
+    risk: critical
+    auth: required
+    transport: browser_dom
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  reimbursement-plan:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: local
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''

@@ -1,0 +1,52 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: dockerhub
+display_name: Dockerhub
+domains:
+- hub.docker.com
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-a
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
+  generation:
+    purpose: Generate remote content, start AI work, or consume quota.
+    commands:
+    - image
+commands:
+  image:
+    operation: generation
+    semantic_effect: quota_consumption
+    risk: high
+    auth: none
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''

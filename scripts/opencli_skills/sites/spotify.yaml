@@ -1,0 +1,201 @@
+schema_version: 1
+catalog_version: opencli-1.8.6
+site: spotify
+display_name: Spotify
+domains: []
+aliases: []
+terminal: operation
+review:
+  status: generated
+  owner: agent-a
+  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+operations:
+  authentication:
+    purpose: Open, change, or clear an authenticated browser session.
+    commands:
+    - auth
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - status
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
+  write-actions:
+    purpose: Change remote service state.
+    commands:
+    - next
+    - pause
+    - play
+    - prev
+    - queue
+    - repeat
+    - shuffle
+    - volume
+commands:
+  auth:
+    operation: authentication
+    semantic_effect: auth_session_change
+    risk: high
+    auth: interactive
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  next:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: none
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  pause:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: none
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  play:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: none
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  prev:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: none
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  queue:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: none
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  repeat:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: none
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  shuffle:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: none
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  status:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    execution_state: enabled
+    executor: generic_manifest_read
+    confirmation: none
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  volume:
+    operation: write-actions
+    semantic_effect: reversible_remote_write
+    risk: high
+    auth: none
+    transport: public_http
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''

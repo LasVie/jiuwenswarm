@@ -1,0 +1,110 @@
+---
+opencli_contract:
+  version: 2
+  site: linkedin-learning
+  operation: private-content
+  policy_sha256: 2b89bd68664f9985dce86d7dff3b298deca669023ace2e3cb8d5dff5de2bd8de
+  commands:
+    course:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_content_read
+      risk: medium
+      auth: required
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - help: Course slug (e.g. agentic-ai-build-your-first-agentic-ai-system) or full /learning/<slug> URL
+        name: slug
+        positional: true
+        required: true
+        type: string
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - private content
+      - account identifiers
+    search:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_content_read
+      risk: medium
+      auth: required
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - help: Search keywords, e.g. "AI agent"
+        name: keywords
+        positional: true
+        required: true
+        type: string
+      - default: 10
+        help: Maximum results to return (1-50)
+        name: limit
+        required: false
+        type: int
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - private content
+      - account identifiers
+    trending:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_content_read
+      risk: medium
+      auth: required
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - default: 10
+        help: Maximum results to return (1-50)
+        name: limit
+        required: false
+        type: int
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - private content
+      - account identifiers
+---
+
+# Linkedin Learning: private-content
+
+Read content that depends on an authenticated account.
+
+This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
+
+| Command | State | Effect / risk | Exact structured use | Exact arguments |
+|---|---|---|---|---|
+| `course` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get LinkedIn Learning course detail by slug or course URL | `slug` (string, required, positional) |
+| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search LinkedIn Learning courses, videos, and learning paths by keyword | `keywords` (string, required, positional); `limit` (int, optional, default=10) |
+| `trending` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Browse LinkedIn Learning recommended courses across personalized carousels | `limit` (int, optional, default=10) |
+
+## Safety and fallback
+
+- Unknown commands and arguments are rejected before subprocess start.
+- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
+- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
+- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.
