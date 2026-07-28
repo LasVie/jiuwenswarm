@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: spotify
   operation: authentication
-  policy_sha256: 62c64b7e6dc3d752f97becf1a28ab253285c3de4d29a00f68a36cc9e4ed9fbc5
+  policy_sha256: a79d0b04af7de90a372da7a714ea9f00e6d21d6dac4df21fe39708f531fe47ac
   commands:
     auth:
       executor: none

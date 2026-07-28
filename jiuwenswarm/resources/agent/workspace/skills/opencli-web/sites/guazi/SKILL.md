@@ -6,7 +6,7 @@ description: Route reviewed Guazi website operations through the OpenCLI Web str
 # Guazi
 
 Catalog site slug: `guazi`.
- Known domains: catalog did not declare one.
+ Known domains: `m.guazi.com`.
 
 Read this file only through the main Agent's SkillTool. Do not delegate disclosure to a general-purpose or browser subagent and do not replace it with a filesystem read.
 

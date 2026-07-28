@@ -10,7 +10,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-b
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Three public browser-free read commands are source-audited; remaining authenticated and state-changing commands stay fail-closed pending later review.
 operations:
   analytics:
     purpose: Read aggregate metrics, trends, or rankings.

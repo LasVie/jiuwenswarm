@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: bluesky
   operation: content
-  policy_sha256: 9156890480e9c82d80400e04fe27e4549168860426927b21a2ee0aa5899de883
+  policy_sha256: d3ed06f93ef09c634420e340ee8d5835e2d5f5308a0719468af5195dc46d3e5a
   commands:
     feeds:
       executor: generic_manifest_read

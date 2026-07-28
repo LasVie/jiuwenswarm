@@ -3,14 +3,14 @@ opencli_contract:
   version: 2
   site: jira
   operation: content
-  policy_sha256: 653e752fd0a366bfa17ccb2e5f875ea9bc0d6959e7cae877fcd365eff4fe36da
+  policy_sha256: 691c2064bdb38815255e941dfddf957d1c0d04cf322401252a6f17285f78d7f1
   commands:
     attachments:
-      executor: generic_manifest_read
-      execution_state: enabled
-      semantic_effect: public_read
-      risk: low
-      auth: none
+      executor: none
+      execution_state: quarantined
+      semantic_effect: private_content_read
+      risk: high
+      auth: required
       transport: public_http
       strategy: public
       browser: false
@@ -22,19 +22,22 @@ opencli_contract:
         positional: true
         required: true
         type: str
-      confirmation: none
+      confirmation: unsupported
       fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
+        before_dispatch: none
+        after_failure: none
       file_inputs: []
       file_outputs: []
-      sensitive_output: []
+      sensitive_output:
+      - private issue content
+      - attachment URLs
+      - account identifiers
     comments:
-      executor: generic_manifest_read
-      execution_state: enabled
-      semantic_effect: public_read
-      risk: low
-      auth: none
+      executor: none
+      execution_state: quarantined
+      semantic_effect: private_content_read
+      risk: high
+      auth: required
       transport: public_http
       strategy: public
       browser: false
@@ -51,19 +54,21 @@ opencli_contract:
         name: limit
         required: false
         type: int
-      confirmation: none
+      confirmation: unsupported
       fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
+        before_dispatch: none
+        after_failure: none
       file_inputs: []
       file_outputs: []
-      sensitive_output: []
+      sensitive_output:
+      - private issue comments
+      - account identifiers
     issue:
-      executor: generic_manifest_read
-      execution_state: enabled
-      semantic_effect: public_read
-      risk: low
-      auth: none
+      executor: none
+      execution_state: quarantined
+      semantic_effect: private_content_read
+      risk: high
+      auth: required
       transport: public_http
       strategy: public
       browser: false
@@ -80,19 +85,21 @@ opencli_contract:
         name: comments-limit
         required: false
         type: int
-      confirmation: none
+      confirmation: unsupported
       fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
+        before_dispatch: none
+        after_failure: none
       file_inputs: []
       file_outputs: []
-      sensitive_output: []
+      sensitive_output:
+      - private issue content
+      - account identifiers
     links:
-      executor: generic_manifest_read
-      execution_state: enabled
-      semantic_effect: public_read
-      risk: low
-      auth: none
+      executor: none
+      execution_state: quarantined
+      semantic_effect: private_content_read
+      risk: high
+      auth: required
       transport: public_http
       strategy: public
       browser: false
@@ -104,13 +111,15 @@ opencli_contract:
         positional: true
         required: true
         type: str
-      confirmation: none
+      confirmation: unsupported
       fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
+        before_dispatch: none
+        after_failure: none
       file_inputs: []
       file_outputs: []
-      sensitive_output: []
+      sensitive_output:
+      - private issue links
+      - account identifiers
 ---
 
 # Jira: content
@@ -121,13 +130,14 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `attachments` | `enabled` | `public_read` / `low` | `opencli_execute(site="jira", operation="content", command="attachments", arguments={"key":"<key>"})`<br>Jira issue attachment metadata | `key` (str, required, positional) |
-| `comments` | `enabled` | `public_read` / `low` | `opencli_execute(site="jira", operation="content", command="comments", arguments={"key":"<key>"})`<br>Jira issue comments as Markdown | `key` (str, required, positional); `limit` (int, optional, default=50) |
-| `issue` | `enabled` | `public_read` / `low` | `opencli_execute(site="jira", operation="content", command="issue", arguments={"key":"<key>"})`<br>Jira issue detail normalized for agents (description, comments, attachments, links) | `key` (str, required, positional); `comments-limit` (int, optional, default=100) |
-| `links` | `enabled` | `public_read` / `low` | `opencli_execute(site="jira", operation="content", command="links", arguments={"key":"<key>"})`<br>Jira issue links | `key` (str, required, positional) |
+| `attachments` | `quarantined` | `private_content_read` / `high` | Not executable; use the declared fallback if permitted<br>Jira issue attachment metadata | `key` (str, required, positional) |
+| `comments` | `quarantined` | `private_content_read` / `high` | Not executable; use the declared fallback if permitted<br>Jira issue comments as Markdown | `key` (str, required, positional); `limit` (int, optional, default=50) |
+| `issue` | `quarantined` | `private_content_read` / `high` | Not executable; use the declared fallback if permitted<br>Jira issue detail normalized for agents (description, comments, attachments, links) | `key` (str, required, positional); `comments-limit` (int, optional, default=100) |
+| `links` | `quarantined` | `private_content_read` / `high` | Not executable; use the declared fallback if permitted<br>Jira issue links | `key` (str, required, positional) |
 
 ## Safety and fallback
 
 - Unknown commands and arguments are rejected before subprocess start.
 - Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- These commands are reviewed public reads. A proven pre-dispatch failure and a read failure may use `browser_agent` once; never run both paths concurrently.
+- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
+- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.

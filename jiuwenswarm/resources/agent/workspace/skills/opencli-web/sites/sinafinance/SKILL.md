@@ -6,7 +6,7 @@ description: Route reviewed Sinafinance website operations through the OpenCLI W
 # Sinafinance
 
 Catalog site slug: `sinafinance`.
- Known domains: `app.cj.sina.com.cn`, `finance.sina.cn`, `finance.sina.com.cn/roll`, `suggest3.sinajs.cn,hq.sinajs.cn`.
+ Known domains: `app.cj.sina.com.cn`, `finance.sina.com.cn`, `finance.sina.cn`, `suggest3.sinajs.cn`, `hq.sinajs.cn`.
 
 Read this file only through the main Agent's SkillTool. Do not delegate disclosure to a general-purpose or browser subagent and do not replace it with a filesystem read.
 

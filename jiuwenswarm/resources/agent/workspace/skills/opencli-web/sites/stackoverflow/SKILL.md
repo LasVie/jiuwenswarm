@@ -6,7 +6,7 @@ description: Route reviewed Stackoverflow website operations through the OpenCLI
 # Stackoverflow
 
 Catalog site slug: `stackoverflow`.
- Known domains: `stackoverflow.com`.
+ Known domains: `stackoverflow.com`, `api.stackexchange.com`.
 
 Read this file only through the main Agent's SkillTool. Do not delegate disclosure to a general-purpose or browser subagent and do not replace it with a filesystem read.
 

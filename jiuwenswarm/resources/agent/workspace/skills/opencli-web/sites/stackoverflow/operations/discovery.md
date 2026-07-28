@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: stackoverflow
   operation: discovery
-  policy_sha256: 62868097b184f6f856cb90832f1e2a6d341558af5eb77a281e752d2dfa3696a6
+  policy_sha256: 21be1110280fd8607b89ada856934574e5d2338e2839e92ee9637d931f21b04c
   commands:
     search:
       executor: generic_manifest_read

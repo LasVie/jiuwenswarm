@@ -7,9 +7,9 @@ domains:
 aliases: []
 terminal: site
 review:
-  status: generated
+  status: reviewed
   owner: agent-b
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Source-audited against OpenCLI 1.8.6; all commands are public browser-free reads.
 operations:
   public-data:
     purpose: Read low-risk public data without browser state.

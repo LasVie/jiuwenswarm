@@ -6,7 +6,7 @@ description: Route reviewed Arxiv website operations through the OpenCLI Web str
 # Arxiv
 
 Catalog site slug: `arxiv`.
- Known domains: catalog did not declare one.
+ Known domains: `export.arxiv.org`.
 
 Read this file only through the main Agent's SkillTool. Do not delegate disclosure to a general-purpose or browser subagent and do not replace it with a filesystem read.
 

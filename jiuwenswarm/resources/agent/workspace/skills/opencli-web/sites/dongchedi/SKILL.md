@@ -6,7 +6,7 @@ description: Route reviewed Dongchedi website operations through the OpenCLI Web
 # Dongchedi
 
 Catalog site slug: `dongchedi`.
- Known domains: catalog did not declare one.
+ Known domains: `www.dongchedi.com`.
 
 Read this file only through the main Agent's SkillTool. Do not delegate disclosure to a general-purpose or browser subagent and do not replace it with a filesystem read.
 

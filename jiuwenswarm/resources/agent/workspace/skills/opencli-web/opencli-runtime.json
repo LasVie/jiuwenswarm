@@ -68,12 +68,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "b7f15f19feca7a98b1b695a65d7139aac92e1fa3b74e98b53577a248b8718321",
+          "policy_sha256": "5dfc93ea4051a6111025de8651071c6c8b2e913315a72dd48fa38dd8ea2a1882",
           "purpose": "Read account identity or account-scoped metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/12306/operations/account.md",
-            "sha256": "9eed5be5544dad55d0b6467fa4f1b63f06092186845a7a6a583678394dc5e40b"
+            "sha256": "f1c685f0a66354d3cf78e8e5cf0b14bdb31d4ff552bda6e38c52c338c7630a94"
           }
         },
         "authentication": {
@@ -108,12 +108,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "b7f15f19feca7a98b1b695a65d7139aac92e1fa3b74e98b53577a248b8718321",
+          "policy_sha256": "5dfc93ea4051a6111025de8651071c6c8b2e913315a72dd48fa38dd8ea2a1882",
           "purpose": "Open, change, or clear an authenticated browser session.",
           "terminal": {
             "kind": "operation",
             "path": "sites/12306/operations/authentication.md",
-            "sha256": "03a8ef3b57f7b711053fffad33ba80557fa3ddecdf997c8f29041f3f1561b554"
+            "sha256": "3903f259b80078f317248ac202f7ed6a910061fe28cd63befb83688f4ad11525"
           }
         },
         "content": {
@@ -305,12 +305,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "b7f15f19feca7a98b1b695a65d7139aac92e1fa3b74e98b53577a248b8718321",
+          "policy_sha256": "5dfc93ea4051a6111025de8651071c6c8b2e913315a72dd48fa38dd8ea2a1882",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/12306/operations/content.md",
-            "sha256": "86c92136368cb2d4f447bffd4203308e14ca644ff1c90671b453af676f672154"
+            "sha256": "8a6380b7bd29541fba8487d9e80c8f62aefe136eb53c211b28303c0d11a0e2ff"
           }
         },
         "private-content": {
@@ -387,16 +387,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "b7f15f19feca7a98b1b695a65d7139aac92e1fa3b74e98b53577a248b8718321",
+          "policy_sha256": "5dfc93ea4051a6111025de8651071c6c8b2e913315a72dd48fa38dd8ea2a1882",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/12306/operations/private-content.md",
-            "sha256": "fd0c0f97100dfadc4a81ed342d0085995d217929f94bc680a9536650f56aad97"
+            "sha256": "244647f169095a66e5b9199e6fb97a682a84f432e830ccc7b033661da7b578b3"
           }
         }
       },
-      "policy_sha256": "b7f15f19feca7a98b1b695a65d7139aac92e1fa3b74e98b53577a248b8718321",
+      "policy_sha256": "5dfc93ea4051a6111025de8651071c6c8b2e913315a72dd48fa38dd8ea2a1882",
       "terminal": "operation"
     },
     "1688": {
@@ -704,12 +704,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "942c0bcdbaf16f87f143f1ace46ae94919acf6a5fdcf78690eae9c048a2bb8a9",
+          "policy_sha256": "0dbf244c9dd700c1aecb310892b943018ea6fe2ca7e725c441382de5c8b20b26",
           "purpose": "Read account identity or account-scoped metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/1point3acres/operations/account.md",
-            "sha256": "96480177e413f1edd6202bd260efc386f9d3e55e974b17f06fb2d393cdaa74f6"
+            "sha256": "42c294ab752f7b7dfcdcfc3451804c1974b37a74f5975b45984d69478214b64c"
           }
         },
         "authentication": {
@@ -744,12 +744,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "942c0bcdbaf16f87f143f1ace46ae94919acf6a5fdcf78690eae9c048a2bb8a9",
+          "policy_sha256": "0dbf244c9dd700c1aecb310892b943018ea6fe2ca7e725c441382de5c8b20b26",
           "purpose": "Open, change, or clear an authenticated browser session.",
           "terminal": {
             "kind": "operation",
             "path": "sites/1point3acres/operations/authentication.md",
-            "sha256": "b306e5a0ae8213d72f72ce88647edc362a4a460f8c478a3262b28d47dfc143b0"
+            "sha256": "b3369d973b6fb80b91944d74183eb20a83067a16cec23aa6941854c9f611c16b"
           }
         },
         "content": {
@@ -993,12 +993,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "942c0bcdbaf16f87f143f1ace46ae94919acf6a5fdcf78690eae9c048a2bb8a9",
+          "policy_sha256": "0dbf244c9dd700c1aecb310892b943018ea6fe2ca7e725c441382de5c8b20b26",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/1point3acres/operations/content.md",
-            "sha256": "10f6b6975749daa60e27673fb2c46c23e3f3c82e1f29e9d737aeb78db242ea46"
+            "sha256": "ac219f82e5fe7850abf216cd5804652cd0c4fe44f365a591e3a0473eeecd3c30"
           }
         },
         "private-content": {
@@ -1089,16 +1089,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "942c0bcdbaf16f87f143f1ace46ae94919acf6a5fdcf78690eae9c048a2bb8a9",
+          "policy_sha256": "0dbf244c9dd700c1aecb310892b943018ea6fe2ca7e725c441382de5c8b20b26",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/1point3acres/operations/private-content.md",
-            "sha256": "d18479b1823425134fe425a39ca7c4dc6f90e6c9e5dde2d01c138cbde76a9ed8"
+            "sha256": "7275451666847e6ffb7350cc19f3bdb6840aff5ad480b2e5f23151b9539fb980"
           }
         }
       },
-      "policy_sha256": "942c0bcdbaf16f87f143f1ace46ae94919acf6a5fdcf78690eae9c048a2bb8a9",
+      "policy_sha256": "0dbf244c9dd700c1aecb310892b943018ea6fe2ca7e725c441382de5c8b20b26",
       "terminal": "operation"
     },
     "36kr": {
@@ -1136,12 +1136,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "c2da1381f32c200a7df563c38a42fe7f34f2ba6d492ebff6f896195d1f207c11",
+          "policy_sha256": "2461811e6717b8b43920591acff9a7d6017940d889dc14557c3733a8635e44dd",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/36kr/operations/discovery.md",
-            "sha256": "fb3f118fe82634734870338f415064c08dfb1202329a5a33f7b6e004282d1d74"
+            "sha256": "e4977509defbee6b7b4056e3b21190f4f57aa624ec7280366bcd22dbf3137bcc"
           }
         },
         "private-content": {
@@ -1257,16 +1257,16 @@
               "transport": "browser_dom"
             }
           },
-          "policy_sha256": "c2da1381f32c200a7df563c38a42fe7f34f2ba6d492ebff6f896195d1f207c11",
+          "policy_sha256": "2461811e6717b8b43920591acff9a7d6017940d889dc14557c3733a8635e44dd",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/36kr/operations/private-content.md",
-            "sha256": "452b8b8971d3ac2d5ef2793a3d04add30af46f2632be7ec5a7e36d1b4429e201"
+            "sha256": "7fdae86bba883ad7a5b13a5b7bc640e7ffb6ac1e787c827ec38b9b1600a108d2"
           }
         }
       },
-      "policy_sha256": "c2da1381f32c200a7df563c38a42fe7f34f2ba6d492ebff6f896195d1f207c11",
+      "policy_sha256": "2461811e6717b8b43920591acff9a7d6017940d889dc14557c3733a8635e44dd",
       "terminal": "operation"
     },
     "51job": {
@@ -2029,16 +2029,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "0d4a7143f2a107b18d66316d672ee667eacb9213043c4a50a822730f5b892058",
+          "policy_sha256": "77541ffac70ed5adb7e5b02faae1b29b92cfefd16a5bfcbac054263fa8713ace",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
             "path": "sites/apple-podcasts/SKILL.md",
-            "sha256": "ef0c7653ef618cbfde0c723b9d3a1c3f8edcf18db75f390f3fd9ff2d5ff161f9"
+            "sha256": "6c75e6667c5c9f320bf42d4a3b753a75496fa4ab9fc4bf1fdacce05e567f0299"
           }
         }
       },
-      "policy_sha256": "0d4a7143f2a107b18d66316d672ee667eacb9213043c4a50a822730f5b892058",
+      "policy_sha256": "77541ffac70ed5adb7e5b02faae1b29b92cfefd16a5bfcbac054263fa8713ace",
       "terminal": "site"
     },
     "archive": {
@@ -2159,12 +2159,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "18afb99fbced0891f42c87a63ce8801f7273faea2ad5155151f924e35d3c82fa",
+          "policy_sha256": "f1d3b75584e23215c6623efc6fa3acef8c524be933a547aca5a6ca3623d0273b",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/archive/operations/content.md",
-            "sha256": "d91b7ac363dd28dcd665d2cfc423370370a18012537f97250f366344956216be"
+            "sha256": "88490ba175f8974f6d4f18c7637d05f3fc39ce38b11db8dcc5d357725722e3e1"
           }
         },
         "discovery": {
@@ -2219,16 +2219,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "18afb99fbced0891f42c87a63ce8801f7273faea2ad5155151f924e35d3c82fa",
+          "policy_sha256": "f1d3b75584e23215c6623efc6fa3acef8c524be933a547aca5a6ca3623d0273b",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/archive/operations/discovery.md",
-            "sha256": "5e2f45cdb5fc68515eb663e959cd9628a5ce84e394eb29eee6fb3778e48856fe"
+            "sha256": "89a33f85831f5fb9c210b63aa97d6d5fc8d22dc6a19c7c0f4cb1aeb76677b96d"
           }
         }
       },
-      "policy_sha256": "18afb99fbced0891f42c87a63ce8801f7273faea2ad5155151f924e35d3c82fa",
+      "policy_sha256": "f1d3b75584e23215c6623efc6fa3acef8c524be933a547aca5a6ca3623d0273b",
       "terminal": "operation"
     },
     "arxiv": {
@@ -2338,12 +2338,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "998590eea391c1c50c41701f6bd820cb23ed8f22b8da1b6022beddb16e7240ee",
+          "policy_sha256": "4a3bb43b8bb1be059b85020e071bb03afbd71dfd3f1158bb30f51d0f84853bd2",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/arxiv/operations/content.md",
-            "sha256": "d5b14df4fd05adc8ee1435fc77ac3ef4d55449619a12e3886fb0a6850da06dab"
+            "sha256": "a573a78d68bba4bd416439d010f423b694db67db1c7070a5472c006e1b0cfd88"
           }
         },
         "discovery": {
@@ -2385,16 +2385,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "998590eea391c1c50c41701f6bd820cb23ed8f22b8da1b6022beddb16e7240ee",
+          "policy_sha256": "4a3bb43b8bb1be059b85020e071bb03afbd71dfd3f1158bb30f51d0f84853bd2",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/arxiv/operations/discovery.md",
-            "sha256": "db571753231aedba51d48a4c6dc670f1cc37228afac6d8c00f2f775ce8ac3df8"
+            "sha256": "14c86b1705db34fee65eee1880cefdbaacf9ea7785adcad812edb8e8bffb716a"
           }
         }
       },
-      "policy_sha256": "998590eea391c1c50c41701f6bd820cb23ed8f22b8da1b6022beddb16e7240ee",
+      "policy_sha256": "4a3bb43b8bb1be059b85020e071bb03afbd71dfd3f1158bb30f51d0f84853bd2",
       "terminal": "operation"
     },
     "autohome": {
@@ -2468,16 +2468,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "edaae37e2e4ae3f99b63b4f888bd15ad50ec86fd248a486f50d5cdbff7e754be",
+          "policy_sha256": "f2a8a44802c66253bb666630ac992be640adae27c5ca18fbff283287ac031762",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
             "path": "sites/autohome/SKILL.md",
-            "sha256": "5173ded68e9336d9205addc8614329100f615e3ee709c8df3c8278bc6c79dd36"
+            "sha256": "2d01d2effd53360fcdbaa5319906b3306df04f5e8309f09ae813e11e5d5a224e"
           }
         }
       },
-      "policy_sha256": "edaae37e2e4ae3f99b63b4f888bd15ad50ec86fd248a486f50d5cdbff7e754be",
+      "policy_sha256": "f2a8a44802c66253bb666630ac992be640adae27c5ca18fbff283287ac031762",
       "terminal": "site"
     },
     "baidu-scholar": {
@@ -3057,7 +3057,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "3d281722c20cd4302be9e8079084e19b0505216be39b2ee378ccae4639dd5f75",
+          "policy_sha256": "016500f2d79257a055c7c24528019c63c3a857a3604d3d516fd9eef6b2443469",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -3066,7 +3066,7 @@
           }
         }
       },
-      "policy_sha256": "3d281722c20cd4302be9e8079084e19b0505216be39b2ee378ccae4639dd5f75",
+      "policy_sha256": "016500f2d79257a055c7c24528019c63c3a857a3604d3d516fd9eef6b2443469",
       "terminal": "site"
     },
     "bilibili": {
@@ -4318,16 +4318,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "5813f5a52e4324ca563017b25e3b39b34927bc41cf827e19e5dc145b1171da23",
+          "policy_sha256": "d169c2ab4b9953db200277e543c5a9660f8fb7c062fed5137251583b3691f8a7",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/binance/operations/content.md",
-            "sha256": "ed5c1a71be92b1d2f9a6e5786a2f3277adc845686e581e615f1d71ef1ea87319"
+            "sha256": "9775911652bd460363da523d00f797bb17b48de81efa842269b86112f022e25d"
           }
         }
       },
-      "policy_sha256": "5813f5a52e4324ca563017b25e3b39b34927bc41cf827e19e5dc145b1171da23",
+      "policy_sha256": "d169c2ab4b9953db200277e543c5a9660f8fb7c062fed5137251583b3691f8a7",
       "terminal": "operation"
     },
     "bloomberg": {
@@ -4647,12 +4647,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "502b8834b5707df9b7561f53afc4c4f042e317b53f0a111cc5d20ff3d295d80c",
+          "policy_sha256": "4416a4e77af30c2a17d3ab5b785dae8f9cbdd590794e7274147a1f8d226b0ec9",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/bloomberg/operations/content.md",
-            "sha256": "9cb2c653d69b5dcdd11205ad664cbacf9d9c4557f5598dd1208971ea49231a42"
+            "sha256": "c9c0e709754ce89f5dc404f3a1abcea42da564db30c6b27e778806380074d979"
           }
         },
         "private-content": {
@@ -4722,16 +4722,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "502b8834b5707df9b7561f53afc4c4f042e317b53f0a111cc5d20ff3d295d80c",
+          "policy_sha256": "4416a4e77af30c2a17d3ab5b785dae8f9cbdd590794e7274147a1f8d226b0ec9",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/bloomberg/operations/private-content.md",
-            "sha256": "d992a52fcfcb7ff35daaa884229fdf85ee2de202605dc2c044640b7def74b9a7"
+            "sha256": "1ba6912c5706aa8cdcdaf4b1470d27ac964a815495053ebc607b556574b60bc8"
           }
         }
       },
-      "policy_sha256": "502b8834b5707df9b7561f53afc4c4f042e317b53f0a111cc5d20ff3d295d80c",
+      "policy_sha256": "4416a4e77af30c2a17d3ab5b785dae8f9cbdd590794e7274147a1f8d226b0ec9",
       "terminal": "operation"
     },
     "bluesky": {
@@ -4769,12 +4769,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "9156890480e9c82d80400e04fe27e4549168860426927b21a2ee0aa5899de883",
+          "policy_sha256": "d3ed06f93ef09c634420e340ee8d5835e2d5f5308a0719468af5195dc46d3e5a",
           "purpose": "Read account identity or account-scoped metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/bluesky/operations/account.md",
-            "sha256": "0d3c6d07719cc34af950e808d44c5d0fe3d9cff2aa52d1c843c7147af8ed4bb1"
+            "sha256": "5d1900576e3414896ff3af428b49732d38d6b6dd83450659a0e3ba5c93c15c47"
           }
         },
         "content": {
@@ -4989,12 +4989,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "9156890480e9c82d80400e04fe27e4549168860426927b21a2ee0aa5899de883",
+          "policy_sha256": "d3ed06f93ef09c634420e340ee8d5835e2d5f5308a0719468af5195dc46d3e5a",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/bluesky/operations/content.md",
-            "sha256": "3e275144c4b9b8262c58c2e5f042c3631fbeb7caf1eea9d199ac72223e37a807"
+            "sha256": "a368a5fc6f253403217839413e0a4b4e6493bcf4c63724cb1089ba90155e12d8"
           }
         },
         "discovery": {
@@ -5065,16 +5065,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "9156890480e9c82d80400e04fe27e4549168860426927b21a2ee0aa5899de883",
+          "policy_sha256": "d3ed06f93ef09c634420e340ee8d5835e2d5f5308a0719468af5195dc46d3e5a",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/bluesky/operations/discovery.md",
-            "sha256": "188e08f9ff32cf3c2c8bb483969443f36f11cb7bbfe39ca585e59166b63ee5e2"
+            "sha256": "5a7d61cb857fbf08281b8c7f78e6e78859d120b4b36a5b258cf0efceb381b1b0"
           }
         }
       },
-      "policy_sha256": "9156890480e9c82d80400e04fe27e4549168860426927b21a2ee0aa5899de883",
+      "policy_sha256": "d3ed06f93ef09c634420e340ee8d5835e2d5f5308a0719468af5195dc46d3e5a",
       "terminal": "operation"
     },
     "booking": {
@@ -6882,12 +6882,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "ea4fc92f0f9a8fd8e7ff2558b84a15eae5d210472e5acf01231c78358b5e0497",
+          "policy_sha256": "e8c3b37662ff4dd4a650f22484e05b9ecf10da13cf7767fea80c0fbe56ebb631",
           "purpose": "Read aggregate metrics, trends, or rankings.",
           "terminal": {
             "kind": "operation",
             "path": "sites/chess/operations/analytics.md",
-            "sha256": "cc2c1df7d94648d02e2cef099181ef8de04bd503150a667f0cbd122e549d4545"
+            "sha256": "d37e3c05fbc7ced8bd351401ca84d81b880a8d08505cc011a2dfa0b7350c131a"
           }
         },
         "content": {
@@ -6958,12 +6958,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "ea4fc92f0f9a8fd8e7ff2558b84a15eae5d210472e5acf01231c78358b5e0497",
+          "policy_sha256": "e8c3b37662ff4dd4a650f22484e05b9ecf10da13cf7767fea80c0fbe56ebb631",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/chess/operations/content.md",
-            "sha256": "512a97685230852b238e962e202f530ed4a061e67d87b3c5536026fc81c51abb"
+            "sha256": "0ef1636467e11af37f1988bde103987d0df5ada5f73db81b926c784c92924dc1"
           }
         },
         "private-content": {
@@ -7001,16 +7001,16 @@
               "transport": "browser_dom"
             }
           },
-          "policy_sha256": "ea4fc92f0f9a8fd8e7ff2558b84a15eae5d210472e5acf01231c78358b5e0497",
+          "policy_sha256": "e8c3b37662ff4dd4a650f22484e05b9ecf10da13cf7767fea80c0fbe56ebb631",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/chess/operations/private-content.md",
-            "sha256": "ef52fefe012d0b6abf84529f389c11c153add6fb520ed6ae641d3248a5140f7e"
+            "sha256": "8a49a0890851d4969659162b5a5ac3fe87d2f84c5412175fa4723d7e10c3b327"
           }
         }
       },
-      "policy_sha256": "ea4fc92f0f9a8fd8e7ff2558b84a15eae5d210472e5acf01231c78358b5e0497",
+      "policy_sha256": "e8c3b37662ff4dd4a650f22484e05b9ecf10da13cf7767fea80c0fbe56ebb631",
       "terminal": "operation"
     },
     "claude": {
@@ -7599,12 +7599,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "f4778942878153776522dc91fb5f233a316afb7ce235454f8964849093908e9a",
+          "policy_sha256": "9cef157f641dae49bbcee4919fcffee86a226317729d2987588f33b53769feab",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/coingecko/operations/content.md",
-            "sha256": "3fe2f69e460e17c548906303df070416555139fdea49344c258802c9836d6f69"
+            "sha256": "1a50c3e27384bc3bf1a7fbe3d5acc6435f00b7dd3f66c657f9ad98e11ba857a6"
           }
         },
         "discovery": {
@@ -7667,22 +7667,22 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "f4778942878153776522dc91fb5f233a316afb7ce235454f8964849093908e9a",
+          "policy_sha256": "9cef157f641dae49bbcee4919fcffee86a226317729d2987588f33b53769feab",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/coingecko/operations/discovery.md",
-            "sha256": "1748df37aefaba1143e2c1ab47fa723c183e325c5e4e7c3b1c4c33edb6da0d9a"
+            "sha256": "20537694fa62f19fd8bae190b86bbefc7d55934c5d1a27abc1f6a42ff2a3f722"
           }
         }
       },
-      "policy_sha256": "f4778942878153776522dc91fb5f233a316afb7ce235454f8964849093908e9a",
+      "policy_sha256": "9cef157f641dae49bbcee4919fcffee86a226317729d2987588f33b53769feab",
       "terminal": "operation"
     },
     "confluence": {
       "display_name": "Confluence",
       "operations": {
-        "content": {
+        "private-content": {
           "commands": {
             "page": {
               "access": "read",
@@ -7695,35 +7695,27 @@
                   "type": "str"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
+                "after_failure": "none",
                 "before_dispatch": "browser_agent"
               },
               "file_inputs": [],
               "file_outputs": [],
               "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
+              "risk": "medium",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private content",
+                "account identifiers"
+              ],
               "strategy": "public",
               "transport": "public_http"
-            }
-          },
-          "policy_sha256": "9e165c669a07b0bc222b8320a76389adf0ede9f619479faf88104cd50a896a3e",
-          "purpose": "Read site content and metadata.",
-          "terminal": {
-            "kind": "operation",
-            "path": "sites/confluence/operations/content.md",
-            "sha256": "5c041cc02caeec0515baadbfac3d0d5f8b1bf02ff2752e5266f8d345dc7d7150"
-          }
-        },
-        "discovery": {
-          "commands": {
+            },
             "search": {
               "access": "read",
               "args": [
@@ -7748,31 +7740,34 @@
                   "type": "int"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
+                "after_failure": "none",
                 "before_dispatch": "browser_agent"
               },
               "file_inputs": [],
               "file_outputs": [],
               "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
+              "risk": "medium",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private content",
+                "account identifiers"
+              ],
               "strategy": "public",
               "transport": "public_http"
             }
           },
-          "policy_sha256": "9e165c669a07b0bc222b8320a76389adf0ede9f619479faf88104cd50a896a3e",
-          "purpose": "Search, browse, recommend, or discover site content.",
+          "policy_sha256": "b9d94b9679e2cc633e7c3e0e02eac2b58c19969417fa5a4f37931d8b06fc5eaf",
+          "purpose": "Read credential-gated content from a configured Confluence tenant.",
           "terminal": {
             "kind": "operation",
-            "path": "sites/confluence/operations/discovery.md",
-            "sha256": "d9af5ad1e263f7b63e96ec6b68f346116551f353b6e55da1c6b26d03ca204153"
+            "path": "sites/confluence/operations/private-content.md",
+            "sha256": "9e641810b1fe918cee6c1362e372c3fb594e89ae3c9c9874668eca57a5bc9c09"
           }
         },
         "publishing": {
@@ -7909,16 +7904,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "9e165c669a07b0bc222b8320a76389adf0ede9f619479faf88104cd50a896a3e",
+          "policy_sha256": "b9d94b9679e2cc633e7c3e0e02eac2b58c19969417fa5a4f37931d8b06fc5eaf",
           "purpose": "Publish, create, edit, or upload remote content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/confluence/operations/publishing.md",
-            "sha256": "fc8ad1349316c713ff8fcc467d99e6b089cd1ecadb5645e78c2085507b684318"
+            "sha256": "4d880dda74549c1a4004138cc62df0341c681011c8368d4b6ef7ddf14e6e0009"
           }
         }
       },
-      "policy_sha256": "9e165c669a07b0bc222b8320a76389adf0ede9f619479faf88104cd50a896a3e",
+      "policy_sha256": "b9d94b9679e2cc633e7c3e0e02eac2b58c19969417fa5a4f37931d8b06fc5eaf",
       "terminal": "operation"
     },
     "coupang": {
@@ -8220,7 +8215,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "cd90aeffa11ee85f824c9c602640d8420e49a78e49ec4dac59a3de4e15174254",
+          "policy_sha256": "1ab363d43e6b2f80d90d26a41e3b6415105bc797670612527ad459722ea3f393",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -8229,7 +8224,7 @@
           }
         }
       },
-      "policy_sha256": "cd90aeffa11ee85f824c9c602640d8420e49a78e49ec4dac59a3de4e15174254",
+      "policy_sha256": "1ab363d43e6b2f80d90d26a41e3b6415105bc797670612527ad459722ea3f393",
       "terminal": "site"
     },
     "ctrip": {
@@ -8261,12 +8256,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "517de5bbe15162617396965152bf30e86782e78163f42554f80abcde4fe1acbc",
+          "policy_sha256": "236d164805e5a6a6ff1123aad7a3fc95667019ab0cc375221cad7523b743d6cb",
           "purpose": "Read account identity or account-scoped metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/ctrip/operations/account.md",
-            "sha256": "710fa6778d085eb52d5d6144a772f6d50402e4f1df758d225518f3217a1379a6"
+            "sha256": "abbe7319688cd6fe546e199bb735454501ebe83dce03429c52f05db8d47c839d"
           }
         },
         "authentication": {
@@ -8301,12 +8296,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "517de5bbe15162617396965152bf30e86782e78163f42554f80abcde4fe1acbc",
+          "policy_sha256": "236d164805e5a6a6ff1123aad7a3fc95667019ab0cc375221cad7523b743d6cb",
           "purpose": "Open, change, or clear an authenticated browser session.",
           "terminal": {
             "kind": "operation",
             "path": "sites/ctrip/operations/authentication.md",
-            "sha256": "9edd13c54862eb2cbafeb627056588823ac638a412477c11659d2bdc1d29adba"
+            "sha256": "918331929ca6c40345839b291d1dff6427eff92d3ff8670b4e531f72fe71f548"
           }
         },
         "discovery": {
@@ -8384,12 +8379,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "517de5bbe15162617396965152bf30e86782e78163f42554f80abcde4fe1acbc",
+          "policy_sha256": "236d164805e5a6a6ff1123aad7a3fc95667019ab0cc375221cad7523b743d6cb",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/ctrip/operations/discovery.md",
-            "sha256": "9585606353bee75fa3076f4666071767f683119368572bac34fa270477e95b12"
+            "sha256": "60f51030c9fb54a9a5024516aaa3c6f9fb36b5f7822828afb50910f3713b7753"
           }
         },
         "private-content": {
@@ -8498,16 +8493,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "517de5bbe15162617396965152bf30e86782e78163f42554f80abcde4fe1acbc",
+          "policy_sha256": "236d164805e5a6a6ff1123aad7a3fc95667019ab0cc375221cad7523b743d6cb",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/ctrip/operations/private-content.md",
-            "sha256": "6f5540cc177eaf590f23f0401e81997e049da51a71eef5d0a92454f9000a9b05"
+            "sha256": "a082d585a60877e624047b1e99821d9962ce608a344324475668ae56136acd7a"
           }
         }
       },
-      "policy_sha256": "517de5bbe15162617396965152bf30e86782e78163f42554f80abcde4fe1acbc",
+      "policy_sha256": "236d164805e5a6a6ff1123aad7a3fc95667019ab0cc375221cad7523b743d6cb",
       "terminal": "operation"
     },
     "dblp": {
@@ -8623,12 +8618,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "55d63ee00b219be20681378d7fb15288353ba81056caf2b1e42c9fca47c03978",
+          "policy_sha256": "b41124883ffbbbf139ff22127f8956daac462aeab73818a9fac6a6a0cf2ead40",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/dblp/operations/content.md",
-            "sha256": "68ba99835bf8db64143a1f601b07a34101f319201b5edb5e35dfe8fa93502ea9"
+            "sha256": "67b2dbe117fb94e8900499f4603493d07d2da0bdac496dd3bb07702e756410c7"
           }
         },
         "discovery": {
@@ -8670,16 +8665,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "55d63ee00b219be20681378d7fb15288353ba81056caf2b1e42c9fca47c03978",
+          "policy_sha256": "b41124883ffbbbf139ff22127f8956daac462aeab73818a9fac6a6a0cf2ead40",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/dblp/operations/discovery.md",
-            "sha256": "731bb86894b47b89ed18b6fe47a573f304239bff6ababfb0573572d1567c9971"
+            "sha256": "98ecd68ffea90344a3dc993c33337923b354c2d64d7f4c926db6cf0bc8c1ddf2"
           }
         }
       },
-      "policy_sha256": "55d63ee00b219be20681378d7fb15288353ba81056caf2b1e42c9fca47c03978",
+      "policy_sha256": "b41124883ffbbbf139ff22127f8956daac462aeab73818a9fac6a6a0cf2ead40",
       "terminal": "operation"
     },
     "deepseek": {
@@ -9111,7 +9106,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "ce8a0efb339f5e96119e2f4344ec0be54d1420b8abb20832ce3703cf41d369b9",
+          "policy_sha256": "eda846ddd774be6b880348989412956298c9dcbaa6c706b5584c76ac94a1f85e",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -9120,7 +9115,7 @@
           }
         }
       },
-      "policy_sha256": "ce8a0efb339f5e96119e2f4344ec0be54d1420b8abb20832ce3703cf41d369b9",
+      "policy_sha256": "eda846ddd774be6b880348989412956298c9dcbaa6c706b5584c76ac94a1f85e",
       "terminal": "site"
     },
     "devto": {
@@ -9302,16 +9297,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "8a2bb24957170eddc6c5d7eb8c38314767fb84adc70c1eea3ab934af68e8cb28",
+          "policy_sha256": "ed727f40f9cfdf35572dcd0e1d918072a1c4d040ffd8c59c2edc23928ae0c580",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/devto/operations/content.md",
-            "sha256": "8ec5df489f09cd723391d6d1c619cd01f51b0b5b96b239932bb3739c35e0335b"
+            "sha256": "40612d6ce0c8cd1352ab9b195ab0598e761606645b531a58bdcd7e6466c20f5e"
           }
         }
       },
-      "policy_sha256": "8a2bb24957170eddc6c5d7eb8c38314767fb84adc70c1eea3ab934af68e8cb28",
+      "policy_sha256": "ed727f40f9cfdf35572dcd0e1d918072a1c4d040ffd8c59c2edc23928ae0c580",
       "terminal": "operation"
     },
     "dianping": {
@@ -9576,7 +9571,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "17b79eb60a38981a7a076b6e45c5734c32fe3cf3a561e151dcd08213d72d5173",
+          "policy_sha256": "11966e9be3eeb767ca266283226be83e4899536ad36ceb6729eb2b0f4a2346fd",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -9585,12 +9580,52 @@
           }
         }
       },
-      "policy_sha256": "17b79eb60a38981a7a076b6e45c5734c32fe3cf3a561e151dcd08213d72d5173",
+      "policy_sha256": "11966e9be3eeb767ca266283226be83e4899536ad36ceb6729eb2b0f4a2346fd",
       "terminal": "site"
     },
     "dockerhub": {
       "display_name": "Dockerhub",
       "operations": {
+        "content": {
+          "commands": {
+            "image": {
+              "access": "read",
+              "args": [
+                {
+                  "help": "Image name (e.g. \"nginx\", \"library/nginx\", \"bitnami/redis\")",
+                  "name": "image",
+                  "positional": true,
+                  "required": true,
+                  "type": "str"
+                }
+              ],
+              "auth": "none",
+              "browser": false,
+              "confirmation": "none",
+              "execution_state": "enabled",
+              "executor": "generic_manifest_read",
+              "fallback": {
+                "after_failure": "browser_agent",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [],
+              "file_outputs": [],
+              "opencli_version": "1.8.6",
+              "risk": "low",
+              "semantic_effect": "public_read",
+              "sensitive_output": [],
+              "strategy": "public",
+              "transport": "public_http"
+            }
+          },
+          "policy_sha256": "38bfbe736ebb3e8db159d38435a0576801a39d531ced8bddb6f0367ebc17e1e4",
+          "purpose": "Read site content and metadata.",
+          "terminal": {
+            "kind": "operation",
+            "path": "sites/dockerhub/operations/content.md",
+            "sha256": "2e6f34366f5f1bd02bf40ad7bb2343b251a74d91bb9ad77c7ce41b099382d8ca"
+          }
+        },
         "discovery": {
           "commands": {
             "search": {
@@ -9630,56 +9665,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "5419955245424527c58a623654566ed71841248fcc1472478bbd7a01c1370e48",
+          "policy_sha256": "38bfbe736ebb3e8db159d38435a0576801a39d531ced8bddb6f0367ebc17e1e4",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/dockerhub/operations/discovery.md",
-            "sha256": "268450f04030ab4e91978939577c67bbf5b55c3e1bc4e9647e16d2a6dfdff072"
-          }
-        },
-        "generation": {
-          "commands": {
-            "image": {
-              "access": "read",
-              "args": [
-                {
-                  "help": "Image name (e.g. \"nginx\", \"library/nginx\", \"bitnami/redis\")",
-                  "name": "image",
-                  "positional": true,
-                  "required": true,
-                  "type": "str"
-                }
-              ],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "unsupported",
-              "execution_state": "disabled",
-              "executor": "none",
-              "fallback": {
-                "after_failure": "none",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "high",
-              "semantic_effect": "quota_consumption",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            }
-          },
-          "policy_sha256": "5419955245424527c58a623654566ed71841248fcc1472478bbd7a01c1370e48",
-          "purpose": "Generate remote content, start AI work, or consume quota.",
-          "terminal": {
-            "kind": "operation",
-            "path": "sites/dockerhub/operations/generation.md",
-            "sha256": "bb0148dfbbba749316188b99059f844afe2d76e424552630d269975429418e1d"
+            "sha256": "6c22340d1fada6026e9081f321fbe9ba7b27c66a8582f50638cec26d234a5473"
           }
         }
       },
-      "policy_sha256": "5419955245424527c58a623654566ed71841248fcc1472478bbd7a01c1370e48",
+      "policy_sha256": "38bfbe736ebb3e8db159d38435a0576801a39d531ced8bddb6f0367ebc17e1e4",
       "terminal": "operation"
     },
     "dongchedi": {
@@ -9847,12 +9842,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "c6db486f5a7e9e3baa554645dbe4967de8b7363c43837b609a909d4b22065a71",
+          "policy_sha256": "81b44f0c505ccc9d41660c415d3a83222ce5dd08f1ea02b857477541bd9b1328",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/dongchedi/operations/content.md",
-            "sha256": "abe86b67b203a99a4eeb343dbc52500b2a3a07ae04fedb00f36628be0d5177ce"
+            "sha256": "a37a53a6991aadc747b98e0745c62b1080d34ea89ce3a0daaa22e8ee88d4c46f"
           }
         },
         "discovery": {
@@ -9894,16 +9889,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "c6db486f5a7e9e3baa554645dbe4967de8b7363c43837b609a909d4b22065a71",
+          "policy_sha256": "81b44f0c505ccc9d41660c415d3a83222ce5dd08f1ea02b857477541bd9b1328",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/dongchedi/operations/discovery.md",
-            "sha256": "77fa605157a4b70e538a946d39da8533a4e483d00152b74c6902ea3d8a3aeaca"
+            "sha256": "4b527a68243e8e6fefcef2b7dcb91606edc603af0cee0d00d8a2f84adea4eab5"
           }
         }
       },
-      "policy_sha256": "c6db486f5a7e9e3baa554645dbe4967de8b7363c43837b609a909d4b22065a71",
+      "policy_sha256": "81b44f0c505ccc9d41660c415d3a83222ce5dd08f1ea02b857477541bd9b1328",
       "terminal": "operation"
     },
     "douban": {
@@ -11610,12 +11605,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "e092074b61e3024749ae3133a3ef3784467d0eb1d8a2a2369e5592aa83597645",
+          "policy_sha256": "727423424b1045e2d3305f3bb03b8d62cad51222c1cf73772ff6f0e07e9a7ab7",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/duckduckgo/operations/discovery.md",
-            "sha256": "568d252ea23db58d7be216043d823b09bc83bb7633ec36a3eab3625c9c5e17ff"
+            "sha256": "3e183b5dbe19ee9c448f3834ffa35fe6ea955b62d953534461240d70d3a18a50"
           }
         },
         "private-content": {
@@ -11679,16 +11674,16 @@
               "transport": "browser_dom"
             }
           },
-          "policy_sha256": "e092074b61e3024749ae3133a3ef3784467d0eb1d8a2a2369e5592aa83597645",
+          "policy_sha256": "727423424b1045e2d3305f3bb03b8d62cad51222c1cf73772ff6f0e07e9a7ab7",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/duckduckgo/operations/private-content.md",
-            "sha256": "786447062da54a2e70dfa424c6e2b89d8a37340ee0eef4f485f2f1c87e2abccd"
+            "sha256": "444311b7e63f2b0f5ed302b73e15829469ff5b8aab89c1473c208953f15560ae"
           }
         }
       },
-      "policy_sha256": "e092074b61e3024749ae3133a3ef3784467d0eb1d8a2a2369e5592aa83597645",
+      "policy_sha256": "727423424b1045e2d3305f3bb03b8d62cad51222c1cf73772ff6f0e07e9a7ab7",
       "terminal": "operation"
     },
     "eastmoney": {
@@ -12186,12 +12181,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "75d77f758f7374a498ee5d839d88b52b941040382893f7c11c38431eaa3c42c0",
+          "policy_sha256": "97696cc63bc8bcf4a9036c32821166b81a08e871ed99fe24658a8d649bcdee43",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/eastmoney/operations/content.md",
-            "sha256": "1cf5bde367b7a2778f11b3386c1141a52a7c711a6b390b426edb3eb7e72f2dbe"
+            "sha256": "11cd0446626c7949b60d825550b663b1362e083ae4159099e3879f3bf4dec186"
           }
         },
         "private-content": {
@@ -12229,16 +12224,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "75d77f758f7374a498ee5d839d88b52b941040382893f7c11c38431eaa3c42c0",
+          "policy_sha256": "97696cc63bc8bcf4a9036c32821166b81a08e871ed99fe24658a8d649bcdee43",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/eastmoney/operations/private-content.md",
-            "sha256": "df54e027ff44876b9711ef079cad0faa4e29e647597d288466dec5d59d65f7bd"
+            "sha256": "ea1ceb0a1b4caabe7d046e4decbfbef819bccac61478cb68c69da2b50b4e7104"
           }
         }
       },
-      "policy_sha256": "75d77f758f7374a498ee5d839d88b52b941040382893f7c11c38431eaa3c42c0",
+      "policy_sha256": "97696cc63bc8bcf4a9036c32821166b81a08e871ed99fe24658a8d649bcdee43",
       "terminal": "operation"
     },
     "endoflife": {
@@ -12276,7 +12271,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "fb56469a531d7d98c30ebb3bd0d44613202988bff32d89ca4d2aae8c67d9fb2b",
+          "policy_sha256": "84c0636ec36019094ba3a0eabd05411a3f47f57c6a336131f3d662e95dc4c4e7",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -12285,7 +12280,7 @@
           }
         }
       },
-      "policy_sha256": "fb56469a531d7d98c30ebb3bd0d44613202988bff32d89ca4d2aae8c67d9fb2b",
+      "policy_sha256": "84c0636ec36019094ba3a0eabd05411a3f47f57c6a336131f3d662e95dc4c4e7",
       "terminal": "site"
     },
     "facebook": {
@@ -12846,7 +12841,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "efe366d11a2685e7bd1bc3a20cf56dd2be78e89af29406bffec0f11ab5dd07a0",
+          "policy_sha256": "4c5df30e91518a404174d7fbcfb4f27f942cd8ccd3da22a835d9d617b669b131",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -12855,7 +12850,7 @@
           }
         }
       },
-      "policy_sha256": "efe366d11a2685e7bd1bc3a20cf56dd2be78e89af29406bffec0f11ab5dd07a0",
+      "policy_sha256": "4c5df30e91518a404174d7fbcfb4f27f942cd8ccd3da22a835d9d617b669b131",
       "terminal": "site"
     },
     "flomo": {
@@ -14139,7 +14134,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "07c12393e6b28f759b9923c5bd035c48e11ab768678aad00e4f504efb499475c",
+          "policy_sha256": "1f00a7bafca07c2019c29ea338705213ef709e8563a38863b2e1667c685707a2",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -14148,7 +14143,7 @@
           }
         }
       },
-      "policy_sha256": "07c12393e6b28f759b9923c5bd035c48e11ab768678aad00e4f504efb499475c",
+      "policy_sha256": "1f00a7bafca07c2019c29ea338705213ef709e8563a38863b2e1667c685707a2",
       "terminal": "site"
     },
     "google": {
@@ -14296,12 +14291,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "8f6d8d7c5dcbdbaf36ba4f043555ecb5531cf4b95747dddf11c5558c61705509",
+          "policy_sha256": "fa46ccffc38aca4e255838c717dd023d7184f058e11cb0725d01d86a1c273ce7",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "operation",
             "path": "sites/google/operations/public-data.md",
-            "sha256": "fa13ee5cd544749b04c3a863a2c99036e856ce73ec77cbe4e4a111061a3b9d9d"
+            "sha256": "4df9e5808721ee01822b6f31160f0022595fc69918e44e3f0a61f9672e1104e6"
           }
         },
         "web-search": {
@@ -14357,16 +14352,16 @@
               "transport": "browser_dom"
             }
           },
-          "policy_sha256": "8f6d8d7c5dcbdbaf36ba4f043555ecb5531cf4b95747dddf11c5558c61705509",
+          "policy_sha256": "fa46ccffc38aca4e255838c717dd023d7184f058e11cb0725d01d86a1c273ce7",
           "purpose": "Read browser-rendered web search results.",
           "terminal": {
             "kind": "operation",
             "path": "sites/google/operations/web-search.md",
-            "sha256": "580acd4bf2cfe06638670c2ad9ffd8c99fa969bf128927ec16bbd5193b848dab"
+            "sha256": "2b5b9e9eeda38cd44c3e72e1b0e428ad400c36c2f9feddda8e0b8fb7afb82cba"
           }
         }
       },
-      "policy_sha256": "8f6d8d7c5dcbdbaf36ba4f043555ecb5531cf4b95747dddf11c5558c61705509",
+      "policy_sha256": "fa46ccffc38aca4e255838c717dd023d7184f058e11cb0725d01d86a1c273ce7",
       "terminal": "operation"
     },
     "google-scholar": {
@@ -14605,7 +14600,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "16cd084d92d8a2e9ee454e8fee0b0a290b139df86ba6e46cc5cb8c840a4470b7",
+          "policy_sha256": "eb221e68036427d62a6761ea43f804b6a522e42df75c9cb450f787089bd6bf87",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -14614,7 +14609,7 @@
           }
         }
       },
-      "policy_sha256": "16cd084d92d8a2e9ee454e8fee0b0a290b139df86ba6e46cc5cb8c840a4470b7",
+      "policy_sha256": "eb221e68036427d62a6761ea43f804b6a522e42df75c9cb450f787089bd6bf87",
       "terminal": "site"
     },
     "gov-law": {
@@ -15520,16 +15515,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "13471c4ef32f263c88db7e9774039a293b9d6621ee9847f59bd88752a18a8a7a",
+          "policy_sha256": "1cb695022e8fb428dcaf83f96df4b32dfdc9b62899e0ca56b7d97d7ea2dfd991",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
             "path": "sites/guazi/SKILL.md",
-            "sha256": "3afbe89a0881f772dd5563945f7f9cfc12b69bfd092b92999ba32ecdf8d46433"
+            "sha256": "0add0d4699d1c7458a44694fe5436aff31cebaa70f017852b364e662df472cf4"
           }
         }
       },
-      "policy_sha256": "13471c4ef32f263c88db7e9774039a293b9d6621ee9847f59bd88752a18a8a7a",
+      "policy_sha256": "1cb695022e8fb428dcaf83f96df4b32dfdc9b62899e0ca56b7d97d7ea2dfd991",
       "terminal": "site"
     },
     "hackernews": {
@@ -15537,6 +15532,35 @@
       "operations": {
         "content": {
           "commands": {
+            "ask": {
+              "access": "read",
+              "args": [
+                {
+                  "default": 20,
+                  "help": "Number of stories",
+                  "name": "limit",
+                  "required": false,
+                  "type": "int"
+                }
+              ],
+              "auth": "none",
+              "browser": false,
+              "confirmation": "none",
+              "execution_state": "enabled",
+              "executor": "generic_manifest_read",
+              "fallback": {
+                "after_failure": "browser_agent",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [],
+              "file_outputs": [],
+              "opencli_version": "1.8.6",
+              "risk": "low",
+              "semantic_effect": "public_read",
+              "sensitive_output": [],
+              "strategy": "public",
+              "transport": "public_http"
+            },
             "best": {
               "access": "read",
               "args": [
@@ -15572,6 +15596,35 @@
                 {
                   "default": 20,
                   "help": "Number of job postings",
+                  "name": "limit",
+                  "required": false,
+                  "type": "int"
+                }
+              ],
+              "auth": "none",
+              "browser": false,
+              "confirmation": "none",
+              "execution_state": "enabled",
+              "executor": "generic_manifest_read",
+              "fallback": {
+                "after_failure": "browser_agent",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [],
+              "file_outputs": [],
+              "opencli_version": "1.8.6",
+              "risk": "low",
+              "semantic_effect": "public_read",
+              "sensitive_output": [],
+              "strategy": "public",
+              "transport": "public_http"
+            },
+            "new": {
+              "access": "read",
+              "args": [
+                {
+                  "default": 20,
+                  "help": "Number of stories",
                   "name": "limit",
                   "required": false,
                   "type": "int"
@@ -15740,12 +15793,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "c01b909ca1346a48bab7fdec539efd83fcbf716ed7d303362da917b10b43ac60",
+          "policy_sha256": "3346280edd76e3d4c00f854d7eb4f472687b9545e3a8191f6cf7e0873edfc05c",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/hackernews/operations/content.md",
-            "sha256": "e0c78ddeb166c2df49e2fbb27cda04c2db9969af7e923e325e1dc88849825678"
+            "sha256": "929bbef1326306975044b90d049d1a0d8fd0d44f65c6b70eb27d7e4c9b5d407b"
           }
         },
         "discovery": {
@@ -15798,85 +15851,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "c01b909ca1346a48bab7fdec539efd83fcbf716ed7d303362da917b10b43ac60",
+          "policy_sha256": "3346280edd76e3d4c00f854d7eb4f472687b9545e3a8191f6cf7e0873edfc05c",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/hackernews/operations/discovery.md",
-            "sha256": "ccc6951ea8cba526ef200cc2e8efab6bd97f2b740dc2cb5626085cb87e7d1ba0"
-          }
-        },
-        "generation": {
-          "commands": {
-            "ask": {
-              "access": "read",
-              "args": [
-                {
-                  "default": 20,
-                  "help": "Number of stories",
-                  "name": "limit",
-                  "required": false,
-                  "type": "int"
-                }
-              ],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "unsupported",
-              "execution_state": "disabled",
-              "executor": "none",
-              "fallback": {
-                "after_failure": "none",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "high",
-              "semantic_effect": "quota_consumption",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            },
-            "new": {
-              "access": "read",
-              "args": [
-                {
-                  "default": 20,
-                  "help": "Number of stories",
-                  "name": "limit",
-                  "required": false,
-                  "type": "int"
-                }
-              ],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "unsupported",
-              "execution_state": "disabled",
-              "executor": "none",
-              "fallback": {
-                "after_failure": "none",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "high",
-              "semantic_effect": "quota_consumption",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            }
-          },
-          "policy_sha256": "c01b909ca1346a48bab7fdec539efd83fcbf716ed7d303362da917b10b43ac60",
-          "purpose": "Generate remote content, start AI work, or consume quota.",
-          "terminal": {
-            "kind": "operation",
-            "path": "sites/hackernews/operations/generation.md",
-            "sha256": "a28a1ca3fc40701cb6b45d554f0f97e09c46b93aa16344310d5ce4362d14786a"
+            "sha256": "bbf4cc6ee3710af2b1f570121389f3d5d5a1dad36d6f4d51b4268e9a7c2b11c6"
           }
         }
       },
-      "policy_sha256": "c01b909ca1346a48bab7fdec539efd83fcbf716ed7d303362da917b10b43ac60",
+      "policy_sha256": "3346280edd76e3d4c00f854d7eb4f472687b9545e3a8191f6cf7e0873edfc05c",
       "terminal": "operation"
     },
     "hf": {
@@ -15908,12 +15892,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "e8afd494921f63232510d673c2bf09fcb4870f7cd85f517bcc620b9698121449",
+          "policy_sha256": "d6e987ae2d3e3f8fbd0b051440167eef9e0b95ecabb7de3c9ccb7c0028a24bd9",
           "purpose": "Read account identity or account-scoped metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/hf/operations/account.md",
-            "sha256": "f8ba385162ce893dab7cb743acf400a82557bc3e62c235a8c7201d103b2022be"
+            "sha256": "cae03f890540378014e063fdd37617a3cd63592405b7924121138555a3fb66b2"
           }
         },
         "authentication": {
@@ -15948,12 +15932,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "e8afd494921f63232510d673c2bf09fcb4870f7cd85f517bcc620b9698121449",
+          "policy_sha256": "d6e987ae2d3e3f8fbd0b051440167eef9e0b95ecabb7de3c9ccb7c0028a24bd9",
           "purpose": "Open, change, or clear an authenticated browser session.",
           "terminal": {
             "kind": "operation",
             "path": "sites/hf/operations/authentication.md",
-            "sha256": "6a49ea6988e773a6bfab3b31ead3aacd1e361e954720780e1067daebdfc5af8c"
+            "sha256": "f64caf484320bc7aef6feda36314d7a81d2723b4bb2d269834b01c94590aae02"
           }
         },
         "content": {
@@ -16180,16 +16164,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "e8afd494921f63232510d673c2bf09fcb4870f7cd85f517bcc620b9698121449",
+          "policy_sha256": "d6e987ae2d3e3f8fbd0b051440167eef9e0b95ecabb7de3c9ccb7c0028a24bd9",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/hf/operations/content.md",
-            "sha256": "d930aa6509c71236701712bbd86e1d2e43edbc9f6d3db27e80f850d71881a51b"
+            "sha256": "171e457277ddd3b36da8f0f983fa1bb2401c1cf387fe26ca5207a6b3dcf17cc1"
           }
         }
       },
-      "policy_sha256": "e8afd494921f63232510d673c2bf09fcb4870f7cd85f517bcc620b9698121449",
+      "policy_sha256": "d6e987ae2d3e3f8fbd0b051440167eef9e0b95ecabb7de3c9ccb7c0028a24bd9",
       "terminal": "operation"
     },
     "hltv": {
@@ -17174,7 +17158,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "7cee6004d3923cf6b29f53192660ab994105e15b1cf5f657e0d4927f9548a5cd",
+          "policy_sha256": "ae77c0be374545876108378459bbdc00578672c2ad32518b3d335554373cce40",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -17183,7 +17167,7 @@
           }
         }
       },
-      "policy_sha256": "7cee6004d3923cf6b29f53192660ab994105e15b1cf5f657e0d4927f9548a5cd",
+      "policy_sha256": "ae77c0be374545876108378459bbdc00578672c2ad32518b3d335554373cce40",
       "terminal": "site"
     },
     "huodongxing": {
@@ -20189,21 +20173,25 @@
                   "type": "str"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "quarantined",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
+                "after_failure": "none",
+                "before_dispatch": "none"
               },
               "file_inputs": [],
               "file_outputs": [],
               "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
+              "risk": "high",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private issue content",
+                "attachment URLs",
+                "account identifiers"
+              ],
               "strategy": "public",
               "transport": "public_http"
             },
@@ -20225,21 +20213,24 @@
                   "type": "int"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "quarantined",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
+                "after_failure": "none",
+                "before_dispatch": "none"
               },
               "file_inputs": [],
               "file_outputs": [],
               "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
+              "risk": "high",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private issue comments",
+                "account identifiers"
+              ],
               "strategy": "public",
               "transport": "public_http"
             },
@@ -20261,21 +20252,24 @@
                   "type": "int"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "quarantined",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
+                "after_failure": "none",
+                "before_dispatch": "none"
               },
               "file_inputs": [],
               "file_outputs": [],
               "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
+              "risk": "high",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private issue content",
+                "account identifiers"
+              ],
               "strategy": "public",
               "transport": "public_http"
             },
@@ -20290,31 +20284,34 @@
                   "type": "str"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "quarantined",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
+                "after_failure": "none",
+                "before_dispatch": "none"
               },
               "file_inputs": [],
               "file_outputs": [],
               "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
+              "risk": "high",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private issue links",
+                "account identifiers"
+              ],
               "strategy": "public",
               "transport": "public_http"
             }
           },
-          "policy_sha256": "653e752fd0a366bfa17ccb2e5f875ea9bc0d6959e7cae877fcd365eff4fe36da",
+          "policy_sha256": "691c2064bdb38815255e941dfddf957d1c0d04cf322401252a6f17285f78d7f1",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/jira/operations/content.md",
-            "sha256": "fbc5c4758d7ca948ddce18093ac5559555aadead94e6ac008a4aa88b95916290"
+            "sha256": "caeb5647e4626f07c73058e79457d084c2011201a01c99bda441dca9c6c56cc1"
           }
         },
         "discovery": {
@@ -20337,35 +20334,38 @@
                   "type": "int"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "quarantined",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
+                "after_failure": "none",
+                "before_dispatch": "none"
               },
               "file_inputs": [],
               "file_outputs": [],
               "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
+              "risk": "high",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private issue content",
+                "account identifiers"
+              ],
               "strategy": "public",
               "transport": "public_http"
             }
           },
-          "policy_sha256": "653e752fd0a366bfa17ccb2e5f875ea9bc0d6959e7cae877fcd365eff4fe36da",
+          "policy_sha256": "691c2064bdb38815255e941dfddf957d1c0d04cf322401252a6f17285f78d7f1",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/jira/operations/discovery.md",
-            "sha256": "289106e45d176c0423efad8aec7599309539c3f762558683ba84c7c3b0b2fde7"
+            "sha256": "01b90f04da7887b83622fb22324495808bf7bda7ceee4ee42ee20ca11387d9ce"
           }
         }
       },
-      "policy_sha256": "653e752fd0a366bfa17ccb2e5f875ea9bc0d6959e7cae877fcd365eff4fe36da",
+      "policy_sha256": "691c2064bdb38815255e941dfddf957d1c0d04cf322401252a6f17285f78d7f1",
       "terminal": "operation"
     },
     "juejin": {
@@ -20445,7 +20445,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "bf8b9940efea32942ceb8a0170b7174175cf9bb1880acaa7acd3f000f0dab0c8",
+          "policy_sha256": "24282ee77a4a0d3c57994b2917f8405f8ba26444f9ba9d55f0399db37bf78a1a",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -20454,7 +20454,7 @@
           }
         }
       },
-      "policy_sha256": "bf8b9940efea32942ceb8a0170b7174175cf9bb1880acaa7acd3f000f0dab0c8",
+      "policy_sha256": "24282ee77a4a0d3c57994b2917f8405f8ba26444f9ba9d55f0399db37bf78a1a",
       "terminal": "site"
     },
     "ke": {
@@ -21793,6 +21793,35 @@
               "strategy": "public",
               "transport": "public_http"
             },
+            "new": {
+              "access": "read",
+              "args": [
+                {
+                  "default": 10,
+                  "help": "Number of results",
+                  "name": "limit",
+                  "required": false,
+                  "type": "int"
+                }
+              ],
+              "auth": "none",
+              "browser": false,
+              "confirmation": "none",
+              "execution_state": "enabled",
+              "executor": "generic_manifest_read",
+              "fallback": {
+                "after_failure": "browser_agent",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [],
+              "file_outputs": [],
+              "opencli_version": "1.8.6",
+              "risk": "low",
+              "semantic_effect": "public_read",
+              "sensitive_output": [],
+              "strategy": "public",
+              "transport": "public_http"
+            },
             "read": {
               "access": "read",
               "args": [
@@ -22127,56 +22156,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "09260253b3cc2232c5b1d13f95df38bddde26310c970ef660f5811e93bc1816b",
+          "policy_sha256": "e4038a061ced01aa02a9e4d980a78f9e7eaa68cde6ab7d30c108f8c2028f618b",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/lesswrong/operations/content.md",
-            "sha256": "d9bc599de43cc4d5946b19330a30720a6d8413cc91c0d3680d5d105b79658e59"
-          }
-        },
-        "generation": {
-          "commands": {
-            "new": {
-              "access": "read",
-              "args": [
-                {
-                  "default": 10,
-                  "help": "Number of results",
-                  "name": "limit",
-                  "required": false,
-                  "type": "int"
-                }
-              ],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "unsupported",
-              "execution_state": "disabled",
-              "executor": "none",
-              "fallback": {
-                "after_failure": "none",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "high",
-              "semantic_effect": "quota_consumption",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            }
-          },
-          "policy_sha256": "09260253b3cc2232c5b1d13f95df38bddde26310c970ef660f5811e93bc1816b",
-          "purpose": "Generate remote content, start AI work, or consume quota.",
-          "terminal": {
-            "kind": "operation",
-            "path": "sites/lesswrong/operations/generation.md",
-            "sha256": "d45f7bde8a2cb7aecf253c8c25e3c7d95b16b5f656a33794a7af5f9522c919bd"
+            "sha256": "462a008d3c1dee785e386562dd73f23a6b93b79643a0e5daa1c885030719e441"
           }
         }
       },
-      "policy_sha256": "09260253b3cc2232c5b1d13f95df38bddde26310c970ef660f5811e93bc1816b",
+      "policy_sha256": "e4038a061ced01aa02a9e4d980a78f9e7eaa68cde6ab7d30c108f8c2028f618b",
       "terminal": "operation"
     },
     "lichess": {
@@ -22250,7 +22239,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "df1729c77035389ae2f3874640bf81c6d60d45428f27db544b58f4aaffcaf25c",
+          "policy_sha256": "bc9a1d33b741e5ad22e64acfb759167481fabc3a696502b5a47581cda6097ef6",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -22259,7 +22248,7 @@
           }
         }
       },
-      "policy_sha256": "df1729c77035389ae2f3874640bf81c6d60d45428f27db544b58f4aaffcaf25c",
+      "policy_sha256": "bc9a1d33b741e5ad22e64acfb759167481fabc3a696502b5a47581cda6097ef6",
       "terminal": "site"
     },
     "linkedin": {
@@ -24086,16 +24075,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "b87a861692d491b5d2d2a5a657346b44598a580d9838d17e08e29830ef0f3a85",
+          "policy_sha256": "d6b7614221f62ecda60c6e2397512a783ca588b95d09c22acfa05b9a80519cfd",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/lobsters/operations/content.md",
-            "sha256": "73f18ec5804a29173cd57887c1e11c5cdb52fa7ae42fea9c6284a4bb09f0dedf"
+            "sha256": "9cb30c6e4594d8b0c831562855f4fc3f789fab42f5e36918b97e13ab2e20feaf"
           }
         }
       },
-      "policy_sha256": "b87a861692d491b5d2d2a5a657346b44598a580d9838d17e08e29830ef0f3a85",
+      "policy_sha256": "d6b7614221f62ecda60c6e2397512a783ca588b95d09c22acfa05b9a80519cfd",
       "terminal": "operation"
     },
     "maimai": {
@@ -24655,7 +24644,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "b1c2e76d291bee713124620ace1e1a91bfe31ace90c189cc35ba7efdee644799",
+          "policy_sha256": "bcabd64eab9579a2e8f097cecb3a4e6f97e571ee32fda35bc789ce5038a85266",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -24664,7 +24653,7 @@
           }
         }
       },
-      "policy_sha256": "b1c2e76d291bee713124620ace1e1a91bfe31ace90c189cc35ba7efdee644799",
+      "policy_sha256": "bcabd64eab9579a2e8f097cecb3a4e6f97e571ee32fda35bc789ce5038a85266",
       "terminal": "site"
     },
     "mdn": {
@@ -24716,7 +24705,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "d08046c9bff01367ddbfbedfb0ea4c16fda15b3a90568c925e16a367bea6f6df",
+          "policy_sha256": "3a670f20e5387ea4c1917c000d3c87eeed6155de1634e545dff707dd99a6c724",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -24725,7 +24714,7 @@
           }
         }
       },
-      "policy_sha256": "d08046c9bff01367ddbfbedfb0ea4c16fda15b3a90568c925e16a367bea6f6df",
+      "policy_sha256": "3a670f20e5387ea4c1917c000d3c87eeed6155de1634e545dff707dd99a6c724",
       "terminal": "site"
     },
     "medium": {
@@ -24770,12 +24759,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "24d256411fa8f7703aa737efec37f8c2e0e6ee65e428393b7d1b96172e04a3ff",
+          "policy_sha256": "c654ec10f2f7132724c538d77ffe77a2570004b4b119220d9f409705d799e50d",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/medium/operations/content.md",
-            "sha256": "d1a25bb6a1b80399e9c63cd9fa145008f3876c4d8b84a5c96fdb15c6edb32a4e"
+            "sha256": "c17344a143d5e4fb1f9b0f4617d2ddea4dfbd7600f82185a5c471f66f16a0997"
           }
         },
         "private-content": {
@@ -24898,16 +24887,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "24d256411fa8f7703aa737efec37f8c2e0e6ee65e428393b7d1b96172e04a3ff",
+          "policy_sha256": "c654ec10f2f7132724c538d77ffe77a2570004b4b119220d9f409705d799e50d",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/medium/operations/private-content.md",
-            "sha256": "c9d2ac18722a39459fbd1ae6b92d9ac339d18a5aa910f170376a73582052b067"
+            "sha256": "b03046e93ec1a8e70656a37cad67049ea101da7968f7f47e474881515e82b08c"
           }
         }
       },
-      "policy_sha256": "24d256411fa8f7703aa737efec37f8c2e0e6ee65e428393b7d1b96172e04a3ff",
+      "policy_sha256": "c654ec10f2f7132724c538d77ffe77a2570004b4b119220d9f409705d799e50d",
       "terminal": "operation"
     },
     "mercury": {
@@ -26120,12 +26109,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "af747700ded643be1d096416626644585a5c21694b06876529968abad28c8085",
+          "policy_sha256": "1cc4a67edce749ae3bc0b87002ccfbda990efa63e8613407192244daca0f1248",
           "purpose": "Read account identity or account-scoped metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/nowcoder/operations/account.md",
-            "sha256": "94d3472525ebe6aefb6180adffadec4ebbc3c5d41225e7c60cfaf34017b0dc2f"
+            "sha256": "6035665394368eb32a4c343c4ea6458d990488aae946898da5dd011be4cea8c0"
           }
         },
         "authentication": {
@@ -26160,12 +26149,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "af747700ded643be1d096416626644585a5c21694b06876529968abad28c8085",
+          "policy_sha256": "1cc4a67edce749ae3bc0b87002ccfbda990efa63e8613407192244daca0f1248",
           "purpose": "Open, change, or clear an authenticated browser session.",
           "terminal": {
             "kind": "operation",
             "path": "sites/nowcoder/operations/authentication.md",
-            "sha256": "4015720594cac01d32687f674b74ed1f2dcca56e08765da10cf763812bdc90ff"
+            "sha256": "b78db72c89012d3963e628f4124f1cae436fbe4372264840ad1898f73b9aca1e"
           }
         },
         "content": {
@@ -26344,12 +26333,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "af747700ded643be1d096416626644585a5c21694b06876529968abad28c8085",
+          "policy_sha256": "1cc4a67edce749ae3bc0b87002ccfbda990efa63e8613407192244daca0f1248",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/nowcoder/operations/content.md",
-            "sha256": "f8181aba0bccb676c746bb31a086b739f2fbaa1f906399082ca0aa19cbb56b92"
+            "sha256": "3d73ef90458ee9ec1d2d5383db1f298d9b33115cd8046807a59ee1f6cbd90897"
           }
         },
         "discovery": {
@@ -26384,12 +26373,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "af747700ded643be1d096416626644585a5c21694b06876529968abad28c8085",
+          "policy_sha256": "1cc4a67edce749ae3bc0b87002ccfbda990efa63e8613407192244daca0f1248",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/nowcoder/operations/discovery.md",
-            "sha256": "ba1d4edd0d6bbb01b55e7a0fed1e460ad137ac0755db3238ccca55e791165f2c"
+            "sha256": "3edf469e6ed41e7bef3e42037a065a41c331048d5fdb1df9d1eb42075fa281ad"
           }
         },
         "private-content": {
@@ -26731,16 +26720,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "af747700ded643be1d096416626644585a5c21694b06876529968abad28c8085",
+          "policy_sha256": "1cc4a67edce749ae3bc0b87002ccfbda990efa63e8613407192244daca0f1248",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/nowcoder/operations/private-content.md",
-            "sha256": "c4ca322be346be130e8aafc99278b11c489e1fba85b24943e9bd341abea65259"
+            "sha256": "dfc2f87cb7b4d44e2907f797d255dd1d9754724070d60b547d5c3a5027a1c636"
           }
         }
       },
-      "policy_sha256": "af747700ded643be1d096416626644585a5c21694b06876529968abad28c8085",
+      "policy_sha256": "1cc4a67edce749ae3bc0b87002ccfbda990efa63e8613407192244daca0f1248",
       "terminal": "operation"
     },
     "npm": {
@@ -26850,7 +26839,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "f1ad8ab0985621a61398e059e24f6ec95776ce1fdb98f0c88edc788f749549f9",
+          "policy_sha256": "2b7c132b76c771adb5d9344e8bbfe17022882255e1327a6ab906a1396ce38666",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -26859,7 +26848,7 @@
           }
         }
       },
-      "policy_sha256": "f1ad8ab0985621a61398e059e24f6ec95776ce1fdb98f0c88edc788f749549f9",
+      "policy_sha256": "2b7c132b76c771adb5d9344e8bbfe17022882255e1327a6ab906a1396ce38666",
       "terminal": "site"
     },
     "nuget": {
@@ -26940,7 +26929,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "382227d06487bd9b781aa0f6dea8e10dabbb3355f6d02b610317abf0d283271f",
+          "policy_sha256": "0f2605390578f1dcb4fd710091057685acdff26af6495264856caf3e603a5f7f",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -26949,7 +26938,7 @@
           }
         }
       },
-      "policy_sha256": "382227d06487bd9b781aa0f6dea8e10dabbb3355f6d02b610317abf0d283271f",
+      "policy_sha256": "0f2605390578f1dcb4fd710091057685acdff26af6495264856caf3e603a5f7f",
       "terminal": "site"
     },
     "nvd": {
@@ -26987,7 +26976,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "9935cc502138ee2e85387085ef1ac14619a1d82e424884f11b34ca1cd8514071",
+          "policy_sha256": "fc9becb61a614dddf37509d8051b47e213e2df20f987890ef0176469b6979c33",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -26996,7 +26985,7 @@
           }
         }
       },
-      "policy_sha256": "9935cc502138ee2e85387085ef1ac14619a1d82e424884f11b34ca1cd8514071",
+      "policy_sha256": "fc9becb61a614dddf37509d8051b47e213e2df20f987890ef0176469b6979c33",
       "terminal": "site"
     },
     "oeis": {
@@ -27070,7 +27059,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "adb3c1c9ea1cce9848676273aa99463171063d6406e05134f270479a09906942",
+          "policy_sha256": "7af3176da37e77270171ec4a254b82a248e16a1f9f0272fb488f9effcaf4b984",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -27079,7 +27068,7 @@
           }
         }
       },
-      "policy_sha256": "adb3c1c9ea1cce9848676273aa99463171063d6406e05134f270479a09906942",
+      "policy_sha256": "7af3176da37e77270171ec4a254b82a248e16a1f9f0272fb488f9effcaf4b984",
       "terminal": "site"
     },
     "ones": {
@@ -27513,7 +27502,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "e306b0cef0edc8bfbc7ec57beb1d173c7dba5245224f1f60b785f4a6a3f54b54",
+          "policy_sha256": "9cd9ef0d219c428429b020534e33aaf26f33e8564ff9ea191b88ca5c7038befd",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -27522,7 +27511,7 @@
           }
         }
       },
-      "policy_sha256": "e306b0cef0edc8bfbc7ec57beb1d173c7dba5245224f1f60b785f4a6a3f54b54",
+      "policy_sha256": "9cd9ef0d219c428429b020534e33aaf26f33e8564ff9ea191b88ca5c7038befd",
       "terminal": "site"
     },
     "openfda": {
@@ -27614,7 +27603,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "94171540d9849646cb58ef21a68c62550d8c6b60d81db60377bcb9dcdd164cdf",
+          "policy_sha256": "d7c39c82e995edbb02973a590aa8000d0b2a122eb4e5122840bbbe1d8efdf23a",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -27623,7 +27612,7 @@
           }
         }
       },
-      "policy_sha256": "94171540d9849646cb58ef21a68c62550d8c6b60d81db60377bcb9dcdd164cdf",
+      "policy_sha256": "d7c39c82e995edbb02973a590aa8000d0b2a122eb4e5122840bbbe1d8efdf23a",
       "terminal": "site"
     },
     "openreview": {
@@ -27776,12 +27765,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "7acac650b629118139186af5dc7b3ea7220f1864870df678af8c73ed7c06b0e2",
+          "policy_sha256": "096b115ccc93e419a9ef5dc5776b3179c3bbaceb07a04d5e78ab0bb9aee19b59",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/openreview/operations/content.md",
-            "sha256": "df6a4d1c6c291c22f8aac5669fe6c81df9ab71718920f8ab17d2df3f704eba6e"
+            "sha256": "88f270cad4409167d1ffa6d7f563a1174df30090ab6d95a9af1a74a096074270"
           }
         },
         "discovery": {
@@ -27823,16 +27812,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "7acac650b629118139186af5dc7b3ea7220f1864870df678af8c73ed7c06b0e2",
+          "policy_sha256": "096b115ccc93e419a9ef5dc5776b3179c3bbaceb07a04d5e78ab0bb9aee19b59",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/openreview/operations/discovery.md",
-            "sha256": "c215c73a522f2e846ba152787b3f57da415fbbfc4336e4e0bd257a6abee7ad50"
+            "sha256": "327229236673a7e54891c6940fab4318c5a735253976d91b77f1cc0bd72a2644"
           }
         }
       },
-      "policy_sha256": "7acac650b629118139186af5dc7b3ea7220f1864870df678af8c73ed7c06b0e2",
+      "policy_sha256": "096b115ccc93e419a9ef5dc5776b3179c3bbaceb07a04d5e78ab0bb9aee19b59",
       "terminal": "operation"
     },
     "osv": {
@@ -27918,7 +27907,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "2230b64d26b082dab53c299959460919a827571f9b918118c37b403058f5da2f",
+          "policy_sha256": "07cf4a5d4aa750febde2682892580c232fc82dfa5f5a827dd7e3b6e95b148c89",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -27927,7 +27916,7 @@
           }
         }
       },
-      "policy_sha256": "2230b64d26b082dab53c299959460919a827571f9b918118c37b403058f5da2f",
+      "policy_sha256": "07cf4a5d4aa750febde2682892580c232fc82dfa5f5a827dd7e3b6e95b148c89",
       "terminal": "site"
     },
     "packagist": {
@@ -28001,7 +27990,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "8047e5092815f0bae0e07077b49ee7ae689305e8aa4464b896e872d30b8ef0a5",
+          "policy_sha256": "314248d5c3244c0d0869eee125a41167f255806331a10d1f8bbf385b1463d502",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -28010,13 +27999,13 @@
           }
         }
       },
-      "policy_sha256": "8047e5092815f0bae0e07077b49ee7ae689305e8aa4464b896e872d30b8ef0a5",
+      "policy_sha256": "314248d5c3244c0d0869eee125a41167f255806331a10d1f8bbf385b1463d502",
       "terminal": "site"
     },
     "paperreview": {
       "display_name": "Paperreview",
       "operations": {
-        "content": {
+        "private-content": {
           "commands": {
             "review": {
               "access": "read",
@@ -28036,31 +28025,34 @@
                   "type": "int"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
+                "after_failure": "none",
                 "before_dispatch": "browser_agent"
               },
               "file_inputs": [],
               "file_outputs": [],
               "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
+              "risk": "high",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "review token",
+                "private review content"
+              ],
               "strategy": "public",
               "transport": "public_http"
             }
           },
-          "policy_sha256": "7c57f79b95a57b61fee3048b014fbe427f6b1438c98418b545beeb8d2073d190",
-          "purpose": "Read site content and metadata.",
+          "policy_sha256": "e2340c7ea5cda0685bb79c2758686d307f57d91bfba9107e5d7932617265f589",
+          "purpose": "Read private review content addressed by a bearer capability token.",
           "terminal": {
             "kind": "operation",
-            "path": "sites/paperreview/operations/content.md",
-            "sha256": "0afe610e6dfed92269ad9a395cc10a703177077ec3404a11d52473ac8097ef1c"
+            "path": "sites/paperreview/operations/private-content.md",
+            "sha256": "de9e3df24c5155073a13fb23cc9fd7c0a2f0f44f8a12d5958fc2e009bbcd416a"
           }
         },
         "publishing": {
@@ -28130,12 +28122,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "7c57f79b95a57b61fee3048b014fbe427f6b1438c98418b545beeb8d2073d190",
+          "policy_sha256": "e2340c7ea5cda0685bb79c2758686d307f57d91bfba9107e5d7932617265f589",
           "purpose": "Publish, create, edit, or upload remote content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/paperreview/operations/publishing.md",
-            "sha256": "2728583b5848d3f9d97b75877da53e8cf01f9331f1d9f19b8d8a55e1b1726f02"
+            "sha256": "adbedb0ae71e58a1332ced86c1c8dc486b22cf2275a934df417d33417cc3f78a"
           }
         },
         "write-actions": {
@@ -28209,16 +28201,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "7c57f79b95a57b61fee3048b014fbe427f6b1438c98418b545beeb8d2073d190",
+          "policy_sha256": "e2340c7ea5cda0685bb79c2758686d307f57d91bfba9107e5d7932617265f589",
           "purpose": "Change remote service state.",
           "terminal": {
             "kind": "operation",
             "path": "sites/paperreview/operations/write-actions.md",
-            "sha256": "b3b375831b0aa3307b1a507ddd2facf33670d9a408ade8bab454f8c10d443640"
+            "sha256": "d8c8347e08a37fbcb98ecd0ad1cbb850e93909ea0b1c3cd745d36615ade91edf"
           }
         }
       },
-      "policy_sha256": "7c57f79b95a57b61fee3048b014fbe427f6b1438c98418b545beeb8d2073d190",
+      "policy_sha256": "e2340c7ea5cda0685bb79c2758686d307f57d91bfba9107e5d7932617265f589",
       "terminal": "operation"
     },
     "pixiv": {
@@ -28796,12 +28788,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "ac9bd374f083936c688ea6fe1907d309ba651ca5225658d947ffaacc23f04b21",
+          "policy_sha256": "7914bffd5537a3ada92b095f92c47f649f0e8bc2229832a8016784a014bff7e7",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/producthunt/operations/content.md",
-            "sha256": "1ac294d935587c26eda662d7506bb0722786bc034c9633d45222937ff102870a"
+            "sha256": "3323087d943380e0a70e00fe48465e51bb480458f6b8b6357447108ae7684eb2"
           }
         },
         "private-content": {
@@ -28878,16 +28870,16 @@
               "transport": "browser_intercept"
             }
           },
-          "policy_sha256": "ac9bd374f083936c688ea6fe1907d309ba651ca5225658d947ffaacc23f04b21",
+          "policy_sha256": "7914bffd5537a3ada92b095f92c47f649f0e8bc2229832a8016784a014bff7e7",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/producthunt/operations/private-content.md",
-            "sha256": "e1f6b8acb0f3e22ec5ab7bbdf745a71e0cb0855f5605a6de41cfde61a3c94e1e"
+            "sha256": "75bd8c473f8ac290f609e6da872302d3d7c2d91323161d692e2e76943bdd6708"
           }
         }
       },
-      "policy_sha256": "ac9bd374f083936c688ea6fe1907d309ba651ca5225658d947ffaacc23f04b21",
+      "policy_sha256": "7914bffd5537a3ada92b095f92c47f649f0e8bc2229832a8016784a014bff7e7",
       "terminal": "operation"
     },
     "pubmed": {
@@ -29344,12 +29336,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "870bd148e1f5649c695d65a65eaa5978085f62a97cbad6ca74a974df3899b21c",
+          "policy_sha256": "7b8aee92a30370ede55d7ec37c9a4652d1ff482f815814e15ccc6087540a1f82",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/pubmed/operations/content.md",
-            "sha256": "60840fdeabf121392582e15b91b17aeb28802d287c4d6f9f39415e74b12310fa"
+            "sha256": "95e758d2f706f8272887b62c632b4a55fa41680f8e0fc9602e79de0d04116bde"
           }
         },
         "discovery": {
@@ -29462,16 +29454,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "870bd148e1f5649c695d65a65eaa5978085f62a97cbad6ca74a974df3899b21c",
+          "policy_sha256": "7b8aee92a30370ede55d7ec37c9a4652d1ff482f815814e15ccc6087540a1f82",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/pubmed/operations/discovery.md",
-            "sha256": "0109cfe3fafd1d69a09de56746002de08b4d813d3a7d6841a860388e4cd21fa0"
+            "sha256": "548988299b3f1a44de9694521b8605c675779f3886e1a9af19985656e1de1d71"
           }
         }
       },
-      "policy_sha256": "870bd148e1f5649c695d65a65eaa5978085f62a97cbad6ca74a974df3899b21c",
+      "policy_sha256": "7b8aee92a30370ede55d7ec37c9a4652d1ff482f815814e15ccc6087540a1f82",
       "terminal": "operation"
     },
     "pypi": {
@@ -29545,7 +29537,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "5b7814145238bf8c31687a5f85987f9796ae86c415f82a9558ce4067261f31bc",
+          "policy_sha256": "021c4add95ef278c16626ff1eb0367fa24514e79e049821e704a367c7dc1a252",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -29554,7 +29546,7 @@
           }
         }
       },
-      "policy_sha256": "5b7814145238bf8c31687a5f85987f9796ae86c415f82a9558ce4067261f31bc",
+      "policy_sha256": "021c4add95ef278c16626ff1eb0367fa24514e79e049821e704a367c7dc1a252",
       "terminal": "site"
     },
     "quark": {
@@ -31741,7 +31733,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "5f8c8e62327873e2d2b427aee68dd8f0c97415a63ff85554cea8fdb6f3559ff2",
+          "policy_sha256": "603306438339b8566c79cbe8d6737054a58a28bc9e2456d84ab09e466f6a3981",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -31750,7 +31742,7 @@
           }
         }
       },
-      "policy_sha256": "5f8c8e62327873e2d2b427aee68dd8f0c97415a63ff85554cea8fdb6f3559ff2",
+      "policy_sha256": "603306438339b8566c79cbe8d6737054a58a28bc9e2456d84ab09e466f6a3981",
       "terminal": "site"
     },
     "reuters": {
@@ -31951,7 +31943,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "044e0f6a2a5320570877c46b042ca4aaa5fb2e9557c8c8ad221f7be0739a82a5",
+          "policy_sha256": "3c050a6a8b12967a39b9e604e2384eab49d359fb3ba174ca7d2a0609ba399a42",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -31960,7 +31952,7 @@
           }
         }
       },
-      "policy_sha256": "044e0f6a2a5320570877c46b042ca4aaa5fb2e9557c8c8ad221f7be0739a82a5",
+      "policy_sha256": "3c050a6a8b12967a39b9e604e2384eab49d359fb3ba174ca7d2a0609ba399a42",
       "terminal": "site"
     },
     "rubygems": {
@@ -32034,7 +32026,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "9828135b046ba14ecd92a86364c9c168e6d1ccef2e3252705533def0825b8bc9",
+          "policy_sha256": "4b00cedcb3b8e0a3c38ccf435f17c665d14c572f130b84976ed3c2ae452dd238",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -32043,7 +32035,7 @@
           }
         }
       },
-      "policy_sha256": "9828135b046ba14ecd92a86364c9c168e6d1ccef2e3252705533def0825b8bc9",
+      "policy_sha256": "4b00cedcb3b8e0a3c38ccf435f17c665d14c572f130b84976ed3c2ae452dd238",
       "terminal": "site"
     },
     "semanticscholar": {
@@ -32160,12 +32152,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "db7514ac48b6b1f48acd06b27a99ee92ed37ce63cebf5d0449e5ebd5f654387c",
+          "policy_sha256": "80cdefddefe3c688c608e3f21efc4648d5112d91919554bf26227e9a9924071d",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/semanticscholar/operations/content.md",
-            "sha256": "8d919644dbe5671f51891b6aaf265060530b6bbcc14fb76d2d4bd5248b3fdbfe"
+            "sha256": "146987243b3f974ec0b9c8f1fc0160102c6e93241fab15eb07646833a00c7af0"
           }
         },
         "discovery": {
@@ -32207,16 +32199,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "db7514ac48b6b1f48acd06b27a99ee92ed37ce63cebf5d0449e5ebd5f654387c",
+          "policy_sha256": "80cdefddefe3c688c608e3f21efc4648d5112d91919554bf26227e9a9924071d",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/semanticscholar/operations/discovery.md",
-            "sha256": "cca29c80aaf7611fda2fc25827b43f11076d4d6f804ccc63a222e8098a456f16"
+            "sha256": "4e795e8800322b798451f916b7854f4babebfdf342e758a71bd0c863211bb931"
           }
         }
       },
-      "policy_sha256": "db7514ac48b6b1f48acd06b27a99ee92ed37ce63cebf5d0449e5ebd5f654387c",
+      "policy_sha256": "80cdefddefe3c688c608e3f21efc4648d5112d91919554bf26227e9a9924071d",
       "terminal": "operation"
     },
     "sinablog": {
@@ -32261,12 +32253,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "aa2acb4659da99cb537103729b3bc648d70eeac694465f6da7f2164b73360a28",
+          "policy_sha256": "45d3818c3bb8413372cf3f16a5f3c7e55ba246193e5a860fa4add5e3ff26fa46",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/sinablog/operations/discovery.md",
-            "sha256": "57faabda5d1743b1c3962d98b6faac0ab7ac3b0ddcd7d6ace02b1b4780b19c8b"
+            "sha256": "4829dcd1271586f14a61364feafe7a8aeda9c08835cadbc98f47166bc6184f90"
           }
         },
         "private-content": {
@@ -32375,16 +32367,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "aa2acb4659da99cb537103729b3bc648d70eeac694465f6da7f2164b73360a28",
+          "policy_sha256": "45d3818c3bb8413372cf3f16a5f3c7e55ba246193e5a860fa4add5e3ff26fa46",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/sinablog/operations/private-content.md",
-            "sha256": "109965c5a7a20034ab005f108cf11a4ab8ab51afa56c821bb5ce7b7d9eafc230"
+            "sha256": "d70113fb91872a9ab19c8e45b0ff21a9c776c97f7e8158e26c722ab87603c652"
           }
         }
       },
-      "policy_sha256": "aa2acb4659da99cb537103729b3bc648d70eeac694465f6da7f2164b73360a28",
+      "policy_sha256": "45d3818c3bb8413372cf3f16a5f3c7e55ba246193e5a860fa4add5e3ff26fa46",
       "terminal": "operation"
     },
     "sinafinance": {
@@ -32429,12 +32421,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "1deddb0b1999a7b26b75c49f000c61dc7a75a8dc92dc700605ccb6dedcf9a8c7",
+          "policy_sha256": "0e2bcbc6a43027fe339f4a99f9f4730abe1b3e354a76c6d4f729599e0ab2a1c3",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/sinafinance/operations/content.md",
-            "sha256": "c2578e33afeb7e95186332b2b12f0b18dd868aa33f5fa1c1bd8a5a681d6b01d8"
+            "sha256": "53fb974c6c29006c5af6d39473ca27c5d78268d795a7bea3d37d20cfe182af4f"
           }
         },
         "discovery": {
@@ -32476,12 +32468,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "1deddb0b1999a7b26b75c49f000c61dc7a75a8dc92dc700605ccb6dedcf9a8c7",
+          "policy_sha256": "0e2bcbc6a43027fe339f4a99f9f4730abe1b3e354a76c6d4f729599e0ab2a1c3",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/sinafinance/operations/discovery.md",
-            "sha256": "40c6a55c93b1e761f163c358be66aa474a9c847a901604843a4f4664f55dd013"
+            "sha256": "d58f6ffc5129e16c6402e8a2a0674e1b21be982b22b7d6d358b5ec4f5f9c8337"
           }
         },
         "private-content": {
@@ -32550,16 +32542,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "1deddb0b1999a7b26b75c49f000c61dc7a75a8dc92dc700605ccb6dedcf9a8c7",
+          "policy_sha256": "0e2bcbc6a43027fe339f4a99f9f4730abe1b3e354a76c6d4f729599e0ab2a1c3",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/sinafinance/operations/private-content.md",
-            "sha256": "3e81182fd63ccf0ec767136f29fa20a3a071afe58f955341c897883c0f959099"
+            "sha256": "6356b995ba522a36bd8a9d26ae0d1fae785219a3b0506f4a8caacdad9bea4a77"
           }
         }
       },
-      "policy_sha256": "1deddb0b1999a7b26b75c49f000c61dc7a75a8dc92dc700605ccb6dedcf9a8c7",
+      "policy_sha256": "0e2bcbc6a43027fe339f4a99f9f4730abe1b3e354a76c6d4f729599e0ab2a1c3",
       "terminal": "operation"
     },
     "slock": {
@@ -34432,6 +34424,47 @@
     "spotify": {
       "display_name": "Spotify",
       "operations": {
+        "account": {
+          "commands": {
+            "status": {
+              "access": "read",
+              "args": [],
+              "auth": "required",
+              "browser": false,
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
+              "fallback": {
+                "after_failure": "none",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [
+                "~/.opencli/spotify.env",
+                "~/.opencli/spotify-tokens.json"
+              ],
+              "file_outputs": [
+                "~/.opencli/spotify-tokens.json"
+              ],
+              "opencli_version": "1.8.6",
+              "risk": "medium",
+              "semantic_effect": "private_account_read",
+              "sensitive_output": [
+                "private playback state",
+                "account identifiers",
+                "OAuth access and refresh tokens"
+              ],
+              "strategy": "public",
+              "transport": "mixed"
+            }
+          },
+          "policy_sha256": "a79d0b04af7de90a372da7a714ea9f00e6d21d6dac4df21fe39708f531fe47ac",
+          "purpose": "Read account-scoped playback state.",
+          "terminal": {
+            "kind": "operation",
+            "path": "sites/spotify/operations/account.md",
+            "sha256": "283bf8bfd0b7e6f53a510868d7f100e33caab996c7e3f7d0bf5fb46124576acc"
+          }
+        },
         "authentication": {
           "commands": {
             "auth": {
@@ -34456,44 +34489,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "62c64b7e6dc3d752f97becf1a28ab253285c3de4d29a00f68a36cc9e4ed9fbc5",
+          "policy_sha256": "a79d0b04af7de90a372da7a714ea9f00e6d21d6dac4df21fe39708f531fe47ac",
           "purpose": "Open, change, or clear an authenticated browser session.",
           "terminal": {
             "kind": "operation",
             "path": "sites/spotify/operations/authentication.md",
-            "sha256": "0ebcf99167d1b5bd705cff597a01853cb99fc4c93a4a9953e90498cc41f81eab"
-          }
-        },
-        "content": {
-          "commands": {
-            "status": {
-              "access": "read",
-              "args": [],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
-              "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            }
-          },
-          "policy_sha256": "62c64b7e6dc3d752f97becf1a28ab253285c3de4d29a00f68a36cc9e4ed9fbc5",
-          "purpose": "Read site content and metadata.",
-          "terminal": {
-            "kind": "operation",
-            "path": "sites/spotify/operations/content.md",
-            "sha256": "6c18f56cd30cff9cb200e840f07fa84a7b26bb05c2d7684f0245f18b6a11d358"
+            "sha256": "c40bf02843a9b45f9b13877c43ec9410401e0b907f787c20ce17db97c02cd8bd"
           }
         },
         "discovery": {
@@ -34516,31 +34517,38 @@
                   "type": "int"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
+                "after_failure": "none",
                 "before_dispatch": "browser_agent"
               },
-              "file_inputs": [],
-              "file_outputs": [],
+              "file_inputs": [
+                "~/.opencli/spotify.env",
+                "~/.opencli/spotify-tokens.json"
+              ],
+              "file_outputs": [
+                "~/.opencli/spotify-tokens.json"
+              ],
               "opencli_version": "1.8.6",
               "risk": "low",
               "semantic_effect": "public_read",
-              "sensitive_output": [],
+              "sensitive_output": [
+                "OAuth access and refresh tokens"
+              ],
               "strategy": "public",
-              "transport": "public_http"
+              "transport": "mixed"
             }
           },
-          "policy_sha256": "62c64b7e6dc3d752f97becf1a28ab253285c3de4d29a00f68a36cc9e4ed9fbc5",
+          "policy_sha256": "a79d0b04af7de90a372da7a714ea9f00e6d21d6dac4df21fe39708f531fe47ac",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/spotify/operations/discovery.md",
-            "sha256": "dfd07db162b4ec610f0a7bea47b1141499d09b8043c46737854ebda453b7946b"
+            "sha256": "78df5a67634df7c506e85f2faecf884f9925992ff5253e70165863ed0b928600"
           }
         },
         "write-actions": {
@@ -34767,16 +34775,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "62c64b7e6dc3d752f97becf1a28ab253285c3de4d29a00f68a36cc9e4ed9fbc5",
+          "policy_sha256": "a79d0b04af7de90a372da7a714ea9f00e6d21d6dac4df21fe39708f531fe47ac",
           "purpose": "Change remote service state.",
           "terminal": {
             "kind": "operation",
             "path": "sites/spotify/operations/write-actions.md",
-            "sha256": "e4af3823bf5c42a8467f619aa49014765a2601ebf9be42ff62ab2536fbfdcdb1"
+            "sha256": "a9196acfc5cc3538a4c1ff1be8480b4807701f5c17a248692862c766ab810e58"
           }
         }
       },
-      "policy_sha256": "62c64b7e6dc3d752f97becf1a28ab253285c3de4d29a00f68a36cc9e4ed9fbc5",
+      "policy_sha256": "a79d0b04af7de90a372da7a714ea9f00e6d21d6dac4df21fe39708f531fe47ac",
       "terminal": "operation"
     },
     "stackoverflow": {
@@ -35044,12 +35052,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "62868097b184f6f856cb90832f1e2a6d341558af5eb77a281e752d2dfa3696a6",
+          "policy_sha256": "21be1110280fd8607b89ada856934574e5d2338e2839e92ee9637d931f21b04c",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/stackoverflow/operations/content.md",
-            "sha256": "94ec386402cb6e39c6efa85f68992df8dbb1f97daacfe092ed7632a36b3b3587"
+            "sha256": "de5a63f74c9d9158a0a30eba675488310bb04e26273478c0af116cdf5ca61d06"
           }
         },
         "discovery": {
@@ -35091,16 +35099,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "62868097b184f6f856cb90832f1e2a6d341558af5eb77a281e752d2dfa3696a6",
+          "policy_sha256": "21be1110280fd8607b89ada856934574e5d2338e2839e92ee9637d931f21b04c",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/stackoverflow/operations/discovery.md",
-            "sha256": "24b6f2b5ca756c94feb1b892d9a609ed706e31a4252ccf2b29f6eb894907d54f"
+            "sha256": "ab0516cd9aa56643d0c6d3eb122610fc6be9644619a5b0f145faeeb4bf3f3500"
           }
         }
       },
-      "policy_sha256": "62868097b184f6f856cb90832f1e2a6d341558af5eb77a281e752d2dfa3696a6",
+      "policy_sha256": "21be1110280fd8607b89ada856934574e5d2338e2839e92ee9637d931f21b04c",
       "terminal": "operation"
     },
     "steam": {
@@ -35217,7 +35225,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "97509e5395ccc9ae34f59363479b2561593e6f4e754836ce25c69e8f55039bef",
+          "policy_sha256": "82248208dc22a3ea2236b94fae2b0b84a9224cedb44575e899aa3b8e2fc7b5f7",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -35226,7 +35234,7 @@
           }
         }
       },
-      "policy_sha256": "97509e5395ccc9ae34f59363479b2561593e6f4e754836ce25c69e8f55039bef",
+      "policy_sha256": "82248208dc22a3ea2236b94fae2b0b84a9224cedb44575e899aa3b8e2fc7b5f7",
       "terminal": "site"
     },
     "substack": {
@@ -35282,12 +35290,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "e7a20796c847318f1ddebb18991a531a47a7027914829dad2d5c41b0796a41df",
+          "policy_sha256": "4a59cf3c0d273656b3a3677fdcbee5b42433442731ab11926b5555c4d34d5d32",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/substack/operations/discovery.md",
-            "sha256": "56a68a10c819cf7547474d0ad214a437e7c3bb674de0b55f64b5adfb1a6080bf"
+            "sha256": "f359e6cf6632846dfacb34f1dd1a6e25995e1375d950fb84aadf2e66719656b4"
           }
         },
         "private-content": {
@@ -35371,16 +35379,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "e7a20796c847318f1ddebb18991a531a47a7027914829dad2d5c41b0796a41df",
+          "policy_sha256": "4a59cf3c0d273656b3a3677fdcbee5b42433442731ab11926b5555c4d34d5d32",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/substack/operations/private-content.md",
-            "sha256": "b8e3e1c6407a6d41489b19de1ac99cde72d1658937a38d66afe9c58564fdb555"
+            "sha256": "1185c4f20a9f9cd7a504222d3fabe2067371f260d9406a384dd02dbdda8f8150"
           }
         }
       },
-      "policy_sha256": "e7a20796c847318f1ddebb18991a531a47a7027914829dad2d5c41b0796a41df",
+      "policy_sha256": "4a59cf3c0d273656b3a3677fdcbee5b42433442731ab11926b5555c4d34d5d32",
       "terminal": "operation"
     },
     "suno": {
@@ -36058,16 +36066,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "952d5046d358ce7e6511c240c304d35108d9a0048cc80784f17c910606c0fead",
+          "policy_sha256": "88d48fa10544df000faa33401c68836810157f748e3f38b13a881bcdc1bf49d2",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/tdx/operations/private-content.md",
-            "sha256": "ec82e4f45e534af91f36b0e2fe2f4981ff4bf086b3cd056b0595c2b536023ecc"
+            "sha256": "52812918dfded132ccacd9567206aa7dae70abda7f586e4519f497e8449594fb"
           }
         }
       },
-      "policy_sha256": "952d5046d358ce7e6511c240c304d35108d9a0048cc80784f17c910606c0fead",
+      "policy_sha256": "88d48fa10544df000faa33401c68836810157f748e3f38b13a881bcdc1bf49d2",
       "terminal": "operation"
     },
     "ths": {
@@ -37008,12 +37016,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "da368914918f474e3bade1c902a1c606f023957c389be677242cb8698fe1eb8e",
+          "policy_sha256": "bedccca74431752a898229e2e02f72f80ac76189f37dbd33c9fd5bc24be2d961",
           "purpose": "Read account identity or account-scoped metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/toutiao/operations/account.md",
-            "sha256": "8b47a6400a9a3004ee0476f55a6c3c90d12495141e0da0fc15b1861247e9ba5e"
+            "sha256": "d75cae82d3adb3526ab4d9a171b21861c1dd33fd25bd276e30f8a30525e81ec8"
           }
         },
         "authentication": {
@@ -37048,12 +37056,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "da368914918f474e3bade1c902a1c606f023957c389be677242cb8698fe1eb8e",
+          "policy_sha256": "bedccca74431752a898229e2e02f72f80ac76189f37dbd33c9fd5bc24be2d961",
           "purpose": "Open, change, or clear an authenticated browser session.",
           "terminal": {
             "kind": "operation",
             "path": "sites/toutiao/operations/authentication.md",
-            "sha256": "5f77937008ee1567fa43286bd160d478487a77d8d3984cb6cb2a547b233ae299"
+            "sha256": "27b3bb599f0e3295e643fc09bf55a91bdf94d35d68efa53fd8b677c4d86fc855"
           }
         },
         "content": {
@@ -37088,12 +37096,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "da368914918f474e3bade1c902a1c606f023957c389be677242cb8698fe1eb8e",
+          "policy_sha256": "bedccca74431752a898229e2e02f72f80ac76189f37dbd33c9fd5bc24be2d961",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/toutiao/operations/content.md",
-            "sha256": "fcfed8e672d7f076765a4329b0ae5870057d38394cf3ff7bfad67a0da83714d3"
+            "sha256": "25150dae9822843ec3b1aa5fda93fa0b97ea9196d140b06fabe06017411481e4"
           }
         },
         "private-content": {
@@ -37131,16 +37139,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "da368914918f474e3bade1c902a1c606f023957c389be677242cb8698fe1eb8e",
+          "policy_sha256": "bedccca74431752a898229e2e02f72f80ac76189f37dbd33c9fd5bc24be2d961",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/toutiao/operations/private-content.md",
-            "sha256": "d753d8de5170d96c1b9f4f473c973536484d6dafe75090420a89ae0cce6db830"
+            "sha256": "d2c5d6b695eef5ad6399a91f9e16cda97f75dd38a878a1c5cef8e77ad448ace2"
           }
         }
       },
-      "policy_sha256": "da368914918f474e3bade1c902a1c606f023957c389be677242cb8698fe1eb8e",
+      "policy_sha256": "bedccca74431752a898229e2e02f72f80ac76189f37dbd33c9fd5bc24be2d961",
       "terminal": "operation"
     },
     "tvmaze": {
@@ -37214,7 +37222,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "bba35b0e724faf7f6cc97208ffd50f9c6ed5e8306c891e80c1e36668a760d3fe",
+          "policy_sha256": "03bf49629bd8d618a229cb15c65dad04a8fdd277608ffd0e32b4c2a675fe475d",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -37223,7 +37231,7 @@
           }
         }
       },
-      "policy_sha256": "bba35b0e724faf7f6cc97208ffd50f9c6ed5e8306c891e80c1e36668a760d3fe",
+      "policy_sha256": "03bf49629bd8d618a229cb15c65dad04a8fdd277608ffd0e32b4c2a675fe475d",
       "terminal": "site"
     },
     "twitter": {
@@ -39479,12 +39487,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "9a23459a44630f9fce56ffd4d0038ea59b8848415e78acbc97c07f8114c6c816",
+          "policy_sha256": "778d449edb12cf272d1703cbe12bbcb44c0e1273bc8d937adf7c531edd7eafe4",
           "purpose": "Read account identity or account-scoped metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/v2ex/operations/account.md",
-            "sha256": "150d00f3f7660eb53bdf4519c43d47359d068504767cfeda980cc9b0f91b499a"
+            "sha256": "b2a4b18bf0702f8b10d2d78fe04b5055716de43cbd6f4b92db2ef535c5b77adf"
           }
         },
         "account-actions": {
@@ -39511,12 +39519,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "9a23459a44630f9fce56ffd4d0038ea59b8848415e78acbc97c07f8114c6c816",
+          "policy_sha256": "778d449edb12cf272d1703cbe12bbcb44c0e1273bc8d937adf7c531edd7eafe4",
           "purpose": "Change reversible account relationship or saved state.",
           "terminal": {
             "kind": "operation",
             "path": "sites/v2ex/operations/account-actions.md",
-            "sha256": "0e5fb5633a1f4d956d7aa89e314dcd8c4aadefcdd457b02b315bcd6db5aa9281"
+            "sha256": "b9a82cd3fa31e5dfc0952edf97280375b873b770d13f98cd200fba984bffc3c3"
           }
         },
         "authentication": {
@@ -39551,12 +39559,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "9a23459a44630f9fce56ffd4d0038ea59b8848415e78acbc97c07f8114c6c816",
+          "policy_sha256": "778d449edb12cf272d1703cbe12bbcb44c0e1273bc8d937adf7c531edd7eafe4",
           "purpose": "Open, change, or clear an authenticated browser session.",
           "terminal": {
             "kind": "operation",
             "path": "sites/v2ex/operations/authentication.md",
-            "sha256": "abe7656e0b794e4205f1b89ac0d0d9ea2bfe8bd09c4297d9b4279c4d6a25da4a"
+            "sha256": "7a1ba6b58e4550903070d538b717384b7c4ea2c5e313fdbbb72aac5fe7bc9cbb"
           }
         },
         "content": {
@@ -39815,12 +39823,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "9a23459a44630f9fce56ffd4d0038ea59b8848415e78acbc97c07f8114c6c816",
+          "policy_sha256": "778d449edb12cf272d1703cbe12bbcb44c0e1273bc8d937adf7c531edd7eafe4",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/v2ex/operations/content.md",
-            "sha256": "ed25643218ef9788a0765b9f041cb6edf40ccd1e71437ceb72cbf2509fb5861b"
+            "sha256": "429a5ab0acdbf8120bd1c4d70860d15443481b204f0281ec727da0015f2c0fed"
           }
         },
         "private-content": {
@@ -39858,16 +39866,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "9a23459a44630f9fce56ffd4d0038ea59b8848415e78acbc97c07f8114c6c816",
+          "policy_sha256": "778d449edb12cf272d1703cbe12bbcb44c0e1273bc8d937adf7c531edd7eafe4",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/v2ex/operations/private-content.md",
-            "sha256": "99db67d461551c87979712b3f9a73709655eef5ed0138489b9b08b007423f924"
+            "sha256": "fee0a07acb20cefbfd9616fccb2a00a0a7dd8eecb194fe5ef678eb8f234a8c6b"
           }
         }
       },
-      "policy_sha256": "9a23459a44630f9fce56ffd4d0038ea59b8848415e78acbc97c07f8114c6c816",
+      "policy_sha256": "778d449edb12cf272d1703cbe12bbcb44c0e1273bc8d937adf7c531edd7eafe4",
       "terminal": "operation"
     },
     "wanfang": {
@@ -40859,12 +40867,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "fe850910e20949248d867b786fb8ba6f525ea8a61d6b349ac040bef7c4f02ebb",
+          "policy_sha256": "5053f8dcbd5e67d6d0d08f67516ffebf88101d9edfc0b57c7b54951f550c103f",
           "purpose": "Read account identity or account-scoped metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/weread/operations/account.md",
-            "sha256": "3c696c924ddedafb9c9ea5eedd5adbd9b74f70aea9e5daf1512c23e7d22e7b23"
+            "sha256": "4fc8a1ae6591d9882e6348d2dc009773bedf0cbd36045ada66f12c67f09678e2"
           }
         },
         "analytics": {
@@ -40907,12 +40915,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "fe850910e20949248d867b786fb8ba6f525ea8a61d6b349ac040bef7c4f02ebb",
+          "policy_sha256": "5053f8dcbd5e67d6d0d08f67516ffebf88101d9edfc0b57c7b54951f550c103f",
           "purpose": "Read aggregate metrics, trends, or rankings.",
           "terminal": {
             "kind": "operation",
             "path": "sites/weread/operations/analytics.md",
-            "sha256": "46b515b66f980f9d40fcca0f29cbcdc9228c6b019694ef68ec12b0e3ddd2c97a"
+            "sha256": "0464157f3ff3f06446810d495936016579c7637fc994ccef88ff71a8529cb720"
           }
         },
         "authentication": {
@@ -40947,12 +40955,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "fe850910e20949248d867b786fb8ba6f525ea8a61d6b349ac040bef7c4f02ebb",
+          "policy_sha256": "5053f8dcbd5e67d6d0d08f67516ffebf88101d9edfc0b57c7b54951f550c103f",
           "purpose": "Open, change, or clear an authenticated browser session.",
           "terminal": {
             "kind": "operation",
             "path": "sites/weread/operations/authentication.md",
-            "sha256": "61b778e0fcbd6536c3d29a1e159e67a069261e21419f50103ac06a85c2b19227"
+            "sha256": "e3796bb50260ccecabf93cef188ca3a081843d8d00c7b17730c29f67b5dbac8d"
           }
         },
         "discovery": {
@@ -41058,12 +41066,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "fe850910e20949248d867b786fb8ba6f525ea8a61d6b349ac040bef7c4f02ebb",
+          "policy_sha256": "5053f8dcbd5e67d6d0d08f67516ffebf88101d9edfc0b57c7b54951f550c103f",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/weread/operations/discovery.md",
-            "sha256": "b1ddba15b3f7386c4273cfc320c8212d40d8acec92b32adf709a7e6d5d8dd23d"
+            "sha256": "546e140846229a930baab8d3a3439fb63a97684b8888aacdcdec63371997b527"
           }
         },
         "private-content": {
@@ -41288,16 +41296,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "fe850910e20949248d867b786fb8ba6f525ea8a61d6b349ac040bef7c4f02ebb",
+          "policy_sha256": "5053f8dcbd5e67d6d0d08f67516ffebf88101d9edfc0b57c7b54951f550c103f",
           "purpose": "Read content that depends on an authenticated account.",
           "terminal": {
             "kind": "operation",
             "path": "sites/weread/operations/private-content.md",
-            "sha256": "5e2df4d3a5ad9de9f7760f673395d4cfd810c2f54d4feb11ee1c1edb523c5009"
+            "sha256": "58818e3fcc256ab2ea8c7fe612820de5086d9e4d405fdf95a0c6ab5173cde9db"
           }
         }
       },
-      "policy_sha256": "fe850910e20949248d867b786fb8ba6f525ea8a61d6b349ac040bef7c4f02ebb",
+      "policy_sha256": "5053f8dcbd5e67d6d0d08f67516ffebf88101d9edfc0b57c7b54951f550c103f",
       "terminal": "operation"
     },
     "weread-official": {
@@ -41305,132 +41313,6 @@
       "operations": {
         "content": {
           "commands": {
-            "book": {
-              "access": "read",
-              "args": [
-                {
-                  "help": "WeRead bookId (from `weread-official search`)",
-                  "name": "bookId",
-                  "positional": true,
-                  "required": true,
-                  "type": "str"
-                },
-                {
-                  "default": false,
-                  "help": "Skip /book/chapterinfo call",
-                  "name": "no-chapters",
-                  "required": false,
-                  "type": "boolean"
-                },
-                {
-                  "default": false,
-                  "help": "Skip /book/getprogress call",
-                  "name": "no-progress",
-                  "required": false,
-                  "type": "boolean"
-                }
-              ],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
-              "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            },
-            "notes": {
-              "access": "read",
-              "args": [
-                {
-                  "help": "Limit to one book; omit for full notebook overview",
-                  "name": "bookId",
-                  "positional": true,
-                  "required": false,
-                  "type": "str"
-                },
-                {
-                  "default": 20,
-                  "help": "Page size for the notebooks overview (1-100)",
-                  "name": "count",
-                  "required": false,
-                  "type": "int"
-                },
-                {
-                  "help": "Cursor: pass previous page sort value to fetch the next page (/user/notebooks)",
-                  "name": "last-sort",
-                  "required": false,
-                  "type": "int"
-                }
-              ],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
-              "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            },
-            "readdata": {
-              "access": "read",
-              "args": [
-                {
-                  "choices": [
-                    "weekly",
-                    "monthly",
-                    "annually",
-                    "overall"
-                  ],
-                  "default": "monthly",
-                  "help": "Stat window: weekly / monthly / annually / overall",
-                  "name": "mode",
-                  "required": false,
-                  "type": "str"
-                },
-                {
-                  "help": "Optional Unix timestamp inside the target period; default is current period",
-                  "name": "base-time",
-                  "required": false,
-                  "type": "int"
-                }
-              ],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
-              "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            },
             "review": {
               "access": "read",
               "args": [
@@ -41476,34 +41358,13 @@
                   "type": "int"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            },
-            "shelf": {
-              "access": "read",
-              "args": [],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
-              "fallback": {
-                "after_failure": "browser_agent",
+                "after_failure": "none",
                 "before_dispatch": "browser_agent"
               },
               "file_inputs": [],
@@ -41516,75 +41377,26 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "d16f3266d955da66267fd7e1dbaf9cdfc6ea30567dde1ce258059361ff600b3d",
+          "policy_sha256": "30b07dfc9f4d9329ce4ee190e87ecf7b2f149b7cbc99d034b073df3568170aae",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/weread-official/operations/content.md",
-            "sha256": "23a7cfd3ef50cf8dcffbd5feb90dba1508ea2789c7da07c04d7829fe6980d183"
+            "sha256": "fd49dcb42027ffefefef03af19811a3899a56df60e2a2a81094cdaa92db76037"
           }
         },
         "discovery": {
           "commands": {
-            "discover": {
-              "access": "read",
-              "args": [
-                {
-                  "help": "Anchor bookId for similar-book mode; omit for personalized recommendations",
-                  "name": "bookId",
-                  "positional": true,
-                  "required": false,
-                  "type": "str"
-                },
-                {
-                  "default": 12,
-                  "help": "Page size (default 12)",
-                  "name": "count",
-                  "required": false,
-                  "type": "int"
-                },
-                {
-                  "default": 0,
-                  "help": "Pagination cursor (recommend: previous searchIdx; similar: previous idx)",
-                  "name": "max-idx",
-                  "required": false,
-                  "type": "int"
-                },
-                {
-                  "help": "Carry-forward sessionId for /book/similar paging",
-                  "name": "session-id",
-                  "required": false,
-                  "type": "str"
-                }
-              ],
-              "auth": "none",
-              "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
-              "fallback": {
-                "after_failure": "browser_agent",
-                "before_dispatch": "browser_agent"
-              },
-              "file_inputs": [],
-              "file_outputs": [],
-              "opencli_version": "1.8.6",
-              "risk": "low",
-              "semantic_effect": "public_read",
-              "sensitive_output": [],
-              "strategy": "public",
-              "transport": "public_http"
-            },
             "list-apis": {
               "access": "read",
               "args": [],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
+                "after_failure": "none",
                 "before_dispatch": "browser_agent"
               },
               "file_inputs": [],
@@ -41638,13 +41450,13 @@
                   "type": "int"
                 }
               ],
-              "auth": "none",
+              "auth": "required",
               "browser": false,
-              "confirmation": "none",
-              "execution_state": "enabled",
-              "executor": "generic_manifest_read",
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
               "fallback": {
-                "after_failure": "browser_agent",
+                "after_failure": "none",
                 "before_dispatch": "browser_agent"
               },
               "file_inputs": [],
@@ -41657,16 +41469,238 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "d16f3266d955da66267fd7e1dbaf9cdfc6ea30567dde1ce258059361ff600b3d",
+          "policy_sha256": "30b07dfc9f4d9329ce4ee190e87ecf7b2f149b7cbc99d034b073df3568170aae",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/weread-official/operations/discovery.md",
-            "sha256": "48282e80836753ca3d2a421bd238fc3ccb73f4e66f4768adf8c82e86be361a00"
+            "sha256": "cfb90fa2468aaa732bca74b99e3806b594b6727e606df72e7635539656acb363"
+          }
+        },
+        "private-content": {
+          "commands": {
+            "book": {
+              "access": "read",
+              "args": [
+                {
+                  "help": "WeRead bookId (from `weread-official search`)",
+                  "name": "bookId",
+                  "positional": true,
+                  "required": true,
+                  "type": "str"
+                },
+                {
+                  "default": false,
+                  "help": "Skip /book/chapterinfo call",
+                  "name": "no-chapters",
+                  "required": false,
+                  "type": "boolean"
+                },
+                {
+                  "default": false,
+                  "help": "Skip /book/getprogress call",
+                  "name": "no-progress",
+                  "required": false,
+                  "type": "boolean"
+                }
+              ],
+              "auth": "required",
+              "browser": false,
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
+              "fallback": {
+                "after_failure": "none",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [],
+              "file_outputs": [],
+              "opencli_version": "1.8.6",
+              "risk": "medium",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private content",
+                "account identifiers"
+              ],
+              "strategy": "public",
+              "transport": "public_http"
+            },
+            "discover": {
+              "access": "read",
+              "args": [
+                {
+                  "help": "Anchor bookId for similar-book mode; omit for personalized recommendations",
+                  "name": "bookId",
+                  "positional": true,
+                  "required": false,
+                  "type": "str"
+                },
+                {
+                  "default": 12,
+                  "help": "Page size (default 12)",
+                  "name": "count",
+                  "required": false,
+                  "type": "int"
+                },
+                {
+                  "default": 0,
+                  "help": "Pagination cursor (recommend: previous searchIdx; similar: previous idx)",
+                  "name": "max-idx",
+                  "required": false,
+                  "type": "int"
+                },
+                {
+                  "help": "Carry-forward sessionId for /book/similar paging",
+                  "name": "session-id",
+                  "required": false,
+                  "type": "str"
+                }
+              ],
+              "auth": "required",
+              "browser": false,
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
+              "fallback": {
+                "after_failure": "none",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [],
+              "file_outputs": [],
+              "opencli_version": "1.8.6",
+              "risk": "medium",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private content",
+                "account identifiers"
+              ],
+              "strategy": "public",
+              "transport": "public_http"
+            },
+            "notes": {
+              "access": "read",
+              "args": [
+                {
+                  "help": "Limit to one book; omit for full notebook overview",
+                  "name": "bookId",
+                  "positional": true,
+                  "required": false,
+                  "type": "str"
+                },
+                {
+                  "default": 20,
+                  "help": "Page size for the notebooks overview (1-100)",
+                  "name": "count",
+                  "required": false,
+                  "type": "int"
+                },
+                {
+                  "help": "Cursor: pass previous page sort value to fetch the next page (/user/notebooks)",
+                  "name": "last-sort",
+                  "required": false,
+                  "type": "int"
+                }
+              ],
+              "auth": "required",
+              "browser": false,
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
+              "fallback": {
+                "after_failure": "none",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [],
+              "file_outputs": [],
+              "opencli_version": "1.8.6",
+              "risk": "medium",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private content",
+                "account identifiers"
+              ],
+              "strategy": "public",
+              "transport": "public_http"
+            },
+            "readdata": {
+              "access": "read",
+              "args": [
+                {
+                  "choices": [
+                    "weekly",
+                    "monthly",
+                    "annually",
+                    "overall"
+                  ],
+                  "default": "monthly",
+                  "help": "Stat window: weekly / monthly / annually / overall",
+                  "name": "mode",
+                  "required": false,
+                  "type": "str"
+                },
+                {
+                  "help": "Optional Unix timestamp inside the target period; default is current period",
+                  "name": "base-time",
+                  "required": false,
+                  "type": "int"
+                }
+              ],
+              "auth": "required",
+              "browser": false,
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
+              "fallback": {
+                "after_failure": "none",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [],
+              "file_outputs": [],
+              "opencli_version": "1.8.6",
+              "risk": "medium",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private content",
+                "account identifiers"
+              ],
+              "strategy": "public",
+              "transport": "public_http"
+            },
+            "shelf": {
+              "access": "read",
+              "args": [],
+              "auth": "required",
+              "browser": false,
+              "confirmation": "unsupported",
+              "execution_state": "disabled",
+              "executor": "none",
+              "fallback": {
+                "after_failure": "none",
+                "before_dispatch": "browser_agent"
+              },
+              "file_inputs": [],
+              "file_outputs": [],
+              "opencli_version": "1.8.6",
+              "risk": "medium",
+              "semantic_effect": "private_content_read",
+              "sensitive_output": [
+                "private content",
+                "account identifiers"
+              ],
+              "strategy": "public",
+              "transport": "public_http"
+            }
+          },
+          "policy_sha256": "30b07dfc9f4d9329ce4ee190e87ecf7b2f149b7cbc99d034b073df3568170aae",
+          "purpose": "Read credential-gated personal WeRead content and account activity.",
+          "terminal": {
+            "kind": "operation",
+            "path": "sites/weread-official/operations/private-content.md",
+            "sha256": "71861780fc15dfc66c243cbfb2f9064835b7fffa8aa2d6f46130788f5fa86435"
           }
         }
       },
-      "policy_sha256": "d16f3266d955da66267fd7e1dbaf9cdfc6ea30567dde1ce258059361ff600b3d",
+      "policy_sha256": "30b07dfc9f4d9329ce4ee190e87ecf7b2f149b7cbc99d034b073df3568170aae",
       "terminal": "operation"
     },
     "wikidata": {
@@ -41754,7 +41788,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "875bb670bdccf5c8c6f40999d59eded064e63a7b9650790bb6a5cbb7aa108318",
+          "policy_sha256": "0095b50b6c2b96bd541233f113d942d5745b7125aa672321bd8f877b2479c199",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -41763,7 +41797,7 @@
           }
         }
       },
-      "policy_sha256": "875bb670bdccf5c8c6f40999d59eded064e63a7b9650790bb6a5cbb7aa108318",
+      "policy_sha256": "0095b50b6c2b96bd541233f113d942d5745b7125aa672321bd8f877b2479c199",
       "terminal": "site"
     },
     "wikipedia": {
@@ -41857,12 +41891,12 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "230e0d7012b645670f11323ce167ae5cb4746e97d5dcc90cde4a2fd4a9d6e798",
+          "policy_sha256": "6faf052d08195420a5d6fddd5ad626f9a1e793f5ed3f850c5dee8c5799e33e65",
           "purpose": "Read encyclopedia pages and summaries.",
           "terminal": {
             "kind": "operation",
             "path": "sites/wikipedia/operations/articles.md",
-            "sha256": "6572c2489e09de07ba5c48470989b8642f593c8837699fee0bfcdb5eec76bc8b"
+            "sha256": "3c31dd3f04fac0c25739724f9c9df695781af889d460d2571a30b5e8e574f9a2"
           }
         },
         "discovery": {
@@ -41990,16 +42024,16 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "230e0d7012b645670f11323ce167ae5cb4746e97d5dcc90cde4a2fd4a9d6e798",
+          "policy_sha256": "6faf052d08195420a5d6fddd5ad626f9a1e793f5ed3f850c5dee8c5799e33e65",
           "purpose": "Search, browse, recommend, or discover site content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/wikipedia/operations/discovery.md",
-            "sha256": "fab20d9270d640aacfd2f822fb15da8efaa86238c9f0707ee4434a54932d19ea"
+            "sha256": "b932f163a41f1a43c9edbcfda51b6cff476c41cfa15bf0801e5d84f47a3c4781"
           }
         }
       },
-      "policy_sha256": "230e0d7012b645670f11323ce167ae5cb4746e97d5dcc90cde4a2fd4a9d6e798",
+      "policy_sha256": "6faf052d08195420a5d6fddd5ad626f9a1e793f5ed3f850c5dee8c5799e33e65",
       "terminal": "operation"
     },
     "wttr": {
@@ -42073,7 +42107,7 @@
               "transport": "public_http"
             }
           },
-          "policy_sha256": "5e9899bf3e210a9a2ed23d46d52649c9ffa0f8b9a3b22ba1a0e5be71653435ee",
+          "policy_sha256": "8f32583f4ceab167d92e8f121d6675186be83880c8d3f9ddf2dfde853b0d7a9a",
           "purpose": "Read low-risk public data without browser state.",
           "terminal": {
             "kind": "site",
@@ -42082,7 +42116,7 @@
           }
         }
       },
-      "policy_sha256": "5e9899bf3e210a9a2ed23d46d52649c9ffa0f8b9a3b22ba1a0e5be71653435ee",
+      "policy_sha256": "8f32583f4ceab167d92e8f121d6675186be83880c8d3f9ddf2dfde853b0d7a9a",
       "terminal": "site"
     },
     "xianyu": {
@@ -44700,15 +44734,15 @@
               "semantic_effect": "public_read",
               "sensitive_output": [],
               "strategy": "public",
-              "transport": "public_http"
+              "transport": "local"
             }
           },
-          "policy_sha256": "ee2545bccbf6c52893001c0918b7503f043bcac13306e93647f8fc8ce9b8d5e2",
+          "policy_sha256": "29c712a7ecebc308bdeab47ef374b43b0b015ee9cd287061fae1d4606f8f481f",
           "purpose": "Read site content and metadata.",
           "terminal": {
             "kind": "operation",
             "path": "sites/yollomi/operations/content.md",
-            "sha256": "233ef8868c4c22542794d559bd570e4b8822f65808c655c9bb5364b27c7b2c3f"
+            "sha256": "cb2cd4c5410a8dc1a8ff0074070537b2c18c71de5ee6c171bf55bd80729fa076"
           }
         },
         "destructive-actions": {
@@ -44757,12 +44791,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "ee2545bccbf6c52893001c0918b7503f043bcac13306e93647f8fc8ce9b8d5e2",
+          "policy_sha256": "29c712a7ecebc308bdeab47ef374b43b0b015ee9cd287061fae1d4606f8f481f",
           "purpose": "Delete, remove, revoke, or perform administrative changes.",
           "terminal": {
             "kind": "operation",
             "path": "sites/yollomi/operations/destructive-actions.md",
-            "sha256": "b280a4423275ea37a3072ea69f03b069528b50bf6d07e189c1b3a1c221818fb0"
+            "sha256": "8ae31a486f68babd4e9c3120245a57c52583213d4b3576213606d48f536794d3"
           }
         },
         "generation": {
@@ -44838,12 +44872,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "ee2545bccbf6c52893001c0918b7503f043bcac13306e93647f8fc8ce9b8d5e2",
+          "policy_sha256": "29c712a7ecebc308bdeab47ef374b43b0b015ee9cd287061fae1d4606f8f481f",
           "purpose": "Generate remote content, start AI work, or consume quota.",
           "terminal": {
             "kind": "operation",
             "path": "sites/yollomi/operations/generation.md",
-            "sha256": "a85847a3449640c5146bbb44ea2f72c6387fc107070df0cb30225dbe0ba046c0"
+            "sha256": "b94c1ae9abbadc1a981127cfb39f4f1ebd4781f24209222b5f67105f88bc1dc1"
           }
         },
         "publishing": {
@@ -44943,12 +44977,12 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "ee2545bccbf6c52893001c0918b7503f043bcac13306e93647f8fc8ce9b8d5e2",
+          "policy_sha256": "29c712a7ecebc308bdeab47ef374b43b0b015ee9cd287061fae1d4606f8f481f",
           "purpose": "Publish, create, edit, or upload remote content.",
           "terminal": {
             "kind": "operation",
             "path": "sites/yollomi/operations/publishing.md",
-            "sha256": "4411bc64c615768954a07bd5f51ac3ffdfcc4b9a80507d2c7c40fd7bb247f0f0"
+            "sha256": "d37069b1884ca07881ef216407c726523e36795c55ff8af4b6001199c5ebcd72"
           }
         },
         "write-actions": {
@@ -45329,16 +45363,16 @@
               "transport": "browser_cookie"
             }
           },
-          "policy_sha256": "ee2545bccbf6c52893001c0918b7503f043bcac13306e93647f8fc8ce9b8d5e2",
+          "policy_sha256": "29c712a7ecebc308bdeab47ef374b43b0b015ee9cd287061fae1d4606f8f481f",
           "purpose": "Change remote service state.",
           "terminal": {
             "kind": "operation",
             "path": "sites/yollomi/operations/write-actions.md",
-            "sha256": "b41b19fa86e25e99c3554a7299b235783310e7810ed0f6de54b6698f546dd537"
+            "sha256": "b3d74f7a228f714cc77a4e6496255537c7b0a88ec642717795f8d2fafab8ed7c"
           }
         }
       },
-      "policy_sha256": "ee2545bccbf6c52893001c0918b7503f043bcac13306e93647f8fc8ce9b8d5e2",
+      "policy_sha256": "29c712a7ecebc308bdeab47ef374b43b0b015ee9cd287061fae1d4606f8f481f",
       "terminal": "operation"
     },
     "youdao": {

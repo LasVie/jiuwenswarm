@@ -16,7 +16,6 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `content` | Read site content and metadata. | `comments`, `curated`, `frontpage`, `read`, `sequences`, `shortform`, `tag`, `tags`, `top`, `top-month`, `top-week`, `top-year`, `user`, `user-posts` | `sites/lesswrong/operations/content.md` |
-| `generation` | Generate remote content, start AI work, or consume quota. | `new` | `sites/lesswrong/operations/generation.md` |
+| `content` | Read site content and metadata. | `comments`, `curated`, `frontpage`, `new`, `read`, `sequences`, `shortform`, `tag`, `tags`, `top`, `top-month`, `top-week`, `top-year`, `user`, `user-posts` | `sites/lesswrong/operations/content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

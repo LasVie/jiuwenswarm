@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: eastmoney
   operation: content
-  policy_sha256: 75d77f758f7374a498ee5d839d88b52b941040382893f7c11c38431eaa3c42c0
+  policy_sha256: 97696cc63bc8bcf4a9036c32821166b81a08e871ed99fe24658a8d649bcdee43
   commands:
     announcement:
       executor: generic_manifest_read

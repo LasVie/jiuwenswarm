@@ -9,15 +9,12 @@ terminal: operation
 review:
   status: generated
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Public non-browser read candidates source-reviewed; credential-gated and remaining disabled capabilities pending review application.
 operations:
-  content:
-    purpose: Read site content and metadata.
+  private-content:
+    purpose: Read credential-gated content from a configured Confluence tenant.
     commands:
     - page
-  discovery:
-    purpose: Search, browse, recommend, or discover site content.
-    commands:
     - search
   publishing:
     purpose: Publish, create, edit, or upload remote content.
@@ -42,35 +39,39 @@ commands:
     sensitive_output: []
     notes: ''
   page:
-    operation: content
-    semantic_effect: public_read
-    risk: low
-    auth: none
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: browser_agent
+    fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output: []
-    notes: ''
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: Requires a configured Confluence tenant and credentials.
   search:
-    operation: discovery
-    semantic_effect: public_read
-    risk: low
-    auth: none
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: browser_agent
+    fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output: []
-    notes: ''
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: Requires a configured Confluence tenant and credentials.
   update:
     operation: publishing
     semantic_effect: public_write

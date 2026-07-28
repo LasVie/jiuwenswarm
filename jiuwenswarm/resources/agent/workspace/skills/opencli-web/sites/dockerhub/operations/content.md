@@ -1,11 +1,11 @@
 ---
 opencli_contract:
   version: 2
-  site: confluence
+  site: dockerhub
   operation: content
-  policy_sha256: 9e165c669a07b0bc222b8320a76389adf0ede9f619479faf88104cd50a896a3e
+  policy_sha256: 38bfbe736ebb3e8db159d38435a0576801a39d531ced8bddb6f0367ebc17e1e4
   commands:
-    page:
+    image:
       executor: generic_manifest_read
       execution_state: enabled
       semantic_effect: public_read
@@ -17,8 +17,8 @@ opencli_contract:
       opencli_version: 1.8.6
       access: read
       args:
-      - help: Confluence page id
-        name: id
+      - help: Image name (e.g. "nginx", "library/nginx", "bitnami/redis")
+        name: image
         positional: true
         required: true
         type: str
@@ -31,7 +31,7 @@ opencli_contract:
       sensitive_output: []
 ---
 
-# Confluence: content
+# Dockerhub: content
 
 Read site content and metadata.
 
@@ -39,7 +39,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `page` | `enabled` | `public_read` / `low` | `opencli_execute(site="confluence", operation="content", command="page", arguments={"id":"<id>"})`<br>Confluence page by id with storage and Markdown body | `id` (str, required, positional) |
+| `image` | `enabled` | `public_read` / `low` | `opencli_execute(site="dockerhub", operation="content", command="image", arguments={"image":"<image>"})`<br>Fetch a Docker Hub repository's public metadata (stars, pulls, last updated, status) | `image` (str, required, positional) |
 
 ## Safety and fallback
 

@@ -7,9 +7,9 @@ domains:
 aliases: []
 terminal: site
 review:
-  status: generated
+  status: reviewed
   owner: agent-c
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: All commands reviewed as low-risk public browser-free reads.
 operations:
   public-data:
     purpose: Read low-risk public data without browser state.
@@ -31,7 +31,7 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output: []
-    notes: ''
+    notes: Protocol and market data read only; no transaction authority and not investment advice.
   protocols:
     operation: public-data
     semantic_effect: public_read
@@ -46,4 +46,4 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output: []
-    notes: ''
+    notes: Protocol and market data read only; no transaction authority and not investment advice.

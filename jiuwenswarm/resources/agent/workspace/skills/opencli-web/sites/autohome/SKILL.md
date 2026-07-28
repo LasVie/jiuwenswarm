@@ -6,7 +6,7 @@ description: Route reviewed Autohome website operations through the OpenCLI Web 
 # Autohome
 
 Catalog site slug: `autohome`.
- Known domains: catalog did not declare one.
+ Known domains: `www.autohome.com.cn`, `k.autohome.com.cn`.
 
 Read this file only through the main Agent's SkillTool. Do not delegate disclosure to a general-purpose or browser subagent and do not replace it with a filesystem read.
 

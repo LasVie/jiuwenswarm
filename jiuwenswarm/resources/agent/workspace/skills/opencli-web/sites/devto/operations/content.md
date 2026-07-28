@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: devto
   operation: content
-  policy_sha256: 8a2bb24957170eddc6c5d7eb8c38314767fb84adc70c1eea3ab934af68e8cb28
+  policy_sha256: ed727f40f9cfdf35572dcd0e1d918072a1c4d040ffd8c59c2edc23928ae0c580
   commands:
     latest:
       executor: generic_manifest_read

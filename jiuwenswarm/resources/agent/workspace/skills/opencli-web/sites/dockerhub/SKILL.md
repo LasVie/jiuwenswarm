@@ -16,7 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
+| `content` | Read site content and metadata. | `image` | `sites/dockerhub/operations/content.md` |
 | `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/dockerhub/operations/discovery.md` |
-| `generation` | Generate remote content, start AI work, or consume quota. | `image` | `sites/dockerhub/operations/generation.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

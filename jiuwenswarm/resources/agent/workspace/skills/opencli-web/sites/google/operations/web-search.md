@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: google
   operation: web-search
-  policy_sha256: 8f6d8d7c5dcbdbaf36ba4f043555ecb5531cf4b95747dddf11c5558c61705509
+  policy_sha256: fa46ccffc38aca4e255838c717dd023d7184f058e11cb0725d01d86a1c273ce7
   commands:
     search:
       executor: none

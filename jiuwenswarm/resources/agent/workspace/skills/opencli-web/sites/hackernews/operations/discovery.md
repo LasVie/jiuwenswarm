@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: hackernews
   operation: discovery
-  policy_sha256: c01b909ca1346a48bab7fdec539efd83fcbf716ed7d303362da917b10b43ac60
+  policy_sha256: 3346280edd76e3d4c00f854d7eb4f472687b9545e3a8191f6cf7e0873edfc05c
   commands:
     search:
       executor: generic_manifest_read

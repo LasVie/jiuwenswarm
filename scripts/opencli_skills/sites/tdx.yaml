@@ -9,7 +9,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Read-only market-data capability source-reviewed; disabled capability pending review application.
 operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
@@ -32,4 +32,4 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: Market-data read only; no trading authority and not investment advice.

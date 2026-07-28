@@ -3,14 +3,14 @@ opencli_contract:
   version: 2
   site: jira
   operation: discovery
-  policy_sha256: 653e752fd0a366bfa17ccb2e5f875ea9bc0d6959e7cae877fcd365eff4fe36da
+  policy_sha256: 691c2064bdb38815255e941dfddf957d1c0d04cf322401252a6f17285f78d7f1
   commands:
     search:
-      executor: generic_manifest_read
-      execution_state: enabled
-      semantic_effect: public_read
-      risk: low
-      auth: none
+      executor: none
+      execution_state: quarantined
+      semantic_effect: private_content_read
+      risk: high
+      auth: required
       transport: public_http
       strategy: public
       browser: false
@@ -27,13 +27,15 @@ opencli_contract:
         name: limit
         required: false
         type: int
-      confirmation: none
+      confirmation: unsupported
       fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
+        before_dispatch: none
+        after_failure: none
       file_inputs: []
       file_outputs: []
-      sensitive_output: []
+      sensitive_output:
+      - private issue content
+      - account identifiers
 ---
 
 # Jira: discovery
@@ -44,10 +46,11 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `search` | `enabled` | `public_read` / `low` | `opencli_execute(site="jira", operation="discovery", command="search", arguments={"jql":"<jql>"})`<br>Search Jira issues with JQL | `jql` (str, required, positional); `limit` (int, optional, default=20) |
+| `search` | `quarantined` | `private_content_read` / `high` | Not executable; use the declared fallback if permitted<br>Search Jira issues with JQL | `jql` (str, required, positional); `limit` (int, optional, default=20) |
 
 ## Safety and fallback
 
 - Unknown commands and arguments are rejected before subprocess start.
 - Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- These commands are reviewed public reads. A proven pre-dispatch failure and a read failure may use `browser_agent` once; never run both paths concurrently.
+- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
+- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.

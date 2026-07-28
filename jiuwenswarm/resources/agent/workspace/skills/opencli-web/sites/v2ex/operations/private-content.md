@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: v2ex
   operation: private-content
-  policy_sha256: 9a23459a44630f9fce56ffd4d0038ea59b8848415e78acbc97c07f8114c6c816
+  policy_sha256: 778d449edb12cf272d1703cbe12bbcb44c0e1273bc8d937adf7c531edd7eafe4
   commands:
     notifications:
       executor: none

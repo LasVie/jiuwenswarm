@@ -9,7 +9,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-b
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Three public browser-free read commands are source-audited; remaining browser, authenticated, and local-write commands stay fail-closed pending later review.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.

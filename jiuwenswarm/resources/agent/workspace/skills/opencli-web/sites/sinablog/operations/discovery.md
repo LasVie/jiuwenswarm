@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: sinablog
   operation: discovery
-  policy_sha256: aa2acb4659da99cb537103729b3bc648d70eeac694465f6da7f2164b73360a28
+  policy_sha256: 45d3818c3bb8413372cf3f16a5f3c7e55ba246193e5a860fa4add5e3ff26fa46
   commands:
     search:
       executor: generic_manifest_read

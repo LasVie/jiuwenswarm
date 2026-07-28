@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: confluence
   operation: publishing
-  policy_sha256: 9e165c669a07b0bc222b8320a76389adf0ede9f619479faf88104cd50a896a3e
+  policy_sha256: b9d94b9679e2cc633e7c3e0e02eac2b58c19969417fa5a4f37931d8b06fc5eaf
   commands:
     create:
       executor: none

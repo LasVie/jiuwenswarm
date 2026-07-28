@@ -2,13 +2,14 @@ schema_version: 1
 catalog_version: opencli-1.8.6
 site: guazi
 display_name: Guazi
-domains: []
+domains:
+- m.guazi.com
 aliases: []
 terminal: site
 review:
-  status: generated
+  status: reviewed
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: All commands source-reviewed as public non-browser reads against OpenCLI 1.8.6.
 operations:
   public-data:
     purpose: Read low-risk public data without browser state.

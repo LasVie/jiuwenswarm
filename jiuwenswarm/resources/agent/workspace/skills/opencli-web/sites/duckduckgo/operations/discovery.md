@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: duckduckgo
   operation: discovery
-  policy_sha256: e092074b61e3024749ae3133a3ef3784467d0eb1d8a2a2369e5592aa83597645
+  policy_sha256: 727423424b1045e2d3305f3bb03b8d62cad51222c1cf73772ff6f0e07e9a7ab7
   commands:
     suggest:
       executor: generic_manifest_read

@@ -1,45 +1,46 @@
 ---
 opencli_contract:
   version: 2
-  site: lesswrong
-  operation: generation
-  policy_sha256: 09260253b3cc2232c5b1d13f95df38bddde26310c970ef660f5811e93bc1816b
+  site: spotify
+  operation: account
+  policy_sha256: a79d0b04af7de90a372da7a714ea9f00e6d21d6dac4df21fe39708f531fe47ac
   commands:
-    new:
+    status:
       executor: none
       execution_state: disabled
-      semantic_effect: quota_consumption
-      risk: high
-      auth: none
-      transport: public_http
+      semantic_effect: private_account_read
+      risk: medium
+      auth: required
+      transport: mixed
       strategy: public
       browser: false
       opencli_version: 1.8.6
       access: read
-      args:
-      - default: 10
-        help: Number of results
-        name: limit
-        required: false
-        type: int
+      args: []
       confirmation: unsupported
       fallback:
         before_dispatch: browser_agent
         after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
+      file_inputs:
+      - ~/.opencli/spotify.env
+      - ~/.opencli/spotify-tokens.json
+      file_outputs:
+      - ~/.opencli/spotify-tokens.json
+      sensitive_output:
+      - private playback state
+      - account identifiers
+      - OAuth access and refresh tokens
 ---
 
-# Lesswrong: generation
+# Spotify: account
 
-Generate remote content, start AI work, or consume quota.
+Read account-scoped playback state.
 
 This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `new` | `disabled` | `quota_consumption` / `high` | Not executable; use the declared fallback if permitted<br>Latest posts | `limit` (int, optional, default=10) |
+| `status` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show current playback status | none |
 
 ## Safety and fallback
 

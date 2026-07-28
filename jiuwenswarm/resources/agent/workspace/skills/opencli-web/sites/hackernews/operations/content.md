@@ -3,8 +3,32 @@ opencli_contract:
   version: 2
   site: hackernews
   operation: content
-  policy_sha256: c01b909ca1346a48bab7fdec539efd83fcbf716ed7d303362da917b10b43ac60
+  policy_sha256: 3346280edd76e3d4c00f854d7eb4f472687b9545e3a8191f6cf7e0873edfc05c
   commands:
+    ask:
+      executor: generic_manifest_read
+      execution_state: enabled
+      semantic_effect: public_read
+      risk: low
+      auth: none
+      transport: public_http
+      strategy: public
+      browser: false
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - default: 20
+        help: Number of stories
+        name: limit
+        required: false
+        type: int
+      confirmation: none
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: browser_agent
+      file_inputs: []
+      file_outputs: []
+      sensitive_output: []
     best:
       executor: generic_manifest_read
       execution_state: enabled
@@ -43,6 +67,30 @@ opencli_contract:
       args:
       - default: 20
         help: Number of job postings
+        name: limit
+        required: false
+        type: int
+      confirmation: none
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: browser_agent
+      file_inputs: []
+      file_outputs: []
+      sensitive_output: []
+    new:
+      executor: generic_manifest_read
+      execution_state: enabled
+      semantic_effect: public_read
+      risk: low
+      auth: none
+      transport: public_http
+      strategy: public
+      browser: false
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - default: 20
+        help: Number of stories
         name: limit
         required: false
         type: int
@@ -179,8 +227,10 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
+| `ask` | `enabled` | `public_read` / `low` | `opencli_execute(site="hackernews", operation="content", command="ask")`<br>Hacker News Ask HN posts | `limit` (int, optional, default=20) |
 | `best` | `enabled` | `public_read` / `low` | `opencli_execute(site="hackernews", operation="content", command="best")`<br>Hacker News best stories | `limit` (int, optional, default=20) |
 | `jobs` | `enabled` | `public_read` / `low` | `opencli_execute(site="hackernews", operation="content", command="jobs")`<br>Hacker News job postings | `limit` (int, optional, default=20) |
+| `new` | `enabled` | `public_read` / `low` | `opencli_execute(site="hackernews", operation="content", command="new")`<br>Hacker News newest stories | `limit` (int, optional, default=20) |
 | `read` | `enabled` | `public_read` / `low` | `opencli_execute(site="hackernews", operation="content", command="read", arguments={"id":"<id>"})`<br>Read a Hacker News story and its comment tree | `id` (str, required, positional); `limit` (int, optional, default=25); `depth` (int, optional, default=2); `replies` (int, optional, default=5); `max-length` (int, optional, default=2000) |
 | `show` | `enabled` | `public_read` / `low` | `opencli_execute(site="hackernews", operation="content", command="show")`<br>Hacker News Show HN posts | `limit` (int, optional, default=20) |
 | `top` | `enabled` | `public_read` / `low` | `opencli_execute(site="hackernews", operation="content", command="top")`<br>Hacker News top stories | `limit` (int, optional, default=20) |

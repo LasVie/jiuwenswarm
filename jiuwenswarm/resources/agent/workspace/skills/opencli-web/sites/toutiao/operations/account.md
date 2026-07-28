@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: toutiao
   operation: account
-  policy_sha256: da368914918f474e3bade1c902a1c606f023957c389be677242cb8698fe1eb8e
+  policy_sha256: bedccca74431752a898229e2e02f72f80ac76189f37dbd33c9fd5bc24be2d961
   commands:
     whoami:
       executor: none

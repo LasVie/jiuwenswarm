@@ -58,10 +58,10 @@ The terminal contract may be the site `SKILL.md` itself for a compact low-risk p
 | 51Job (jobs.51job.com, we.51job.com) | 4 | `terminal-operation` | `sites/51job/SKILL.md` |
 | Aibase (www.aibase.com) | 1 | `terminal-operation` | `sites/aibase/SKILL.md` |
 | Amazon (amazon.com) | 9 | `terminal-operation` | `sites/amazon/SKILL.md` |
-| Apple Podcasts | 3 | `terminal-site` | `sites/apple-podcasts/SKILL.md` |
+| Apple Podcasts (itunes.apple.com, rss.marketingtools.apple.com) | 3 | `terminal-site` | `sites/apple-podcasts/SKILL.md` |
 | Archive (archive.org) | 4 | `terminal-operation` | `sites/archive/SKILL.md` |
-| Arxiv | 4 | `terminal-operation` | `sites/arxiv/SKILL.md` |
-| Autohome | 2 | `terminal-site` | `sites/autohome/SKILL.md` |
+| Arxiv (export.arxiv.org) | 4 | `terminal-operation` | `sites/arxiv/SKILL.md` |
+| Autohome (www.autohome.com.cn, k.autohome.com.cn) | 2 | `terminal-site` | `sites/autohome/SKILL.md` |
 | Baidu Scholar (xueshu.baidu.com) | 1 | `terminal-operation` | `sites/baidu-scholar/SKILL.md` |
 | Band (band.us, www.band.us) | 6 | `terminal-operation` | `sites/band/SKILL.md` |
 | Barchart (www.barchart.com) | 4 | `terminal-operation` | `sites/barchart/SKILL.md` |
@@ -90,7 +90,7 @@ The terminal contract may be the site `SKILL.md` itself for a compact low-risk p
 | Dianping (dianping.com, www.dianping.com) | 4 | `terminal-operation` | `sites/dianping/SKILL.md` |
 | Dictionary (api.dictionaryapi.dev) | 3 | `terminal-site` | `sites/dictionary/SKILL.md` |
 | Dockerhub (hub.docker.com) | 2 | `terminal-operation` | `sites/dockerhub/SKILL.md` |
-| Dongchedi | 6 | `terminal-operation` | `sites/dongchedi/SKILL.md` |
+| Dongchedi (www.dongchedi.com) | 6 | `terminal-operation` | `sites/dongchedi/SKILL.md` |
 | Douban (book.douban.com, douban.com) | 11 | `terminal-operation` | `sites/douban/SKILL.md` |
 | Doubao (www.doubao.com) | 11 | `terminal-operation` | `sites/doubao/SKILL.md` |
 | Douyin (creator.douyin.com, www.douyin.com) | 16 | `terminal-operation` | `sites/douyin/SKILL.md` |
@@ -111,8 +111,8 @@ The terminal contract may be the site `SKILL.md` itself for a compact low-risk p
 | Gov Law (flk.npc.gov.cn) | 2 | `terminal-operation` | `sites/gov-law/SKILL.md` |
 | Gov Policy (sousuo.www.gov.cn, www.gov.cn) | 2 | `terminal-operation` | `sites/gov-policy/SKILL.md` |
 | Grok (grok.com) | 15 | `terminal-operation` | `sites/grok/SKILL.md` |
-| Guazi | 2 | `terminal-site` | `sites/guazi/SKILL.md` |
-| Hackernews (news.ycombinator.com) | 9 | `terminal-operation` | `sites/hackernews/SKILL.md` |
+| Guazi (m.guazi.com) | 2 | `terminal-site` | `sites/guazi/SKILL.md` |
+| Hackernews (news.ycombinator.com, hacker-news.firebaseio.com) | 9 | `terminal-operation` | `sites/hackernews/SKILL.md` |
 | Hf (huggingface.co) | 7 | `terminal-operation` | `sites/hf/SKILL.md` |
 | Hltv (www.hltv.org) | 13 | `terminal-operation` | `sites/hltv/SKILL.md` |
 | Homebrew (formulae.brew.sh) | 3 | `terminal-site` | `sites/homebrew/SKILL.md` |
@@ -170,11 +170,11 @@ The terminal contract may be the site `SKILL.md` itself for a compact low-risk p
 | Rubygems (rubygems.org) | 2 | `terminal-site` | `sites/rubygems/SKILL.md` |
 | Semanticscholar (api.semanticscholar.org) | 4 | `terminal-operation` | `sites/semanticscholar/SKILL.md` |
 | Sinablog (blog.sina.com.cn) | 4 | `terminal-operation` | `sites/sinablog/SKILL.md` |
-| Sinafinance (app.cj.sina.com.cn, finance.sina.cn) | 4 | `terminal-operation` | `sites/sinafinance/SKILL.md` |
+| Sinafinance (app.cj.sina.com.cn, finance.sina.com.cn) | 4 | `terminal-operation` | `sites/sinafinance/SKILL.md` |
 | Slock (app.slock.ai) | 44 | `terminal-operation` | `sites/slock/SKILL.md` |
 | Smzdm (www.smzdm.com) | 1 | `terminal-operation` | `sites/smzdm/SKILL.md` |
-| Spotify | 11 | `terminal-operation` | `sites/spotify/SKILL.md` |
-| Stackoverflow (stackoverflow.com) | 8 | `terminal-operation` | `sites/stackoverflow/SKILL.md` |
+| Spotify (accounts.spotify.com, api.spotify.com) | 11 | `terminal-operation` | `sites/spotify/SKILL.md` |
+| Stackoverflow (stackoverflow.com, api.stackexchange.com) | 8 | `terminal-operation` | `sites/stackoverflow/SKILL.md` |
 | Steam (store.steampowered.com) | 3 | `terminal-site` | `sites/steam/SKILL.md` |
 | Substack (substack.com) | 3 | `terminal-operation` | `sites/substack/SKILL.md` |
 | Suno (suno.com) | 6 | `terminal-operation` | `sites/suno/SKILL.md` |
@@ -195,7 +195,7 @@ The terminal contract may be the site `SKILL.md` itself for a compact low-risk p
 | Weibo (weibo.com) | 13 | `terminal-operation` | `sites/weibo/SKILL.md` |
 | Weixin (mp.weixin.qq.com, weixin.sogou.com) | 4 | `terminal-operation` | `sites/weixin/SKILL.md` |
 | Weread (weread.qq.com) | 11 | `terminal-operation` | `sites/weread/SKILL.md` |
-| Weread Official (weread.qq.com) | 8 | `terminal-operation` | `sites/weread-official/SKILL.md` |
+| Weread Official (weread.qq.com, i.weread.qq.com) | 8 | `terminal-operation` | `sites/weread-official/SKILL.md` |
 | Wikidata (www.wikidata.org) | 2 | `terminal-site` | `sites/wikidata/SKILL.md` |
 | Wikipedia (wikipedia.org) | 5 | `terminal-operation` | `sites/wikipedia/SKILL.md` |
 | Wttr (wttr.in) | 2 | `terminal-site` | `sites/wttr/SKILL.md` |

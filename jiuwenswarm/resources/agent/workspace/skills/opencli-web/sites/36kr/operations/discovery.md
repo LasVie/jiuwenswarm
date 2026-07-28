@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: 36kr
   operation: discovery
-  policy_sha256: c2da1381f32c200a7df563c38a42fe7f34f2ba6d492ebff6f896195d1f207c11
+  policy_sha256: 2461811e6717b8b43920591acff9a7d6017940d889dc14557c3733a8635e44dd
   commands:
     news:
       executor: generic_manifest_read

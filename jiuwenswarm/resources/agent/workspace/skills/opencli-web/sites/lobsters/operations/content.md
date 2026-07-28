@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: lobsters
   operation: content
-  policy_sha256: b87a861692d491b5d2d2a5a657346b44598a580d9838d17e08e29830ef0f3a85
+  policy_sha256: d6b7614221f62ecda60c6e2397512a783ca588b95d09c22acfa05b9a80519cfd
   commands:
     active:
       executor: generic_manifest_read

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: wikipedia
   operation: articles
-  policy_sha256: 230e0d7012b645670f11323ce167ae5cb4746e97d5dcc90cde4a2fd4a9d6e798
+  policy_sha256: 6faf052d08195420a5d6fddd5ad626f9a1e793f5ed3f850c5dee8c5799e33e65
   commands:
     page:
       executor: generic_manifest_read

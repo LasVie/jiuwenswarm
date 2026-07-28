@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: semanticscholar
   operation: discovery
-  policy_sha256: db7514ac48b6b1f48acd06b27a99ee92ed37ce63cebf5d0449e5ebd5f654387c
+  policy_sha256: 80cdefddefe3c688c608e3f21efc4648d5112d91919554bf26227e9a9924071d
   commands:
     search:
       executor: generic_manifest_read

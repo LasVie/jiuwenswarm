@@ -2,20 +2,22 @@ schema_version: 1
 catalog_version: opencli-1.8.6
 site: spotify
 display_name: Spotify
-domains: []
+domains:
+- accounts.spotify.com
+- api.spotify.com
 aliases: []
 terminal: operation
 review:
   status: generated
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Public non-browser read candidates source-reviewed; credential-gated and remaining disabled capabilities pending review application.
 operations:
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - auth
-  content:
-    purpose: Read site content and metadata.
+  account:
+    purpose: Read account-scoped playback state.
     commands:
     - status
   discovery:
@@ -143,17 +145,21 @@ commands:
     operation: discovery
     semantic_effect: public_read
     risk: low
-    auth: none
-    transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
+    auth: required
+    transport: mixed
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: browser_agent
-    file_inputs: []
-    file_outputs: []
-    sensitive_output: []
-    notes: ''
+    fallback_after: none
+    file_inputs:
+    - ~/.opencli/spotify.env
+    - ~/.opencli/spotify-tokens.json
+    file_outputs:
+    - ~/.opencli/spotify-tokens.json
+    sensitive_output:
+    - OAuth access and refresh tokens
+    notes: Token refresh may rewrite the local Spotify token file.
   shuffle:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -170,20 +176,26 @@ commands:
     sensitive_output: []
     notes: ''
   status:
-    operation: content
-    semantic_effect: public_read
-    risk: low
-    auth: none
-    transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
+    operation: account
+    semantic_effect: private_account_read
+    risk: medium
+    auth: required
+    transport: mixed
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: browser_agent
-    file_inputs: []
-    file_outputs: []
-    sensitive_output: []
-    notes: ''
+    fallback_after: none
+    file_inputs:
+    - ~/.opencli/spotify.env
+    - ~/.opencli/spotify-tokens.json
+    file_outputs:
+    - ~/.opencli/spotify-tokens.json
+    sensitive_output:
+    - private playback state
+    - account identifiers
+    - OAuth access and refresh tokens
+    notes: Token refresh may rewrite the local Spotify token file.
   volume:
     operation: write-actions
     semantic_effect: reversible_remote_write

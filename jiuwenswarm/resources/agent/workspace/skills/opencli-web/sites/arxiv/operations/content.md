@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: arxiv
   operation: content
-  policy_sha256: 998590eea391c1c50c41701f6bd820cb23ed8f22b8da1b6022beddb16e7240ee
+  policy_sha256: 4a3bb43b8bb1be059b85020e071bb03afbd71dfd3f1158bb30f51d0f84853bd2
   commands:
     author:
       executor: generic_manifest_read

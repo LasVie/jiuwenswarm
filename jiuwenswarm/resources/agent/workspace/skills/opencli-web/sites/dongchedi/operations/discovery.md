@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: dongchedi
   operation: discovery
-  policy_sha256: c6db486f5a7e9e3baa554645dbe4967de8b7363c43837b609a909d4b22065a71
+  policy_sha256: 81b44f0c505ccc9d41660c415d3a83222ce5dd08f1ea02b857477541bd9b1328
   commands:
     search:
       executor: generic_manifest_read

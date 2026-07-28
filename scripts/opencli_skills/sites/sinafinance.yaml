@@ -4,15 +4,16 @@ site: sinafinance
 display_name: Sinafinance
 domains:
 - app.cj.sina.com.cn
+- finance.sina.com.cn
 - finance.sina.cn
-- finance.sina.com.cn/roll
-- suggest3.sinajs.cn,hq.sinajs.cn
+- suggest3.sinajs.cn
+- hq.sinajs.cn
 aliases: []
 terminal: operation
 review:
   status: generated
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Public non-browser reads source-reviewed; remaining disabled capabilities pending review application.
 operations:
   content:
     purpose: Read site content and metadata.
@@ -59,7 +60,7 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: Market-data read only; no trading authority and not investment advice.
   stock:
     operation: content
     semantic_effect: public_read
@@ -91,4 +92,4 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: Market-data read only; no trading authority and not investment advice.

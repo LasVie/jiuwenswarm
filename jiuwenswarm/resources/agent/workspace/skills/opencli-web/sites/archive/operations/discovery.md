@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: archive
   operation: discovery
-  policy_sha256: 18afb99fbced0891f42c87a63ce8801f7273faea2ad5155151f924e35d3c82fa
+  policy_sha256: f1d3b75584e23215c6623efc6fa3acef8c524be933a547aca5a6ca3623d0273b
   commands:
     search:
       executor: generic_manifest_read

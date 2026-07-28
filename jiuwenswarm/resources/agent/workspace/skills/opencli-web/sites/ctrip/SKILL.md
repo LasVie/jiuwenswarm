@@ -6,7 +6,7 @@ description: Route reviewed Ctrip website operations through the OpenCLI Web str
 # Ctrip
 
 Catalog site slug: `ctrip`.
- Known domains: `ctrip.com`, `flights.ctrip.com`, `hotels.ctrip.com`.
+ Known domains: `ctrip.com`, `flights.ctrip.com`, `hotels.ctrip.com`, `m.ctrip.com`.
 
 Read this file only through the main Agent's SkillTool. Do not delegate disclosure to a general-purpose or browser subagent and do not replace it with a filesystem read.
 

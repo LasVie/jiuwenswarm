@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: dblp
   operation: discovery
-  policy_sha256: 55d63ee00b219be20681378d7fb15288353ba81056caf2b1e42c9fca47c03978
+  policy_sha256: b41124883ffbbbf139ff22127f8956daac462aeab73818a9fac6a6a0cf2ead40
   commands:
     search:
       executor: generic_manifest_read

@@ -1,45 +1,52 @@
 ---
 opencli_contract:
   version: 2
-  site: dockerhub
-  operation: generation
-  policy_sha256: 5419955245424527c58a623654566ed71841248fcc1472478bbd7a01c1370e48
+  site: paperreview
+  operation: private-content
+  policy_sha256: e2340c7ea5cda0685bb79c2758686d307f57d91bfba9107e5d7932617265f589
   commands:
-    image:
+    review:
       executor: none
       execution_state: disabled
-      semantic_effect: quota_consumption
+      semantic_effect: private_content_read
       risk: high
-      auth: none
+      auth: required
       transport: public_http
       strategy: public
       browser: false
       opencli_version: 1.8.6
       access: read
       args:
-      - help: Image name (e.g. "nginx", "library/nginx", "bitnami/redis")
-        name: image
+      - help: Review token returned by paperreview.ai
+        name: token
         positional: true
         required: true
         type: str
+      - default: 30
+        help: 'Max seconds for the overall command (default: 30)'
+        name: timeout
+        required: false
+        type: int
       confirmation: unsupported
       fallback:
         before_dispatch: browser_agent
         after_failure: none
       file_inputs: []
       file_outputs: []
-      sensitive_output: []
+      sensitive_output:
+      - review token
+      - private review content
 ---
 
-# Dockerhub: generation
+# Paperreview: private-content
 
-Generate remote content, start AI work, or consume quota.
+Read private review content addressed by a bearer capability token.
 
 This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `image` | `disabled` | `quota_consumption` / `high` | Not executable; use the declared fallback if permitted<br>Fetch a Docker Hub repository's public metadata (stars, pulls, last updated, status) | `image` (str, required, positional) |
+| `review` | `disabled` | `private_content_read` / `high` | Not executable; use the declared fallback if permitted<br>Fetch a paperreview.ai review by token | `token` (str, required, positional); `timeout` (int, optional, default=30) |
 
 ## Safety and fallback
 

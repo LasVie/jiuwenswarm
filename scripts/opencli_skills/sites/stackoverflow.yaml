@@ -4,12 +4,13 @@ site: stackoverflow
 display_name: Stackoverflow
 domains:
 - stackoverflow.com
+- api.stackexchange.com
 aliases: []
 terminal: operation
 review:
-  status: generated
+  status: reviewed
   owner: agent-b
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Source-audited against OpenCLI 1.8.6; all commands are public browser-free reads.
 operations:
   content:
     purpose: Read site content and metadata.

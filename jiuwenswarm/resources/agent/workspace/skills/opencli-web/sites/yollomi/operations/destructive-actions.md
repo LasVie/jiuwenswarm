@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: yollomi
   operation: destructive-actions
-  policy_sha256: ee2545bccbf6c52893001c0918b7503f043bcac13306e93647f8fc8ce9b8d5e2
+  policy_sha256: 29c712a7ecebc308bdeab47ef374b43b0b015ee9cd287061fae1d4606f8f481f
   commands:
     remove-bg:
       executor: none

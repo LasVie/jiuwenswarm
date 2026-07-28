@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: 1point3acres
   operation: content
-  policy_sha256: 942c0bcdbaf16f87f143f1ace46ae94919acf6a5fdcf78690eae9c048a2bb8a9
+  policy_sha256: 0dbf244c9dd700c1aecb310892b943018ea6fe2ca7e725c441382de5c8b20b26
   commands:
     digest:
       executor: generic_manifest_read

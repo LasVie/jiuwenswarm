@@ -9,7 +9,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-b
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: The public browser-free news command is source-audited; remaining browser commands stay fail-closed pending later review.
 operations:
   discovery:
     purpose: Search, browse, recommend, or discover site content.

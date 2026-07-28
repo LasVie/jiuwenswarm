@@ -16,8 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `content` | Read site content and metadata. | `page` | `sites/confluence/operations/content.md` |
-| `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/confluence/operations/discovery.md` |
+| `private-content` | Read credential-gated content from a configured Confluence tenant. | `page`, `search` | `sites/confluence/operations/private-content.md` |
 | `publishing` | Publish, create, edit, or upload remote content. | `create`, `update` | `sites/confluence/operations/publishing.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

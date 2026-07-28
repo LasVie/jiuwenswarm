@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: dockerhub
   operation: discovery
-  policy_sha256: 5419955245424527c58a623654566ed71841248fcc1472478bbd7a01c1370e48
+  policy_sha256: 38bfbe736ebb3e8db159d38435a0576801a39d531ced8bddb6f0367ebc17e1e4
   commands:
     search:
       executor: generic_manifest_read

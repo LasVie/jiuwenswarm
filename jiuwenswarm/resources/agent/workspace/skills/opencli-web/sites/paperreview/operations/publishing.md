@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: paperreview
   operation: publishing
-  policy_sha256: 7c57f79b95a57b61fee3048b014fbe427f6b1438c98418b545beeb8d2073d190
+  policy_sha256: e2340c7ea5cda0685bb79c2758686d307f57d91bfba9107e5d7932617265f589
   commands:
     submit:
       executor: none

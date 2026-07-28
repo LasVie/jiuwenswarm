@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: weread
   operation: authentication
-  policy_sha256: fe850910e20949248d867b786fb8ba6f525ea8a61d6b349ac040bef7c4f02ebb
+  policy_sha256: 5053f8dcbd5e67d6d0d08f67516ffebf88101d9edfc0b57c7b54951f550c103f
   commands:
     login:
       executor: none

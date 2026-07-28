@@ -245,3 +245,84 @@ def test_representative_execution_states(
     )
     command_policy = model.sites[site].command(command)
     assert command_policy.execution_state == expected_state
+
+
+def test_reviewed_public_reads_exclude_credential_gated_false_positives() -> None:
+    model = build_generation_model(
+        load_catalog(CATALOG_PATH),
+        load_ownership(OWNERSHIP_PATH),
+        load_policies(POLICY_ROOT),
+    )
+    enabled = {
+        f"{site.slug}/{command.name}"
+        for site in model.sites.values()
+        for command in site.commands.values()
+        if command.execution_state == "enabled"
+    }
+
+    # The OpenCLI 1.8.6 adapter-source audit found 254 genuinely public,
+    # browser-free reads. The generated catalog metadata alone overstates this
+    # boundary for credential-gated APIs and misses four name-heuristic cases.
+    assert len(enabled) == 254
+    assert (
+        hashlib.sha256(("\n".join(sorted(enabled)) + "\n").encode()).hexdigest()
+        == "396899309f5d5251b5a7550f53f8ed8305769eac30bcf75811e5ced6ad30e977"
+    )
+    assert {
+        "dockerhub/image",
+        "hackernews/ask",
+        "hackernews/new",
+        "lesswrong/new",
+    } <= enabled
+    assert enabled.isdisjoint(
+        {
+            "confluence/page",
+            "confluence/search",
+            "jira/attachments",
+            "jira/comments",
+            "jira/issue",
+            "jira/links",
+            "jira/search",
+            "paperreview/review",
+            "spotify/search",
+            "spotify/status",
+            "weread-official/book",
+            "weread-official/discover",
+            "weread-official/list-apis",
+            "weread-official/notes",
+            "weread-official/readdata",
+            "weread-official/review",
+            "weread-official/search",
+            "weread-official/shelf",
+        }
+    )
+
+    paper_review = model.sites["paperreview"].command("review")
+    assert paper_review.semantic_effect == "private_content_read"
+    assert paper_review.auth == "required"
+    assert paper_review.risk == "high"
+    assert paper_review.execution_state == "disabled"
+    assert paper_review.fallback_after == "none"
+
+    jira_issue = model.sites["jira"].command("issue")
+    assert jira_issue.semantic_effect == "private_content_read"
+    assert jira_issue.auth == "required"
+    assert jira_issue.execution_state == "quarantined"
+    assert jira_issue.fallback_before == "none"
+    assert jira_issue.fallback_after == "none"
+
+    confluence_page = model.sites["confluence"].command("page")
+    assert confluence_page.semantic_effect == "private_content_read"
+    assert confluence_page.auth == "required"
+    assert confluence_page.execution_state == "disabled"
+
+    spotify_status = model.sites["spotify"].command("status")
+    assert spotify_status.semantic_effect == "private_account_read"
+    assert spotify_status.auth == "required"
+    assert spotify_status.transport == "mixed"
+    assert spotify_status.execution_state == "disabled"
+
+    weread_notes = model.sites["weread-official"].command("notes")
+    assert weread_notes.semantic_effect == "private_content_read"
+    assert weread_notes.auth == "required"
+    assert weread_notes.execution_state == "disabled"

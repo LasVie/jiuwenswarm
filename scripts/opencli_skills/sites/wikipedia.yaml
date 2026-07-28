@@ -9,7 +9,7 @@ terminal: operation
 review:
   status: reviewed
   owner: agent-b
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Source-audited against OpenCLI 1.8.6; all commands are public browser-free reads.
 operations:
   articles:
     purpose: Read encyclopedia pages and summaries.

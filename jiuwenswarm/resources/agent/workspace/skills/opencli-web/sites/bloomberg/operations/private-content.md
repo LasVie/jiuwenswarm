@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: bloomberg
   operation: private-content
-  policy_sha256: 502b8834b5707df9b7561f53afc4c4f042e317b53f0a111cc5d20ff3d295d80c
+  policy_sha256: 4416a4e77af30c2a17d3ab5b785dae8f9cbdd590794e7274147a1f8d226b0ec9
   commands:
     businessweek:
       executor: none

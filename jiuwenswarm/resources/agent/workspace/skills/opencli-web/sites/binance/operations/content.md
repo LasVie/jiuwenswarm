@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: binance
   operation: content
-  policy_sha256: 5813f5a52e4324ca563017b25e3b39b34927bc41cf827e19e5dc145b1171da23
+  policy_sha256: d169c2ab4b9953db200277e543c5a9660f8fb7c062fed5137251583b3691f8a7
   commands:
     asks:
       executor: generic_manifest_read

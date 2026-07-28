@@ -7,9 +7,9 @@ domains:
 aliases: []
 terminal: site
 review:
-  status: generated
+  status: reviewed
   owner: agent-c
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: All commands reviewed as low-risk public browser-free reads.
 operations:
   public-data:
     purpose: Read low-risk public data without browser state.

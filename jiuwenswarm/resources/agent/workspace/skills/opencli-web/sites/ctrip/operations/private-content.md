@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: ctrip
   operation: private-content
-  policy_sha256: 517de5bbe15162617396965152bf30e86782e78163f42554f80abcde4fe1acbc
+  policy_sha256: 236d164805e5a6a6ff1123aad7a3fc95667019ab0cc375221cad7523b743d6cb
   commands:
     flight:
       executor: none

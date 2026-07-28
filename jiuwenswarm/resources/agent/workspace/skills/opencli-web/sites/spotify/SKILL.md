@@ -6,7 +6,7 @@ description: Route reviewed Spotify website operations through the OpenCLI Web s
 # Spotify
 
 Catalog site slug: `spotify`.
- Known domains: catalog did not declare one.
+ Known domains: `accounts.spotify.com`, `api.spotify.com`.
 
 Read this file only through the main Agent's SkillTool. Do not delegate disclosure to a general-purpose or browser subagent and do not replace it with a filesystem read.
 
@@ -16,8 +16,8 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
+| `account` | Read account-scoped playback state. | `status` | `sites/spotify/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `auth` | `sites/spotify/operations/authentication.md` |
-| `content` | Read site content and metadata. | `status` | `sites/spotify/operations/content.md` |
 | `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/spotify/operations/discovery.md` |
 | `write-actions` | Change remote service state. | `next`, `pause`, `play`, `prev`, `queue`, `repeat`, `shuffle`, `volume` | `sites/spotify/operations/write-actions.md` |
 

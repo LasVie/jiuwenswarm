@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: pubmed
   operation: content
-  policy_sha256: 870bd148e1f5649c695d65a65eaa5978085f62a97cbad6ca74a974df3899b21c
+  policy_sha256: 7b8aee92a30370ede55d7ec37c9a4652d1ff482f815814e15ccc6087540a1f82
   commands:
     article:
       executor: generic_manifest_read

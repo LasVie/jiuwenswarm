@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: coingecko
   operation: discovery
-  policy_sha256: f4778942878153776522dc91fb5f233a316afb7ce235454f8964849093908e9a
+  policy_sha256: 9cef157f641dae49bbcee4919fcffee86a226317729d2987588f33b53769feab
   commands:
     categories:
       executor: generic_manifest_read

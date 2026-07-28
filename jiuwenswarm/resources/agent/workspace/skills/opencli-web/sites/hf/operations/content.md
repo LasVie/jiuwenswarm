@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: hf
   operation: content
-  policy_sha256: e8afd494921f63232510d673c2bf09fcb4870f7cd85f517bcc620b9698121449
+  policy_sha256: d6e987ae2d3e3f8fbd0b051440167eef9e0b95ecabb7de3c9ccb7c0028a24bd9
   commands:
     datasets:
       executor: generic_manifest_read

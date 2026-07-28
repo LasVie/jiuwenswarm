@@ -9,10 +9,10 @@ terminal: operation
 review:
   status: generated
   owner: agent-c
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Token-scoped review content is private; all commands remain fail-closed pending their applicable review.
 operations:
-  content:
-    purpose: Read site content and metadata.
+  private-content:
+    purpose: Read private review content addressed by a bearer capability token.
     commands:
     - review
   publishing:
@@ -40,20 +40,22 @@ commands:
     sensitive_output: []
     notes: ''
   review:
-    operation: content
-    semantic_effect: public_read
-    risk: low
-    auth: none
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: high
+    auth: required
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: browser_agent
+    fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output: []
-    notes: ''
+    sensitive_output:
+    - review token
+    - private review content
+    notes: Requires a bearer capability token; public HTTP transport does not make the review data public.
   submit:
     operation: publishing
     semantic_effect: public_write

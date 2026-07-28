@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: '12306'
   operation: private-content
-  policy_sha256: b7f15f19feca7a98b1b695a65d7139aac92e1fa3b74e98b53577a248b8718321
+  policy_sha256: 5dfc93ea4051a6111025de8651071c6c8b2e913315a72dd48fa38dd8ea2a1882
   commands:
     orders:
       executor: none

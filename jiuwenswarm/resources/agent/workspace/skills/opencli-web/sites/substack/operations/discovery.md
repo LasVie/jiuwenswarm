@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: substack
   operation: discovery
-  policy_sha256: e7a20796c847318f1ddebb18991a531a47a7027914829dad2d5c41b0796a41df
+  policy_sha256: 4a59cf3c0d273656b3a3677fdcbee5b42433442731ab11926b5555c4d34d5d32
   commands:
     search:
       executor: generic_manifest_read

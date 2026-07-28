@@ -9,7 +9,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-c
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Public browser-free read commands reviewed; remaining commands stay fail-closed pending later review.
 operations:
   content:
     purpose: Read site content and metadata.
@@ -105,7 +105,7 @@ commands:
     semantic_effect: public_read
     risk: low
     auth: none
-    transport: public_http
+    transport: local
     execution_state: enabled
     executor: generic_manifest_read
     confirmation: none
@@ -114,7 +114,7 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output: []
-    notes: ''
+    notes: Static adapter-local model table; no network request, authentication, or remote side effect.
   object-remover:
     operation: write-actions
     semantic_effect: reversible_remote_write

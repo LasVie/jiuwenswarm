@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: sinafinance
   operation: private-content
-  policy_sha256: 1deddb0b1999a7b26b75c49f000c61dc7a75a8dc92dc700605ccb6dedcf9a8c7
+  policy_sha256: 0e2bcbc6a43027fe339f4a99f9f4730abe1b3e354a76c6d4f729599e0ab2a1c3
   commands:
     rolling-news:
       executor: none

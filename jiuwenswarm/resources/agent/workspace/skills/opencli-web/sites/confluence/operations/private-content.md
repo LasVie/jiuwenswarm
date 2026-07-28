@@ -1,24 +1,59 @@
 ---
 opencli_contract:
   version: 2
-  site: hackernews
-  operation: generation
-  policy_sha256: c01b909ca1346a48bab7fdec539efd83fcbf716ed7d303362da917b10b43ac60
+  site: confluence
+  operation: private-content
+  policy_sha256: b9d94b9679e2cc633e7c3e0e02eac2b58c19969417fa5a4f37931d8b06fc5eaf
   commands:
-    ask:
+    page:
       executor: none
       execution_state: disabled
-      semantic_effect: quota_consumption
-      risk: high
-      auth: none
+      semantic_effect: private_content_read
+      risk: medium
+      auth: required
       transport: public_http
       strategy: public
       browser: false
       opencli_version: 1.8.6
       access: read
       args:
+      - help: Confluence page id
+        name: id
+        positional: true
+        required: true
+        type: str
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - private content
+      - account identifiers
+    search:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_content_read
+      risk: medium
+      auth: required
+      transport: public_http
+      strategy: public
+      browser: false
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - help: CQL query, e.g. "type = page and title ~ \"RCA\""
+        name: cql
+        positional: true
+        required: true
+        type: str
+      - help: Limit search to a Confluence space key
+        name: space
+        required: false
+        type: string
       - default: 20
-        help: Number of stories
+        help: Max results to return (1-100)
         name: limit
         required: false
         type: int
@@ -28,43 +63,21 @@ opencli_contract:
         after_failure: none
       file_inputs: []
       file_outputs: []
-      sensitive_output: []
-    new:
-      executor: none
-      execution_state: disabled
-      semantic_effect: quota_consumption
-      risk: high
-      auth: none
-      transport: public_http
-      strategy: public
-      browser: false
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 20
-        help: Number of stories
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
+      sensitive_output:
+      - private content
+      - account identifiers
 ---
 
-# Hackernews: generation
+# Confluence: private-content
 
-Generate remote content, start AI work, or consume quota.
+Read credential-gated content from a configured Confluence tenant.
 
 This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `ask` | `disabled` | `quota_consumption` / `high` | Not executable; use the declared fallback if permitted<br>Hacker News Ask HN posts | `limit` (int, optional, default=20) |
-| `new` | `disabled` | `quota_consumption` / `high` | Not executable; use the declared fallback if permitted<br>Hacker News newest stories | `limit` (int, optional, default=20) |
+| `page` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Confluence page by id with storage and Markdown body | `id` (str, required, positional) |
+| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search Confluence content with CQL | `cql` (str, required, positional); `space` (string, optional); `limit` (int, optional, default=20) |
 
 ## Safety and fallback
 

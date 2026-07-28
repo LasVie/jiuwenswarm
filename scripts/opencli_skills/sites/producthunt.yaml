@@ -9,7 +9,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-c
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Public browser-free read commands reviewed; remaining commands stay fail-closed pending later review.
 operations:
   content:
     purpose: Read site content and metadata.

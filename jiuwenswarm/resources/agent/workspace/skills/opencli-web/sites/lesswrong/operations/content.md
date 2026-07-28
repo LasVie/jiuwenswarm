@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: lesswrong
   operation: content
-  policy_sha256: 09260253b3cc2232c5b1d13f95df38bddde26310c970ef660f5811e93bc1816b
+  policy_sha256: e4038a061ced01aa02a9e4d980a78f9e7eaa68cde6ab7d30c108f8c2028f618b
   commands:
     comments:
       executor: generic_manifest_read
@@ -59,6 +59,30 @@ opencli_contract:
       file_outputs: []
       sensitive_output: []
     frontpage:
+      executor: generic_manifest_read
+      execution_state: enabled
+      semantic_effect: public_read
+      risk: low
+      auth: none
+      transport: public_http
+      strategy: public
+      browser: false
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - default: 10
+        help: Number of results
+        name: limit
+        required: false
+        type: int
+      confirmation: none
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: browser_agent
+      file_inputs: []
+      file_outputs: []
+      sensitive_output: []
+    new:
       executor: generic_manifest_read
       execution_state: enabled
       semantic_effect: public_read
@@ -369,6 +393,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `comments` | `enabled` | `public_read` / `low` | `opencli_execute(site="lesswrong", operation="content", command="comments", arguments={"url-or-id":"<url-or-id>"})`<br>Top comments on a post | `url-or-id` (string, required, positional); `limit` (int, optional, default=5) |
 | `curated` | `enabled` | `public_read` / `low` | `opencli_execute(site="lesswrong", operation="content", command="curated")`<br>Curated editor's picks | `limit` (int, optional, default=10) |
 | `frontpage` | `enabled` | `public_read` / `low` | `opencli_execute(site="lesswrong", operation="content", command="frontpage")`<br>Algorithmic frontpage | `limit` (int, optional, default=10) |
+| `new` | `enabled` | `public_read` / `low` | `opencli_execute(site="lesswrong", operation="content", command="new")`<br>Latest posts | `limit` (int, optional, default=10) |
 | `read` | `enabled` | `public_read` / `low` | `opencli_execute(site="lesswrong", operation="content", command="read", arguments={"url-or-id":"<url-or-id>"})`<br>Read full post by URL or ID | `url-or-id` (string, required, positional) |
 | `sequences` | `enabled` | `public_read` / `low` | `opencli_execute(site="lesswrong", operation="content", command="sequences")`<br>List post collections | `limit` (int, optional, default=10) |
 | `shortform` | `enabled` | `public_read` / `low` | `opencli_execute(site="lesswrong", operation="content", command="shortform")`<br>Quick takes / shortform posts | `limit` (int, optional, default=10) |

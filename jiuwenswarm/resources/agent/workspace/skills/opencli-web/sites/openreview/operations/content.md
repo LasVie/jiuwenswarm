@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: openreview
   operation: content
-  policy_sha256: 7acac650b629118139186af5dc7b3ea7220f1864870df678af8c73ed7c06b0e2
+  policy_sha256: 096b115ccc93e419a9ef5dc5776b3179c3bbaceb07a04d5e78ab0bb9aee19b59
   commands:
     author:
       executor: generic_manifest_read

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: tdx
   operation: private-content
-  policy_sha256: 952d5046d358ce7e6511c240c304d35108d9a0048cc80784f17c910606c0fead
+  policy_sha256: 88d48fa10544df000faa33401c68836810157f748e3f38b13a881bcdc1bf49d2
   commands:
     hot-rank:
       executor: none

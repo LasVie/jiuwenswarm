@@ -3,15 +3,15 @@ opencli_contract:
   version: 2
   site: spotify
   operation: discovery
-  policy_sha256: 62c64b7e6dc3d752f97becf1a28ab253285c3de4d29a00f68a36cc9e4ed9fbc5
+  policy_sha256: a79d0b04af7de90a372da7a714ea9f00e6d21d6dac4df21fe39708f531fe47ac
   commands:
     search:
-      executor: generic_manifest_read
-      execution_state: enabled
+      executor: none
+      execution_state: disabled
       semantic_effect: public_read
       risk: low
-      auth: none
-      transport: public_http
+      auth: required
+      transport: mixed
       strategy: public
       browser: false
       opencli_version: 1.8.6
@@ -27,13 +27,17 @@ opencli_contract:
         name: limit
         required: false
         type: int
-      confirmation: none
+      confirmation: unsupported
       fallback:
         before_dispatch: browser_agent
-        after_failure: browser_agent
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
+        after_failure: none
+      file_inputs:
+      - ~/.opencli/spotify.env
+      - ~/.opencli/spotify-tokens.json
+      file_outputs:
+      - ~/.opencli/spotify-tokens.json
+      sensitive_output:
+      - OAuth access and refresh tokens
 ---
 
 # Spotify: discovery
@@ -44,10 +48,10 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `search` | `enabled` | `public_read` / `low` | `opencli_execute(site="spotify", operation="discovery", command="search", arguments={"query":"<query>"})`<br>Search for tracks | `query` (str, required, positional); `limit` (int, optional, default=10) |
+| `search` | `disabled` | `public_read` / `low` | Not executable; use the declared fallback if permitted<br>Search for tracks | `query` (str, required, positional); `limit` (int, optional, default=10) |
 
 ## Safety and fallback
 
 - Unknown commands and arguments are rejected before subprocess start.
 - Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- These commands are reviewed public reads. A proven pre-dispatch failure and a read failure may use `browser_agent` once; never run both paths concurrently.
+- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
