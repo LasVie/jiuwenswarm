@@ -23,14 +23,33 @@ task. The user does not need to find, install, enable, or select a site Skill.
 Do not search for or install the nested site module as a separate Skill. It is a
 file bundled inside `opencli-web`.
 
+Keep Skill disclosure in the main agent. Never use `task_tool`,
+`sessions_spawn`, a `general-purpose` subagent, `browser_agent`, or a filesystem
+tool to read files under the installed `opencli-web` directory. The Skill tool
+is the authorized reader for the listed relative site-module path.
+
+The bundled files in this router are application-managed and refreshed during
+JiuwenSwarm startup. Do not customize the installed copy; keep unrelated custom
+Skills in their own directories.
+
 ## Supported websites
 
 | Website | Supported capability groups | Site module |
 |---|---|---|
 | Xiaohongshu / 小红书 (`www.xiaohongshu.com`, `creator.xiaohongshu.com`) | Account and login, discovery, note data, downloads, creator analytics, drafts, publishing, follows, and deletion | `sites/xiaohongshu/SKILL.md` |
 
-Read [references/sites.md](references/sites.md) when domain aliases, capability
-boundaries, or module loading details are needed.
+## Execute documented commands
+
+- On Windows, invoke documented OpenCLI adapter commands and guarded wrapper
+  scripts with the main agent's BashTool using `shell_type: "auto"`, unless the
+  selected site module explicitly requires another shell.
+- Do not force `bash` or `sh` merely to run Python, invoke OpenCLI, or translate
+  Windows paths.
+- On Windows, run bundled Python wrapper scripts as
+  `python -E "<absolute-script-path>" ...` so an inherited `PYTHONHOME` cannot
+  bind a different Python executable to an incompatible standard library.
+- Preserve quoted absolute Windows paths and argument boundaries exactly as
+  documented by the selected site module.
 
 ## Enforce one automation path
 

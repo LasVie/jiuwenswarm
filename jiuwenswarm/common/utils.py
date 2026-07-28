@@ -34,18 +34,29 @@ import os
 import re
 import sys
 import datetime
+import filecmp
 import shutil
 import socket
+import threading
 import time
 from pathlib import Path
 from dataclasses import dataclass
 from typing import Any, Literal, Optional
 import logging
 from logging.handlers import BaseRotatingHandler
+import portalocker
 from ruamel.yaml import YAML
 
 _LOG_FILE_MAX_BYTES = 20 * 1024 * 1024
 _LOG_FILE_BACKUP_COUNT = 20
+_DEFAULT_BUILTIN_SKILLS = (
+    "skill-creator",
+    "swarmskill-creator",
+    "opencli-web",
+)
+_MANAGED_DEFAULT_BUILTIN_SKILLS = frozenset({"opencli-web"})
+_WORKSPACE_BOOTSTRAP_LOCK_TIMEOUT_SECONDS = 30
+_WORKSPACE_BOOTSTRAP_THREAD_LOCK = threading.Lock()
 
 
 @dataclass
@@ -585,6 +596,7 @@ def _update_skills_state_for_builtin(
     }
 
     # 添加新安装的技能记录
+    changed = False
     installed_at = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
     for skill_name in skill_names:
         if skill_name not in existing_names:
@@ -597,6 +609,10 @@ def _update_skills_state_for_builtin(
                 "installed_at": installed_at,
             })
             logger.info(f"已将默认技能记录到状态文件: {skill_name}")
+            changed = True
+
+    if not changed:
+        return
 
     # 保存状态文件
     try:
@@ -629,19 +645,16 @@ def _install_default_builtin_skills(
         overwrite: 是否覆盖已存在的技能
         cumulative_diff: 累积的文件变更追踪结果
     """
-    # 定义默认安装的技能列表
-    default_skills = ["skill-creator", "swarmskill-creator", "opencli-web"]
-
     if not builtin_dir.exists() or not builtin_dir.is_dir():
         logger.warning(f"内置技能目录不存在，跳过默认技能安装: {builtin_dir}")
         return
 
     user_skills_dir.mkdir(parents=True, exist_ok=True)
 
-    # 记录成功安装的技能，用于后续更新状态文件
-    installed_skills = []
+    # 记录已存在或成功安装的默认技能，用于同步状态文件
+    available_skills = []
 
-    for skill_name in default_skills:
+    for skill_name in _DEFAULT_BUILTIN_SKILLS:
         builtin_skill_path = builtin_dir / skill_name
         user_skill_path = user_skills_dir / skill_name
 
@@ -652,7 +665,26 @@ def _install_default_builtin_skills(
 
         # 如果用户目录已存在该技能且不是覆盖模式，则跳过
         if user_skill_path.exists() and not overwrite:
-            logger.info(f"技能已存在，跳过安装: {skill_name}")
+            if user_skill_path.is_dir():
+                if skill_name in _MANAGED_DEFAULT_BUILTIN_SKILLS:
+                    try:
+                        with TrackCopyDiff(
+                            dest=user_skill_path,
+                            cumulative=cumulative_diff,
+                        ):
+                            _sync_managed_builtin_skill(
+                                builtin_skill_path,
+                                user_skill_path,
+                            )
+                        logger.info(f"已同步受管默认技能: {skill_name}")
+                    except Exception as e:
+                        logger.error(f"同步受管默认技能失败 {skill_name}: {e}")
+                        continue
+                else:
+                    logger.info(f"技能已存在，跳过安装: {skill_name}")
+                available_skills.append(skill_name)
+            else:
+                logger.warning(f"默认技能路径不是目录，无法登记: {user_skill_path}")
             continue
 
         # 复制技能到用户目录
@@ -666,13 +698,83 @@ def _install_default_builtin_skills(
                     shutil.rmtree(user_skill_path)
                 shutil.copytree(builtin_skill_path, user_skill_path)
             logger.info(f"已安装默认技能: {skill_name}")
-            installed_skills.append(skill_name)
+            available_skills.append(skill_name)
         except Exception as e:
             logger.error(f"安装默认技能失败 {skill_name}: {e}")
 
-    # 更新 skills_state.json，记录已安装的技能
-    if installed_skills:
-        _update_skills_state_for_builtin(user_skills_dir, installed_skills)
+    # 更新 skills_state.json，补齐所有当前可用默认技能的注册记录
+    if available_skills:
+        _update_skills_state_for_builtin(user_skills_dir, available_skills)
+
+
+def _sync_managed_builtin_skill(source: Path, destination: Path) -> None:
+    """Overlay package-owned files without deleting user-added files."""
+    for source_path in sorted(source.rglob("*")):
+        relative_path = source_path.relative_to(source)
+        destination_path = destination / relative_path
+        if source_path.is_dir():
+            destination_path.mkdir(parents=True, exist_ok=True)
+            continue
+        if not source_path.is_file():
+            continue
+        if destination_path.exists():
+            if not destination_path.is_file():
+                raise OSError(
+                    f"managed builtin destination is not a file: {destination_path}"
+                )
+            if filecmp.cmp(source_path, destination_path, shallow=False):
+                continue
+        destination_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source_path, destination_path)
+
+
+def bootstrap_workspace(
+    workspace_dir: Optional[Path] = None,
+) -> CopyDiffResult:
+    """Initialize or reconcile the runtime workspace before services start.
+
+    Full workspace initialization is still conditional. Default builtin Skills
+    are reconciled on every startup so an existing workspace receives defaults
+    introduced by a package upgrade. Application-managed builtin files are
+    refreshed while user-added files and non-managed Skills remain untouched.
+    """
+    resolved_workspace_dir = (
+        get_user_workspace_dir()
+        if workspace_dir is None
+        else Path(workspace_dir)
+    )
+    resolved_workspace_dir.mkdir(parents=True, exist_ok=True)
+    lock_file = resolved_workspace_dir / ".workspace-bootstrap.lock"
+
+    with _WORKSPACE_BOOTSTRAP_THREAD_LOCK:
+        with portalocker.Lock(
+            str(lock_file),
+            mode="a",
+            timeout=_WORKSPACE_BOOTSTRAP_LOCK_TIMEOUT_SECONDS,
+        ):
+            config_file = resolved_workspace_dir / "config" / "config.yaml"
+            new_workspace = resolved_workspace_dir / "agent" / "workspace"
+            old_workspace = (
+                resolved_workspace_dir / "agent" / "jiuwenclaw_workspace"
+            )
+
+            if not config_file.exists() or (
+                old_workspace.exists() and not new_workspace.exists()
+            ):
+                cumulative_diff = prepare_workspace(
+                    overwrite=False,
+                    workspace_dir=resolved_workspace_dir,
+                )
+            else:
+                cumulative_diff = CopyDiffResult([], [], [])
+
+            _install_default_builtin_skills(
+                builtin_dir=get_builtin_skills_dir(),
+                user_skills_dir=new_workspace / "skills",
+                overwrite=False,
+                cumulative_diff=cumulative_diff,
+            )
+            return cumulative_diff
 
 
 def _migrate_from_jiuwenclaw_root() -> bool:

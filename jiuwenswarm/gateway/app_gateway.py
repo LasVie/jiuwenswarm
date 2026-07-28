@@ -43,25 +43,17 @@ from jiuwenswarm.common.security.ws_origin import get_header_value
 from jiuwenswarm.gateway.routing.route_binding import GatewayRouteBinding
 from jiuwenswarm.common.debug_dump import install_async_dump_handler
 from jiuwenswarm.common.utils import (
+    bootstrap_workspace,
     get_cron_jobs_path,
     get_env_file,
     get_root_dir,
-    get_user_workspace_dir,
-    prepare_workspace,
     reset_free_search_runtime_flags,
 )
 from jiuwenswarm.common.e2a.gateway_normalize import e2a_from_agent_fields
 from jiuwenswarm.common.schema.message import ReqMethod, Message, Mode
 
-# Ensure workspace initialized
-_workspace_dir = get_user_workspace_dir()
-_config_file = _workspace_dir / "config" / "config.yaml"
-_new_workspace = _workspace_dir / "agent" / "workspace"
-_old_workspace = _workspace_dir / "agent" / "jiuwenclaw_workspace"
-
-# Initialize if config doesn't exist, or if legacy workspace exists but new doesn't (migration)
-if not _config_file.exists() or (_old_workspace.exists() and not _new_workspace.exists()):
-    prepare_workspace(overwrite=False)
+# Initialize a new workspace or reconcile new default builtins into an existing one.
+bootstrap_workspace()
 
 _logging_yaml = get_root_dir() / "config" / "logging.yaml"
 if _logging_yaml.exists():

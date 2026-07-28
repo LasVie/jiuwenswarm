@@ -21,7 +21,12 @@ from openjiuwen.harness.tools import SkillTool
 from jiuwenswarm.agents.harness.common.rails.runtime_prompt_rail import (
     RuntimePromptRail,
 )
-from jiuwenswarm.common.utils import CopyDiffResult, _install_default_builtin_skills
+from jiuwenswarm.common import utils as workspace_utils
+from jiuwenswarm.common.utils import (
+    CopyDiffResult,
+    _install_default_builtin_skills,
+    bootstrap_workspace,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -110,12 +115,19 @@ def _install_defaults(tmp_path: Path) -> Path:
     return installed_skills_dir
 
 
-def _write_fake_opencli(path: Path, *, exit_code: int = 0) -> None:
+def _write_fake_opencli(
+    path: Path,
+    *,
+    exit_code: int = 0,
+    stderr_text: str = "",
+) -> None:
     path.write_text(
         "import json\n"
         "import sys\n"
         "sys.stdout.reconfigure(encoding='utf-8')\n"
+        "sys.stderr.reconfigure(encoding='utf-8')\n"
         "print(json.dumps({'argv': sys.argv[1:]}, ensure_ascii=False))\n"
+        f"sys.stderr.write({json.dumps(stderr_text, ensure_ascii=False)})\n"
         f"raise SystemExit({exit_code})\n",
         encoding="utf-8",
     )
@@ -126,11 +138,16 @@ def _run_wrapper(
     payload: dict,
     *,
     fake_exit_code: int = 0,
+    fake_stderr: str = "",
     confirmation_dir: Path | None = None,
     wrapper: Path = PUBLISH_WRAPPER,
 ) -> tuple[subprocess.CompletedProcess[str], dict]:
     fake_opencli = tmp_path / f"fake_opencli_{fake_exit_code}.py"
-    _write_fake_opencli(fake_opencli, exit_code=fake_exit_code)
+    _write_fake_opencli(
+        fake_opencli,
+        exit_code=fake_exit_code,
+        stderr_text=fake_stderr,
+    )
     payload_path = tmp_path / "payload.json"
     payload_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
 
@@ -176,6 +193,10 @@ def _load_publish_wrapper_module():
 def test_opencli_web_is_preinstalled_with_nested_xiaohongshu_module(tmp_path):
     assert _read_frontmatter(MASTER_SKILL_DIR)["name"] == "opencli-web"
     assert _read_frontmatter(XIAOHONGSHU_MODULE_DIR)["name"] == "opencli-xiaohongshu"
+    router_instructions = (MASTER_SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+    assert '`shell_type: "auto"`' in router_instructions
+    assert "Do not force `bash` or `sh`" in router_instructions
+    assert 'python -E "<absolute-script-path>"' in router_instructions
 
     agent_metadata = yaml.safe_load(
         (MASTER_SKILL_DIR / "agents" / "openai.yaml").read_text(encoding="utf-8")
@@ -205,23 +226,202 @@ def test_opencli_web_is_preinstalled_with_nested_xiaohongshu_module(tmp_path):
     )
 
 
+def test_existing_workspace_startup_reconciles_missing_default_skill(
+    tmp_path,
+    monkeypatch,
+):
+    workspace_dir = tmp_path / "existing-user-workspace"
+    config_file = workspace_dir / "config" / "config.yaml"
+    installed_skills_dir = workspace_dir / "agent" / "workspace" / "skills"
+    config_file.parent.mkdir(parents=True)
+    installed_skills_dir.mkdir(parents=True)
+    config_file.write_text("preferred_language: zh\n", encoding="utf-8")
+
+    for skill_name in ("skill-creator", "swarmskill-creator"):
+        skill_dir = installed_skills_dir / skill_name
+        skill_dir.mkdir()
+        (skill_dir / "SKILL.md").write_text(
+            f"---\nname: {skill_name}\n---\nuser-owned sentinel\n",
+            encoding="utf-8",
+        )
+
+    state_file = installed_skills_dir / "skills_state.json"
+    state_file.write_text(
+        json.dumps(
+            {
+                "marketplaces": [{"name": "preserved-marketplace"}],
+                "installed_plugins": [
+                    {"name": "skill-creator", "source": "builtin"},
+                    {"name": "swarmskill-creator", "source": "builtin"},
+                ],
+                "local_skills": [{"name": "preserved-local-skill"}],
+                "skill_configs": {"opencli-web": {"enabled": False}},
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    config_before = config_file.read_bytes()
+    existing_skill_before = (
+        installed_skills_dir / "skill-creator" / "SKILL.md"
+    ).read_bytes()
+
+    def _unexpected_prepare(*args, **kwargs):
+        raise AssertionError("existing workspace must not run full initialization")
+
+    monkeypatch.setattr(workspace_utils, "prepare_workspace", _unexpected_prepare)
+    monkeypatch.setattr(
+        workspace_utils,
+        "get_builtin_skills_dir",
+        lambda: BUILTIN_SKILLS_DIR,
+    )
+
+    first_diff = bootstrap_workspace(workspace_dir=workspace_dir)
+
+    installed_root = installed_skills_dir / "opencli-web"
+    assert installed_root.is_dir()
+    assert (installed_root / XIAOHONGSHU_MODULE_PATH).is_file()
+    assert config_file.read_bytes() == config_before
+    assert (
+        installed_skills_dir / "skill-creator" / "SKILL.md"
+    ).read_bytes() == existing_skill_before
+    assert first_diff.added_files
+
+    state = json.loads(state_file.read_text(encoding="utf-8"))
+    assert [p["name"] for p in state["installed_plugins"]].count("opencli-web") == 1
+    assert state["skill_configs"]["opencli-web"]["enabled"] is False
+    assert state["local_skills"] == [{"name": "preserved-local-skill"}]
+    state_after_first_start = state_file.read_bytes()
+
+    second_diff = bootstrap_workspace(workspace_dir=workspace_dir)
+
+    assert second_diff == CopyDiffResult([], [], [])
+    assert state_file.read_bytes() == state_after_first_start
+
+
+def test_existing_workspace_startup_refreshes_managed_opencli_files(
+    tmp_path,
+    monkeypatch,
+):
+    workspace_dir = tmp_path / "existing-managed-workspace"
+    config_file = workspace_dir / "config" / "config.yaml"
+    installed_skills_dir = workspace_dir / "agent" / "workspace" / "skills"
+    installed_root = installed_skills_dir / "opencli-web"
+    config_file.parent.mkdir(parents=True)
+    installed_root.mkdir(parents=True)
+    config_file.write_text("preferred_language: zh\n", encoding="utf-8")
+    (installed_root / "SKILL.md").write_text(
+        "---\nname: opencli-web\n---\nstale managed content\n",
+        encoding="utf-8",
+    )
+    user_extra = installed_root / "user-extra.txt"
+    user_extra.write_text("preserve me\n", encoding="utf-8")
+
+    state_file = installed_skills_dir / "skills_state.json"
+    state_file.write_text(
+        json.dumps(
+            {
+                "marketplaces": [],
+                "installed_plugins": [
+                    {"name": "opencli-web", "source": "builtin"},
+                ],
+                "local_skills": [],
+                "skill_configs": {"opencli-web": {"enabled": False}},
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    state_before = state_file.read_bytes()
+    builtin_dir = tmp_path / "builtin-skills"
+    shutil.copytree(MASTER_SKILL_DIR, builtin_dir / "opencli-web")
+
+    def _unexpected_prepare(*args, **kwargs):
+        raise AssertionError("existing workspace must not run full initialization")
+
+    monkeypatch.setattr(workspace_utils, "prepare_workspace", _unexpected_prepare)
+    monkeypatch.setattr(
+        workspace_utils,
+        "get_builtin_skills_dir",
+        lambda: builtin_dir,
+    )
+
+    first_diff = bootstrap_workspace(workspace_dir=workspace_dir)
+
+    assert (installed_root / "SKILL.md").read_bytes() == (
+        MASTER_SKILL_DIR / "SKILL.md"
+    ).read_bytes()
+    assert (installed_root / XIAOHONGSHU_MODULE_PATH).read_bytes() == (
+        MASTER_SKILL_DIR / XIAOHONGSHU_MODULE_PATH
+    ).read_bytes()
+    assert user_extra.read_text(encoding="utf-8") == "preserve me\n"
+    assert state_file.read_bytes() == state_before
+    assert str(installed_root / "SKILL.md") in first_diff.overwritten_files
+
+    second_diff = bootstrap_workspace(workspace_dir=workspace_dir)
+
+    assert second_diff == CopyDiffResult([], [], [])
+    assert state_file.read_bytes() == state_before
+
+
+def test_new_workspace_startup_keeps_full_initialization_path(tmp_path):
+    workspace_dir = tmp_path / "new-user-workspace"
+
+    diff = bootstrap_workspace(workspace_dir=workspace_dir)
+
+    assert (workspace_dir / "config" / "config.yaml").is_file()
+    installed_skills_dir = workspace_dir / "agent" / "workspace" / "skills"
+    assert (installed_skills_dir / "opencli-web" / XIAOHONGSHU_MODULE_PATH).is_file()
+    state = json.loads(
+        (installed_skills_dir / "skills_state.json").read_text(encoding="utf-8")
+    )
+    installed_names = {
+        item["name"]
+        for item in state["installed_plugins"]
+        if isinstance(item, dict) and "name" in item
+    }
+    assert {"skill-creator", "swarmskill-creator", "opencli-web"} <= installed_names
+    assert diff.added_files
+
+
+@pytest.mark.parametrize(
+    "entrypoint",
+    [
+        REPO_ROOT / "jiuwenswarm" / "app.py",
+        REPO_ROOT / "jiuwenswarm" / "server" / "app_agentserver.py",
+        REPO_ROOT / "jiuwenswarm" / "gateway" / "app_gateway.py",
+    ],
+)
+def test_service_entrypoints_use_shared_workspace_bootstrap(entrypoint):
+    source = entrypoint.read_text(encoding="utf-8")
+
+    assert re.search(r"\bbootstrap_workspace\([^)]*\)", source)
+
+
 def test_opencli_skill_uses_progressive_disclosure_and_complete_command_catalog():
     master = (MASTER_SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
     xiaohongshu = (XIAOHONGSHU_MODULE_DIR / "SKILL.md").read_text(encoding="utf-8")
-    catalog = (XIAOHONGSHU_MODULE_DIR / "references" / "command-catalog.md").read_text(
-        encoding="utf-8"
-    )
 
     assert "any task involving a live website" in master
     assert XIAOHONGSHU_MODULE_PATH in master
     assert "relative_file_path" in master
     assert "browser_agent" in master
+    assert "general-purpose" in master
     assert "opencli-web" in xiaohongshu
     assert "social_post_confirm" in xiaohongshu
     assert "scripts/publish.py" in xiaohongshu
+    assert 'python -E "<opencli-web-directory>' in xiaohongshu
+    assert "opencli_adapter_incompatible" in xiaohongshu
+    assert "general-purpose" in xiaohongshu
+    assert "references/" not in master
+    assert "references/" not in xiaohongshu
+    assert not list((MASTER_SKILL_DIR / "references").glob("*.md"))
+    assert not list((XIAOHONGSHU_MODULE_DIR / "references").glob("*.md"))
 
     documented_commands = set(
-        re.findall(r"^\| `([a-z-]+)` \|", catalog, flags=re.MULTILINE)
+        re.findall(r"^\| `([a-z-]+)` \|", xiaohongshu, flags=re.MULTILINE)
     )
     assert documented_commands == XIAOHONGSHU_COMMANDS
 
@@ -313,6 +513,7 @@ async def test_web_runtime_prompt_automatically_routes_supported_sites_opencli_f
     prompt = builder.build()
     assert "`opencli-web` is preinstalled by default" in prompt
     assert "do not search for, install, or ask the user to select it" in prompt
+    assert "general-purpose" in prompt
     assert "relative_file_path" in prompt
     assert "provable pre-execution infrastructure failure" in prompt
     assert "Never run OpenCLI and `browser_agent` concurrently" in prompt
@@ -461,6 +662,184 @@ def test_publish_wrapper_blocks_fallback_after_opencli_process_starts(tmp_path):
     assert result["attempted"] is True
     assert result["fallback_allowed"] is False
     assert result["error"]["code"] == "opencli_failed"
+
+
+def test_publish_wrapper_blocks_known_broken_text_image_adapter_before_start(
+    tmp_path,
+    monkeypatch,
+    capsys,
+):
+    wrapper = _load_publish_wrapper_module()
+    package_root = tmp_path / "node_modules" / "@jackwener" / "opencli"
+    main_js = package_root / "dist" / "src" / "main.js"
+    publish_js = package_root / "clis" / "xiaohongshu" / "publish.js"
+    main_js.parent.mkdir(parents=True)
+    publish_js.parent.mkdir(parents=True)
+    main_js.write_text("// fixture\n", encoding="utf-8")
+    publish_js.write_text(
+        "const __opencli_xhs_composer_media_count = true;\n"
+        "const root = titleEl?.closest("
+        '\'form, [class*="publish"], [class*="editor"], [class*="note"]\''
+        ") || document.body;\n",
+        encoding="utf-8",
+    )
+    (package_root / "package.json").write_text(
+        json.dumps({"version": "1.8.6"}),
+        encoding="utf-8",
+    )
+    payload_path = tmp_path / "payload.json"
+    payload_path.write_text(
+        json.dumps(
+            {
+                "title": "Draft test",
+                "content": "Known adapter compatibility failure",
+                "card_text": "test card",
+            }
+        ),
+        encoding="utf-8",
+    )
+    runner = [str(tmp_path / "node.exe"), str(main_js)]
+    subprocess_called = False
+
+    def _unexpected_subprocess(*args, **kwargs):
+        nonlocal subprocess_called
+        subprocess_called = True
+        raise AssertionError("known incompatible adapter must not start")
+
+    monkeypatch.setattr(wrapper, "_resolve_opencli_argv", lambda executable: runner)
+    monkeypatch.setattr(wrapper.subprocess, "run", _unexpected_subprocess)
+
+    exit_code = wrapper.main(
+        [
+            "--payload",
+            str(payload_path),
+            "--opencli-bin",
+            "fixture-opencli",
+        ]
+    )
+    result = json.loads(capsys.readouterr().out)
+
+    assert exit_code != 0
+    assert subprocess_called is False
+    assert result["ok"] is False
+    assert result["error"]["code"] == "opencli_adapter_incompatible"
+    assert "1.8.6" in result["error"]["detail"]
+    assert result["attempted"] is False
+    assert result["fallback_allowed"] is True
+
+    confirmation_dir = tmp_path / "confirmations"
+    payload_path.write_text(
+        json.dumps(
+            {
+                "title": "Publish test",
+                "content": "Do not consume confirmation during preflight",
+                "card_text": "test card",
+                "mode": "publish",
+                "confirmation": {
+                    "action": "social_post_confirm",
+                    "id": "known-adapter-preflight",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    publish_exit_code = wrapper.main(
+        [
+            "--payload",
+            str(payload_path),
+            "--opencli-bin",
+            "fixture-opencli",
+            "--confirmation-dir",
+            str(confirmation_dir),
+        ]
+    )
+    publish_result = json.loads(capsys.readouterr().out)
+
+    assert publish_exit_code != 0
+    assert publish_result["error"]["code"] == "opencli_adapter_incompatible"
+    assert publish_result["attempted"] is False
+    assert publish_result["fallback_allowed"] is False
+    assert not confirmation_dir.exists()
+
+    image_request = wrapper._parse_payload(
+        {
+            "title": "Image draft",
+            "content": "The image path remains supported",
+            "images": [str(tmp_path / "cover.png")],
+        }
+    )
+    assert (
+        wrapper._detect_text_image_adapter_issue(
+            image_request,
+            runner,
+            user_clis_dir=tmp_path / "user-clis",
+        )
+        is None
+    )
+
+    text_request = wrapper._parse_payload(
+        {
+            "title": "Text draft",
+            "content": "A future fixed adapter remains usable",
+            "card_text": "test card",
+        }
+    )
+    publish_js.write_text("// fixed media proof\n", encoding="utf-8")
+    assert (
+        wrapper._detect_text_image_adapter_issue(
+            text_request,
+            runner,
+            user_clis_dir=tmp_path / "user-clis",
+        )
+        is None
+    )
+
+
+def test_publish_wrapper_emits_ascii_safe_json_for_non_ascii_child_errors(tmp_path):
+    completed, result = _run_wrapper(
+        tmp_path,
+        {
+            "title": "Draft test",
+            "content": "Preserve a structured non-ASCII error",
+            "images": [str(tmp_path / "cover.png")],
+        },
+        fake_exit_code=7,
+        fake_stderr="文字配图媒体校验失败",
+    )
+
+    assert completed.returncode == 7
+    assert completed.stdout.isascii()
+    assert result["error"]["detail"] == "文字配图媒体校验失败"
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows shell environment regression")
+def test_windows_auto_shell_runs_wrapper_with_ignored_python_environment(tmp_path):
+    from openjiuwen.core.sys_operation.local.shell_operation import ShellOperation
+    from openjiuwen.core.sys_operation.local.utils import OperationUtils
+    from openjiuwen.core.sys_operation.shell import ShellType
+
+    command = f'python -E "{PUBLISH_WRAPPER}" --help'
+    plan, use_shell, _ = ShellOperation._resolve_execution_plan(
+        command,
+        ShellType.AUTO,
+    )
+    completed = subprocess.run(
+        plan,
+        shell=use_shell,
+        cwd=tmp_path,
+        env=OperationUtils.prepare_environment(
+            {"PYTHONHOME": str(tmp_path / "incompatible-python-home")}
+        ),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=30,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    assert "usage:" in completed.stdout.lower()
 
 
 @pytest.mark.skipif(

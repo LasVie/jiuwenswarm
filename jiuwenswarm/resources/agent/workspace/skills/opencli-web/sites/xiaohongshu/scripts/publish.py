@@ -28,6 +28,11 @@ _ALLOWED_FIELDS = {
 }
 _IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
 _DEFAULT_TIMEOUT_SECONDS = 180.0
+_KNOWN_BROKEN_TEXT_IMAGE_MEDIA_MARKERS = (
+    "__opencli_xhs_composer_media_count",
+    """titleEl?.closest('form, [class*="publish"], """
+    """[class*="editor"], [class*="note"]')""",
+)
 
 
 class PayloadError(ValueError):
@@ -58,7 +63,7 @@ def _bounded(value: str | None, limit: int = 4000) -> str:
 
 
 def _emit(payload: dict[str, Any], exit_code: int) -> int:
-    print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+    print(json.dumps(payload, ensure_ascii=True, sort_keys=True))
     return exit_code
 
 
@@ -128,7 +133,9 @@ def _parse_payload(payload: Any) -> PublishRequest:
 
     title = _required_text(payload, "title")
     if len(title) > 20:
-        raise PayloadError("invalid_payload", "title must contain at most 20 characters")
+        raise PayloadError(
+            "invalid_payload", "title must contain at most 20 characters"
+        )
     content = _required_text(payload, "content")
 
     has_images = payload.get("images") is not None
@@ -146,7 +153,9 @@ def _parse_payload(payload: Any) -> PublishRequest:
             raise PayloadError("invalid_payload", "images supports at most 9 paths")
         for image in images:
             if "," in image:
-                raise PayloadError("invalid_payload", "image paths cannot contain commas")
+                raise PayloadError(
+                    "invalid_payload", "image paths cannot contain commas"
+                )
             if Path(image).suffix.lower() not in _IMAGE_SUFFIXES:
                 raise PayloadError(
                     "invalid_payload",
@@ -248,7 +257,9 @@ def _load_payload(path: Path) -> Any:
     except FileNotFoundError as exc:
         raise PayloadError("payload_not_found", "payload file does not exist") from exc
     except (OSError, UnicodeError) as exc:
-        raise PayloadError("payload_unreadable", "payload file could not be read") from exc
+        raise PayloadError(
+            "payload_unreadable", "payload file could not be read"
+        ) from exc
     except json.JSONDecodeError as exc:
         raise PayloadError("invalid_json", "payload is not valid JSON") from exc
 
@@ -290,6 +301,73 @@ def _resolve_opencli_argv(executable: str) -> list[str]:
     return [str(resolved_path)]
 
 
+def _opencli_package_root(runner: list[str]) -> Path | None:
+    for raw_path in runner:
+        path = Path(raw_path).resolve()
+        if (
+            path.name.lower() == "main.js"
+            and path.parent.name == "src"
+            and path.parent.parent.name == "dist"
+        ):
+            return path.parents[2]
+
+        adjacent_package = path.parent / "node_modules" / "@jackwener" / "opencli"
+        if adjacent_package.is_dir():
+            return adjacent_package
+    return None
+
+
+def _opencli_package_version(package_root: Path | None) -> str:
+    if package_root is None:
+        return "unknown"
+    try:
+        package = json.loads(
+            (package_root / "package.json").read_text(encoding="utf-8")
+        )
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return "unknown"
+    version = package.get("version") if isinstance(package, dict) else None
+    return version if isinstance(version, str) and version.strip() else "unknown"
+
+
+def _detect_text_image_adapter_issue(
+    request: PublishRequest,
+    runner: list[str],
+    *,
+    user_clis_dir: Path | None = None,
+) -> str | None:
+    if request.media_option != "--card-text":
+        return None
+
+    package_root = _opencli_package_root(runner)
+    user_adapter = (
+        (user_clis_dir or Path.home() / ".opencli" / "clis")
+        / "xiaohongshu"
+        / "publish.js"
+    )
+    package_adapter = (
+        package_root / "clis" / "xiaohongshu" / "publish.js"
+        if package_root is not None
+        else None
+    )
+    adapter = user_adapter if user_adapter.is_file() else package_adapter
+    if adapter is None:
+        return None
+
+    try:
+        source = adapter.read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        return None
+    if not all(marker in source for marker in _KNOWN_BROKEN_TEXT_IMAGE_MEDIA_MARKERS):
+        return None
+
+    version = _opencli_package_version(package_root)
+    return (
+        f"OpenCLI {version} active xiaohongshu/publish adapter contains "
+        "the known-broken text-image media proof"
+    )
+
+
 def _build_adapter_args(request: PublishRequest) -> list[str]:
     args = [
         "xiaohongshu",
@@ -320,11 +398,7 @@ def _default_confirmation_dir() -> Path:
     if configured:
         return Path(configured).expanduser()
     return (
-        Path.home()
-        / ".jiuwenswarm"
-        / "agent"
-        / "workspace"
-        / ".opencli-confirmations"
+        Path.home() / ".jiuwenswarm" / "agent" / "workspace" / ".opencli-confirmations"
     )
 
 
@@ -427,6 +501,20 @@ def main(argv: list[str] | None = None) -> int:
             fallback_allowed=False,
         )
 
+    adapter_issue = _detect_text_image_adapter_issue(request, runner)
+    if adapter_issue:
+        return _failure(
+            mode=request.mode,
+            code="opencli_adapter_incompatible",
+            message=(
+                "Installed OpenCLI text-image adapter cannot safely verify "
+                "generated media"
+            ),
+            attempted=False,
+            fallback_allowed=request.mode == "draft",
+            detail=adapter_issue,
+        )
+
     if request.mode == "publish":
         assert request.confirmation_id is not None
         try:
@@ -489,11 +577,7 @@ def main(argv: list[str] | None = None) -> int:
 
     result = _parse_child_output(completed.stdout)
     if completed.returncode != 0:
-        child_exit = (
-            completed.returncode
-            if 1 <= completed.returncode <= 255
-            else 1
-        )
+        child_exit = completed.returncode if 1 <= completed.returncode <= 255 else 1
         return _failure(
             mode=request.mode,
             code="opencli_failed",
