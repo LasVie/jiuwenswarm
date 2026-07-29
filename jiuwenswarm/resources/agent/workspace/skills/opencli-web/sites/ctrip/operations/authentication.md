@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: ctrip
   operation: authentication
-  policy_sha256: 236d164805e5a6a6ff1123aad7a3fc95667019ab0cc375221cad7523b743d6cb
+  policy_sha256: 3349d00749ad278cd9d82659b69987a2557778a84a1a4d279377382e2458511a
   commands:
     login:
       executor: none

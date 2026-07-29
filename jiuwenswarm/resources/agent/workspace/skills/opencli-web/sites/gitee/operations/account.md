@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: gitee
   operation: account
-  policy_sha256: b3920bdfa9c7dcbea7ecc70850d75db671790aa6ff999ef553ea8f3f7622f6eb
+  policy_sha256: ca7d515e5ce1b188506a22593a0e804c471b96f5819a4b3fa6a40c6c26131107
   commands:
     whoami:
       executor: none

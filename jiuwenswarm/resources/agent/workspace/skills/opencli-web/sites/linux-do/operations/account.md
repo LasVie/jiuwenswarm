@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: linux-do
   operation: account
-  policy_sha256: e01bed315318e4ac2b9d859609242b387a62c582ecec88480007cb5facab4944
+  policy_sha256: cc2e02c6a9d1c322af5f087ca9458e5beda0949cc685cd56fa744162f7655b8a
   commands:
     whoami:
       executor: none

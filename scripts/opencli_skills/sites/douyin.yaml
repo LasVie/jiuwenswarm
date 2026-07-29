@@ -10,7 +10,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Browser-backed reads source-reviewed; remaining disabled capabilities pending review application.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.
@@ -25,6 +25,12 @@ operations:
     purpose: Delete, remove, revoke, or perform administrative changes.
     commands:
     - delete
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - location
+    - search
+    - user-videos
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
@@ -32,10 +38,7 @@ operations:
     - collections
     - drafts
     - hashtag
-    - location
-    - search
     - stats
-    - user-videos
     - videos
   publishing:
     purpose: Publish, create, edit, or upload remote content.
@@ -146,9 +149,9 @@ commands:
     - account identifiers
     notes: ''
   location:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
@@ -158,9 +161,7 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   login:
     operation: authentication
@@ -210,9 +211,9 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
@@ -222,9 +223,7 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   stats:
     operation: private-content
@@ -260,9 +259,9 @@ commands:
     sensitive_output: []
     notes: ''
   user-videos:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
@@ -272,9 +271,7 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   videos:
     operation: private-content

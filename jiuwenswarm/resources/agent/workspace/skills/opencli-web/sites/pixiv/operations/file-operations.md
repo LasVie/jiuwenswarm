@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: pixiv
   operation: file-operations
-  policy_sha256: e9303e047b7b72047b963ed3369498fc39abe1ac1d606327b7342cbeb779ad33
+  policy_sha256: 91fe6dcb96f651c08d5de587daada322a6f09d8257010b42751cd5ba7768c4bb
   commands:
     download:
       executor: none

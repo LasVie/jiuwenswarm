@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: suno
   operation: generation
-  policy_sha256: 977488ac7bb57b98f0568bb3b68dcd04d1bad012d1bf89d719e050ee30df5a55
+  policy_sha256: 9631ed82a00218589f6d15384e5a951afdb07e4c6f80bcebaf7ce35e8001d0f0
   commands:
     generate:
       executor: none

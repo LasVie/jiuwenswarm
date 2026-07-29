@@ -3,29 +3,8 @@ opencli_contract:
   version: 2
   site: band
   operation: private-content
-  policy_sha256: 341937abc18a2b45d045de1962ef7452ac908f234ea7aaeeaa24279cc34a79d7
+  policy_sha256: dd6c342ccef47cbe661f33daa06b3c14a22dad076b1ee99a6c1abcb0e0a290f0
   commands:
-    bands:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     mentions:
       executor: none
       execution_state: disabled
@@ -65,7 +44,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private group content
       - account identifiers
     post:
       executor: none
@@ -137,7 +116,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private group content
       - account identifiers
 ---
 
@@ -149,7 +128,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `bands` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List all Bands you belong to | none |
 | `mentions` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show Band notifications where you are @mentioned | `filter` (str, optional, default='mentioned', choices=mentioned,all,post,comment); `limit` (int, optional, default=20); `unread` (bool, optional, default=False) |
 | `post` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Export full content of a post including comments | `band_no` (int, required, positional); `post_no` (int, required, positional); `output` (str, optional, default=''); `comments` (bool, optional, default=True) |
 | `posts` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List posts from a Band | `band_no` (int, required, positional); `limit` (int, optional, default=20) |

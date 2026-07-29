@@ -3,33 +3,8 @@ opencli_contract:
   version: 2
   site: twitter
   operation: account
-  policy_sha256: d3dfdd9f50e334a4672153f072546b8d93fc2b4c68dc2786edab05aea347b96c
+  policy_sha256: ea1c61e10694164a7221301d4eb1fd14fec218da88d65957161ff72d1a564726
   commands:
-    profile:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_account_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Twitter screen name (with or without @). Defaults to the logged-in user when omitted.
-        name: username
-        positional: true
-        required: false
-        type: string
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - account identifiers
     whoami:
       executor: none
       execution_state: disabled
@@ -60,7 +35,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `profile` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Fetch a Twitter user profile — bio, stats, etc. (defaults to the logged-in user when no username is given) | `username` (string, optional, positional) |
 | `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in twitter account | none |
 
 ## Safety and fallback

@@ -14,6 +14,8 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
+    - models
+    - status
     - whoami
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
@@ -32,9 +34,7 @@ operations:
     commands:
     - detail
     - history
-    - models
     - read
-    - status
 commands:
   ask:
     operation: generation
@@ -95,9 +95,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 gemini/detail.js; reads authenticated or session-scoped content that can expose private account data.
   history:
     operation: private-content
     semantic_effect: private_content_read
@@ -112,9 +112,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 gemini/history.js; reads authenticated or session-scoped content that can expose private account data.
   image:
     operation: generation
     semantic_effect: quota_consumption
@@ -146,10 +146,10 @@ commands:
     sensitive_output: []
     notes: ''
   models:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -159,9 +159,8 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 gemini/models.js; reads browser-session model availability and account capabilities without changing the session.
   new:
     operation: generation
     semantic_effect: quota_consumption
@@ -191,14 +190,14 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 gemini/read.js; reads authenticated or session-scoped content that can expose private account data.
   status:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -208,9 +207,8 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    - authentication state
+    notes: Source-audited against OpenCLI 1.8.6 gemini/status.js; reads current browser-session authentication state without changing it.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -226,4 +224,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 gemini/auth.js; reads current browser-session or account-scoped metadata.

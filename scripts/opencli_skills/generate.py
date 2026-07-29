@@ -54,6 +54,9 @@ _INDEX_RE = re.compile(
 )
 _MANIFEST_NAME = "generated-manifest.json"
 _RUNTIME_NAME = "opencli-runtime.json"
+_GENERIC_READ_EXECUTOR = "generic_manifest_read"
+_BROWSER_PUBLIC_READ_EXECUTOR = "browser_manifest_public_read"
+_BROWSER_PRIVATE_READ_EXECUTOR = "browser_manifest_private_read"
 
 
 class GenerationError(ValueError):
@@ -681,21 +684,72 @@ def build_generation_model(
 def _validate_command_policy(policy: CommandPolicy) -> None:
     identity = f"{policy.catalog.site}/{policy.name}"
     if policy.execution_state == "enabled":
-        if policy.executor != "generic_manifest_read":
-            raise GenerationError(f"{identity} enabled command needs generic executor")
-        if (
-            policy.semantic_effect != "public_read"
-            or policy.auth != "none"
-            or policy.risk != "low"
-            or policy.catalog.access != "read"
-            or policy.catalog.strategy != "public"
-            or policy.catalog.browser
-            or policy.file_inputs
-            or policy.file_outputs
-        ):
-            raise GenerationError(
-                f"{identity} cannot use the generic public-read executor"
+        if policy.executor == _GENERIC_READ_EXECUTOR:
+            valid = (
+                policy.semantic_effect == "public_read"
+                and policy.auth == "none"
+                and policy.risk == "low"
+                and policy.transport == "public_http"
+                and policy.catalog.access == "read"
+                and policy.catalog.strategy == "public"
+                and not policy.catalog.browser
+                and policy.confirmation == "none"
+                and not policy.file_inputs
+                and not policy.file_outputs
+                and not policy.sensitive_output
             )
+        elif policy.executor == _BROWSER_PUBLIC_READ_EXECUTOR:
+            valid = (
+                policy.semantic_effect == "public_read"
+                and policy.auth == "none"
+                and policy.risk == "low"
+                and policy.transport == "browser_dom"
+                and policy.catalog.access == "read"
+                and policy.catalog.strategy == "public"
+                and policy.catalog.browser
+                and policy.confirmation == "none"
+                and not policy.file_inputs
+                and not policy.file_outputs
+                and not policy.sensitive_output
+                and policy.fallback_before == "browser_agent"
+                and policy.fallback_after == "browser_agent"
+            )
+        elif policy.executor == _BROWSER_PRIVATE_READ_EXECUTOR:
+            sensitive_labels = tuple(label.lower() for label in policy.sensitive_output)
+            declares_secret_material = any(
+                marker in label
+                for label in sensitive_labels
+                for marker in (
+                    "authorization",
+                    "cookie",
+                    "credential",
+                    "secret",
+                    "token",
+                )
+            )
+            valid = (
+                policy.semantic_effect
+                in {"private_account_read", "private_content_read"}
+                and policy.auth == "required"
+                and policy.risk == "medium"
+                and policy.transport == "browser_cookie"
+                and policy.catalog.access == "read"
+                and policy.catalog.strategy == "cookie"
+                and policy.catalog.browser
+                and policy.confirmation == "none"
+                and not policy.file_inputs
+                and not policy.file_outputs
+                and bool(policy.sensitive_output)
+                and not declares_secret_material
+                and policy.fallback_before == "browser_agent"
+                and policy.fallback_after == "none"
+            )
+        else:
+            raise GenerationError(
+                f"{identity} enabled command has no reviewed executor lane"
+            )
+        if not valid:
+            raise GenerationError(f"{identity} violates its reviewed executor lane")
     elif policy.execution_state == "custom":
         if policy.executor != "xiaohongshu_guarded_publish":
             raise GenerationError(f"{identity} has an unregistered custom executor")
@@ -907,11 +961,25 @@ def _render_policy_rules(
         "arbitrary argv prefix, executable override, or environment override is "
         "accepted.",
     ]
-    if all(command.execution_state == "enabled" for command in commands):
+    if all(
+        command.execution_state == "enabled"
+        and command.semantic_effect == "public_read"
+        for command in commands
+    ):
         rules.append(
             "- These commands are reviewed public reads. A proven pre-dispatch "
             "failure and a read failure may use `browser_agent` once; never run "
             "both paths concurrently."
+        )
+    elif any(
+        command.execution_state == "enabled"
+        and command.semantic_effect in {"private_account_read", "private_content_read"}
+        for command in commands
+    ):
+        rules.append(
+            "- Enabled private/account reads use the current browser session. "
+            "Treat declared sensitive output as session-private, and never retry "
+            "through a browser after OpenCLI dispatch starts."
         )
     else:
         rules.append(

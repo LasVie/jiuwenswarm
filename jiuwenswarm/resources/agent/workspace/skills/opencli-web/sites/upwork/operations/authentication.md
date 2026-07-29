@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: upwork
   operation: authentication
-  policy_sha256: b72915895eb81bb776af49116cb56ea9889cc673b7cd846e6b21d897ad96ff7b
+  policy_sha256: 1d10bc6218b6d560645d06ab55894f4993fe0c04ae042f221c635f1db2599946
   commands:
     login:
       executor: none

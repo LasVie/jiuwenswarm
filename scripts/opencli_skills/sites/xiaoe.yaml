@@ -27,8 +27,11 @@ operations:
     - catalog
     - content
     - courses
-    - detail
     - play-url
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - detail
 commands:
   catalog:
     operation: private-content
@@ -44,9 +47,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private course content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 xiaoe/catalog.js; reads authenticated or session-scoped content that can expose private account data.'
   content:
     operation: private-content
     semantic_effect: private_content_read
@@ -61,9 +64,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private course content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 xiaoe/content.js; reads authenticated or session-scoped content that can expose private account data.'
   courses:
     operation: private-content
     semantic_effect: private_content_read
@@ -78,26 +81,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - purchase history
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 xiaoe/courses.js; reads authenticated or session-scoped content that can expose private account data.'
   detail:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 xiaoe/detail.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -127,9 +128,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private course media URL
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 xiaoe/play-url.js; reads account-authorized media playback URLs that can be signed or access-scoped and must not be persisted or shared.'
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -145,4 +146,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 xiaoe/auth.js; reads current browser-session or account-scoped metadata.'

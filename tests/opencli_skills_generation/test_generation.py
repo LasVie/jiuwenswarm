@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -9,10 +10,16 @@ import pytest
 from scripts.opencli_skills.generate import (
     CATALOG_COMMAND_COUNT,
     CATALOG_SITE_COUNT,
+    CatalogCommand,
+    CommandPolicy,
     EXCLUDED_ADAPTERS,
     GENERATED_COMMAND_COUNT,
     GENERATED_SITE_COUNT,
+    GenerationError,
     OPENCLI_VERSION,
+    OperationPolicy,
+    _validate_command_policy,
+    _validate_site_terminal,
     build_generation_model,
     generate,
     load_catalog,
@@ -37,12 +44,165 @@ BUILTIN_SKILL_ROOT = (
 )
 
 
+def _browser_read_policy(
+    *,
+    executor: str,
+    semantic_effect: str,
+    risk: str,
+    auth: str,
+    transport: str,
+    strategy: str,
+    sensitive_output: tuple[str, ...],
+    fallback_after: str,
+    fallback_before: str = "browser_agent",
+) -> CommandPolicy:
+    return CommandPolicy(
+        catalog=CatalogCommand(
+            raw={
+                "site": "example",
+                "name": "read",
+                "description": "Read an example page.",
+                "access": "read",
+                "strategy": strategy,
+                "browser": True,
+                "args": [],
+            }
+        ),
+        operation="content",
+        semantic_effect=semantic_effect,
+        risk=risk,
+        auth=auth,
+        transport=transport,
+        execution_state="enabled",
+        executor=executor,
+        confirmation="none",
+        fallback_before=fallback_before,
+        fallback_after=fallback_after,
+        file_inputs=(),
+        file_outputs=(),
+        sensitive_output=sensitive_output,
+        notes="",
+        args=(),
+    )
+
+
 def _tree_digest(root: Path) -> dict[str, str]:
     return {
         path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in sorted(root.rglob("*"))
         if path.is_file()
     }
+
+
+def test_browser_read_policy_lanes_are_closed_and_disjoint() -> None:
+    public = _browser_read_policy(
+        executor="browser_manifest_public_read",
+        semantic_effect="public_read",
+        risk="low",
+        auth="none",
+        transport="browser_dom",
+        strategy="public",
+        sensitive_output=(),
+        fallback_after="browser_agent",
+    )
+    private = _browser_read_policy(
+        executor="browser_manifest_private_read",
+        semantic_effect="private_content_read",
+        risk="medium",
+        auth="required",
+        transport="browser_cookie",
+        strategy="cookie",
+        sensitive_output=("private content", "account identifiers"),
+        fallback_after="none",
+    )
+
+    _validate_command_policy(public)
+    _validate_command_policy(private)
+
+    invalid = (
+        replace(public, auth="required"),
+        replace(public, fallback_before="none"),
+        replace(public, fallback_after="none"),
+        replace(private, sensitive_output=()),
+        replace(private, fallback_before="none"),
+        replace(private, fallback_after="browser_agent"),
+    )
+    for policy in invalid:
+        with pytest.raises(GenerationError):
+            _validate_command_policy(policy)
+
+
+def test_browser_read_commands_cannot_use_a_site_terminal() -> None:
+    public = _browser_read_policy(
+        executor="browser_manifest_public_read",
+        semantic_effect="public_read",
+        risk="low",
+        auth="none",
+        transport="browser_dom",
+        strategy="public",
+        sensitive_output=(),
+        fallback_after="browser_agent",
+    )
+    operation = OperationPolicy(
+        slug="content",
+        purpose="Read example content.",
+        commands=("read",),
+    )
+
+    with pytest.raises(GenerationError, match="site-terminal contract"):
+        _validate_site_terminal(
+            "example",
+            {"content": operation},
+            {"read": public},
+        )
+
+
+def test_private_browser_reads_remain_deployment_gated() -> None:
+    model = build_generation_model(
+        load_catalog(CATALOG_PATH),
+        load_ownership(OWNERSHIP_PATH),
+        load_policies(POLICY_ROOT),
+    )
+
+    enabled_private_reads = {
+        f"{site.slug}/{command.name}"
+        for site in model.sites.values()
+        for command in site.commands.values()
+        if command.execution_state == "enabled"
+        and command.executor == "browser_manifest_private_read"
+    }
+
+    # The executor contract is implemented and unit-tested, but the current
+    # ToolOutput/trace boundary cannot yet label private result data for trace
+    # handling. Keep the deployment allowlist explicitly empty until that
+    # boundary exists.
+    assert enabled_private_reads == set()
+
+
+def test_reviewed_browser_public_reads_match_the_deployment_allowlist() -> None:
+    model = build_generation_model(
+        load_catalog(CATALOG_PATH),
+        load_ownership(OWNERSHIP_PATH),
+        load_policies(POLICY_ROOT),
+    )
+    enabled_public_browser_reads = {
+        f"{site.slug}/{command.name}"
+        for site in model.sites.values()
+        for command in site.commands.values()
+        if command.execution_state == "enabled"
+        and command.executor == "browser_manifest_public_read"
+    }
+
+    # This exact set was promoted only after adapter-source review and the
+    # closed browser/public executor checks. Keep later generated-policy edits
+    # from silently expanding executable browser authority.
+    assert len(enabled_public_browser_reads) == 36
+    assert (
+        hashlib.sha256(
+            ("\n".join(sorted(enabled_public_browser_reads)) + "\n").encode()
+        ).hexdigest()
+        == "f48dd57fd3e30a6a04a1754f320073b9da0d6964c8d5b7409b643b5564a38772"
+    )
 
 
 def test_frozen_catalog_matches_reviewed_opencli_release() -> None:
@@ -147,7 +307,7 @@ def test_physical_depth_follows_safety_boundary_not_command_count_alone() -> Non
     assert set(model.sites["flomo"].operations) == {
         "account",
         "authentication",
-        "memos",
+        "private-content",
     }
 
 
@@ -225,10 +385,8 @@ def test_full_generation_matches_checked_in_tree(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     ("site", "command", "expected_state"),
     [
-        ("wikipedia", "search", "enabled"),
-        ("google", "news", "enabled"),
-        ("google", "search", "disabled"),
-        ("flomo", "memos", "quarantined"),
+        ("google", "search", "enabled"),
+        ("flomo", "memos", "disabled"),
         ("zlibrary", "search", "quarantined"),
         ("xiaohongshu", "publish", "custom"),
     ],
@@ -258,15 +416,18 @@ def test_reviewed_public_reads_exclude_credential_gated_false_positives() -> Non
         for site in model.sites.values()
         for command in site.commands.values()
         if command.execution_state == "enabled"
+        and command.executor == "generic_manifest_read"
     }
 
-    # The OpenCLI 1.8.6 adapter-source audit found 254 genuinely public,
-    # browser-free reads. The generated catalog metadata alone overstates this
-    # boundary for credential-gated APIs and misses four name-heuristic cases.
-    assert len(enabled) == 254
+    # The OpenCLI 1.8.6 adapter-source audit found 253 genuinely public,
+    # browser-free HTTP reads supported by the generic executor. The generated
+    # catalog metadata alone overstates this boundary for credential-gated APIs
+    # and misses four name-heuristic cases. Adapter-local reads remain closed
+    # until a dedicated local-read executor is reviewed.
+    assert len(enabled) == 253
     assert (
         hashlib.sha256(("\n".join(sorted(enabled)) + "\n").encode()).hexdigest()
-        == "396899309f5d5251b5a7550f53f8ed8305769eac30bcf75811e5ced6ad30e977"
+        == "a609a674b831c2137659997d8e7b2e460f462d6fc75852d69909bec06b052b49"
     )
     assert {
         "dockerhub/image",
@@ -294,6 +455,7 @@ def test_reviewed_public_reads_exclude_credential_gated_false_positives() -> Non
             "weread-official/review",
             "weread-official/search",
             "weread-official/shelf",
+            "yollomi/models",
         }
     )
 
@@ -321,6 +483,12 @@ def test_reviewed_public_reads_exclude_credential_gated_false_positives() -> Non
     assert spotify_status.auth == "required"
     assert spotify_status.transport == "mixed"
     assert spotify_status.execution_state == "disabled"
+
+    yollomi_models = model.sites["yollomi"].command("models")
+    assert yollomi_models.semantic_effect == "public_read"
+    assert yollomi_models.transport == "local"
+    assert yollomi_models.execution_state == "disabled"
+    assert yollomi_models.executor == "none"
 
     weread_notes = model.sites["weread-official"].command("notes")
     assert weread_notes.semantic_effect == "private_content_read"

@@ -18,6 +18,6 @@ This file is a router, not an execution receipt. Select exactly one operation an
 |---|---|---|---|
 | `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/ke/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/ke/operations/authentication.md` |
-| `private-content` | Read content that depends on an authenticated account. | `chengjiao`, `ershoufang`, `xiaoqu`, `zufang` | `sites/ke/operations/private-content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `chengjiao`, `ershoufang`, `xiaoqu`, `zufang` | `sites/ke/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

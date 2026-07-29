@@ -27,36 +27,40 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - comments
     - favorites
     - feed
-    - hot
-    - post
-    - search
-    - user
-    - user-posts
   publishing:
     purpose: Publish, create, edit, or upload remote content.
     commands:
     - publish
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - comments
+    - post
+    - user
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - hot
+    - search
+    - user-posts
 commands:
   comments:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/comments.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   delete:
     operation: destructive-actions
     semantic_effect: destructive_or_admin
@@ -86,9 +90,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/favorites.js; reads authenticated or session-scoped content that can expose private account data.'
   feed:
     operation: private-content
     semantic_effect: private_content_read
@@ -103,26 +107,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/feed.js; reads authenticated or session-scoped content that can expose private account data.'
   hot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/hot.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -153,24 +155,22 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/me.js; reads current browser-session or account-scoped metadata.'
   post:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/post.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   publish:
     operation: publishing
     semantic_effect: public_write
@@ -188,56 +188,50 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/search.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   user:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/user.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   user-posts:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/user-posts.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -253,4 +247,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weibo/auth.js; reads current browser-session or account-scoped metadata.'

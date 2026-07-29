@@ -3,40 +3,14 @@ opencli_contract:
   version: 2
   site: bloomberg
   operation: private-content
-  policy_sha256: 4416a4e77af30c2a17d3ab5b785dae8f9cbdd590794e7274147a1f8d226b0ec9
+  policy_sha256: fc11a4e4f3dba4820f8bc9aa003f0fa2e715721959938e3cfb3f97b8b6cab036
   commands:
-    businessweek:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_dom
-      strategy: public
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 1
-        help: Number of stories to return (max 20)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     news:
       executor: none
       execution_state: disabled
       semantic_effect: private_content_read
       risk: medium
-      auth: required
+      auth: optional
       transport: browser_cookie
       strategy: cookie
       browser: true
@@ -55,8 +29,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
+      - subscription-gated content
 ---
 
 # Bloomberg: private-content
@@ -67,7 +40,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `businessweek` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Bloomberg Businessweek top stories | `limit` (int, optional, default=1) |
 | `news` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read a Bloomberg story/article page and return title, full content, and media links | `link` (str, required, positional) |
 
 ## Safety and fallback

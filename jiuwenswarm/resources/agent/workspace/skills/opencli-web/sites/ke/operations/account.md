@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: ke
   operation: account
-  policy_sha256: 62f6828b3a66e65c20afcf87161d5b7a82e2e862af2c3c65325aed7bb56149df
+  policy_sha256: 1667e3db1a02c799f2785c49de06bafdb24c882201228860fae6eb5d8326c56a
   commands:
     whoami:
       executor: none

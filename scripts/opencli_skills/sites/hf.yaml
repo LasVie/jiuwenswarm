@@ -133,4 +133,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 hf/auth.js; reads current browser-session or account-scoped metadata.

@@ -16,7 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `discovery` | Search, browse, recommend, or discover site content. | `news` | `sites/36kr/operations/discovery.md` |
-| `private-content` | Read content that depends on an authenticated account. | `article`, `hot`, `search` | `sites/36kr/operations/private-content.md` |
+| `content` | Read one public item, record, page, or resource. | `article` | `sites/36kr/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `hot`, `news`, `search` | `sites/36kr/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

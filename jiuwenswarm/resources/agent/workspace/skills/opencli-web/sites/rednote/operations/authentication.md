@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: rednote
   operation: authentication
-  policy_sha256: e74eb27b8de6e5cfbe7c9e82937ac7994460405b9d6ab27989389a959792e5bc
+  policy_sha256: 211ce3a7c0c5af88335a9c29eb7560a50553d65018de56f5c3e094060c017ea2
   commands:
     login:
       executor: none

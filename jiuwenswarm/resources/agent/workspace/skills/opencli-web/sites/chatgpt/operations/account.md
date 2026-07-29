@@ -3,8 +3,28 @@ opencli_contract:
   version: 2
   site: chatgpt
   operation: account
-  policy_sha256: cbd22f6bc7157ff01dec9ec104e5e019587993a4880d14dd9c65b07c9498cf5d
+  policy_sha256: 28d35bad52983e014ac34c237dbe49d3a4dafdf31f0d1339e061d5a2c581c990
   commands:
+    status:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_account_read
+      risk: medium
+      auth: optional
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args: []
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - authentication state
     whoami:
       executor: none
       execution_state: disabled
@@ -35,6 +55,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
+| `status` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check ChatGPT web page availability and login state | none |
 | `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in chatgpt account | none |
 
 ## Safety and fallback

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: yuanbao
   operation: private-content
-  policy_sha256: 286e0ea8163a76cd0781de943293e8e2959bad09793d1c0fd15cacfd2581539c
+  policy_sha256: a4011a198be679f5bef037e3fe66590af13f501ddbbad23e0350351634ce75a2
   commands:
     detail:
       executor: none
@@ -29,7 +29,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     history:
       executor: none
@@ -55,7 +55,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     read:
       executor: none
@@ -76,28 +76,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    status:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
 ---
 
@@ -112,7 +91,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `detail` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Open a Yuanbao conversation by ID and read its messages | `id` (str, required, positional) |
 | `history` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List recent Yuanbao conversations from the sidebar (requires login) | `limit` (int, optional, default=20) |
 | `read` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read messages in the current Yuanbao conversation | none |
-| `status` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check Yuanbao page availability, login state, current session and model | none |
 
 ## Safety and fallback
 

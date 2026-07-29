@@ -14,48 +14,44 @@ operations:
   discovery:
     purpose: Search, browse, recommend, or discover site content.
     commands:
+    - hot
     - news
-  private-content:
-    purpose: Read content that depends on an authenticated account.
+    - search
+  content:
+    purpose: Read one public item, record, page, or resource.
     commands:
     - article
-    - hot
-    - search
 commands:
   article:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_intercept
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 36kr/article.js; reads public browser-rendered content without authenticated account state.'
   hot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 36kr/hot.js; reads public browser-rendered content without authenticated account state.'
   news:
     operation: discovery
     semantic_effect: public_read
@@ -72,19 +68,17 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 36kr/search.js; reads public browser-rendered content without authenticated account state.'

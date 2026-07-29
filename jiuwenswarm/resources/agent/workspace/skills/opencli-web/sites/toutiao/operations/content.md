@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: toutiao
   operation: content
-  policy_sha256: bedccca74431752a898229e2e02f72f80ac76189f37dbd33c9fd5bc24be2d961
+  policy_sha256: 976fee660f57933ec2c7c8f13fc42b84a380852912cb8037602a46f3e52965e0
   commands:
     hot:
       executor: generic_manifest_read

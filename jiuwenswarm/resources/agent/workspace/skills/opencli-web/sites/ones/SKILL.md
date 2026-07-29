@@ -16,9 +16,9 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `account` | Read account identity or account-scoped metadata. | `me` | `sites/ones/operations/account.md` |
+| `account` | Read account identity or account-scoped metadata. | `me`, `token-info` | `sites/ones/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login`, `logout` | `sites/ones/operations/authentication.md` |
-| `private-content` | Read content that depends on an authenticated account. | `my-tasks`, `task`, `tasks`, `token-info` | `sites/ones/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `my-tasks`, `task`, `tasks` | `sites/ones/operations/private-content.md` |
 | `write-actions` | Change remote service state. | `worklog` | `sites/ones/operations/write-actions.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

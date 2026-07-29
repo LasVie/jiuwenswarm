@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: amazon
   operation: authentication
-  policy_sha256: 22dbfaf2cb0e7d6c23d60914de971b805c8df34a2f3a448265d87a2a388ecb8e
+  policy_sha256: d829909e04280195a5861590061a9e1f4c71232378a0219b70dc6d18da50fe38
   commands:
     login:
       executor: none

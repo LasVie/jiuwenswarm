@@ -20,11 +20,14 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
-  private-content:
-    purpose: Read content that depends on an authenticated account.
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - shop
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
     commands:
     - search
-    - shop
 commands:
   login:
     operation: authentication
@@ -42,39 +45,35 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 dianping/search.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   shop:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 dianping/shop.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -90,4 +89,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 dianping/auth.js; reads current browser-session or account-scoped metadata.'

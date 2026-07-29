@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: yollomi
   operation: generation
-  policy_sha256: 29c712a7ecebc308bdeab47ef374b43b0b015ee9cd287061fae1d4606f8f481f
+  policy_sha256: 1dc5c27c1c16b3f548734e283e44fae66c638a89c782d30389c972cf85f73d20
   commands:
     generate:
       executor: none

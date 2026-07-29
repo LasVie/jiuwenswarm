@@ -3,33 +3,8 @@ opencli_contract:
   version: 2
   site: tiktok
   operation: account
-  policy_sha256: cdab1d57fbfeb8ff2fc058034ae8df793011491167265a2f7cfb61b72e773464
+  policy_sha256: 3442947251dff64808dcca780e0776b04a96d6a79525a6606459b850e8bbc53f
   commands:
-    profile:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_account_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: TikTok username (without @)
-        name: username
-        positional: true
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - account identifiers
     whoami:
       executor: none
       execution_state: disabled
@@ -60,7 +35,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `profile` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get TikTok user profile info | `username` (str, required, positional) |
 | `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in tiktok account | none |
 
 ## Safety and fallback

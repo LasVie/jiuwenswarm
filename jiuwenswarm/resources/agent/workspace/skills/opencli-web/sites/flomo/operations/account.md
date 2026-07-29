@@ -3,11 +3,11 @@ opencli_contract:
   version: 2
   site: flomo
   operation: account
-  policy_sha256: c4da9edbd4f5cc5999174676fd5aea2c5d4442f1ecd519452eae512ac7b1da89
+  policy_sha256: 4f09bfa82418c2a0e68ac329f22f933150a874747b9f8bf81777ca4863f1f120
   commands:
     whoami:
       executor: none
-      execution_state: quarantined
+      execution_state: disabled
       semantic_effect: private_account_read
       risk: medium
       auth: required
@@ -35,7 +35,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `whoami` | `quarantined` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in flomo account | none |
+| `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in flomo account | none |
 
 ## Safety and fallback
 

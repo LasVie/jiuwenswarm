@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: slock
   operation: destructive-actions
-  policy_sha256: 3b7327b298620fa16c0e1582c663796bbfffa42b1e4d50d6695d895b572bf804
+  policy_sha256: e8c51aafc73ef81acbe9f554ecba65c0f2eca0cb9bc6baf4d412633ca655d97e
   commands:
     bookmark-remove:
       executor: none

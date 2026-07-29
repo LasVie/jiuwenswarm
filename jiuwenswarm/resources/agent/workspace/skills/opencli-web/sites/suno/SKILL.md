@@ -16,10 +16,10 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/suno/operations/account.md` |
+| `account` | Read account identity or account-scoped metadata. | `status`, `whoami` | `sites/suno/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/suno/operations/authentication.md` |
 | `file-operations` | Create or download workspace files. | `download` | `sites/suno/operations/file-operations.md` |
 | `generation` | Generate remote content, start AI work, or consume quota. | `generate` | `sites/suno/operations/generation.md` |
-| `private-content` | Read content that depends on an authenticated account. | `list`, `status` | `sites/suno/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `list` | `sites/suno/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

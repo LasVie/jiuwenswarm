@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: dianping
   operation: account
-  policy_sha256: 800ec45fdb7edd853be622ec4773c40c01738a5eca4c5893a35cfaef559f5193
+  policy_sha256: d687837f891d50b475a52dc0a4ede375a721af678aeb86d2af7d141008beb6bc
   commands:
     whoami:
       executor: none

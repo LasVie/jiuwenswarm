@@ -18,7 +18,8 @@ This file is a router, not an execution receipt. Select exactly one operation an
 |---|---|---|---|
 | `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/1688/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/1688/operations/authentication.md` |
+| `content` | Read site content and metadata. | `assets`, `item`, `store` | `sites/1688/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/1688/operations/discovery.md` |
 | `file-operations` | Create or download workspace files. | `download` | `sites/1688/operations/file-operations.md` |
-| `private-content` | Read content that depends on an authenticated account. | `assets`, `item`, `search`, `store` | `sites/1688/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

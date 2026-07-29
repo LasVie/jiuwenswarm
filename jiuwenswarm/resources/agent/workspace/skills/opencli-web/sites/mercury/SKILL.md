@@ -16,7 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `authentication` | Open, change, or clear an authenticated browser session. | `check-login` | `sites/mercury/operations/authentication.md` |
+| `account` | Read account identity or account-scoped metadata. | `check-login` | `sites/mercury/operations/account.md` |
 | `financial-actions` | Financial or reimbursement state changes. | `reimbursement-draft` | `sites/mercury/operations/financial-actions.md` |
 | `private-content` | Read content that depends on an authenticated account. | `reimbursement-plan` | `sites/mercury/operations/private-content.md` |
 

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: claude
   operation: authentication
-  policy_sha256: 44e3058291e9515c11b69fa315716c43953b92c95d540a39de4eb5d2af4eb50d
+  policy_sha256: ea0df9e9268dc8d38770a9fee8900e554e09d12e27deda8d74693b7d9447db94
   commands:
     login:
       executor: none

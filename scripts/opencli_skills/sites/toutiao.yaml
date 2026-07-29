@@ -11,7 +11,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-a
-  notes: Public non-browser reads source-reviewed; remaining disabled capabilities pending review application.
+  notes: Browser-backed reads source-reviewed; remaining disabled capabilities pending review application.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.

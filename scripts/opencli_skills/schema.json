@@ -182,6 +182,8 @@
           "executor": {
             "enum": [
               "generic_manifest_read",
+              "browser_manifest_public_read",
+              "browser_manifest_private_read",
               "xiaohongshu_guarded_publish",
               "none"
             ]

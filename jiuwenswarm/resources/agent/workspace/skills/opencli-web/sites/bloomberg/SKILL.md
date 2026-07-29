@@ -16,7 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `content` | Read site content and metadata. | `crypto`, `economics`, `feeds`, `green`, `industries`, `main`, `markets`, `opinions`, `politics`, `pursuits`, `tech` | `sites/bloomberg/operations/content.md` |
-| `private-content` | Read content that depends on an authenticated account. | `businessweek`, `news` | `sites/bloomberg/operations/private-content.md` |
+| `content` | Read site content and metadata. | `businessweek`, `crypto`, `economics`, `feeds`, `green`, `industries`, `main`, `markets`, `opinions`, `politics`, `pursuits`, `tech` | `sites/bloomberg/operations/content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `news` | `sites/bloomberg/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

@@ -16,8 +16,9 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
+| `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/weixin/operations/discovery.md` |
 | `file-operations` | Create or download workspace files. | `download` | `sites/weixin/operations/file-operations.md` |
-| `private-content` | Read content that depends on an authenticated account. | `drafts`, `search` | `sites/weixin/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `drafts` | `sites/weixin/operations/private-content.md` |
 | `publishing` | Publish, create, edit, or upload remote content. | `create-draft` | `sites/weixin/operations/publishing.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

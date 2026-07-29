@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: jianyu
   operation: account
-  policy_sha256: 697f7c8da14d3c750e6a6fe83bbb8ee4630836011150591ef5c91c7dc31c6dfd
+  policy_sha256: 72f77851b99e87f0866f5aefa86e3412e54f94075ff872a06013e36b58651cbb
   commands:
     whoami:
       executor: none

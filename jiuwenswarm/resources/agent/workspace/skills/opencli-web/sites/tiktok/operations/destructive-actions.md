@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: tiktok
   operation: destructive-actions
-  policy_sha256: cdab1d57fbfeb8ff2fc058034ae8df793011491167265a2f7cfb61b72e773464
+  policy_sha256: 3442947251dff64808dcca780e0776b04a96d6a79525a6606459b850e8bbc53f
   commands:
     unfollow:
       executor: none

@@ -3,38 +3,8 @@ opencli_contract:
   version: 2
   site: grok
   operation: file-operations
-  policy_sha256: d2b9f216523df47c74346d35cb34510ffe498aaed3167575f8992f4716317e63
+  policy_sha256: b705477e7e3a3a6973224daa59302383677bcd142ed82fafc4864ece1d1486a2
   commands:
-    export:
-      executor: none
-      execution_state: disabled
-      semantic_effect: local_write
-      risk: high
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 0
-        help: Max conversations to export; 0 means all loaded history
-        name: limit
-        required: false
-        type: int
-      - default: 80
-        help: Max history-list scroll rounds when limit is 0 (max 500)
-        name: maxScrolls
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs:
-      - workspace-relative output
-      sensitive_output: []
     export-all:
       executor: none
       execution_state: disabled
@@ -105,7 +75,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `export` | `disabled` | `local_write` / `high` | Not executable; use the declared fallback if permitted<br>Export all visible Grok conversation history metadata | `limit` (int, optional, default=0); `maxScrolls` (int, optional, default=80) |
 | `export-all` | `disabled` | `local_write` / `high` | Not executable; use the declared fallback if permitted<br>Export Grok conversation history and each conversation transcript | `limit` (int, optional, default=0); `offset` (int, optional, default=0); `manifestPath` (string, optional, default=''); `maxScrolls` (int, optional, default=80); `pageScrolls` (int, optional, default=30); `pageTimeoutMs` (int, optional, default=30000); `delayMinMs` (int, optional, default=0); `delayMaxMs` (int, optional, default=5000) |
 
 ## Safety and fallback

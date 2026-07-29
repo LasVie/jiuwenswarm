@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: gemini
   operation: generation
-  policy_sha256: 32999b35da627b217dce0ed802f908c70ea6bae3c3359de85d80d856837de670
+  policy_sha256: 73a86fcade69579b88c656ba09a4fe558916bb2b16dbb4a875f17703931af580
   commands:
     ask:
       executor: none

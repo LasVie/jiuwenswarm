@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: 1point3acres
   operation: authentication
-  policy_sha256: 0dbf244c9dd700c1aecb310892b943018ea6fe2ca7e725c441382de5c8b20b26
+  policy_sha256: 871c4a0582d2a9bf05ea6523c54836f1e728460cf923a19b3a4fa75d73290221
   commands:
     login:
       executor: none

@@ -3,8 +3,28 @@ opencli_contract:
   version: 2
   site: grok
   operation: account
-  policy_sha256: d2b9f216523df47c74346d35cb34510ffe498aaed3167575f8992f4716317e63
+  policy_sha256: b705477e7e3a3a6973224daa59302383677bcd142ed82fafc4864ece1d1486a2
   commands:
+    status:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_account_read
+      risk: medium
+      auth: optional
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args: []
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - account identifiers
     whoami:
       executor: none
       execution_state: disabled
@@ -35,6 +55,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
+| `status` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check Grok page availability, login state, current session and model | none |
 | `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in grok account | none |
 
 ## Safety and fallback

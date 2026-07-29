@@ -15,7 +15,6 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
-    - profile
     - whoami
   account-actions:
     purpose: Change reversible account relationship or saved state.
@@ -27,10 +26,21 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - profile
+    - user
   destructive-actions:
     purpose: Delete, remove, revoke, or perform administrative changes.
     commands:
     - unfollow
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - explore
+    - live
+    - search
   messaging:
     purpose: Send messages, replies, comments, invitations, or contacts.
     commands:
@@ -39,13 +49,9 @@ operations:
     purpose: Read content that depends on an authenticated account.
     commands:
     - creator-videos
-    - explore
     - following
     - friends
-    - live
     - notifications
-    - search
-    - user
   write-actions:
     purpose: Change remote service state.
     commands:
@@ -81,26 +87,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - creator analytics
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/creator-videos.js; reads authenticated or session-scoped content that can expose private account data.
   explore:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/explore.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   follow:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -130,14 +134,14 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - social graph
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/following.js; reads authenticated or session-scoped content that can expose private account data.
   friends:
     operation: private-content
     semantic_effect: private_content_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -147,9 +151,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - personalized recommendations
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/friends.js; reads authenticated or session-scoped content that can expose private account data.
   like:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -166,22 +170,20 @@ commands:
     sensitive_output: []
     notes: ''
   live:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/live.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -211,25 +213,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notifications
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/notifications.js; reads authenticated or session-scoped content that can expose private account data.
   profile:
-    operation: account
-    semantic_effect: private_account_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/profile.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   save:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -246,22 +247,20 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/search.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   unfollow:
     operation: destructive-actions
     semantic_effect: destructive_or_admin
@@ -308,22 +307,20 @@ commands:
     sensitive_output: []
     notes: ''
   user:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/user.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -339,4 +336,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 tiktok/auth.js; reads current browser-session or account-scoped metadata.

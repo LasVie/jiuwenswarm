@@ -3,70 +3,8 @@ opencli_contract:
   version: 2
   site: youtube
   operation: private-content
-  policy_sha256: 1ca115c2118174b132586814c7874a5c303563186919cc2b4fb3a24e33b67ea0
+  policy_sha256: 3d5906cc99870a2ef1d70a87acc167b81f0397a620e41320bd3ec7bc994d1617
   commands:
-    channel:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Channel ID (UCxxxx) or handle (@name)
-        name: id
-        positional: true
-        required: true
-        type: str
-      - default: 10
-        help: Max recent videos (max 30)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    comments:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: YouTube video URL or video ID
-        name: url
-        positional: true
-        required: true
-        type: str
-      - default: 20
-        help: Max comments (max 100)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     feed:
       executor: none
       execution_state: disabled
@@ -91,7 +29,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private viewing data
       - account identifiers
     history:
       executor: none
@@ -117,7 +55,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private viewing data
       - account identifiers
     playlist:
       executor: none
@@ -148,53 +86,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Search query
-        name: query
-        positional: true
-        required: true
-        type: str
-      - default: 20
-        help: Max results (max 50)
-        name: limit
-        required: false
-        type: int
-      - default: ''
-        help: 'Filter type: shorts, video, channel, playlist'
-        name: type
-        required: false
-        type: str
-      - default: ''
-        help: 'Upload date: hour, today, week, month, year'
-        name: upload
-        required: false
-        type: str
-      - default: ''
-        help: 'Sort by: relevance, date, views, rating'
-        name: sort
-        required: false
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private viewing data
       - account identifiers
     subscriptions:
       executor: none
@@ -220,33 +112,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    video:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: YouTube video URL or video ID
-        name: url
-        positional: true
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private viewing data
       - account identifiers
     watch-later:
       executor: none
@@ -272,7 +138,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private viewing data
       - account identifiers
 ---
 
@@ -284,14 +150,10 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `channel` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get YouTube channel info and recent videos | `id` (str, required, positional); `limit` (int, optional, default=10) |
-| `comments` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get YouTube video comments | `url` (str, required, positional); `limit` (int, optional, default=20) |
 | `feed` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get YouTube homepage recommended videos | `limit` (int, optional, default=20) |
 | `history` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get YouTube watch history | `limit` (int, optional, default=30) |
 | `playlist` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get YouTube playlist info and video list | `id` (str, required, positional); `limit` (int, optional, default=50) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search YouTube videos | `query` (str, required, positional); `limit` (int, optional, default=20); `type` (str, optional, default=''); `upload` (str, optional, default=''); `sort` (str, optional, default='') |
 | `subscriptions` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List subscribed YouTube channels | `limit` (int, optional, default=50) |
-| `video` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get YouTube video metadata (title, views, description, etc.) | `url` (str, required, positional) |
 | `watch-later` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get your YouTube Watch Later queue | `limit` (int, optional, default=50) |
 
 ## Safety and fallback

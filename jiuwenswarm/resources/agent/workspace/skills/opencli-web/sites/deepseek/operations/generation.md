@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: deepseek
   operation: generation
-  policy_sha256: 6302061dd41f35107ea7fe65b087496214ae1ac9cc1f529117a030d8427c993d
+  policy_sha256: 339988e83987f47db76a0395f64745704ddeeac025a53114d027b49a9ec8444f
   commands:
     ask:
       executor: none

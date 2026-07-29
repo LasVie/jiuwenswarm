@@ -18,6 +18,6 @@ This file is a router, not an execution receipt. Select exactly one operation an
 |---|---|---|---|
 | `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/flomo/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/flomo/operations/authentication.md` |
-| `memos` | Read private memo content. | `memos` | `sites/flomo/operations/memos.md` |
+| `private-content` | Read content that depends on an authenticated account. | `memos` | `sites/flomo/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

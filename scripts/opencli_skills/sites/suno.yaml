@@ -9,11 +9,12 @@ terminal: operation
 review:
   status: generated
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Browser-backed reads source-reviewed; remaining disabled capabilities pending review application.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
+    - status
     - whoami
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
@@ -31,7 +32,6 @@ operations:
     purpose: Read content that depends on an authenticated account.
     commands:
     - list
-    - status
 commands:
   download:
     operation: file-operations
@@ -97,8 +97,8 @@ commands:
     sensitive_output: []
     notes: ''
   status:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -110,7 +110,6 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
     - account identifiers
     notes: ''
   whoami:

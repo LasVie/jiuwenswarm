@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: chaoxing
   operation: private-content
-  policy_sha256: 5915ae63f9e2a5540f53452e24dd900aa033b064acb64ad476546bf4b6312bfd
+  policy_sha256: 3ca8510877d5a6238f9adf9c1032c3fac301b6d4b67d4da983d75efe61baca6c
   commands:
     assignments:
       executor: none

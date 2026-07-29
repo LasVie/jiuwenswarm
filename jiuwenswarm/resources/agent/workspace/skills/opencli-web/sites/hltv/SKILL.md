@@ -16,6 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `private-content` | Read content that depends on an authenticated account. | `event-matches`, `match-map`, `match-series`, `player-duel`, `player-form`, `player-map-pool`, `player-matches`, `player-summary`, `player-teammate-impact`, `player-vs-team`, `search`, `team-map-pool`, `team-matches` | `sites/hltv/operations/private-content.md` |
+| `analytics` | Read aggregate metrics, trends, or rankings. | `event-matches`, `match-map`, `match-series`, `player-duel`, `player-form`, `player-map-pool`, `player-matches`, `player-summary`, `player-teammate-impact`, `player-vs-team`, `team-map-pool`, `team-matches` | `sites/hltv/operations/analytics.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/hltv/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

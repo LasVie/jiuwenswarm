@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: powerchina
   operation: authentication
-  policy_sha256: 3a1f2758071ccea63ae284c6733b83ba37b981dfe6547c72df7eda8d57f063e0
+  policy_sha256: 392b42fc59d08412707e841ba10b67d991d08d46b0d3dc7a7fb6b188d2c8016c
   commands:
     login:
       executor: none

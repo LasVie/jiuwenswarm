@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: zsxq
   operation: private-content
-  policy_sha256: 0e955abc9e8c235e9788f3fcdd59640b9a1a7605d1cf18b4b4d2c6017d264171
+  policy_sha256: 7289cdf37f04f10e8d37968367ab1bd8a6189a1aeddd45761e81b9770e4781fe
   commands:
     dynamics:
       executor: none

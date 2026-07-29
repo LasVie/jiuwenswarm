@@ -3,33 +3,8 @@ opencli_contract:
   version: 2
   site: instagram
   operation: account
-  policy_sha256: d42c25c598970ce1716e696af43fd6eb6c2acc1199441ba3a3b95731834e32ef
+  policy_sha256: 2f23b0dffc95b6eb1f0ec9f5697f887ee9af073f197122b3280c07425989434d
   commands:
-    profile:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_account_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Instagram username
-        name: username
-        positional: true
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - account identifiers
     whoami:
       executor: none
       execution_state: disabled
@@ -60,7 +35,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `profile` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get Instagram user profile info | `username` (str, required, positional) |
 | `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in instagram account | none |
 
 ## Safety and fallback

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: weread
   operation: analytics
-  policy_sha256: 5053f8dcbd5e67d6d0d08f67516ffebf88101d9edfc0b57c7b54951f550c103f
+  policy_sha256: 2345432046fe5a6fb8663c41d6493c34c7ad68f543993ae9cfc313e120ab29f1
   commands:
     ranking:
       executor: generic_manifest_read

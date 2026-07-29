@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: douyin
   operation: write-actions
-  policy_sha256: bbec24521923ebb1327087b643f716d80cb93cb1c91f88100687c2f3854de22e
+  policy_sha256: 44a88f4e2945603337450f4d82e1d94d30556064265afb43719f582edd8ebf4c
   commands:
     draft:
       executor: none

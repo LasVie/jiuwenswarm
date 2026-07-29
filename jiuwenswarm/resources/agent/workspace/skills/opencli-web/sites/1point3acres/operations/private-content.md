@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: 1point3acres
   operation: private-content
-  policy_sha256: 0dbf244c9dd700c1aecb310892b943018ea6fe2ca7e725c441382de5c8b20b26
+  policy_sha256: 871c4a0582d2a9bf05ea6523c54836f1e728460cf923a19b3a4fa75d73290221
   commands:
     notifications:
       executor: none
@@ -34,43 +34,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: 搜索关键字
-        name: query
-        positional: true
-        required: true
-        type: str
-      - default: 20
-        help: 返回条数（默认 20，最多 50）
-        name: limit
-        required: false
-        type: int
-      - default: ''
-        help: 限定版块 ID（可选）
-        name: fid
-        required: false
-        type: string
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private notifications
       - account identifiers
 ---
 
@@ -83,7 +47,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
 | `notifications` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>一亩三分地 站内通知（互动 / 点评 / @ 我；需要登录） | `kind` (string, optional, default='mypost'); `limit` (int, optional, default=20) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>一亩三分地 站内关键字搜索（需要登录） | `query` (str, required, positional); `limit` (int, optional, default=20); `fid` (string, optional, default='') |
 
 ## Safety and fallback
 

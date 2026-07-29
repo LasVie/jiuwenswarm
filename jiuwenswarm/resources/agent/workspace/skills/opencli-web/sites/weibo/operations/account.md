@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: weibo
   operation: account
-  policy_sha256: ad9fe9aad5f989b83f399caba4b2e7a2cb38fc789078e5f2ab7ddcbd9f56e44b
+  policy_sha256: 17339ca0c0792c7964caf7e12e245c79ae3efdb2806901b9b89aee69e0f359ea
   commands:
     me:
       executor: none

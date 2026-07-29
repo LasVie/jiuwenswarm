@@ -32,49 +32,51 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - detail
-    - hot
     - mentions
-    - search
   write-actions:
     purpose: Change remote service state.
     commands:
     - unlike
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - detail
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - hot
+    - search
 commands:
   detail:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 hupu/detail.js; reads public browser-rendered content without authenticated account state.'
   hot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 hupu/hot.js; reads public browser-rendered content without authenticated account state.'
   like:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -119,9 +121,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notifications
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 hupu/mentions.js; reads authenticated or session-scoped content that can expose private account data.'
   reply:
     operation: messaging
     semantic_effect: message_send
@@ -138,22 +140,20 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 hupu/search.js; reads public browser-rendered content without authenticated account state.'
   unlike:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -184,4 +184,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 hupu/auth.js; reads current browser-session or account-scoped metadata.'

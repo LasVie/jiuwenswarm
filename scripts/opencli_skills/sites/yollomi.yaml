@@ -106,15 +106,15 @@ commands:
     risk: low
     auth: none
     transport: local
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
+    execution_state: disabled
+    executor: none
+    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
     sensitive_output: []
-    notes: Static adapter-local model table; no network request, authentication, or remote side effect.
+    notes: Static adapter-local model table; fail-closed until a dedicated reviewed local-read executor is available.
   object-remover:
     operation: write-actions
     semantic_effect: reversible_remote_write

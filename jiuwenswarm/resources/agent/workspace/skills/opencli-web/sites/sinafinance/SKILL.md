@@ -17,7 +17,6 @@ This file is a router, not an execution receipt. Select exactly one operation an
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
 | `content` | Read site content and metadata. | `stock` | `sites/sinafinance/operations/content.md` |
-| `discovery` | Search, browse, recommend, or discover site content. | `news` | `sites/sinafinance/operations/discovery.md` |
-| `private-content` | Read content that depends on an authenticated account. | `rolling-news`, `stock-rank` | `sites/sinafinance/operations/private-content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `news`, `rolling-news`, `stock-rank` | `sites/sinafinance/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

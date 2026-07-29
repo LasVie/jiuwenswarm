@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: grok
   operation: private-content
-  policy_sha256: d2b9f216523df47c74346d35cb34510ffe498aaed3167575f8992f4716317e63
+  policy_sha256: b705477e7e3a3a6973224daa59302383677bcd142ed82fafc4864ece1d1486a2
   commands:
     detail:
       executor: none
@@ -34,7 +34,39 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
+      - account identifiers
+    export:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_content_read
+      risk: medium
+      auth: required
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - default: 0
+        help: Max conversations to export; 0 means all loaded history
+        name: limit
+        required: false
+        type: int
+      - default: 80
+        help: Max history-list scroll rounds when limit is 0 (max 500)
+        name: maxScrolls
+        required: false
+        type: int
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs:
+      - workspace-relative output
+      sensitive_output:
+      - private conversation metadata
       - account identifiers
     history:
       executor: none
@@ -60,7 +92,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     read:
       executor: none
@@ -86,28 +118,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    status:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
 ---
 
@@ -120,9 +131,9 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
 | `detail` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Open a Grok conversation by ID and read its messages | `id` (str, required, positional); `markdown` (boolean, optional, default=False) |
+| `export` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Export all visible Grok conversation history metadata | `limit` (int, optional, default=0); `maxScrolls` (int, optional, default=80) |
 | `history` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List recent Grok conversations from the sidebar (requires login) | `limit` (int, optional, default=20) |
 | `read` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read messages in the current Grok conversation | `markdown` (boolean, optional, default=False) |
-| `status` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check Grok page availability, login state, current session and model | none |
 
 ## Safety and fallback
 

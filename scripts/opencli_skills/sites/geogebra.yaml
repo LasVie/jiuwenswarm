@@ -9,7 +9,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Browser-backed reads source-reviewed; remaining disabled capabilities pending review application.
 operations:
   arbitrary-execution:
     purpose: Adapter entry points that can execute arbitrary input.
@@ -124,7 +124,7 @@ commands:
     operation: private-content
     semantic_effect: private_content_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_dom
     execution_state: disabled
     executor: none
@@ -141,7 +141,7 @@ commands:
     operation: private-content
     semantic_effect: private_content_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_dom
     execution_state: disabled
     executor: none

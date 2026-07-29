@@ -20,30 +20,34 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - course
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - course
-    - search
     - trending
 commands:
   course:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 linkedin-learning/course.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -60,22 +64,20 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 linkedin-learning/search.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   trending:
     operation: private-content
     semantic_effect: private_content_read
@@ -90,9 +92,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - personalized recommendations
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 linkedin-learning/trending.js; reads authenticated or session-scoped content that can expose private account data.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -108,4 +110,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 linkedin-learning/auth.js; reads current browser-session or account-scoped metadata.

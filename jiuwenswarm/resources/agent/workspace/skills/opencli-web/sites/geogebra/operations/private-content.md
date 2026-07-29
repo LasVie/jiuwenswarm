@@ -3,14 +3,14 @@ opencli_contract:
   version: 2
   site: geogebra
   operation: private-content
-  policy_sha256: 4100e839d5e4634680cce80bd2776781262b72dbd1fff454a67ae5f02ea2cc49
+  policy_sha256: 96b5e0ced92cddb4cb2074e33e62e5c7e81e94d600703a48694341552ae52a5d
   commands:
     info:
       executor: none
       execution_state: disabled
       semantic_effect: private_content_read
       risk: medium
-      auth: required
+      auth: optional
       transport: browser_dom
       strategy: public
       browser: true
@@ -35,7 +35,7 @@ opencli_contract:
       execution_state: disabled
       semantic_effect: private_content_read
       risk: medium
-      auth: required
+      auth: optional
       transport: browser_dom
       strategy: public
       browser: true

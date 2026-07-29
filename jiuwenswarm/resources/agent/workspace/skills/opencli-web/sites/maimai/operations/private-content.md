@@ -3,13 +3,13 @@ opencli_contract:
   version: 2
   site: maimai
   operation: private-content
-  policy_sha256: c3a7768b30c706b0535c75e785fc1f483166cfdf8f9201442b2b88580a2fa9d9
+  policy_sha256: 79428e3ea8baebfa08dc66677fec412fef8ef18efa256ebaaa1c5fd1890f3c3f
   commands:
     search-talents:
       executor: none
       execution_state: disabled
       semantic_effect: private_content_read
-      risk: medium
+      risk: high
       auth: required
       transport: browser_cookie
       strategy: cookie
@@ -89,7 +89,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - personal data
       - account identifiers
 ---
 
@@ -101,7 +101,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `search-talents` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search for candidates on Maimai with multi-dimensional filters | `query` (str, required, positional); `page` (int, optional, default=0); `size` (int, optional, default=20); `positions` (str, optional); `companies` (str, optional); `schools` (str, optional); `provinces` (str, optional); `cities` (str, optional); `worktimes` (str, optional); `degrees` (str, optional); `professions` (str, optional); `is_211` (int, optional); `is_985` (int, optional); `sortby` (int, optional, default=0); `is_direct_chat` (int, optional, default=0) |
+| `search-talents` | `disabled` | `private_content_read` / `high` | Not executable; use the declared fallback if permitted<br>Search for candidates on Maimai with multi-dimensional filters | `query` (str, required, positional); `page` (int, optional, default=0); `size` (int, optional, default=20); `positions` (str, optional); `companies` (str, optional); `schools` (str, optional); `provinces` (str, optional); `cities` (str, optional); `worktimes` (str, optional); `degrees` (str, optional); `professions` (str, optional); `is_211` (int, optional); `is_985` (int, optional); `sortby` (int, optional, default=0); `is_direct_chat` (int, optional, default=0) |
 
 ## Safety and fallback
 

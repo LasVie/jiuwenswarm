@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: jike
   operation: account-actions
-  policy_sha256: f05c6947bf8b738be4ec401e0cae980808f3b984f8d6143c3bf0e4ac951e3323
+  policy_sha256: fe96a20e3b2bc4c2630c74b573ded5477bf007ae268dc0640c96e881b1776651
   commands:
     like:
       executor: none

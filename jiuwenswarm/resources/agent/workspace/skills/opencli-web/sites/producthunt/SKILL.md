@@ -17,6 +17,6 @@ This file is a router, not an execution receipt. Select exactly one operation an
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
 | `content` | Read site content and metadata. | `posts`, `today` | `sites/producthunt/operations/content.md` |
-| `private-content` | Read content that depends on an authenticated account. | `browse`, `hot` | `sites/producthunt/operations/private-content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `browse`, `hot` | `sites/producthunt/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

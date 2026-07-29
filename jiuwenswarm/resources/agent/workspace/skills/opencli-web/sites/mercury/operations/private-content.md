@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: mercury
   operation: private-content
-  policy_sha256: a1376e6ba8694455786c63a7039937f24f5b24f3bccff07d273186601fe14613
+  policy_sha256: 04a92a9dfe9a85fc6b6ac45df06d44e850550d681afe456cfab978b42873bf6f
   commands:
     reimbursement-plan:
       executor: none

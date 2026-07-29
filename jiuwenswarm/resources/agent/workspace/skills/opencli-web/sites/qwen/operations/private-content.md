@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: qwen
   operation: private-content
-  policy_sha256: 4b95b13069b7d2f9a546757e99f242e50c4d7e624bace5ccd7c12c3b4bd9fb28
+  policy_sha256: fcf84febb19f60002d518f7b57d2495d9364756134b1c42546f8d2aedae33154
   commands:
     detail:
       executor: none
@@ -34,7 +34,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     history:
       executor: none
@@ -60,7 +60,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     read:
       executor: none
@@ -86,28 +86,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    status:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
 ---
 
@@ -122,7 +101,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `detail` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Open a Qianwen conversation by ID and read its messages | `id` (str, required, positional); `markdown` (boolean, optional, default=False) |
 | `history` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List recent Qianwen conversations (requires login) | `limit` (int, optional, default=20) |
 | `read` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read messages in the current Qianwen conversation | `markdown` (boolean, optional, default=False) |
-| `status` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check Qianwen page availability, login state, current session and model | none |
 
 ## Safety and fallback
 

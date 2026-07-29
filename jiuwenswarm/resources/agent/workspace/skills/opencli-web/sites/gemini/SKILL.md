@@ -16,9 +16,9 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/gemini/operations/account.md` |
+| `account` | Read account identity or account-scoped metadata. | `models`, `status`, `whoami` | `sites/gemini/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/gemini/operations/authentication.md` |
 | `generation` | Generate remote content, start AI work, or consume quota. | `ask`, `deep-research`, `deep-research-result`, `image`, `new` | `sites/gemini/operations/generation.md` |
-| `private-content` | Read content that depends on an authenticated account. | `detail`, `history`, `models`, `read`, `status` | `sites/gemini/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `detail`, `history`, `read` | `sites/gemini/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

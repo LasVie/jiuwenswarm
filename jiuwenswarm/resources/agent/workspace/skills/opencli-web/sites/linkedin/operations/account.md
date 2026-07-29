@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: linkedin
   operation: account
-  policy_sha256: d0c16e9f75ca1a20826b14b84ed1623a5a25b38ba0d1785c847e19d8620f8018
+  policy_sha256: 318b046f8d0394572c515dd0fcd92133ed118ddb2219732dc3c17115eac020f9
   commands:
     profile-analytics:
       executor: none

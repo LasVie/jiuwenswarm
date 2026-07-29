@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: weread
   operation: private-content
-  policy_sha256: 5053f8dcbd5e67d6d0d08f67516ffebf88101d9edfc0b57c7b54951f550c103f
+  policy_sha256: 2345432046fe5a6fb8663c41d6493c34c7ad68f543993ae9cfc313e120ab29f1
   commands:
     ai-outline:
       executor: none
@@ -44,33 +44,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    book:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Book ID from search or shelf results
-        name: book-id
-        positional: true
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - licensed book-derived content
       - account identifiers
     highlights:
       executor: none
@@ -101,7 +75,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private reading data
       - account identifiers
     notebooks:
       executor: none
@@ -122,7 +96,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private reading data
       - account identifiers
     notes:
       executor: none
@@ -153,7 +127,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private reading data
       - account identifiers
     shelf:
       executor: none
@@ -179,7 +153,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private reading data
       - account identifiers
 ---
 
@@ -192,7 +166,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
 | `ai-outline` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get AI-generated outline for a book | `book-id` (str, required, positional); `limit` (int, optional, default=200); `depth` (int, optional, default=4); `raw` (boolean, optional, default=False) |
-| `book` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>View book details on WeRead | `book-id` (str, required, positional) |
 | `highlights` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List your highlights (underlines) in a book | `book-id` (str, required, positional); `limit` (int, optional, default=20) |
 | `notebooks` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List books that have highlights or notes | none |
 | `notes` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List your notes (thoughts) on a book | `book-id` (str, required, positional); `limit` (int, optional, default=20) |

@@ -3,65 +3,8 @@ opencli_contract:
   version: 2
   site: linkedin-learning
   operation: private-content
-  policy_sha256: 2b89bd68664f9985dce86d7dff3b298deca669023ace2e3cb8d5dff5de2bd8de
+  policy_sha256: 613a7e30082d1f650dbc5df6c9960d87c964b19f140a6ff75924f641310b9671
   commands:
-    course:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Course slug (e.g. agentic-ai-build-your-first-agentic-ai-system) or full /learning/<slug> URL
-        name: slug
-        positional: true
-        required: true
-        type: string
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Search keywords, e.g. "AI agent"
-        name: keywords
-        positional: true
-        required: true
-        type: string
-      - default: 10
-        help: Maximum results to return (1-50)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     trending:
       executor: none
       execution_state: disabled
@@ -86,7 +29,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - personalized recommendations
       - account identifiers
 ---
 
@@ -98,8 +41,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `course` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get LinkedIn Learning course detail by slug or course URL | `slug` (string, required, positional) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search LinkedIn Learning courses, videos, and learning paths by keyword | `keywords` (string, required, positional); `limit` (int, optional, default=10) |
 | `trending` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Browse LinkedIn Learning recommended courses across personalized carousels | `limit` (int, optional, default=10) |
 
 ## Safety and fallback

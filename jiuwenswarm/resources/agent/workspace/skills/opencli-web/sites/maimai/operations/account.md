@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: maimai
   operation: account
-  policy_sha256: c3a7768b30c706b0535c75e785fc1f483166cfdf8f9201442b2b88580a2fa9d9
+  policy_sha256: 79428e3ea8baebfa08dc66677fec412fef8ef18efa256ebaaa1c5fd1890f3c3f
   commands:
     whoami:
       executor: none

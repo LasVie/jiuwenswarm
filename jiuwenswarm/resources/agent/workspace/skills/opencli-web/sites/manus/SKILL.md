@@ -16,8 +16,8 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/manus/operations/account.md` |
+| `account` | Read account identity or account-scoped metadata. | `connectors`, `credits`, `skills`, `status`, `whoami` | `sites/manus/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/manus/operations/authentication.md` |
-| `private-content` | Read content that depends on an authenticated account. | `connectors`, `credits`, `list`, `read`, `skills`, `status` | `sites/manus/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `list`, `read` | `sites/manus/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

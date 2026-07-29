@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: coupang
   operation: account-actions
-  policy_sha256: fabb4365f754060a5bc82634e522f0478a6d7f49e63addf6b3fb44a03ddd6a77
+  policy_sha256: 15c9c239b0ba09eff87a1bba06361a2c5302d3e26fe8bbdf0afc9cea0984cb15
   commands:
     add-to-cart:
       executor: none

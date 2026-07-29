@@ -16,9 +16,11 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `account` | Read account identity or account-scoped metadata. | `profile`, `whoami` | `sites/facebook/operations/account.md` |
+| `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/facebook/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/facebook/operations/authentication.md` |
-| `private-content` | Read content that depends on an authenticated account. | `events`, `feed`, `friends`, `groups`, `marketplace-inbox`, `marketplace-listings`, `memories`, `notifications`, `search` | `sites/facebook/operations/private-content.md` |
+| `content` | Read site content and metadata. | `profile` | `sites/facebook/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `events`, `search` | `sites/facebook/operations/discovery.md` |
+| `private-content` | Read content that depends on an authenticated account. | `feed`, `friends`, `groups`, `marketplace-inbox`, `marketplace-listings`, `memories`, `notifications` | `sites/facebook/operations/private-content.md` |
 | `write-actions` | Change remote service state. | `add-friend`, `join-group` | `sites/facebook/operations/write-actions.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

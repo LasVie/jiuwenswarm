@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: linkedin-learning
   operation: account
-  policy_sha256: 2b89bd68664f9985dce86d7dff3b298deca669023ace2e3cb8d5dff5de2bd8de
+  policy_sha256: 613a7e30082d1f650dbc5df6c9960d87c964b19f140a6ff75924f641310b9671
   commands:
     whoami:
       executor: none

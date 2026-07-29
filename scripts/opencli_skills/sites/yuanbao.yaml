@@ -14,6 +14,7 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
+    - status
     - whoami
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
@@ -34,7 +35,6 @@ operations:
     - detail
     - history
     - read
-    - status
 commands:
   ask:
     operation: generation
@@ -65,9 +65,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 yuanbao/detail.js; reads authenticated or session-scoped content that can expose private account data.
   history:
     operation: private-content
     semantic_effect: private_content_read
@@ -82,9 +82,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 yuanbao/history.js; reads authenticated or session-scoped content that can expose private account data.
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -129,9 +129,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 yuanbao/read.js; reads authenticated or session-scoped content that can expose private account data.
   send:
     operation: messaging
     semantic_effect: message_send
@@ -148,10 +148,10 @@ commands:
     sensitive_output: []
     notes: ''
   status:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -161,9 +161,8 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    - authentication state
+    notes: Source-audited against OpenCLI 1.8.6 yuanbao/status.js; reads current browser-session authentication state without changing it.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -179,4 +178,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 yuanbao/auth.js; reads current browser-session or account-scoped metadata.

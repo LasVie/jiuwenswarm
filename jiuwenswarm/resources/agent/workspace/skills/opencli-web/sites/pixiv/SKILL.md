@@ -18,7 +18,8 @@ This file is a router, not an execution receipt. Select exactly one operation an
 |---|---|---|---|
 | `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/pixiv/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/pixiv/operations/authentication.md` |
+| `content` | Read one public item, record, page, or resource. | `detail`, `user` | `sites/pixiv/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `illusts`, `ranking`, `search` | `sites/pixiv/operations/discovery.md` |
 | `file-operations` | Create or download workspace files. | `download` | `sites/pixiv/operations/file-operations.md` |
-| `private-content` | Read content that depends on an authenticated account. | `detail`, `illusts`, `ranking`, `search`, `user` | `sites/pixiv/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

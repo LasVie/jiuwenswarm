@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: weixin
   operation: publishing
-  policy_sha256: 4ae15f5bbeb75a3b75bca630d6636e358ee66ade40db74e20828f65545a93601
+  policy_sha256: 81c0387fc9449bde1b851ade112157695e57b200fc5cdd0c45830aae2469f9af
   commands:
     create-draft:
       executor: none

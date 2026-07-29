@@ -25,26 +25,26 @@ operations:
     commands:
     - companies
     - creators
+    - detail
+    - experience
     - hot
     - jobs
+    - papers
     - recommend
+    - referral
+    - salary
     - topics
   discovery:
     purpose: Search, browse, recommend, or discover site content.
     commands:
+    - search
+    - suggest
     - trending
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - detail
-    - experience
     - notifications
-    - papers
     - practice
-    - referral
-    - salary
-    - search
-    - suggest
 commands:
   companies:
     operation: content
@@ -77,39 +77,35 @@ commands:
     sensitive_output: []
     notes: ''
   detail:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/detail.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   experience:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/experience.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   hot:
     operation: content
     semantic_effect: public_read
@@ -169,26 +165,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notifications
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/notifications.js; reads authenticated or session-scoped content that can expose private account data.
   papers:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/papers.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   practice:
     operation: private-content
     semantic_effect: private_content_read
@@ -203,9 +197,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - learning progress
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/practice.js; reads authenticated or session-scoped content that can expose private account data.
   recommend:
     operation: content
     semantic_effect: public_read
@@ -222,73 +216,65 @@ commands:
     sensitive_output: []
     notes: ''
   referral:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/referral.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   salary:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/salary.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/search.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   suggest:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/suggest.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   topics:
     operation: content
     semantic_effect: public_read
@@ -334,4 +320,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 nowcoder/auth.js; reads current browser-session or account-scoped metadata.

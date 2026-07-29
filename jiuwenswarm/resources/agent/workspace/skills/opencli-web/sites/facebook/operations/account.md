@@ -3,33 +3,8 @@ opencli_contract:
   version: 2
   site: facebook
   operation: account
-  policy_sha256: b776299629981dc1b3272fc4ad4433f1cad59bec101dc657a77083b67395ca9f
+  policy_sha256: a552e204806645435acf153b95b9b17324af010e869f083c79bc829920a49f40
   commands:
-    profile:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_account_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Facebook username or page name
-        name: username
-        positional: true
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - account identifiers
     whoami:
       executor: none
       execution_state: disabled
@@ -60,7 +35,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `profile` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get Facebook user/page profile info | `username` (str, required, positional) |
 | `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in facebook account | none |
 
 ## Safety and fallback

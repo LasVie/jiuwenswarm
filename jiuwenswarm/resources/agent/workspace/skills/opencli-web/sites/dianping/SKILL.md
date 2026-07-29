@@ -18,6 +18,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 |---|---|---|---|
 | `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/dianping/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/dianping/operations/authentication.md` |
-| `private-content` | Read content that depends on an authenticated account. | `search`, `shop` | `sites/dianping/operations/private-content.md` |
+| `content` | Read one public item, record, page, or resource. | `shop` | `sites/dianping/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/dianping/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

@@ -16,6 +16,6 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `private-content` | Read content that depends on an authenticated account. | `hot-rank` | `sites/ths/operations/private-content.md` |
+| `analytics` | Read public rankings, market data, or analytical site content. | `hot-rank` | `sites/ths/operations/analytics.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

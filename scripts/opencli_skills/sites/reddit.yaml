@@ -25,6 +25,22 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - read
+    - subreddit-info
+    - user
+    - user-comments
+    - user-posts
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - frontpage
+    - hot
+    - popular
+    - search
+    - subreddit
   messaging:
     purpose: Send messages, replies, comments, invitations, or contacts.
     commands:
@@ -33,20 +49,10 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - frontpage
     - home
-    - hot
-    - popular
-    - read
     - saved
-    - search
-    - subreddit
-    - subreddit-info
     - subscribed
     - upvoted
-    - user
-    - user-comments
-    - user-posts
   write-actions:
     purpose: Change remote service state.
     commands:
@@ -68,22 +74,20 @@ commands:
     sensitive_output: []
     notes: ''
   frontpage:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/frontpage.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   home:
     operation: private-content
     semantic_effect: private_content_read
@@ -98,26 +102,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - personalized feed
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 reddit/home.js; reads authenticated or session-scoped content that can expose private account data.
   hot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/hot.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -134,39 +136,35 @@ commands:
     sensitive_output: []
     notes: ''
   popular:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/popular.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   read:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/read.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   reply:
     operation: messaging
     semantic_effect: message_send
@@ -211,60 +209,54 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - account activity
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 reddit/saved.js; reads authenticated or session-scoped content that can expose private account data.
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/search.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   subreddit:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/subreddit.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   subreddit-info:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/subreddit-info.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   subscribe:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -294,9 +286,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - account activity
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 reddit/subscribed.js; reads authenticated or session-scoped content that can expose private account data.
   upvote:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -326,60 +318,54 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - account activity
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 reddit/upvoted.js; reads authenticated or session-scoped content that can expose private account data.
   user:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/user.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   user-comments:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/user-comments.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   user-posts:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 reddit/user-posts.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -395,4 +381,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 reddit/whoami.js; reads current browser-session or account-scoped metadata.

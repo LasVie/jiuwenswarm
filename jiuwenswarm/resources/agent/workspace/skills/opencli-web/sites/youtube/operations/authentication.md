@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: youtube
   operation: authentication
-  policy_sha256: 1ca115c2118174b132586814c7874a5c303563186919cc2b4fb3a24e33b67ea0
+  policy_sha256: 3d5906cc99870a2ef1d70a87acc167b81f0397a620e41320bd3ec7bc994d1617
   commands:
     login:
       executor: none

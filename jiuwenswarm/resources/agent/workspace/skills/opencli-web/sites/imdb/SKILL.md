@@ -16,6 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `private-content` | Read content that depends on an authenticated account. | `person`, `reviews`, `search`, `title`, `top`, `trending` | `sites/imdb/operations/private-content.md` |
+| `content` | Read site content and metadata. | `person`, `reviews`, `title` | `sites/imdb/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `search`, `top`, `trending` | `sites/imdb/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

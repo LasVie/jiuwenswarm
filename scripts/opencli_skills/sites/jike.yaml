@@ -33,10 +33,6 @@ operations:
     commands:
     - feed
     - notifications
-    - post
-    - search
-    - topic
-    - user
   publishing:
     purpose: Publish, create, edit, or upload remote content.
     commands:
@@ -45,6 +41,16 @@ operations:
     purpose: Change remote service state.
     commands:
     - repost
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - post
+    - topic
+    - user
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
 commands:
   comment:
     operation: messaging
@@ -91,9 +97,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 jike/feed.js; reads authenticated or session-scoped content that can expose private account data.'
   like:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -138,26 +144,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 jike/notifications.js; reads authenticated or session-scoped content that can expose private account data.'
   post:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 jike/post.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   repost:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -174,56 +178,50 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 jike/search.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   topic:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 jike/topic.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   user:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 jike/user.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -239,4 +237,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 jike/auth.js; reads current browser-session or account-scoped metadata.'

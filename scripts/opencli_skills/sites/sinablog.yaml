@@ -7,26 +7,26 @@ domains:
 aliases: []
 terminal: operation
 review:
-  status: generated
+  status: reviewed
   owner: agent-a
-  notes: Public non-browser reads source-reviewed; remaining disabled capabilities pending review application.
+  notes: All commands source-reviewed; browser-backed reads remain disabled pending a guarded browser executor.
 operations:
   discovery:
     purpose: Search, browse, recommend, or discover site content.
     commands:
+    - hot
     - search
-  private-content:
-    purpose: Read content that depends on an authenticated account.
+  content:
+    purpose: Read site content and metadata.
     commands:
     - article
-    - hot
     - user
 commands:
   article:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -35,15 +35,13 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   hot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -52,9 +50,7 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   search:
     operation: discovery
@@ -72,10 +68,10 @@ commands:
     sensitive_output: []
     notes: ''
   user:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -84,7 +80,5 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''

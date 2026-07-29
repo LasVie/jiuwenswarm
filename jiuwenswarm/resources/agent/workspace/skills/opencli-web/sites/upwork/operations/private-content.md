@@ -3,34 +3,8 @@ opencli_contract:
   version: 2
   site: upwork
   operation: private-content
-  policy_sha256: b72915895eb81bb776af49116cb56ea9889cc673b7cd846e6b21d897ad96ff7b
+  policy_sha256: 1d10bc6218b6d560645d06ab55894f4993fe0c04ae042f221c635f1db2599946
   commands:
-    detail:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Job ciphertext id (~01… / ~02…) or full /jobs/~02… URL
-        name: id
-        positional: true
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     feed:
       executor: none
       execution_state: disabled
@@ -61,58 +35,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Job keyword (skill / title / company)
-        name: query
-        positional: true
-        required: true
-        type: str
-      - default: ''
-        help: Country/city filter (e.g. "United States", "Remote")
-        name: location
-        required: false
-        type: string
-      - default: ''
-        help: Category uid filter (advanced; from job detail `category` slug)
-        name: category
-        required: false
-        type: string
-      - default: recency
-        help: 'Sort: recency | relevance | client_total_charge | client_total_reviews'
-        name: sort
-        required: false
-        type: string
-      - default: 1
-        help: Page number (1-based)
-        name: page
-        required: false
-        type: int
-      - default: 10
-        help: Rows per page (10-50, capped at one page)
-        name: per_page
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private job recommendations
       - account identifiers
 ---
 
@@ -124,9 +47,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `detail` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read the full Upwork job posting by ciphertext id (e.g. ~022054964136512093518) | `id` (str, required, positional) |
 | `feed` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Upwork personalized jobs feed (best-matches \| most-recent) — requires login | `tab` (str, optional, positional, default='best-matches'); `limit` (int, optional, default=20) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Upwork keyword job search (logged-in browser session, US site) | `query` (str, required, positional); `location` (string, optional, default=''); `category` (string, optional, default=''); `sort` (string, optional, default='recency'); `page` (int, optional, default=1); `per_page` (int, optional, default=10) |
 
 ## Safety and fallback
 

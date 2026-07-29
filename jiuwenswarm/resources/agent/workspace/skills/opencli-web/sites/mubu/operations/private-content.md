@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: mubu
   operation: private-content
-  policy_sha256: 6534b6c3bc5f230ccd43aef6103de7cd2a12ebaa15c33ec788de606b9b876553
+  policy_sha256: 45cf34b7d78f5ef909490a041035cf5974037f1dfa5a9a4eac50361b7973f19c
   commands:
     doc:
       executor: none

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: nowcoder
   operation: account
-  policy_sha256: 1cc4a67edce749ae3bc0b87002ccfbda990efa63e8613407192244daca0f1248
+  policy_sha256: 8a5afbc7161bd46d50a4cd170c19607059ebeebdaa8692237ad97edcdb31e061
   commands:
     whoami:
       executor: none

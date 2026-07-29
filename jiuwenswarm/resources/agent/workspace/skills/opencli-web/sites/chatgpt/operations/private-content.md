@@ -3,8 +3,49 @@ opencli_contract:
   version: 2
   site: chatgpt
   operation: private-content
-  policy_sha256: cbd22f6bc7157ff01dec9ec104e5e019587993a4880d14dd9c65b07c9498cf5d
+  policy_sha256: 28d35bad52983e014ac34c237dbe49d3a4dafdf31f0d1339e061d5a2c581c990
   commands:
+    deep-research-result:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_content_read
+      risk: medium
+      auth: required
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - help: Conversation ID or full /c/<id> URL
+        name: id
+        positional: true
+        required: true
+        type: str
+      - default: false
+        help: Wait until Deep Research completes or becomes extractable
+        name: wait
+        required: false
+        type: boolean
+      - default: 120
+        help: Max seconds to wait when --wait is true
+        name: timeout
+        required: false
+        type: int
+      - default: 6
+        help: Seconds the report text must remain unchanged when --wait is true
+        name: stable
+        required: false
+        type: int
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - private conversation content
+      - account identifiers
     detail:
       executor: none
       execution_state: disabled
@@ -49,7 +90,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     history:
       executor: none
@@ -75,7 +116,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     project-list:
       executor: none
@@ -101,7 +142,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private project metadata
       - account identifiers
     read:
       executor: none
@@ -127,28 +168,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    status:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
 ---
 
@@ -160,11 +180,11 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
+| `deep-research-result` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read a completed ChatGPT Deep Research report from the conversation payload | `id` (str, required, positional); `wait` (boolean, optional, default=False); `timeout` (int, optional, default=120); `stable` (int, optional, default=6) |
 | `detail` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Open a ChatGPT web conversation by ID and read its messages | `id` (str, required, positional); `markdown` (boolean, optional, default=False); `wait` (boolean, optional, default=False); `timeout` (int, optional, default=120); `stable` (int, optional, default=6) |
 | `history` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List visible ChatGPT web conversation history from the sidebar | `limit` (int, optional, default=20) |
 | `project-list` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List visible ChatGPT projects from the sidebar | `limit` (int, optional, default=20) |
 | `read` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read messages in the current ChatGPT web conversation | `markdown` (boolean, optional, default=False) |
-| `status` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check ChatGPT web page availability and login state | none |
 
 ## Safety and fallback
 

@@ -3,8 +3,28 @@ opencli_contract:
   version: 2
   site: qwen
   operation: account
-  policy_sha256: 4b95b13069b7d2f9a546757e99f242e50c4d7e624bace5ccd7c12c3b4bd9fb28
+  policy_sha256: fcf84febb19f60002d518f7b57d2495d9364756134b1c42546f8d2aedae33154
   commands:
+    status:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_account_read
+      risk: medium
+      auth: optional
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args: []
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - account identifiers
     whoami:
       executor: none
       execution_state: disabled
@@ -35,6 +55,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
+| `status` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check Qianwen page availability, login state, current session and model | none |
 | `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in qwen account | none |
 
 ## Safety and fallback

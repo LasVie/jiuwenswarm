@@ -18,7 +18,9 @@ This file is a router, not an execution receipt. Select exactly one operation an
 |---|---|---|---|
 | `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/douban/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/douban/operations/authentication.md` |
+| `content` | Read site content and metadata. | `photos`, `subject` | `sites/douban/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `book-hot`, `movie-hot`, `search`, `top250` | `sites/douban/operations/discovery.md` |
 | `file-operations` | Create or download workspace files. | `download` | `sites/douban/operations/file-operations.md` |
-| `private-content` | Read content that depends on an authenticated account. | `book-hot`, `marks`, `movie-hot`, `photos`, `reviews`, `search`, `subject`, `top250` | `sites/douban/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `marks`, `reviews` | `sites/douban/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: yuanbao
   operation: authentication
-  policy_sha256: 286e0ea8163a76cd0781de943293e8e2959bad09793d1c0fd15cacfd2581539c
+  policy_sha256: a4011a198be679f5bef037e3fe66590af13f501ddbbad23e0350351634ce75a2
   commands:
     login:
       executor: none

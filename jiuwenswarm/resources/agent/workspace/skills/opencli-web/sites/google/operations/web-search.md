@@ -3,14 +3,14 @@ opencli_contract:
   version: 2
   site: google
   operation: web-search
-  policy_sha256: fa46ccffc38aca4e255838c717dd023d7184f058e11cb0725d01d86a1c273ce7
+  policy_sha256: 8f8e9b5f1df0ce31cba6ad236f14011d957450747655c76b7cc1583a8e22d329
   commands:
     search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
+      executor: browser_manifest_public_read
+      execution_state: enabled
+      semantic_effect: public_read
+      risk: low
+      auth: none
       transport: browser_dom
       strategy: public
       browser: true
@@ -35,15 +35,13 @@ opencli_contract:
         name: lang
         required: false
         type: str
-      confirmation: unsupported
+      confirmation: none
       fallback:
         before_dispatch: browser_agent
-        after_failure: none
+        after_failure: browser_agent
       file_inputs: []
       file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
+      sensitive_output: []
 ---
 
 # Google: web-search
@@ -54,11 +52,10 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search Google | `keyword` (str, required, positional); `limit` (int, optional, default=10, minimum=1,maximum=100); `lang` (str, optional, default='en') |
+| `search` | `enabled` | `public_read` / `low` | `opencli_execute(site="google", operation="web-search", command="search", arguments={"keyword":"<keyword>"})`<br>Search Google | `keyword` (str, required, positional); `limit` (int, optional, default=10, minimum=1,maximum=100); `lang` (str, optional, default='en') |
 
 ## Safety and fallback
 
 - Unknown commands and arguments are rejected before subprocess start.
 - Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
-- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.
+- These commands are reviewed public reads. A proven pre-dispatch failure and a read failure may use `browser_agent` once; never run both paths concurrently.

@@ -15,7 +15,6 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
-    - profile
     - whoami
   account-actions:
     purpose: Change reversible account relationship or saved state.
@@ -27,11 +26,20 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - profile
   destructive-actions:
     purpose: Delete, remove, revoke, or perform administrative changes.
     commands:
     - collection-delete
     - unfollow
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - explore
+    - search
   file-operations:
     purpose: Create or download workspace files.
     commands:
@@ -43,11 +51,9 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - explore
     - followers
     - following
     - saved
-    - search
     - user
   publishing:
     purpose: Publish, create, edit, or upload remote content.
@@ -126,22 +132,20 @@ commands:
     sensitive_output: []
     notes: ''
   explore:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 instagram/explore.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   follow:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -171,9 +175,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - social graph
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 instagram/followers.js; reads authenticated or session-scoped content that can expose private account data.
   following:
     operation: private-content
     semantic_effect: private_content_read
@@ -188,9 +192,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - social graph
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 instagram/following.js; reads authenticated or session-scoped content that can expose private account data.
   like:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -253,21 +257,20 @@ commands:
     sensitive_output: []
     notes: ''
   profile:
-    operation: account
-    semantic_effect: private_account_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 instagram/profile.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   reel:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -312,26 +315,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - saved content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 instagram/saved.js; reads authenticated or session-scoped content that can expose private account data.
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 instagram/search.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   story:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -406,9 +407,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 instagram/user.js; reads authenticated or session-scoped content that can expose private account data.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -424,4 +425,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 instagram/auth.js; reads current browser-session or account-scoped metadata.

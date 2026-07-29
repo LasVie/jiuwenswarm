@@ -14,7 +14,6 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
-    - profile
     - whoami
   account-actions:
     purpose: Change reversible account relationship or saved state.
@@ -49,22 +48,15 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - article
     - bookmark-folder
     - bookmark-folders
     - bookmarks
     - device-follow
-    - followers
-    - following
     - likes
     - list-tweets
     - lists
     - notifications
-    - search
-    - thread
     - timeline
-    - trending
-    - tweets
   publishing:
     purpose: Publish, create, edit, or upload remote content.
     commands:
@@ -82,6 +74,20 @@ operations:
     - unbookmark
     - unlike
     - unretweet
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - article
+    - profile
+    - thread
+    - tweets
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - followers
+    - following
+    - search
+    - trending
 commands:
   accept:
     operation: write-actions
@@ -99,22 +105,20 @@ commands:
     sensitive_output: []
     notes: ''
   article:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/article.js; returns public long-form content as Markdown command output without creating a local file.'
   block:
     operation: destructive-actions
     semantic_effect: destructive_or_admin
@@ -159,9 +163,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/bookmark-folder.js; reads authenticated or session-scoped content that can expose private account data.'
   bookmark-folders:
     operation: private-content
     semantic_effect: private_content_read
@@ -176,9 +180,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/bookmark-folders.js; reads authenticated or session-scoped content that can expose private account data.'
   bookmarks:
     operation: private-content
     semantic_effect: private_content_read
@@ -193,9 +197,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/bookmarks.js; reads authenticated or session-scoped content that can expose private account data.'
   delete:
     operation: destructive-actions
     semantic_effect: destructive_or_admin
@@ -225,9 +229,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/device-follow.js; reads authenticated or session-scoped content that can expose private account data.'
   download:
     operation: file-operations
     semantic_effect: local_write
@@ -275,39 +279,35 @@ commands:
     sensitive_output: []
     notes: ''
   followers:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_dom
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/followers.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   following:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/following.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   hide-reply:
     operation: messaging
     semantic_effect: message_send
@@ -352,9 +352,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/likes.js; reads authenticated or session-scoped content that can expose private account data.'
   list-add:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -460,9 +460,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/list-tweets.js; reads authenticated or session-scoped content that can expose private account data.'
   lists:
     operation: private-content
     semantic_effect: private_content_read
@@ -477,9 +477,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/lists.js; reads authenticated or session-scoped content that can expose private account data.'
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -509,9 +509,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/notifications.js; reads authenticated or session-scoped content that can expose private account data.'
   post:
     operation: publishing
     semantic_effect: public_write
@@ -529,21 +529,20 @@ commands:
     sensitive_output: []
     notes: ''
   profile:
-    operation: account
-    semantic_effect: private_account_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/profile.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   quote:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -605,39 +604,35 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/search.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   thread:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/thread.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   timeline:
     operation: private-content
     semantic_effect: private_content_read
@@ -652,43 +647,39 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/timeline.js; reads authenticated or session-scoped content that can expose private account data.'
   trending:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/trending.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   tweets:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/tweets.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   unblock:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -779,4 +770,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 twitter/auth.js; reads current browser-session or account-scoped metadata.'

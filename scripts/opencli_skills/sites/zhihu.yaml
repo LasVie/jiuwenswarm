@@ -38,24 +38,30 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - answer-comments
-    - answer-detail
     - collection
     - collections
-    - followers
-    - following
-    - hot
-    - pins
-    - question
     - recommend
-    - search
-    - user
-    - user-answers
-    - user-articles
   write-actions:
     purpose: Change remote service state.
     commands:
     - answer
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - answer-comments
+    - answer-detail
+    - question
+    - user
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - followers
+    - following
+    - hot
+    - pins
+    - search
+    - user-answers
+    - user-articles
 commands:
   answer:
     operation: write-actions
@@ -73,39 +79,35 @@ commands:
     sensitive_output: []
     notes: ''
   answer-comments:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/answer-comments.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   answer-detail:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/answer-detail.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   collection:
     operation: private-content
     semantic_effect: private_content_read
@@ -120,9 +122,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/collection.js; reads authenticated or session-scoped content that can expose private account data.'
   collections:
     operation: private-content
     semantic_effect: private_content_read
@@ -137,9 +139,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/collections.js; reads authenticated or session-scoped content that can expose private account data.'
   comment:
     operation: messaging
     semantic_effect: message_send
@@ -202,56 +204,50 @@ commands:
     sensitive_output: []
     notes: ''
   followers:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/followers.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   following:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/following.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   hot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/hot.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   like:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -283,39 +279,35 @@ commands:
     sensitive_output: []
     notes: ''
   pins:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/pins.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   question:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/question.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   recommend:
     operation: private-content
     semantic_effect: private_content_read
@@ -330,77 +322,69 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private social content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/recommend.js; reads authenticated or session-scoped content that can expose private account data.'
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/search.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   user:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/user.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   user-answers:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/user-answers.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   user-articles:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/user-articles.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -416,4 +400,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 zhihu/auth.js; reads current browser-session or account-scoped metadata.'

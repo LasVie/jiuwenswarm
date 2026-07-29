@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: douban
   operation: file-operations
-  policy_sha256: f2948e86776e79b572c3bb5f9dc2f05ec01adfcba950f4341f135f84b9933578
+  policy_sha256: d2fadddfa14cdb365fea4b172c4ce959c5c5179f435b303b359a5dcb000337d7
   commands:
     download:
       executor: none

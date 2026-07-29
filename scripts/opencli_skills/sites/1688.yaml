@@ -20,35 +20,36 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - assets
+    - item
+    - store
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
   file-operations:
     purpose: Create or download workspace files.
     commands:
     - download
-  private-content:
-    purpose: Read content that depends on an authenticated account.
-    commands:
-    - assets
-    - item
-    - search
-    - store
 commands:
   assets:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 1688/assets.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   download:
     operation: file-operations
     semantic_effect: local_write
@@ -66,22 +67,20 @@ commands:
     sensitive_output: []
     notes: ''
   item:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 1688/item.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -98,39 +97,35 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 1688/search.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   store:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 1688/store.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -146,4 +141,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 1688/auth.js; reads current browser-session or account-scoped metadata.

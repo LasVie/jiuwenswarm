@@ -16,7 +16,6 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `discovery` | Search, browse, recommend, or discover site content. | `suggest` | `sites/duckduckgo/operations/discovery.md` |
-| `private-content` | Read content that depends on an authenticated account. | `search` | `sites/duckduckgo/operations/private-content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `search`, `suggest` | `sites/duckduckgo/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

@@ -24,62 +24,61 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
-  file-operations:
-    purpose: Create or download workspace files.
-    commands:
-    - transcript
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - channel
-    - comments
     - feed
     - history
     - playlist
-    - search
     - subscriptions
-    - video
     - watch-later
   write-actions:
     purpose: Change remote service state.
     commands:
     - unlike
     - unsubscribe
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - channel
+    - comments
+    - transcript
+    - video
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - search
 commands:
   channel:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/channel.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   comments:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/comments.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   feed:
     operation: private-content
     semantic_effect: private_content_read
@@ -94,9 +93,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private viewing data
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/feed.js; reads authenticated or session-scoped content that can expose private account data.'
   history:
     operation: private-content
     semantic_effect: private_content_read
@@ -111,9 +110,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private viewing data
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/history.js; reads authenticated or session-scoped content that can expose private account data.'
   like:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -158,26 +157,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private viewing data
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/playlist.js; reads authenticated or session-scoped content that can expose private account data.'
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/search.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   subscribe:
     operation: account-actions
     semantic_effect: reversible_remote_write
@@ -207,25 +204,25 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private viewing data
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/subscriptions.js; reads authenticated or session-scoped content that can expose private account data.'
   transcript:
-    operation: file-operations
-    semantic_effect: local_write
-    risk: high
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs:
     - workspace-relative output
     sensitive_output: []
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/transcript.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   unlike:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -257,22 +254,20 @@ commands:
     sensitive_output: []
     notes: ''
   video:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/video.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   watch-later:
     operation: private-content
     semantic_effect: private_content_read
@@ -287,9 +282,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private viewing data
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/watch-later.js; reads authenticated or session-scoped content that can expose private account data.'
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -305,4 +300,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 youtube/auth.js; reads current browser-session or account-scoped metadata.'

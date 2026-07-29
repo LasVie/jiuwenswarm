@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: hf
   operation: account
-  policy_sha256: d6e987ae2d3e3f8fbd0b051440167eef9e0b95ecabb7de3c9ccb7c0028a24bd9
+  policy_sha256: 2c059ea0aa5a92d350c3638abec74effb741a8bc9fc150a00691ae693a93316f
   commands:
     whoami:
       executor: none

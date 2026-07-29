@@ -3,11 +3,11 @@ opencli_contract:
   version: 2
   site: yollomi
   operation: content
-  policy_sha256: 29c712a7ecebc308bdeab47ef374b43b0b015ee9cd287061fae1d4606f8f481f
+  policy_sha256: 1dc5c27c1c16b3f548734e283e44fae66c638a89c782d30389c972cf85f73d20
   commands:
     models:
-      executor: generic_manifest_read
-      execution_state: enabled
+      executor: none
+      execution_state: disabled
       semantic_effect: public_read
       risk: low
       auth: none
@@ -27,7 +27,7 @@ opencli_contract:
         name: type
         required: false
         type: str
-      confirmation: none
+      confirmation: unsupported
       fallback:
         before_dispatch: browser_agent
         after_failure: browser_agent
@@ -44,10 +44,10 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `models` | `enabled` | `public_read` / `low` | `opencli_execute(site="yollomi", operation="content", command="models")`<br>List available Yollomi AI models (image, video, tools) | `type` (str, optional, default='all', choices=all,image,video,tool) |
+| `models` | `disabled` | `public_read` / `low` | Not executable; use the declared fallback if permitted<br>List available Yollomi AI models (image, video, tools) | `type` (str, optional, default='all', choices=all,image,video,tool) |
 
 ## Safety and fallback
 
 - Unknown commands and arguments are rejected before subprocess start.
 - Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- These commands are reviewed public reads. A proven pre-dispatch failure and a read failure may use `browser_agent` once; never run both paths concurrently.
+- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.

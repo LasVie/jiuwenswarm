@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: doubao
   operation: generation
-  policy_sha256: 497429c0c2f48886ea1c123aede806adc056daf1f8b180b9e402c44a988dd96a
+  policy_sha256: 21c69d9754afd9a5be4375a1a297da9855f31c84128a2006a0e0538bc5cdd1b9
   commands:
     ask:
       executor: none

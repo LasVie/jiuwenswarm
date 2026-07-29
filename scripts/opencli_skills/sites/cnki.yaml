@@ -7,20 +7,20 @@ domains:
 aliases: []
 terminal: operation
 review:
-  status: generated
+  status: reviewed
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: All commands source-reviewed; browser-backed reads remain disabled pending a guarded browser executor.
 operations:
-  private-content:
-    purpose: Read content that depends on an authenticated account.
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
     commands:
     - search
 commands:
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -29,7 +29,5 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''

@@ -11,25 +11,23 @@ review:
   owner: agent-b
   notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
 operations:
-  private-content:
-    purpose: Read content that depends on an authenticated account.
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
     commands:
     - search
 commands:
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 wanfang/search.js; reads public browser-rendered content without authenticated account state.'

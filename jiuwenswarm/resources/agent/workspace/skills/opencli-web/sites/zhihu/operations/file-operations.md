@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: zhihu
   operation: file-operations
-  policy_sha256: 72cfde1a8e42b9be48a1414fe1c119c65782c8b4c07c241be09bd6fcad8a4929
+  policy_sha256: 55ef63e4ab56270a7bf67acaaf6364d6ae74c524f167bbcdf0acfa3a33547520
   commands:
     download:
       executor: none

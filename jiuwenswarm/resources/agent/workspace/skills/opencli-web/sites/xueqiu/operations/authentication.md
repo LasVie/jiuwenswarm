@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: xueqiu
   operation: authentication
-  policy_sha256: 28a80b6191b319627b7263b284950f471ad7737411dbe798e70f0e89ae28630b
+  policy_sha256: 7a5406525e083d7bfa2e25b732b8df0543bc33834f5e0471e504ceebe08e0303
   commands:
     login:
       executor: none

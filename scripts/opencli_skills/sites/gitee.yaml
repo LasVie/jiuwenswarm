@@ -19,12 +19,15 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
-  private-content:
-    purpose: Read content that depends on an authenticated account.
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - user
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
     commands:
     - search
     - trending
-    - user
 commands:
   login:
     operation: authentication
@@ -42,56 +45,50 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 gitee/search.js; reads public browser-rendered content without authenticated account state.'
   trending:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 gitee/trending.js; reads public browser-rendered content without authenticated account state.'
   user:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 gitee/user.js; reads public browser-rendered content without authenticated account state.'
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -107,4 +104,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 gitee/auth.js; reads current browser-session or account-scoped metadata.'

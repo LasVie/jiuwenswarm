@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: uiverse
   operation: private-content
-  policy_sha256: 64665d56f36ee18baec5d7869ae60c4c8216a089936edbca01b39b6e98a61c25
+  policy_sha256: faf9cfac5523734f27c4929dd8d62d163f59b218a1fd87ae8830b3d31a1109a1
   commands:
     preview:
       executor: none

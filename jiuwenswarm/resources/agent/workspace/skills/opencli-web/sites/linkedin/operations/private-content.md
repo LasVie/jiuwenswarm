@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: linkedin
   operation: private-content
-  policy_sha256: d0c16e9f75ca1a20826b14b84ed1623a5a25b38ba0d1785c847e19d8620f8018
+  policy_sha256: 318b046f8d0394572c515dd0fcd92133ed118ddb2219732dc3c17115eac020f9
   commands:
     inbox:
       executor: none
@@ -27,32 +27,6 @@ opencli_contract:
         name: unread-only
         required: false
         type: bool
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    job-detail:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Exact LinkedIn job URL, e.g. https://www.linkedin.com/jobs/view/123/
-        name: job-url
-        positional: true
-        required: true
-        type: string
       confirmation: unsupported
       fallback:
         before_dispatch: browser_agent
@@ -277,71 +251,6 @@ opencli_contract:
       sensitive_output:
       - private content
       - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Job search keywords
-        name: query
-        positional: true
-        required: true
-        type: string
-      - help: Location text such as San Francisco Bay Area
-        name: location
-        required: false
-        type: string
-      - default: 10
-        help: Number of jobs to return (max 100)
-        name: limit
-        required: false
-        type: int
-      - default: 0
-        help: Result offset for pagination
-        name: start
-        required: false
-        type: int
-      - default: false
-        help: Include full job description and apply URL (slower)
-        name: details
-        required: false
-        type: bool
-      - help: Comma-separated company names or LinkedIn company IDs
-        name: company
-        required: false
-        type: string
-      - help: 'Comma-separated: internship, entry, associate, mid-senior, director, executive'
-        name: experience-level
-        required: false
-        type: string
-      - help: 'Comma-separated: full-time, part-time, contract, temporary, volunteer, internship, other'
-        name: job-type
-        required: false
-        type: string
-      - help: 'One of: any, month, week, 24h'
-        name: date-posted
-        required: false
-        type: string
-      - help: 'Comma-separated: on-site, hybrid, remote'
-        name: remote
-        required: false
-        type: string
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     sent-invitations:
       executor: none
       execution_state: disabled
@@ -464,7 +373,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
 | `inbox` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List LinkedIn messaging inbox conversations and unread messages | `limit` (int, optional, default=40); `unread-only` (bool, optional, default=False) |
-| `job-detail` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read one LinkedIn job page with description, apply URL, workplace type, applicants, and company metadata | `job-url` (string, required, positional) |
 | `jobs-preferences` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read visible LinkedIn Jobs preferences and alert settings without changing them | none |
 | `people-search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search standard LinkedIn (not Sales Navigator) for people by keyword. Each invocation consumes against LinkedIn's monthly Commercial Use Limit on people search; throttle accordingly. | `keywords` (string, required, positional); `limit` (int, optional, default=5) |
 | `post-analytics` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Summarize raw visible LinkedIn post counters without custom scoring or classification | `profile-url` (string, optional); `limit` (int, optional, default=30) |
@@ -472,7 +380,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `salesnav-inbox` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List LinkedIn Sales Navigator message conversations with API pagination | `limit` (number, optional, default=40); `max-pages` (number, optional, default=30); `unread-only` (bool, optional, default=False) |
 | `salesnav-search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search LinkedIn Sales Navigator for people leads by keyword | `keywords` (string, required, positional); `limit` (number, optional, default=25) |
 | `salesnav-thread` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Return full Sales Navigator message history for a thread id, Sales Navigator inbox URL, lead URL, recipient urn, or exact recipient name | `thread-or-recipient` (string, required, positional); `limit` (number, optional, default=200); `max-pages` (number, optional, default=30) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search LinkedIn jobs | `query` (string, required, positional); `location` (string, optional); `limit` (int, optional, default=10); `start` (int, optional, default=0); `details` (bool, optional, default=False); `company` (string, optional); `experience-level` (string, optional); `job-type` (string, optional); `date-posted` (string, optional); `remote` (string, optional) |
 | `sent-invitations` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List pending LinkedIn sent invitations for CRM reconciliation | none |
 | `services-read` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read LinkedIn Services page details including services, overview, availability, pricing, and media titles/descriptions | `profile-url` (string, optional); `services-url` (string, optional) |
 | `thread-snapshot` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Load a LinkedIn messaging thread, scroll for available history, and return a full context snapshot | `thread-url` (str, required); `max-scrolls` (number, optional, default=30); `json` (bool, optional, default=False) |

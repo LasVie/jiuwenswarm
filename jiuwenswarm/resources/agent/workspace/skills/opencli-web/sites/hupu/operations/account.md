@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: hupu
   operation: account
-  policy_sha256: 292f24b86db7d4f26303e6f4a06f0f3d1645ab8dd5f083536c37d5c5d2acee73
+  policy_sha256: 86a3ddfcf16b3fc55407f3ac6dca5cc09098caa7777218d355d2b7e11cea3261
   commands:
     whoami:
       executor: none

@@ -16,6 +16,6 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `private-content` | Read content that depends on an authenticated account. | `search` | `sites/brave/operations/private-content.md` |
+| `web-search` | Read browser-rendered web search results. | `search` | `sites/brave/operations/web-search.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

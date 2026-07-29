@@ -15,11 +15,21 @@ operations:
     purpose: Read account identity or account-scoped metadata.
     commands:
     - account
+    - cookies
+    - idb-list
+    - status
+    - storage-get
+    - storage-keys
+    - usage
     - whoami
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - templates
   generation:
     purpose: Generate remote content, start AI work, or consume quota.
     commands:
@@ -33,16 +43,9 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - cookies
     - detail
     - history
-    - idb-list
     - read
-    - status
-    - storage-get
-    - storage-keys
-    - templates
-    - usage
   write-actions:
     purpose: Change remote service state.
     commands:
@@ -74,7 +77,7 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/ui.js; reads current browser-session or account-scoped metadata.
   ask:
     operation: generation
     semantic_effect: quota_consumption
@@ -91,10 +94,10 @@ commands:
     sensitive_output: []
     notes: ''
   cookies:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: account
+    semantic_effect: private_account_read
+    risk: high
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -104,9 +107,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - browser cookies
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/storage.js; reads raw browser-session storage or cookie metadata and can expose authentication-adjacent values.
   copy-message:
     operation: messaging
     semantic_effect: message_send
@@ -138,7 +141,7 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/chat.js; reads authenticated or session-scoped content that can expose private account data.
   dismiss-banner:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -170,7 +173,7 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/chat.js; reads authenticated or session-scoped content that can expose private account data.
   history-rename:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -187,10 +190,10 @@ commands:
     sensitive_output: []
     notes: ''
   idb-list:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -200,9 +203,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - browser storage metadata
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/storage.js; reads raw browser-session storage or cookie metadata and can expose authentication-adjacent values.
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -294,7 +297,7 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/chat.js; reads authenticated or session-scoped content that can expose private account data.
   regenerate:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -386,10 +389,10 @@ commands:
     sensitive_output: []
     notes: ''
   status:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -399,14 +402,13 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    - authentication state
+    notes: Source-audited against OpenCLI 1.8.6 kimi/chat.js; reads current browser-session authentication state without changing it.
   storage-get:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: account
+    semantic_effect: private_account_read
+    risk: high
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -416,14 +418,14 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - browser storage values
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/storage.js; reads raw browser-session storage or cookie metadata and can expose authentication-adjacent values.
   storage-keys:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: account
+    semantic_effect: private_account_read
+    risk: high
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -433,26 +435,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - browser storage metadata
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/storage.js; reads raw browser-session storage or cookie metadata and can expose authentication-adjacent values.
   templates:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 kimi/audit-extras.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   upgrade:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -469,8 +469,8 @@ commands:
     sensitive_output: []
     notes: ''
   usage:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -482,9 +482,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - subscription and quota data
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/usage.js; reads current browser-session or account-scoped metadata.
   view-all-history:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -515,4 +515,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 kimi/auth.js; reads current browser-session or account-scoped metadata.

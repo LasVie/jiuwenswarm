@@ -34,6 +34,9 @@ operations:
     purpose: Read content that depends on an authenticated account.
     commands:
     - notifications
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
     - search
 commands:
   digest:
@@ -140,26 +143,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notifications
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 1point3acres/notifications.js; reads authenticated or session-scoped content that can expose private account data.'
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 1point3acres/search.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.'
   thread:
     operation: content
     semantic_effect: public_read
@@ -205,4 +206,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 1point3acres/auth.js; reads current browser-session or account-scoped metadata.'

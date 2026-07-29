@@ -32,11 +32,14 @@ operations:
     purpose: Read content that depends on an authenticated account.
     commands:
     - ai-outline
-    - book
     - highlights
     - notebooks
     - notes
     - shelf
+  content:
+    purpose: Read one public item, record, page, or resource.
+    commands:
+    - book
 commands:
   ai-outline:
     operation: private-content
@@ -52,26 +55,24 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - licensed book-derived content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weread/ai-outline.js; retrieves an existing account-accessible outline and does not request new AI generation or consume generation quota.'
   book:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: 'Source-audited against OpenCLI 1.8.6 weread/book.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.'
   book-search:
     operation: discovery
     semantic_effect: public_read
@@ -101,9 +102,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private reading data
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weread/highlights.js; reads authenticated or session-scoped content that can expose private account data.'
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -133,9 +134,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private reading data
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weread/notebooks.js; reads authenticated or session-scoped content that can expose private account data.'
   notes:
     operation: private-content
     semantic_effect: private_content_read
@@ -150,9 +151,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private reading data
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weread/notes.js; reads authenticated or session-scoped content that can expose private account data.'
   ranking:
     operation: analytics
     semantic_effect: public_read
@@ -197,9 +198,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private reading data
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weread/shelf.js; reads authenticated or session-scoped content that can expose private account data.'
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -215,4 +216,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 weread/auth.js; reads current browser-session or account-scoped metadata.'

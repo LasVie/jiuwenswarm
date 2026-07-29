@@ -59,9 +59,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private generated-work metadata
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 jimeng/history.js; reads authenticated or session-scoped content that can expose private account data.'
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -107,7 +107,7 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 jimeng/auth.js; reads current browser-session or account-scoped metadata.'
   workspaces:
     operation: private-content
     semantic_effect: private_content_read
@@ -122,6 +122,6 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private generated-work metadata
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 jimeng/workspaces.js; reads authenticated or session-scoped content that can expose private account data.'

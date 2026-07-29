@@ -14,6 +14,7 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
+    - status
     - whoami
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
@@ -23,7 +24,6 @@ operations:
     purpose: Generate remote content, start AI work, or consume quota.
     commands:
     - ask
-    - deep-research-result
     - image
     - new
   messaging:
@@ -33,11 +33,11 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
+    - deep-research-result
     - detail
     - history
     - project-list
     - read
-    - status
   write-actions:
     purpose: Change remote service state.
     commands:
@@ -60,9 +60,9 @@ commands:
     sensitive_output: []
     notes: ''
   deep-research-result:
-    operation: generation
-    semantic_effect: quota_consumption
-    risk: high
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
     auth: required
     transport: browser_cookie
     execution_state: disabled
@@ -72,8 +72,10 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output: []
-    notes: ''
+    sensitive_output:
+    - private conversation content
+    - account identifiers
+    notes: Source-audited against OpenCLI 1.8.6 chatgpt/deep-research-result.js; reads authenticated or session-scoped content that can expose private account data.
   detail:
     operation: private-content
     semantic_effect: private_content_read
@@ -88,9 +90,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 chatgpt/detail.js; reads authenticated or session-scoped content that can expose private account data.
   history:
     operation: private-content
     semantic_effect: private_content_read
@@ -105,9 +107,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 chatgpt/history.js; reads authenticated or session-scoped content that can expose private account data.
   image:
     operation: generation
     semantic_effect: quota_consumption
@@ -197,9 +199,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private project metadata
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 chatgpt/project-list.js; reads authenticated or session-scoped content that can expose private account data.
   read:
     operation: private-content
     semantic_effect: private_content_read
@@ -214,9 +216,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 chatgpt/read.js; reads authenticated or session-scoped content that can expose private account data.
   send:
     operation: messaging
     semantic_effect: message_send
@@ -233,10 +235,10 @@ commands:
     sensitive_output: []
     notes: ''
   status:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -246,9 +248,8 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    - authentication state
+    notes: Source-audited against OpenCLI 1.8.6 chatgpt/status.js; reads current browser-session authentication state without changing it.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -264,4 +265,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 chatgpt/auth.js; reads current browser-session or account-scoped metadata.

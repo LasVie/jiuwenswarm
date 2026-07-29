@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: chess
   operation: analytics
-  policy_sha256: e8c3b37662ff4dd4a650f22484e05b9ecf10da13cf7767fea80c0fbe56ebb631
+  policy_sha256: f63635437ea3ad1b58eb4ccde8ec5e1b310dbef5bd61eaeed49597a494678fde
   commands:
     stats:
       executor: generic_manifest_read

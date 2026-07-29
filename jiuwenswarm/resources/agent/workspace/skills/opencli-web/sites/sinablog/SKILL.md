@@ -16,7 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/sinablog/operations/discovery.md` |
-| `private-content` | Read content that depends on an authenticated account. | `article`, `hot`, `user` | `sites/sinablog/operations/private-content.md` |
+| `content` | Read site content and metadata. | `article`, `user` | `sites/sinablog/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `hot`, `search` | `sites/sinablog/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

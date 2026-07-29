@@ -18,7 +18,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 |---|---|---|---|
 | `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/amazon/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/amazon/operations/authentication.md` |
-| `generation` | Generate remote content, start AI work, or consume quota. | `new-releases` | `sites/amazon/operations/generation.md` |
-| `private-content` | Read content that depends on an authenticated account. | `bestsellers`, `discussion`, `movers-shakers`, `offer`, `product`, `search` | `sites/amazon/operations/private-content.md` |
+| `content` | Read site content and metadata. | `discussion`, `offer`, `product` | `sites/amazon/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `bestsellers`, `movers-shakers`, `new-releases`, `search` | `sites/amazon/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

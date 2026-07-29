@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: qwen
   operation: authentication
-  policy_sha256: 4b95b13069b7d2f9a546757e99f242e50c4d7e624bace5ccd7c12c3b4bd9fb28
+  policy_sha256: fcf84febb19f60002d518f7b57d2495d9364756134b1c42546f8d2aedae33154
   commands:
     login:
       executor: none

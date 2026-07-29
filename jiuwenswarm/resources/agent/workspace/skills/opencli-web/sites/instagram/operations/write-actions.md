@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: instagram
   operation: write-actions
-  policy_sha256: d42c25c598970ce1716e696af43fd6eb6c2acc1199441ba3a3b95731834e32ef
+  policy_sha256: 2f23b0dffc95b6eb1f0ec9f5697f887ee9af073f197122b3280c07425989434d
   commands:
     note:
       executor: none

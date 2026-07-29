@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: geogebra
   operation: write-actions
-  policy_sha256: 4100e839d5e4634680cce80bd2776781262b72dbd1fff454a67ae5f02ea2cc49
+  policy_sha256: 96b5e0ced92cddb4cb2074e33e62e5c7e81e94d600703a48694341552ae52a5d
   commands:
     add-circle:
       executor: none

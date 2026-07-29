@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: chatgpt
   operation: generation
-  policy_sha256: cbd22f6bc7157ff01dec9ec104e5e019587993a4880d14dd9c65b07c9498cf5d
+  policy_sha256: 28d35bad52983e014ac34c237dbe49d3a4dafdf31f0d1339e061d5a2c581c990
   commands:
     ask:
       executor: none
@@ -57,45 +57,6 @@ opencli_contract:
         name: web-search
         required: false
         type: boolean
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
-    deep-research-result:
-      executor: none
-      execution_state: disabled
-      semantic_effect: quota_consumption
-      risk: high
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Conversation ID or full /c/<id> URL
-        name: id
-        positional: true
-        required: true
-        type: str
-      - default: false
-        help: Wait until Deep Research completes or becomes extractable
-        name: wait
-        required: false
-        type: boolean
-      - default: 120
-        help: Max seconds to wait when --wait is true
-        name: timeout
-        required: false
-        type: int
-      - default: 6
-        help: Seconds the report text must remain unchanged when --wait is true
-        name: stable
-        required: false
-        type: int
       confirmation: unsupported
       fallback:
         before_dispatch: browser_agent
@@ -185,7 +146,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
 | `ask` | `disabled` | `quota_consumption` / `high` | Not executable; use the declared fallback if permitted<br>Send a prompt to ChatGPT web and wait for the response | `prompt` (str, required, positional); `timeout` (int, optional, default=120); `new` (boolean, optional, default=False); `conversation` (str, optional); `project` (str, optional); `wait` (boolean, optional, default=True); `deep-research` (boolean, optional, default=False); `web-search` (boolean, optional, default=False) |
-| `deep-research-result` | `disabled` | `quota_consumption` / `high` | Not executable; use the declared fallback if permitted<br>Read a completed ChatGPT Deep Research report from the conversation payload | `id` (str, required, positional); `wait` (boolean, optional, default=False); `timeout` (int, optional, default=120); `stable` (int, optional, default=6) |
 | `image` | `disabled` | `quota_consumption` / `high` | Not executable; use the declared fallback if permitted<br>Generate images with ChatGPT web and save them locally | `prompt` (str, required, positional); `image` (str, optional); `project` (str, optional); `op` (str, optional); `sd` (boolean, optional, default=False); `timeout` (int, optional, default=240) |
 | `new` | `disabled` | `quota_consumption` / `high` | Not executable; use the declared fallback if permitted<br>Start a new ChatGPT web conversation | `project` (str, optional) |
 

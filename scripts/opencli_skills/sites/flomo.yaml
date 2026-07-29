@@ -19,8 +19,8 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
-  memos:
-    purpose: Read private memo content.
+  private-content:
+    purpose: Read content that depends on an authenticated account.
     commands:
     - memos
 commands:
@@ -44,12 +44,12 @@ commands:
         minimum: 1
         maximum: 1800
   memos:
-    operation: memos
+    operation: private-content
     semantic_effect: private_content_read
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: quarantined
+    execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
@@ -57,9 +57,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private memo content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 flomo/memos.js; reads authenticated or session-scoped content that can expose private account data.'
     arg_overrides:
       limit:
         minimum: 1
@@ -74,7 +74,7 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: quarantined
+    execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
@@ -83,4 +83,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 flomo/auth.js; reads current browser-session or account-scoped metadata.'

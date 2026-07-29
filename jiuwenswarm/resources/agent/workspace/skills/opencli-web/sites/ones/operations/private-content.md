@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: ones
   operation: private-content
-  policy_sha256: 027a99dcb0f14b2fc236d75acfd6d1fc3f25ea66e37eed3c88a977a52859ca03
+  policy_sha256: 64d44ee783edfb380e515b610ab3f68cdc26d3c6e52d68eae4e61b20a8f378e0
   commands:
     my-tasks:
       executor: none
@@ -115,27 +115,6 @@ opencli_contract:
       sensitive_output:
       - private content
       - account identifiers
-    token-info:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
 ---
 
 # Ones: private-content
@@ -149,7 +128,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `my-tasks` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>ONES — my work items (filters/peek + strict must query). Default: assignee=me. Use --mode if your site uses field004 for assignee. | `team` (str, optional, positional); `limit` (int, optional, default=100); `mode` (str, optional, default='assign', choices=assign,field004,owner,both) |
 | `task` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>ONES — work item detail (GET team/:team/task/:id/info); id is URL segment after …/task/ | `id` (str, required, positional); `team` (str, optional) |
 | `tasks` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>ONES Project API — list work items (POST team/:team/filters/peek); use token-info -f json for team uuid | `team` (str, optional, positional); `project` (str, optional); `assign` (str, optional); `limit` (int, optional, default=30) |
-| `token-info` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>ONES Project API — session detail (GET auth/token_info) via Chrome Bridge: user, teams, org | none |
 
 ## Safety and fallback
 

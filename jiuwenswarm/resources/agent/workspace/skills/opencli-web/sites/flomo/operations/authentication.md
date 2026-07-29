@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: flomo
   operation: authentication
-  policy_sha256: c4da9edbd4f5cc5999174676fd5aea2c5d4442f1ecd519452eae512ac7b1da89
+  policy_sha256: 4f09bfa82418c2a0e68ac329f22f933150a874747b9f8bf81777ca4863f1f120
   commands:
     login:
       executor: none

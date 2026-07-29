@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: github
   operation: account
-  policy_sha256: afc5d9f0b0c7635e5145f37817ce386cf8b2ece209b972449daebf116f8b68ba
+  policy_sha256: 14a11b37385dd89d7e80714ef9170911f978a68a1eb44191ee4bf6d949a17aed
   commands:
     whoami:
       executor: none

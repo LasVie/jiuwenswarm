@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: douyin
   operation: private-content
-  policy_sha256: bbec24521923ebb1327087b643f716d80cb93cb1c91f88100687c2f3854de22e
+  policy_sha256: 44a88f4e2945603337450f4d82e1d94d30556064265afb43719f582edd8ebf4c
   commands:
     activities:
       executor: none
@@ -123,68 +123,6 @@ opencli_contract:
       sensitive_output:
       - private content
       - account identifiers
-    location:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: 地名关键词
-        name: query
-        positional: true
-        required: true
-        type: str
-      - default: 20
-        help: ''
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: 搜索关键词
-        name: query
-        positional: true
-        required: true
-        type: str
-      - default: 10
-        help: 结果数量 (1-30)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     stats:
       executor: none
       execution_state: disabled
@@ -202,47 +140,6 @@ opencli_contract:
         positional: true
         required: true
         type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    user-videos:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: 用户 sec_uid（URL 末尾部分）
-        name: sec_uid
-        positional: true
-        required: true
-        type: string
-      - default: 20
-        help: 获取数量（最大 20）
-        name: limit
-        required: false
-        type: int
-      - default: true
-        help: '包含热门评论（默认: true）'
-        name: with_comments
-        required: false
-        type: bool
-      - default: 10
-        help: 每个视频获取多少条评论（最大 10）
-        name: comment_limit
-        required: false
-        type: int
       confirmation: unsupported
       fallback:
         before_dispatch: browser_agent
@@ -307,10 +204,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `collections` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>合集列表 | `limit` (int, optional, default=20) |
 | `drafts` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>获取草稿列表 | `limit` (int, optional, default=20) |
 | `hashtag` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>话题搜索 / AI推荐 / 热点词 | `action` (str, required, positional, choices=search,suggest,hot); `keyword` (str, optional, default=''); `cover` (str, optional, default=''); `limit` (int, optional, default=10) |
-| `location` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>地理位置 POI 搜索 | `query` (str, required, positional); `limit` (int, optional, default=20) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>关键词搜索抖音视频 | `query` (str, required, positional); `limit` (int, optional, default=10) |
 | `stats` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>作品数据分析 | `aweme_id` (str, required, positional) |
-| `user-videos` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>获取指定用户的视频列表（含下载地址和热门评论） | `sec_uid` (string, required, positional); `limit` (int, optional, default=20); `with_comments` (bool, optional, default=True); `comment_limit` (int, optional, default=10) |
 | `videos` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>获取作品列表 | `limit` (int, optional, default=20); `page` (int, optional, default=1); `status` (str, optional, default='all', choices=all,published,reviewing,scheduled) |
 
 ## Safety and fallback

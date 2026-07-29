@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: bilibili
   operation: account
-  policy_sha256: 79262d9ab33f66ec264abde1f4e74f443b2285e92443fd0272d5197bfc948436
+  policy_sha256: 6e8e73109dd43108bc96445fe5fb962e20e71bd5fabb4922fa485aa95e9accb6
   commands:
     me:
       executor: none

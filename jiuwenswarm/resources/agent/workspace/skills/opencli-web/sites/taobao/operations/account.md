@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: taobao
   operation: account
-  policy_sha256: fcf528d2e79e281ffebd0783a0ce67e05d820773295e36da5a9aea2651af089b
+  policy_sha256: ccad1ba7122a7b2e2c47319457d544a57c6b1bcfc5e1c9e981289915d375741f
   commands:
     whoami:
       executor: none

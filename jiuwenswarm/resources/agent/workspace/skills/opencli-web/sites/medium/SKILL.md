@@ -16,7 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `content` | Read site content and metadata. | `tag` | `sites/medium/operations/content.md` |
-| `private-content` | Read content that depends on an authenticated account. | `feed`, `search`, `user` | `sites/medium/operations/private-content.md` |
+| `content` | Read site content and metadata. | `tag`, `user` | `sites/medium/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `feed`, `search` | `sites/medium/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

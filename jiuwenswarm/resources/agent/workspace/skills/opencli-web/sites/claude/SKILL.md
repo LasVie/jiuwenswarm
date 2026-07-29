@@ -16,10 +16,10 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/claude/operations/account.md` |
+| `account` | Read account identity or account-scoped metadata. | `status`, `whoami` | `sites/claude/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/claude/operations/authentication.md` |
 | `generation` | Generate remote content, start AI work, or consume quota. | `ask`, `new` | `sites/claude/operations/generation.md` |
 | `messaging` | Send messages, replies, comments, invitations, or contacts. | `send` | `sites/claude/operations/messaging.md` |
-| `private-content` | Read content that depends on an authenticated account. | `detail`, `history`, `read`, `status` | `sites/claude/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `detail`, `history`, `read` | `sites/claude/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

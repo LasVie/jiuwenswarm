@@ -3,8 +3,29 @@ opencli_contract:
   version: 2
   site: band
   operation: account
-  policy_sha256: 341937abc18a2b45d045de1962ef7452ac908f234ea7aaeeaa24279cc34a79d7
+  policy_sha256: dd6c342ccef47cbe661f33daa06b3c14a22dad076b1ee99a6c1abcb0e0a290f0
   commands:
+    bands:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_account_read
+      risk: medium
+      auth: required
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args: []
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - group memberships
+      - account identifiers
     whoami:
       executor: none
       execution_state: disabled
@@ -35,6 +56,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
+| `bands` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>List all Bands you belong to | none |
 | `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in band account | none |
 
 ## Safety and fallback

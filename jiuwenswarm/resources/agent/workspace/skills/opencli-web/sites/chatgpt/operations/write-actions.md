@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: chatgpt
   operation: write-actions
-  policy_sha256: cbd22f6bc7157ff01dec9ec104e5e019587993a4880d14dd9c65b07c9498cf5d
+  policy_sha256: 28d35bad52983e014ac34c237dbe49d3a4dafdf31f0d1339e061d5a2c581c990
   commands:
     model:
       executor: none

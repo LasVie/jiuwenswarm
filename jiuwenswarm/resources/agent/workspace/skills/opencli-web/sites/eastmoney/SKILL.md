@@ -16,7 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
+| `analytics` | Read public rankings, market data, or analytical site content. | `hot-rank` | `sites/eastmoney/operations/analytics.md` |
 | `content` | Read site content and metadata. | `announcement`, `convertible`, `etf`, `holders`, `index-board`, `kline`, `kuaixun`, `longhu`, `money-flow`, `northbound`, `quote`, `rank`, `sectors` | `sites/eastmoney/operations/content.md` |
-| `private-content` | Read content that depends on an authenticated account. | `hot-rank` | `sites/eastmoney/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

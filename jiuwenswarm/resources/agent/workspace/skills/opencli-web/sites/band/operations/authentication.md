@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: band
   operation: authentication
-  policy_sha256: 341937abc18a2b45d045de1962ef7452ac908f234ea7aaeeaa24279cc34a79d7
+  policy_sha256: dd6c342ccef47cbe661f33daa06b3c14a22dad076b1ee99a6c1abcb0e0a290f0
   commands:
     login:
       executor: none

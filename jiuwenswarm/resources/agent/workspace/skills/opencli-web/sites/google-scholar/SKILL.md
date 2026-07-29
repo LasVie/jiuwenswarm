@@ -16,7 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `account` | Read account identity or account-scoped metadata. | `profile` | `sites/google-scholar/operations/account.md` |
-| `private-content` | Read content that depends on an authenticated account. | `cite`, `search` | `sites/google-scholar/operations/private-content.md` |
+| `content` | Read site content and metadata. | `cite`, `profile` | `sites/google-scholar/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/google-scholar/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

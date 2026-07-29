@@ -18,6 +18,8 @@ This file is a router, not an execution receipt. Select exactly one operation an
 |---|---|---|---|
 | `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/linux-do/operations/account.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/linux-do/operations/authentication.md` |
-| `private-content` | Read content that depends on an authenticated account. | `categories`, `feed`, `search`, `tags`, `topic`, `topic-content`, `user-posts`, `user-topics` | `sites/linux-do/operations/private-content.md` |
+| `content` | Read one public item, record, page, or resource. | `topic`, `topic-content` | `sites/linux-do/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `categories`, `search`, `tags`, `user-posts`, `user-topics` | `sites/linux-do/operations/discovery.md` |
+| `private-content` | Read content that depends on an authenticated account. | `feed` | `sites/linux-do/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

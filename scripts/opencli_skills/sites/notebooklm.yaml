@@ -15,6 +15,7 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
+    - status
     - whoami
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
@@ -39,7 +40,6 @@ operations:
     - source-get
     - source-guide
     - source-list
-    - status
     - summary
   publishing:
     purpose: Publish, create, edit, or upload remote content.
@@ -96,9 +96,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/current.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   generate-audio:
     operation: generation
     semantic_effect: quota_consumption
@@ -143,9 +143,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/get.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   history:
     operation: private-content
     semantic_effect: private_content_read
@@ -160,9 +160,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/history.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   list:
     operation: private-content
     semantic_effect: private_content_read
@@ -177,9 +177,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/list.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -209,9 +209,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/note-list.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   notes-get:
     operation: private-content
     semantic_effect: private_content_read
@@ -226,9 +226,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/notes-get.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   open:
     operation: private-content
     semantic_effect: private_content_read
@@ -243,9 +243,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/open.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   source-fulltext:
     operation: private-content
     semantic_effect: private_content_read
@@ -260,9 +260,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/source-fulltext.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   source-get:
     operation: private-content
     semantic_effect: private_content_read
@@ -277,9 +277,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/source-get.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   source-guide:
     operation: private-content
     semantic_effect: private_content_read
@@ -294,9 +294,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/source-guide.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   source-list:
     operation: private-content
     semantic_effect: private_content_read
@@ -311,14 +311,14 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/source-list.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   status:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -328,9 +328,8 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/status.js; reads current browser-session authentication state without changing it.'
   summary:
     operation: private-content
     semantic_effect: private_content_read
@@ -345,9 +344,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notebook content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/summary.js; reads authenticated notebook content or metadata without changing remote notebook state.'
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -363,7 +362,7 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 notebooklm/auth.js; reads current browser-session or account-scoped metadata.'
   write-note:
     operation: write-actions
     semantic_effect: reversible_remote_write

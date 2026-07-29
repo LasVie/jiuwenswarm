@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: sinafinance
   operation: content
-  policy_sha256: 0e2bcbc6a43027fe339f4a99f9f4730abe1b3e354a76c6d4f729599e0ab2a1c3
+  policy_sha256: 4da364824284b2a791afdae01ce7b10e3add231b1296676d121f44fa916ab7fc
   commands:
     stock:
       executor: generic_manifest_read

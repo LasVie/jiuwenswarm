@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: twitter
   operation: file-operations
-  policy_sha256: d3dfdd9f50e334a4672153f072546b8d93fc2b4c68dc2786edab05aea347b96c
+  policy_sha256: ea1c61e10694164a7221301d4eb1fd14fec218da88d65957161ff72d1a564726
   commands:
     download:
       executor: none

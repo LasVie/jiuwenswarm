@@ -14,6 +14,10 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
+    - connectors
+    - credits
+    - skills
+    - status
     - whoami
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
@@ -22,16 +26,12 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - connectors
-    - credits
     - list
     - read
-    - skills
-    - status
 commands:
   connectors:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -43,12 +43,12 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - account configuration
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 manus/connectors.js; reads current browser-session or account-scoped metadata.
   credits:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -60,9 +60,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - subscription and quota data
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 manus/credits.js; reads current browser-session or account-scoped metadata.
   list:
     operation: private-content
     semantic_effect: private_content_read
@@ -77,9 +77,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private task content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 manus/list.js; reads authenticated or session-scoped content that can expose private account data.
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -109,12 +109,12 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private task content
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 manus/read.js; reads authenticated or session-scoped content that can expose private account data.
   skills:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -126,12 +126,12 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - account configuration
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 manus/skills.js; reads current browser-session or account-scoped metadata.
   status:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -143,9 +143,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - authentication state
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 manus/status.js; reads current browser-session or account-scoped metadata.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -161,4 +161,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 manus/auth.js; reads current browser-session or account-scoped metadata.

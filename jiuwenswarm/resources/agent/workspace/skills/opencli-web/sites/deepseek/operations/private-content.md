@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: deepseek
   operation: private-content
-  policy_sha256: 6302061dd41f35107ea7fe65b087496214ae1ac9cc1f529117a030d8427c993d
+  policy_sha256: 339988e83987f47db76a0395f64745704ddeeac025a53114d027b49a9ec8444f
   commands:
     detail:
       executor: none
@@ -29,7 +29,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     history:
       executor: none
@@ -55,7 +55,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     read:
       executor: none
@@ -76,28 +76,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    status:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
 ---
 
@@ -112,7 +91,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `detail` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read a specific DeepSeek conversation by ID | `id` (str, required, positional) |
 | `history` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List conversation history from DeepSeek sidebar | `limit` (int, optional, default=20) |
 | `read` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read the current DeepSeek conversation | none |
-| `status` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check DeepSeek page availability and login state | none |
 
 ## Safety and fallback
 

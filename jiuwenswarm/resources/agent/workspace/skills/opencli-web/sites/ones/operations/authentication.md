@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: ones
   operation: authentication
-  policy_sha256: 027a99dcb0f14b2fc236d75acfd6d1fc3f25ea66e37eed3c88a977a52859ca03
+  policy_sha256: 64d44ee783edfb380e515b610ab3f68cdc26d3c6e52d68eae4e61b20a8f378e0
   commands:
     login:
       executor: none

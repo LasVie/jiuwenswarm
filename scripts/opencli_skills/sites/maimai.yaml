@@ -42,7 +42,7 @@ commands:
   search-talents:
     operation: private-content
     semantic_effect: private_content_read
-    risk: medium
+    risk: high
     auth: required
     transport: browser_cookie
     execution_state: disabled
@@ -53,9 +53,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - personal data
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 maimai/search-talents.js; reads authenticated enterprise talent-search results containing candidate personal data.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -71,4 +71,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 maimai/auth.js; reads current browser-session or account-scoped metadata.

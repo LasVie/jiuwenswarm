@@ -3,8 +3,28 @@ opencli_contract:
   version: 2
   site: deepseek
   operation: account
-  policy_sha256: 6302061dd41f35107ea7fe65b087496214ae1ac9cc1f529117a030d8427c993d
+  policy_sha256: 339988e83987f47db76a0395f64745704ddeeac025a53114d027b49a9ec8444f
   commands:
+    status:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_account_read
+      risk: medium
+      auth: optional
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args: []
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - account identifiers
     whoami:
       executor: none
       execution_state: disabled
@@ -35,6 +55,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
+| `status` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check DeepSeek page availability and login state | none |
 | `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in deepseek account | none |
 
 ## Safety and fallback

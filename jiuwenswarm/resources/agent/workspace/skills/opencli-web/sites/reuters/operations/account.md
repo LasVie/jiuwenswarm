@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: reuters
   operation: account
-  policy_sha256: 408f29df174cf58e6456a0a94d49d722c2bd624efb496c9b254a63b2136a9b8a
+  policy_sha256: 08a3d6c6baa55b023ff63431834db6ad4065e1264493ff973a9f751760a66136
   commands:
     whoami:
       executor: none

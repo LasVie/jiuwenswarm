@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: kimi
   operation: write-actions
-  policy_sha256: 056583a5f1c52cef59531c9069f8800486317741e706b3dc0a99070b53dabbaa
+  policy_sha256: 06589d724fcc28aebeb0e534d47ba40ca82b10436b9126fb01a38ef3b18467a7
   commands:
     dismiss-banner:
       executor: none

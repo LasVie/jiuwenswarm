@@ -19,6 +19,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 | `account` | Read account identity or account-scoped metadata. | `whoami` | `sites/coupang/operations/account.md` |
 | `account-actions` | Change reversible account relationship or saved state. | `add-to-cart` | `sites/coupang/operations/account-actions.md` |
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/coupang/operations/authentication.md` |
-| `private-content` | Read content that depends on an authenticated account. | `product`, `search` | `sites/coupang/operations/private-content.md` |
+| `content` | Read one public item, record, page, or resource. | `product` | `sites/coupang/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/coupang/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

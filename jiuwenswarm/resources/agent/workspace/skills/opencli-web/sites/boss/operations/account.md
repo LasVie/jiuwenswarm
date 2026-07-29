@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: boss
   operation: account
-  policy_sha256: 7bf0146c4d09d643b06c584dccd0f48d8b22e84aa66a69872e0757c0841e48a5
+  policy_sha256: 0512851bb10f8f329773a56b353cc02733b09e02ba73228f57eeb2307bd963c3
   commands:
     whoami:
       executor: none

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: jd
   operation: authentication
-  policy_sha256: fce05c10acfc834da9082a6dc11ff08ad5011c94960640d9163b78e3e643a122
+  policy_sha256: c50ca26ce20d4fdc7cb32d0e4930d9ef74069f8057059acb06c45d3311c2cf09
   commands:
     login:
       executor: none

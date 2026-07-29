@@ -116,7 +116,8 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    - account balance
+    notes: Source-audited against OpenCLI 1.8.6 v2ex/me.js; reads current browser-session or account-scoped metadata.
   member:
     operation: content
     semantic_effect: public_read
@@ -176,9 +177,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private notifications
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 v2ex/notifications.js; reads authenticated or session-scoped content that can expose private account data.
   replies:
     operation: content
     semantic_effect: public_read
@@ -239,4 +240,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 v2ex/auth.js; reads current browser-session or account-scoped metadata.

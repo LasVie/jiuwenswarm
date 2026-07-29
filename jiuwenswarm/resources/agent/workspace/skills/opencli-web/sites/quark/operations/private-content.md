@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: quark
   operation: private-content
-  policy_sha256: e6980b834de239fe5f4a371cc43a78828fb82b03d2e539d74fc5b391dfd79bf9
+  policy_sha256: 07f7880a2065b6b2d8bfbfe88c814ecbfdf48097b97888035ceda06ae77d83b0
   commands:
     ls:
       executor: none

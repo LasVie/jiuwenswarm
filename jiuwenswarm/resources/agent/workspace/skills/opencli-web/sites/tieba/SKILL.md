@@ -16,6 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `private-content` | Read content that depends on an authenticated account. | `hot`, `posts`, `read`, `search` | `sites/tieba/operations/private-content.md` |
+| `content` | Read site content and metadata. | `read` | `sites/tieba/operations/content.md` |
+| `discovery` | Search, browse, recommend, or discover site content. | `hot`, `posts`, `search` | `sites/tieba/operations/discovery.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

@@ -3,9 +3,29 @@ opencli_contract:
   version: 2
   site: ones
   operation: account
-  policy_sha256: 027a99dcb0f14b2fc236d75acfd6d1fc3f25ea66e37eed3c88a977a52859ca03
+  policy_sha256: 64d44ee783edfb380e515b610ab3f68cdc26d3c6e52d68eae4e61b20a8f378e0
   commands:
     me:
+      executor: none
+      execution_state: disabled
+      semantic_effect: private_account_read
+      risk: medium
+      auth: required
+      transport: browser_cookie
+      strategy: cookie
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args: []
+      confirmation: unsupported
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: none
+      file_inputs: []
+      file_outputs: []
+      sensitive_output:
+      - account identifiers
+    token-info:
       executor: none
       execution_state: disabled
       semantic_effect: private_account_read
@@ -36,6 +56,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
 | `me` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>ONES Project API — current user (GET users/me) via Chrome Bridge | none |
+| `token-info` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>ONES Project API — session detail (GET auth/token_info) via Chrome Bridge: user, teams, org | none |
 
 ## Safety and fallback
 

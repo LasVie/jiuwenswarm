@@ -16,7 +16,7 @@ This file is a router, not an execution receipt. Select exactly one operation an
 
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
-| `arbitrary-execution` | Adapter entry points that can execute arbitrary input. | `code` | `sites/uiverse/operations/arbitrary-execution.md` |
+| `content` | Read site content and metadata. | `code` | `sites/uiverse/operations/content.md` |
 | `private-content` | Read content that depends on an authenticated account. | `preview` | `sites/uiverse/operations/private-content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: '1688'
   operation: file-operations
-  policy_sha256: 95bb385d5569ba5b9635a4f8ae6128daa6445314073f4bb352b00ef7932a0423
+  policy_sha256: 9b28e70491e66a1a39137448a16fa85670aedf50d50a13874cb541fef276f5a4
   commands:
     download:
       executor: none

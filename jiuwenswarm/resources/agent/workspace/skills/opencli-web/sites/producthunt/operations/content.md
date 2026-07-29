@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: producthunt
   operation: content
-  policy_sha256: 7914bffd5537a3ada92b095f92c47f649f0e8bc2229832a8016784a014bff7e7
+  policy_sha256: c1f2952ebd536707c900ca251a688f82f094c3d514fff6f0a8b9b5bfa28bc222
   commands:
     posts:
       executor: generic_manifest_read

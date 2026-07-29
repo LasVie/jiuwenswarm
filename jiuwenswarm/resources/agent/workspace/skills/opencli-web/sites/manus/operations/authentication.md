@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: manus
   operation: authentication
-  policy_sha256: ead9e408bf508b78a88509fc9bff3a898e40fedf1bf5ae290c3888092b0176b6
+  policy_sha256: d02f243a543c438133bac9ce4555b650d3dcfbbe0cce498ae1f44b63c6a13a88
   commands:
     login:
       executor: none

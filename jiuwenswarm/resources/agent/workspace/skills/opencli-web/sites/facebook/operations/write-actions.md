@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: facebook
   operation: write-actions
-  policy_sha256: b776299629981dc1b3272fc4ad4433f1cad59bec101dc657a77083b67395ca9f
+  policy_sha256: a552e204806645435acf153b95b9b17324af010e869f083c79bc829920a49f40
   commands:
     add-friend:
       executor: none

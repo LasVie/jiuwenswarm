@@ -17,7 +17,6 @@ This file is a router, not an execution receipt. Select exactly one operation an
 | Operation | Purpose | Commands | Terminal contract path |
 |---|---|---|---|
 | `analytics` | Read aggregate metrics, trends, or rankings. | `stats` | `sites/chess/operations/analytics.md` |
-| `content` | Read site content and metadata. | `game`, `games` | `sites/chess/operations/content.md` |
-| `private-content` | Read content that depends on an authenticated account. | `analyze` | `sites/chess/operations/private-content.md` |
+| `content` | Read site content and metadata. | `analyze`, `game`, `games` | `sites/chess/operations/content.md` |
 
 Do not skip the operation read. Optional references can explain examples or output shape, but they never authorize execution.

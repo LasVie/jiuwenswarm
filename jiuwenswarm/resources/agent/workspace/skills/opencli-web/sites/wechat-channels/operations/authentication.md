@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: wechat-channels
   operation: authentication
-  policy_sha256: 11ca968624ce145e2f5fd63f16e969dbb665467a8fe5ac1c95ba89cdfec0c7a1
+  policy_sha256: c4b4628502a825d7985b67a354f5b7a1631a037bffddb3e7e883e4b552e81a0c
   commands:
     login:
       executor: none

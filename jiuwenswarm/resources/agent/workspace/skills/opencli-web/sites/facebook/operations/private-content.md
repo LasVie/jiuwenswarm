@@ -3,34 +3,8 @@ opencli_contract:
   version: 2
   site: facebook
   operation: private-content
-  policy_sha256: b776299629981dc1b3272fc4ad4433f1cad59bec101dc657a77083b67395ca9f
+  policy_sha256: a552e204806645435acf153b95b9b17324af010e869f083c79bc829920a49f40
   commands:
-    events:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 15
-        help: Number of categories
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     feed:
       executor: none
       execution_state: disabled
@@ -213,37 +187,6 @@ opencli_contract:
       sensitive_output:
       - private content
       - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Search query
-        name: query
-        positional: true
-        required: true
-        type: str
-      - default: 10
-        help: Number of results
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
 ---
 
 # Facebook: private-content
@@ -254,7 +197,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `events` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Browse Facebook event categories | `limit` (int, optional, default=15) |
 | `feed` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get your Facebook news feed | `limit` (int, optional, default=10) |
 | `friends` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get Facebook friend suggestions | `limit` (int, optional, default=10) |
 | `groups` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List your Facebook groups | `limit` (int, optional, default=20) |
@@ -262,7 +204,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `marketplace-listings` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List your Facebook Marketplace seller listings | `limit` (int, optional, default=20) |
 | `memories` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get your Facebook memories (On This Day) | `limit` (int, optional, default=10) |
 | `notifications` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get recent Facebook notifications (含 unread / time / url / notif_id / notif_type 列) | `limit` (int, optional, default=15) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search Facebook for people, pages, or posts | `query` (str, required, positional); `limit` (int, optional, default=10) |
 
 ## Safety and fallback
 

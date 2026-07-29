@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: xianyu
   operation: generation
-  policy_sha256: ebd8a84d1da58f221ddd26e7f2067415e1c69f404feaca2ac7f9fa2b790beecc
+  policy_sha256: 0b1f86865cbb71357073bb7e393c4e3269c06a66493a4eca1d0c53b4c0912bca
   commands:
     chat:
       executor: none

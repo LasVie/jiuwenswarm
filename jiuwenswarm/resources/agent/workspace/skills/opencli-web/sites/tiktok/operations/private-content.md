@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: tiktok
   operation: private-content
-  policy_sha256: cdab1d57fbfeb8ff2fc058034ae8df793011491167265a2f7cfb61b72e773464
+  policy_sha256: 3442947251dff64808dcca780e0776b04a96d6a79525a6606459b850e8bbc53f
   commands:
     creator-videos:
       executor: none
@@ -34,33 +34,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    explore:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 20
-        help: Number of videos to return (max 120)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - creator analytics
       - account identifiers
     following:
       executor: none
@@ -86,14 +60,14 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - social graph
       - account identifiers
     friends:
       executor: none
       execution_state: disabled
       semantic_effect: private_content_read
       risk: medium
-      auth: required
+      auth: optional
       transport: browser_cookie
       strategy: cookie
       browser: true
@@ -112,33 +86,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    live:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 10
-        help: Number of streams (max 60)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - personalized recommendations
       - account identifiers
     notifications:
       executor: none
@@ -175,69 +123,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Search query
-        name: query
-        positional: true
-        required: true
-        type: str
-      - default: 10
-        help: Number of results
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    user:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: TikTok username (without @)
-        name: username
-        positional: true
-        required: true
-        type: str
-      - default: 20
-        help: Number of videos to return (max 120)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private notifications
       - account identifiers
 ---
 
@@ -250,13 +136,9 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
 | `creator-videos` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>TikTok Studio creator content list (views/likes/comments/saves/shares) | `limit` (int, optional, default=20); `cursor` (string, optional, default='0') |
-| `explore` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get trending TikTok videos from the recommend feed via page-context APIs | `limit` (int, optional, default=20) |
 | `following` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List accounts the logged-in user follows on TikTok via page-context APIs | `limit` (int, optional, default=20) |
 | `friends` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get TikTok friend / who-to-follow suggestions via page-context APIs | `limit` (int, optional, default=20) |
-| `live` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Browse TikTok live streams via page-context APIs | `limit` (int, optional, default=10) |
 | `notifications` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read TikTok inbox notifications (likes, comments, mentions, followers) via page-context APIs | `limit` (int, optional, default=15); `type` (str, optional, default='all', choices=all,likes,comments,mentions,followers) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search TikTok videos | `query` (str, required, positional); `limit` (int, optional, default=10) |
-| `user` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get recent videos from a TikTok user via page-context APIs | `username` (str, required, positional); `limit` (int, optional, default=20) |
 
 ## Safety and fallback
 

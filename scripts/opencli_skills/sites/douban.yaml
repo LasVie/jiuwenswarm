@@ -12,7 +12,7 @@ terminal: operation
 review:
   status: generated
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: Browser-backed reads source-reviewed; remaining disabled capabilities pending review application.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.
@@ -22,6 +22,18 @@ operations:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - photos
+    - subject
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - book-hot
+    - movie-hot
+    - search
+    - top250
   file-operations:
     purpose: Create or download workspace files.
     commands:
@@ -29,20 +41,14 @@ operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - book-hot
     - marks
-    - movie-hot
-    - photos
     - reviews
-    - search
-    - subject
-    - top250
 commands:
   book-hot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -51,9 +57,7 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   download:
     operation: file-operations
@@ -104,10 +108,10 @@ commands:
     - account identifiers
     notes: ''
   movie-hot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -116,15 +120,13 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   photos:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -133,9 +135,7 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   reviews:
     operation: private-content
@@ -155,10 +155,10 @@ commands:
     - account identifiers
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -167,15 +167,13 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   subject:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -184,15 +182,13 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   top250:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -201,9 +197,7 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   whoami:
     operation: account

@@ -14,6 +14,7 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
+    - status
     - whoami
   account-actions:
     purpose: Change reversible account relationship or saved state.
@@ -30,7 +31,6 @@ operations:
   file-operations:
     purpose: Create or download workspace files.
     commands:
-    - export
     - export-all
   generation:
     purpose: Generate remote content, start AI work, or consume quota.
@@ -46,9 +46,9 @@ operations:
     purpose: Read content that depends on an authenticated account.
     commands:
     - detail
+    - export
     - history
     - read
-    - status
   write-actions:
     purpose: Change remote service state.
     commands:
@@ -98,13 +98,13 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 grok/detail.js; reads authenticated or session-scoped content that can expose private account data.'
   export:
-    operation: file-operations
-    semantic_effect: local_write
-    risk: high
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
     auth: required
     transport: browser_cookie
     execution_state: disabled
@@ -115,8 +115,10 @@ commands:
     file_inputs: []
     file_outputs:
     - workspace-relative output
-    sensitive_output: []
-    notes: ''
+    sensitive_output:
+    - private conversation metadata
+    - account identifiers
+    notes: 'Source-audited against OpenCLI 1.8.6 grok/export.js; returns private conversation metadata as command output and does not create a local export file.'
   export-all:
     operation: file-operations
     semantic_effect: local_write
@@ -147,9 +149,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 grok/history.js; reads authenticated or session-scoped content that can expose private account data.'
   image:
     operation: generation
     semantic_effect: quota_consumption
@@ -224,9 +226,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private conversation content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 grok/read.js; reads authenticated or session-scoped content that can expose private account data.'
   send:
     operation: messaging
     semantic_effect: message_send
@@ -243,10 +245,10 @@ commands:
     sensitive_output: []
     notes: ''
   status:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
-    auth: required
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
@@ -256,9 +258,8 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 grok/status.js; reads current browser-session authentication state without changing it.'
   unpin:
     operation: write-actions
     semantic_effect: reversible_remote_write
@@ -289,4 +290,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: 'Source-audited against OpenCLI 1.8.6 grok/auth.js; reads current browser-session or account-scoped metadata.'

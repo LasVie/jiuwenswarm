@@ -15,61 +15,66 @@ operations:
   account:
     purpose: Read account identity or account-scoped metadata.
     commands:
+    - fund-holdings
+    - fund-snapshot
+    - groups
+    - watchlist
     - whoami
+  analytics:
+    purpose: Read aggregate metrics, trends, or rankings.
+    commands:
+    - earnings-date
+    - kline
+    - stock
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
     commands:
     - login
+  content:
+    purpose: Read site content and metadata.
+    commands:
+    - comments
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
+    commands:
+    - hot
+    - hot-stock
+    - search
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - comments
-    - earnings-date
     - feed
-    - fund-holdings
-    - fund-snapshot
-    - groups
-    - hot
-    - hot-stock
-    - kline
-    - search
-    - stock
-    - watchlist
 commands:
   comments:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: content
+    semantic_effect: public_read
+    risk: low
     auth: required
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/comments.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
   earnings-date:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: analytics
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/earnings-date.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   feed:
     operation: private-content
     semantic_effect: private_content_read
@@ -84,13 +89,13 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - personalized financial feed
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/feed.js; reads authenticated or session-scoped content that can expose private account data.
   fund-holdings:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: account
+    semantic_effect: private_account_read
+    risk: high
     auth: required
     transport: browser_cookie
     execution_state: disabled
@@ -101,13 +106,13 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - financial account data
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/fund-holdings.js; reads current browser-session or account-scoped metadata.
   fund-snapshot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+    operation: account
+    semantic_effect: private_account_read
+    risk: high
     auth: required
     transport: browser_cookie
     execution_state: disabled
@@ -118,12 +123,12 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - financial account data
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/fund-snapshot.js; reads current browser-session or account-scoped metadata.
   groups:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -135,60 +140,54 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private portfolio data
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/groups.js; reads current browser-session or account-scoped metadata.
   hot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/hot.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   hot-stock:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/hot-stock.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   kline:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: analytics
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/kline.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   login:
     operation: authentication
     semantic_effect: auth_session_change
@@ -205,42 +204,38 @@ commands:
     sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/search.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   stock:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: analytics
+    semantic_effect: public_read
+    risk: low
+    auth: optional
     transport: browser_cookie
     execution_state: disabled
     executor: none
     confirmation: unsupported
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
+    sensitive_output: []
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/stock.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
   watchlist:
-    operation: private-content
-    semantic_effect: private_content_read
+    operation: account
+    semantic_effect: private_account_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -252,9 +247,9 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
-    - private content
+    - private portfolio data
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/watchlist.js; reads current browser-session or account-scoped metadata.
   whoami:
     operation: account
     semantic_effect: private_account_read
@@ -270,4 +265,4 @@ commands:
     file_outputs: []
     sensitive_output:
     - account identifiers
-    notes: ''
+    notes: Source-audited against OpenCLI 1.8.6 xueqiu/auth.js; reads current browser-session or account-scoped metadata.

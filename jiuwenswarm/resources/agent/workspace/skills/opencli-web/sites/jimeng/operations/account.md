@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: jimeng
   operation: account
-  policy_sha256: 15ae47373101d67908fd7e1500bdf0591d4d05f180db8b38338c6452c563cccf
+  policy_sha256: 58a3ba24d68d56df43f6d603a610ac824b34b162e6bc1bb8084bf28785c885a0
   commands:
     whoami:
       executor: none

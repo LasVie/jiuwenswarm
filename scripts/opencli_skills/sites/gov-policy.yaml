@@ -8,47 +8,43 @@ domains:
 aliases: []
 terminal: operation
 review:
-  status: generated
+  status: reviewed
   owner: agent-a
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
+  notes: All commands source-reviewed; eligible public browser reads use the guarded browser manifest executor.
 operations:
-  private-content:
-    purpose: Read content that depends on an authenticated account.
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
     commands:
     - recent
     - search
 commands:
   recent:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
   search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
+    execution_state: enabled
+    executor: browser_manifest_public_read
+    confirmation: none
     fallback_before: browser_agent
-    fallback_after: none
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''

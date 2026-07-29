@@ -3,39 +3,8 @@ opencli_contract:
   version: 2
   site: weibo
   operation: private-content
-  policy_sha256: ad9fe9aad5f989b83f399caba4b2e7a2cb38fc789078e5f2ab7ddcbd9f56e44b
+  policy_sha256: 17339ca0c0792c7964caf7e12e245c79ae3efdb2806901b9b89aee69e0f359ea
   commands:
-    comments:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Post ID (numeric idstr)
-        name: id
-        positional: true
-        required: true
-        type: str
-      - default: 20
-        help: Number of comments (max 50)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     favorites:
       executor: none
       execution_state: disabled
@@ -60,7 +29,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private social content
       - account identifiers
     feed:
       executor: none
@@ -94,160 +63,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    hot:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 30
-        help: Number of items (max 50)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    post:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Post ID (numeric idstr or mblogid from URL)
-        name: id
-        positional: true
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Search keyword
-        name: keyword
-        positional: true
-        required: true
-        type: str
-      - default: 10
-        help: Number of results (max 50)
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    user:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: User ID (numeric uid) or screen name
-        name: id
-        positional: true
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    user-posts:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: User ID (numeric uid) or screen name
-        name: id
-        positional: true
-        required: true
-        type: str
-      - help: Start date in Asia/Shanghai (YYYY-MM-DD)
-        name: start
-        required: false
-        type: str
-      - help: End date in Asia/Shanghai (YYYY-MM-DD)
-        name: end
-        required: false
-        type: str
-      - default: 20
-        help: Number of posts (1-100)
-        name: limit
-        required: false
-        type: int
-      - default: false
-        help: Include retweets
-        name: include-retweets
-        required: false
-        type: boolean
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private social content
       - account identifiers
 ---
 
@@ -259,14 +75,8 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `comments` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get comments on a Weibo post | `id` (str, required, positional); `limit` (int, optional, default=20) |
 | `favorites` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>我的微博收藏列表 | `limit` (int, optional, default=20) |
 | `feed` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Fetch Weibo timeline (for-you or following) | `type` (str, optional, default='for-you', choices=for-you,following); `limit` (int, optional, default=15) |
-| `hot` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>微博热搜 | `limit` (int, optional, default=30) |
-| `post` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get a single Weibo post | `id` (str, required, positional) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>搜索微博 | `keyword` (str, required, positional); `limit` (int, optional, default=10) |
-| `user` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get Weibo user profile | `id` (str, required, positional) |
-| `user-posts` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List Weibo posts from a user, optionally filtered by date range | `id` (str, required, positional); `start` (str, optional); `end` (str, optional); `limit` (int, optional, default=20); `include-retweets` (boolean, optional, default=False) |
 
 ## Safety and fallback
 

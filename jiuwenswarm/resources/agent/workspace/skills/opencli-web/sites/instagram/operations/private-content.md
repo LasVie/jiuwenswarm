@@ -3,34 +3,8 @@ opencli_contract:
   version: 2
   site: instagram
   operation: private-content
-  policy_sha256: d42c25c598970ce1716e696af43fd6eb6c2acc1199441ba3a3b95731834e32ef
+  policy_sha256: 2f23b0dffc95b6eb1f0ec9f5697f887ee9af073f197122b3280c07425989434d
   commands:
-    explore:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 20
-        help: Number of posts
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
     followers:
       executor: none
       execution_state: disabled
@@ -60,7 +34,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - social graph
       - account identifiers
     following:
       executor: none
@@ -91,7 +65,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - social graph
       - account identifiers
     saved:
       executor: none
@@ -121,38 +95,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Search query
-        name: query
-        positional: true
-        required: true
-        type: str
-      - default: 10
-        help: Number of results
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - saved content
       - account identifiers
     user:
       executor: none
@@ -183,7 +126,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private social content
       - account identifiers
 ---
 
@@ -195,11 +138,9 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
-| `explore` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Instagram explore/discover trending posts | `limit` (int, optional, default=20) |
 | `followers` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List followers of an Instagram user | `username` (str, required, positional); `limit` (int, optional, default=20) |
 | `following` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List accounts an Instagram user is following | `username` (str, required, positional); `limit` (int, optional, default=20) |
 | `saved` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get your saved Instagram posts (optionally from a specific collection) | `limit` (int, optional, default=20); `collection` (str, optional) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Search Instagram users | `query` (str, required, positional); `limit` (int, optional, default=10) |
 | `user` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get recent posts from an Instagram user | `username` (str, required, positional); `limit` (int, optional, default=12) |
 
 ## Safety and fallback

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: notebooklm
   operation: publishing
-  policy_sha256: b4afc9adf21e631af063d145e7d0a37363571ed629959fd0ea9de242d6e1a9ed
+  policy_sha256: 73118f579f348316fdaf2092854ccfbd0ca1ac412e2b5f051b5b6fd4d32ef0c8
   commands:
     create:
       executor: none

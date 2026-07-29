@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: google
   operation: public-data
-  policy_sha256: fa46ccffc38aca4e255838c717dd023d7184f058e11cb0725d01d86a1c273ce7
+  policy_sha256: 8f8e9b5f1df0ce31cba6ad236f14011d957450747655c76b7cc1583a8e22d329
   commands:
     news:
       executor: generic_manifest_read

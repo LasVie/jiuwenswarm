@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: claude
   operation: private-content
-  policy_sha256: 44e3058291e9515c11b69fa315716c43953b92c95d540a39de4eb5d2af4eb50d
+  policy_sha256: ea0df9e9268dc8d38770a9fee8900e554e09d12e27deda8d74693b7d9447db94
   commands:
     detail:
       executor: none
@@ -29,7 +29,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     history:
       executor: none
@@ -55,7 +55,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     read:
       executor: none
@@ -76,28 +76,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    status:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
 ---
 
@@ -112,7 +91,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `detail` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Open a Claude conversation by ID and read its messages | `id` (str, required, positional) |
 | `history` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List conversation history from Claude /recents | `limit` (int, optional, default=20) |
 | `read` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read the current Claude conversation | none |
-| `status` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check Claude page availability and login state | none |
 
 ## Safety and fallback
 

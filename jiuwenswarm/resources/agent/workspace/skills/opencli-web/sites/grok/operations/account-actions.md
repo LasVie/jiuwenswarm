@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: grok
   operation: account-actions
-  policy_sha256: d2b9f216523df47c74346d35cb34510ffe498aaed3167575f8992f4716317e63
+  policy_sha256: b705477e7e3a3a6973224daa59302383677bcd142ed82fafc4864ece1d1486a2
   commands:
     pin:
       executor: none

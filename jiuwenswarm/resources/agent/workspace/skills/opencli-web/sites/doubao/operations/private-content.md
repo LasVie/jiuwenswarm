@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: doubao
   operation: private-content
-  policy_sha256: 497429c0c2f48886ea1c123aede806adc056daf1f8b180b9e402c44a988dd96a
+  policy_sha256: 21c69d9754afd9a5be4375a1a297da9855f31c84128a2006a0e0538bc5cdd1b9
   commands:
     detail:
       executor: none
@@ -29,7 +29,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     history:
       executor: none
@@ -55,7 +55,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     meeting-summary:
       executor: none
@@ -86,7 +86,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private meeting content
       - account identifiers
     read:
       executor: none
@@ -107,28 +107,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    status:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
 ---
 
@@ -144,7 +123,6 @@ This is the terminal contract. The same main Agent must read this exact path wit
 | `history` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List conversation history from Doubao sidebar | `limit` (str, optional, default='50') |
 | `meeting-summary` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get meeting summary and chapters from a Doubao conversation | `id` (str, required, positional); `chapters` (str, optional, default='false') |
 | `read` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read the current Doubao conversation history | none |
-| `status` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check Doubao chat page availability and login state | none |
 
 ## Safety and fallback
 

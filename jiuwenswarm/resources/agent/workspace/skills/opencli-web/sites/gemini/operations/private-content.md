@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: gemini
   operation: private-content
-  policy_sha256: 32999b35da627b217dce0ed802f908c70ea6bae3c3359de85d80d856837de670
+  policy_sha256: 73a86fcade69579b88c656ba09a4fe558916bb2b16dbb4a875f17703931af580
   commands:
     detail:
       executor: none
@@ -29,7 +29,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     history:
       executor: none
@@ -55,28 +55,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    models:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
     read:
       executor: none
@@ -97,28 +76,7 @@ opencli_contract:
       file_inputs: []
       file_outputs: []
       sensitive_output:
-      - private content
-      - account identifiers
-    status:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
+      - private conversation content
       - account identifiers
 ---
 
@@ -132,9 +90,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 |---|---|---|---|---|
 | `detail` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Open a Gemini web conversation by id, URL, or sidebar title and read its turns | `id` (str, required, positional) |
 | `history` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List visible Gemini web conversation history from the sidebar | `limit` (int, optional, default=20) |
-| `models` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List available Gemini models from the web UI | none |
 | `read` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Read the turns visible in the current Gemini web conversation | none |
-| `status` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Check Gemini web page availability and login state | none |
 
 ## Safety and fallback
 

@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: v2ex
   operation: account
-  policy_sha256: 778d449edb12cf272d1703cbe12bbcb44c0e1273bc8d937adf7c531edd7eafe4
+  policy_sha256: 32f48543cdf3e1583d0d764d034715ab97a6201a6b1f2fa8dfc53f50eefcf255
   commands:
     me:
       executor: none
@@ -25,6 +25,7 @@ opencli_contract:
       file_outputs: []
       sensitive_output:
       - account identifiers
+      - account balance
     whoami:
       executor: none
       execution_state: disabled

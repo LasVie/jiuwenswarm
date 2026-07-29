@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: xiaoe
   operation: account
-  policy_sha256: 75ee2ab13ba366175861d8b4bb0a1f9c3eb579eb3ec753e27f9882eddebd695a
+  policy_sha256: 143c3ff1e3210598ea7c52f03a254c27c39c99031d104f9d37dda08e5294cf56
   commands:
     whoami:
       executor: none

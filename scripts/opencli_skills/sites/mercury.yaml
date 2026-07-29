@@ -11,10 +11,6 @@ review:
   owner: agent-b
   notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
 operations:
-  authentication:
-    purpose: Open, change, or clear an authenticated browser session.
-    commands:
-    - check-login
   financial-actions:
     purpose: Financial or reimbursement state changes.
     commands:
@@ -23,12 +19,16 @@ operations:
     purpose: Read content that depends on an authenticated account.
     commands:
     - reimbursement-plan
+  account:
+    purpose: Read account identity or account-scoped metadata.
+    commands:
+    - check-login
 commands:
   check-login:
-    operation: authentication
-    semantic_effect: auth_session_change
-    risk: high
-    auth: interactive
+    operation: account
+    semantic_effect: private_account_read
+    risk: medium
+    auth: optional
     transport: browser_dom
     execution_state: disabled
     executor: none
@@ -37,8 +37,9 @@ commands:
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output: []
-    notes: ''
+    sensitive_output:
+    - account identifiers
+    notes: 'Source-audited against OpenCLI 1.8.6 mercury/check-login.js; reads current browser-session authentication state without changing it.'
   reimbursement-draft:
     operation: financial-actions
     semantic_effect: financial_write

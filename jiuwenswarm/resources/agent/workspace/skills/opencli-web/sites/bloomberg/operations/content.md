@@ -3,8 +3,32 @@ opencli_contract:
   version: 2
   site: bloomberg
   operation: content
-  policy_sha256: 4416a4e77af30c2a17d3ab5b785dae8f9cbdd590794e7274147a1f8d226b0ec9
+  policy_sha256: fc11a4e4f3dba4820f8bc9aa003f0fa2e715721959938e3cfb3f97b8b6cab036
   commands:
+    businessweek:
+      executor: browser_manifest_public_read
+      execution_state: enabled
+      semantic_effect: public_read
+      risk: low
+      auth: none
+      transport: browser_dom
+      strategy: public
+      browser: true
+      opencli_version: 1.8.6
+      access: read
+      args:
+      - default: 1
+        help: Number of stories to return (max 20)
+        name: limit
+        required: false
+        type: int
+      confirmation: none
+      fallback:
+        before_dispatch: browser_agent
+        after_failure: browser_agent
+      file_inputs: []
+      file_outputs: []
+      sensitive_output: []
     crypto:
       executor: generic_manifest_read
       execution_state: enabled
@@ -274,6 +298,7 @@ This is the terminal contract. The same main Agent must read this exact path wit
 
 | Command | State | Effect / risk | Exact structured use | Exact arguments |
 |---|---|---|---|---|
+| `businessweek` | `enabled` | `public_read` / `low` | `opencli_execute(site="bloomberg", operation="content", command="businessweek")`<br>Bloomberg Businessweek top stories | `limit` (int, optional, default=1) |
 | `crypto` | `enabled` | `public_read` / `low` | `opencli_execute(site="bloomberg", operation="content", command="crypto")`<br>Bloomberg Crypto top stories (RSS) | `limit` (int, optional, default=1) |
 | `economics` | `enabled` | `public_read` / `low` | `opencli_execute(site="bloomberg", operation="content", command="economics")`<br>Bloomberg Economics top stories (RSS) | `limit` (int, optional, default=1) |
 | `feeds` | `enabled` | `public_read` / `low` | `opencli_execute(site="bloomberg", operation="content", command="feeds")`<br>List the Bloomberg RSS feed aliases used by the adapter | none |

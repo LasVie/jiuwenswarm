@@ -3,7 +3,7 @@ opencli_contract:
   version: 2
   site: reddit
   operation: account
-  policy_sha256: 0487426fd966b3a96ccef136af5816f03b5ade5e203ef9e262e722a48273f258
+  policy_sha256: b899e066532b76d45800f057c889f9dfb932b03bd7979cb0b6f4ad4af9b71596
   commands:
     whoami:
       executor: none
