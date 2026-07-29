@@ -465,7 +465,6 @@ def _build_team_capability_specs(
         for name in _team_common_rail_names(role)
     ]
     if role == "leader":
-        rails_specs.append(RailSpec(type=registry.OPENCLI_DISCLOSURE))
         rails_specs.append(RailSpec(type=registry.STRUCTURED_ASK_USER))
 
     if _retrieval_enabled(config):
@@ -507,8 +506,6 @@ def _build_team_capability_specs(
         BuiltinToolSpec(type=name, params=_tool_params(name, config))
         for name in _COMMON_TOOL_NAMES
     ]
-    if role == "leader":
-        tool_specs.append(BuiltinToolSpec(type=registry.OPENCLI_EXECUTE))
     return rails_specs, tool_specs
 
 
@@ -536,9 +533,6 @@ def _build_code_capability_specs(
         RailSpec(type=name, params=_rail_params(name, config))
         for name in _code_base_rail_names(role)
     ]
-    if role == "leader":
-        rails_specs.append(RailSpec(type=registry.OPENCLI_DISCLOSURE))
-
     if is_team_plan_leader:
         rails_specs.append(RailSpec(type=registry.TEAM_PLAN_APPROVAL))
 
@@ -581,8 +575,6 @@ def _build_code_capability_specs(
         BuiltinToolSpec(type=name, params=_tool_params(name, config))
         for name in _CODE_TOOL_NAMES
     ]
-    if role == "leader":
-        tool_specs.append(BuiltinToolSpec(type=registry.OPENCLI_EXECUTE))
     return rails_specs, tool_specs
 
 

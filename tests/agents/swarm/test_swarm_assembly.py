@@ -69,7 +69,6 @@ from jiuwenswarm.agents.swarm.providers import (
     code_rails,
     evolution_rails,
     member_rails,
-    opencli,
     runtime_tools,
     tools,
 )
@@ -257,8 +256,6 @@ def test_register_swarm_providers_populates_registries() -> None:
         assert name in rail_providers, name
     for name in _COMMON_TOOL_NAMES:
         assert name in tool_providers, name
-    assert registry.OPENCLI_DISCLOSURE in rail_providers
-    assert registry.OPENCLI_EXECUTE in tool_providers
 
     # Role-specific evolution rails are provider-backed.
     assert registry.TEAM_SKILL_EVOLUTION in rail_providers
@@ -389,7 +386,6 @@ def test_unknown_swarm_rail_type_raises() -> None:
         (
             "leader",
             {
-                registry.OPENCLI_DISCLOSURE,
                 registry.STRUCTURED_ASK_USER,
                 registry.TEAM_SKILL_EVOLUTION,
                 registry.TEAM_SKILL_CREATE,
@@ -431,50 +427,16 @@ def test_build_member_capability_specs_rail_names(
     logger.info("%s rails: %s", role, sorted(rail_names))
 
 
-@pytest.mark.parametrize(
-    ("role", "expected_extra"),
-    [
-        ("leader", {registry.OPENCLI_EXECUTE}),
-        ("teammate", set()),
-    ],
-)
-def test_build_member_capability_specs_tool_names(
-    role: str,
-    expected_extra: set[str],
-) -> None:
-    """Only the leader receives OpenCLI in addition to the common tool set."""
+@pytest.mark.parametrize("role", ["leader", "teammate"])
+def test_build_member_capability_specs_tool_names(role: str) -> None:
+    """Both roles declare the common tool set (base / cron / send_file)."""
     config = {"agents": {"leader": {"skills": []}, "teammate": {"skills": []}}}
 
     _, tool_specs = build_member_capability_specs(config, "team", role)
     tool_names = {spec.type for spec in tool_specs}
 
-    assert tool_names == _COMMON_TOOL_NAMES | expected_extra
+    assert tool_names == _COMMON_TOOL_NAMES
     assert all(isinstance(spec, BuiltinToolSpec) for spec in tool_specs)
-
-
-def test_opencli_providers_are_leader_only(tmp_path: Path) -> None:
-    """Provider role gates prevent teammates from receiving tool or receipt rail."""
-    leader = SwarmBuildContext(
-        role="leader",
-        session_id="session-1",
-        team_id="team-1",
-        member_card_id="leader-card",
-        language="en",
-        global_skills_dir=str(tmp_path / "skills"),
-        project_dir=str(tmp_path / "project"),
-    )
-    teammate = leader.derive(
-        role="teammate",
-        member_card_id="teammate-card",
-    )
-
-    leader_tools = opencli.build_opencli_execute({}, leader)
-    leader_rail = opencli.build_opencli_disclosure({}, leader)
-
-    assert [tool.card.name for tool in leader_tools] == ["opencli_execute"]
-    assert leader_rail is not None
-    assert opencli.build_opencli_execute({}, teammate) == []
-    assert opencli.build_opencli_disclosure({}, teammate) is None
 
 
 def test_member_skill_toolkit_carries_selected_skills() -> None:
@@ -1433,13 +1395,12 @@ _EXPECTED_CODE_RAIL_NAMES_LEADER: frozenset[str] = frozenset(
         registry.MEMBER_SKILL_TOOLKIT,
         registry.TEAM_WORKSPACE_REPORT_PATH,
         registry.PLUGIN_RAILS,
-        registry.OPENCLI_DISCLOSURE,
     }
 )
 
-_EXPECTED_CODE_RAIL_NAMES_TEAMMATE: frozenset[str] = (
-    _EXPECTED_CODE_RAIL_NAMES_LEADER - {registry.OPENCLI_DISCLOSURE}
-) | {registry.CODE_TASK_PLANNING}
+_EXPECTED_CODE_RAIL_NAMES_TEAMMATE: frozenset[str] = _EXPECTED_CODE_RAIL_NAMES_LEADER | {
+    registry.CODE_TASK_PLANNING,
+}
 
 
 @pytest.mark.parametrize("mode", ["code.team", "team.plan"])
@@ -1486,7 +1447,6 @@ def test_code_capability_specs_rail_and_tool_names(mode: str) -> None:
         registry.CODE_EXTRA_TOOLS,
         registry.CRON_TOOLS,
         registry.SEND_FILE,
-        registry.OPENCLI_EXECUTE,
     }
 
 

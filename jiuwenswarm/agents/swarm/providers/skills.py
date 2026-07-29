@@ -30,9 +30,6 @@ from openjiuwen.agent_teams.harness.manifest import (
     param_field,
 )
 
-from jiuwenswarm.agents.harness.common.opencli import (
-    OPENCLI_WEB_SKILL_NAME,
-)
 from jiuwenswarm.agents.harness.team.rails.team_member_skill_toolkit_rail import (
     MemberSkillToolkitRail,
 )
@@ -51,6 +48,7 @@ logger = logging.getLogger(__name__)
 
 # Provider name registered for the member-skill toolkit rail.
 MEMBER_SKILL_TOOLKIT = "swarm.member_skill_toolkit"
+OPENCLI_WEB_SKILL_NAME = "opencli-web"
 
 
 def _resolve_member_skill_view(
