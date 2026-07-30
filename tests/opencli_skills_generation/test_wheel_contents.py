@@ -9,7 +9,6 @@ import pytest
 
 from scripts.opencli_skills.verify_wheel import (
     OPENCLI_SKILL_PREFIX,
-    REQUIRED_RUNTIME_MEMBERS,
     WheelVerificationError,
     main,
     verify_wheel,
@@ -38,59 +37,18 @@ def _sha256(value: bytes) -> str:
 
 def _valid_wheel_entries() -> dict[str, bytes]:
     skill_files = {"SKILL.md": b"---\nname: opencli-web\n---\n"}
-    runtime_sites: dict[str, object] = {}
-    command_index = 0
 
     for site_index in range(EXPECTED_SITE_COUNT):
         site = f"site-{site_index:03d}"
-        site_path = f"sites/{site}/SKILL.md"
-        site_content = f"---\nname: {site}\n---\n".encode()
+        site_path = f"sites/{site}/index.md"
+        site_content = f"# {site}\n".encode()
         skill_files[site_path] = site_content
-        site_command_count = EXPECTED_COMMAND_COUNT // EXPECTED_SITE_COUNT + (
-            site_index < EXPECTED_COMMAND_COUNT % EXPECTED_SITE_COUNT
-        )
-        commands = {}
-        for _ in range(site_command_count):
-            command = f"command-{command_index:04d}"
-            commands[command] = {"execution_state": "disabled"}
-            command_index += 1
-        runtime_sites[site] = {
-            "display_name": site,
-            "operations": {
-                "public-data": {
-                    "commands": commands,
-                    "policy_sha256": "1" * 64,
-                    "purpose": "Synthetic wheel verification fixture.",
-                    "terminal": {
-                        "kind": "site",
-                        "path": site_path,
-                        "sha256": _sha256(site_content),
-                    },
-                }
-            },
-            "policy_sha256": "1" * 64,
-            "terminal": "site",
-        }
-
-    assert command_index == EXPECTED_COMMAND_COUNT
-    runtime = {
-        "schema_version": 1,
-        "generator_version": "1",
-        "catalog": {
-            "opencli_version": "1.8.6",
-            "source_sha256": "2" * 64,
-            "canonical_sha256": "3" * 64,
-            "command_count": EXPECTED_COMMAND_COUNT,
-        },
-        "sites": runtime_sites,
-    }
-    skill_files["opencli-runtime.json"] = _json_bytes(runtime)
     managed_files = {
         relative: _sha256(content) for relative, content in sorted(skill_files.items())
     }
     managed = {
         "schema_version": 1,
-        "generator_version": "1",
+        "generator_version": "2",
         "opencli_version": "1.8.6",
         "catalog_sha256": "2" * 64,
         "policy_sha256": "4" * 64,
@@ -105,8 +63,6 @@ def _valid_wheel_entries() -> dict[str, bytes]:
         f"{OPENCLI_SKILL_PREFIX}{relative}": content
         for relative, content in skill_files.items()
     }
-    for required_member in REQUIRED_RUNTIME_MEMBERS:
-        entries[required_member] = b'"""Synthetic runtime module."""\n'
     entries["jiuwenswarm-0.0.dist-info/WHEEL"] = (
         b"Wheel-Version: 1.0\nTag: py3-none-any\n"
     )
@@ -147,7 +103,7 @@ def test_verify_wheel_accepts_complete_opencli_resources(tmp_path: Path) -> None
 
     assert result.site_count == EXPECTED_SITE_COUNT
     assert result.command_count == EXPECTED_COMMAND_COUNT
-    assert result.managed_file_count == EXPECTED_SITE_COUNT + 2
+    assert result.managed_file_count == EXPECTED_SITE_COUNT + 1
     assert result.wheel_path == wheel_path.resolve()
 
 
@@ -155,7 +111,6 @@ def test_verify_wheel_accepts_complete_opencli_resources(tmp_path: Path) -> None
     "relative_path",
     [
         "SKILL.md",
-        "opencli-runtime.json",
         "generated-manifest.json",
     ],
 )
@@ -207,21 +162,19 @@ def test_verify_wheel_rejects_cached_bytecode_anywhere(
 
 
 @pytest.mark.parametrize("drift", ["sites", "commands"])
-def test_verify_wheel_recounts_runtime_inventory(
+def test_verify_wheel_rejects_inventory_count_drift(
     tmp_path: Path,
     drift: str,
 ) -> None:
     entries = _valid_wheel_entries()
-    runtime_member = f"{OPENCLI_SKILL_PREFIX}opencli-runtime.json"
-    runtime = json.loads(entries[runtime_member].decode("utf-8"))
     if drift == "sites":
-        runtime["sites"].pop("site-161")
+        del entries[f"{OPENCLI_SKILL_PREFIX}sites/site-161/index.md"]
+        _rewrite_managed_hashes(entries)
     else:
-        runtime["sites"]["site-000"]["operations"]["public-data"]["commands"].pop(
-            "command-0000"
-        )
-    entries[runtime_member] = _json_bytes(runtime)
-    _rewrite_managed_hashes(entries)
+        manifest_member = f"{OPENCLI_SKILL_PREFIX}generated-manifest.json"
+        manifest = json.loads(entries[manifest_member].decode("utf-8"))
+        manifest["command_count"] -= 1
+        entries[manifest_member] = _json_bytes(manifest)
     wheel_path = _write_wheel(tmp_path, entries)
 
     with pytest.raises(WheelVerificationError, match=drift):

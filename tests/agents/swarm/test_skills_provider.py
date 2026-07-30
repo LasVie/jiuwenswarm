@@ -85,8 +85,10 @@ def test_extract_skill_name_from_tool_result_prefers_nested_skill():
     assert skills._extract_skill_name_from_tool_result({}) == ""
 
 
-def test_opencli_router_is_automatic_for_leader_and_honors_disable(tmp_path):
-    """The leader sees the preinstalled router without selecting it."""
+def test_opencli_router_is_automatic_for_leader_when_installed_and_honors_disable(
+    tmp_path,
+):
+    """The leader sees an installed router without selecting it."""
     global_skills = tmp_path / "global"
     _make_skill(global_skills, "opencli-web")
 

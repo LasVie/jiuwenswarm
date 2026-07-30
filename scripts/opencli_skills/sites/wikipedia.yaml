@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: wikipedia
 display_name: Wikipedia
@@ -6,10 +6,6 @@ domains:
 - wikipedia.org
 aliases: []
 terminal: operation
-review:
-  status: reviewed
-  owner: agent-b
-  notes: Source-audited against OpenCLI 1.8.6; all commands are public browser-free reads.
 operations:
   articles:
     purpose: Read encyclopedia pages and summaries.
@@ -29,9 +25,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -49,9 +42,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -64,9 +54,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -85,9 +72,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -100,9 +84,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []

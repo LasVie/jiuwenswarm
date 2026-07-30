@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: gemini
 display_name: Gemini
@@ -6,10 +6,6 @@ domains:
 - gemini.google.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-c
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.
@@ -42,9 +38,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -57,9 +50,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -72,9 +62,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -87,9 +74,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -104,9 +88,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -121,9 +102,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -136,9 +114,6 @@ commands:
     risk: high
     auth: interactive
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -151,9 +126,6 @@ commands:
     risk: medium
     auth: optional
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -167,9 +139,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -182,9 +151,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -199,9 +165,6 @@ commands:
     risk: medium
     auth: optional
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -215,9 +178,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

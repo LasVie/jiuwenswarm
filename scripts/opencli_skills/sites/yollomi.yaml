@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: yollomi
 display_name: Yollomi
@@ -6,10 +6,6 @@ domains:
 - yollomi.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-c
-  notes: Public browser-free read commands reviewed; remaining commands stay fail-closed pending later review.
 operations:
   content:
     purpose: Read site content and metadata.
@@ -45,9 +41,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -60,9 +53,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs:
@@ -76,9 +66,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -91,9 +78,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -106,24 +90,18 @@ commands:
     risk: low
     auth: none
     transport: local
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
     sensitive_output: []
-    notes: Static adapter-local model table; fail-closed until a dedicated reviewed local-read executor is available.
+    notes: Reads the static adapter-local model table.
   object-remover:
     operation: write-actions
     semantic_effect: reversible_remote_write
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -136,9 +114,6 @@ commands:
     risk: critical
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -151,9 +126,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -166,9 +138,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -181,9 +150,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs:
@@ -197,9 +163,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -212,9 +175,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

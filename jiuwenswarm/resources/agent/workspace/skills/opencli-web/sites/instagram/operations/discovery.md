@@ -1,78 +1,13 @@
----
-opencli_contract:
-  version: 2
-  site: instagram
-  operation: discovery
-  policy_sha256: 2f23b0dffc95b6eb1f0ec9f5697f887ee9af073f197122b3280c07425989434d
-  commands:
-    explore:
-      executor: none
-      execution_state: disabled
-      semantic_effect: public_read
-      risk: low
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 20
-        help: Number of posts
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: public_read
-      risk: low
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Search query
-        name: query
-        positional: true
-        required: true
-        type: str
-      - default: 10
-        help: Number of results
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
----
-
 # Instagram: discovery
 
 Search, browse, recommend, or discover site content.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `explore` | `disabled` | `public_read` / `low` | Not executable; use the declared fallback if permitted<br>Instagram explore/discover trending posts | `limit` (int, optional, default=20) |
-| `search` | `disabled` | `public_read` / `low` | Not executable; use the declared fallback if permitted<br>Search Instagram users | `query` (str, required, positional); `limit` (int, optional, default=10) |
+| `explore` | `public_read` / `low` | `opencli instagram explore [--limit <limit>] -f json`<br>Instagram explore/discover trending posts | `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=browser_agent |
+| `search` | `public_read` / `low` | `opencli instagram search "<query>" [--limit <limit>] -f json`<br>Search Instagram users | `query` (str, required, positional); `limit` (int, optional, default=10) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=browser_agent |
 
-## Safety and fallback
+## Operation-specific constraints
 
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
+- `explore`: Source-audited against OpenCLI 1.8.6 instagram/explore.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
+- `search`: Source-audited against OpenCLI 1.8.6 instagram/search.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.

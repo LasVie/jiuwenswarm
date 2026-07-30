@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Generate the managed OpenCLI Web Skill tree from a frozen catalog.
 
-The frozen OpenCLI manifest is discovery input only.  Every executable state,
-semantic effect, fallback rule, and progressive-disclosure boundary comes from
-the repository-owned site policy files.
+The frozen OpenCLI manifest defines the commands that OpenCLI exposes.  The
+repository-owned site policies add semantic effects, risk, fallback rules, and
+progressive-disclosure boundaries without maintaining a separate execution
+allowlist.
 """
 
 from __future__ import annotations
@@ -27,7 +28,7 @@ except ImportError:  # pragma: no cover - exercised by CLI error handling
 
 
 OPENCLI_VERSION = "1.8.6"
-GENERATOR_VERSION = "1"
+GENERATOR_VERSION = "2"
 CATALOG_COMMAND_COUNT = 1275
 CATALOG_SITE_COUNT = 173
 GENERATED_SITE_COUNT = 161
@@ -50,13 +51,10 @@ EXCLUDED_ADAPTERS = frozenset(
 _SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _INDEX_RE = re.compile(
-    r"(?ms)^## Supported websites\s*.*?(?=^## Execute documented commands\s*$)"
+    r"(?ms)^## Supported websites\s*.*\Z"
 )
 _MANIFEST_NAME = "generated-manifest.json"
-_RUNTIME_NAME = "opencli-runtime.json"
-_GENERIC_READ_EXECUTOR = "generic_manifest_read"
-_BROWSER_PUBLIC_READ_EXECUTOR = "browser_manifest_public_read"
-_BROWSER_PRIVATE_READ_EXECUTOR = "browser_manifest_private_read"
+_LEGACY_RUNTIME_NAME = "opencli-runtime.json"
 
 
 class GenerationError(ValueError):
@@ -86,17 +84,6 @@ def _json_bytes(value: Any) -> bytes:
         )
         + "\n"
     ).encode("utf-8")
-
-
-def _yaml_frontmatter(value: Mapping[str, Any]) -> str:
-    rendered = yaml.safe_dump(
-        dict(value),
-        allow_unicode=True,
-        sort_keys=False,
-        default_flow_style=False,
-        width=1000,
-    ).rstrip()
-    return f"---\n{rendered}\n---\n"
 
 
 def _require_slug(value: Any, field: str) -> str:
@@ -190,7 +177,7 @@ class Ownership:
 
 @dataclass(frozen=True, slots=True)
 class CommandPolicy:
-    """Reviewed semantic policy applied to one catalog command."""
+    """Capability metadata applied to one catalog command."""
 
     catalog: CatalogCommand
     operation: str
@@ -198,9 +185,6 @@ class CommandPolicy:
     risk: str
     auth: str
     transport: str
-    execution_state: str
-    executor: str
-    confirmation: str
     fallback_before: str
     fallback_after: str
     file_inputs: tuple[str, ...]
@@ -212,29 +196,6 @@ class CommandPolicy:
     @property
     def name(self) -> str:
         return self.catalog.name
-
-    def runtime_spec(self) -> dict[str, Any]:
-        return {
-            "executor": self.executor,
-            "execution_state": self.execution_state,
-            "semantic_effect": self.semantic_effect,
-            "risk": self.risk,
-            "auth": self.auth,
-            "transport": self.transport,
-            "strategy": self.catalog.strategy,
-            "browser": self.catalog.browser,
-            "opencli_version": OPENCLI_VERSION,
-            "access": self.catalog.access,
-            "args": [dict(arg) for arg in self.args],
-            "confirmation": self.confirmation,
-            "fallback": {
-                "before_dispatch": self.fallback_before,
-                "after_failure": self.fallback_after,
-            },
-            "file_inputs": list(self.file_inputs),
-            "file_outputs": list(self.file_outputs),
-            "sensitive_output": list(self.sensitive_output),
-        }
 
 
 @dataclass(frozen=True, slots=True)
@@ -258,9 +219,6 @@ class SitePolicy:
     operations: dict[str, OperationPolicy]
     commands: dict[str, CommandPolicy]
     policy_sha256: str
-    review_status: str
-    review_owner: str
-    review_notes: str
 
     def command(self, name: str) -> CommandPolicy:
         try:
@@ -613,9 +571,6 @@ def build_generation_model(
                 risk=str(raw_command_policy["risk"]),
                 auth=str(raw_command_policy["auth"]),
                 transport=str(raw_command_policy["transport"]),
-                execution_state=str(raw_command_policy["execution_state"]),
-                executor=str(raw_command_policy["executor"]),
-                confirmation=str(raw_command_policy["confirmation"]),
                 fallback_before=str(raw_command_policy["fallback_before"]),
                 fallback_after=str(raw_command_policy["fallback_after"]),
                 file_inputs=_require_string_list(
@@ -647,11 +602,6 @@ def build_generation_model(
                 operations,
                 command_policies,
             )
-        review = raw_policy.get("review") or {
-            "status": "generated",
-            "owner": ownership.owner_for(site_slug),
-            "notes": "",
-        }
         policy_sha256 = _sha256(_canonical_json(raw_policy))
         policy_digests[site_slug] = policy_sha256
         sites[site_slug] = SitePolicy(
@@ -663,9 +613,6 @@ def build_generation_model(
             operations=operations,
             commands=command_policies,
             policy_sha256=policy_sha256,
-            review_status=str(review["status"]),
-            review_owner=str(review["owner"]),
-            review_notes=str(review.get("notes") or ""),
         )
 
     pending_command_count = sum(
@@ -683,93 +630,10 @@ def build_generation_model(
 
 def _validate_command_policy(policy: CommandPolicy) -> None:
     identity = f"{policy.catalog.site}/{policy.name}"
-    if policy.execution_state == "enabled":
-        if policy.executor == _GENERIC_READ_EXECUTOR:
-            valid = (
-                policy.semantic_effect == "public_read"
-                and policy.auth == "none"
-                and policy.risk == "low"
-                and policy.transport == "public_http"
-                and policy.catalog.access == "read"
-                and policy.catalog.strategy == "public"
-                and not policy.catalog.browser
-                and policy.confirmation == "none"
-                and not policy.file_inputs
-                and not policy.file_outputs
-                and not policy.sensitive_output
-            )
-        elif policy.executor == _BROWSER_PUBLIC_READ_EXECUTOR:
-            valid = (
-                policy.semantic_effect == "public_read"
-                and policy.auth == "none"
-                and policy.risk == "low"
-                and policy.transport == "browser_dom"
-                and policy.catalog.access == "read"
-                and policy.catalog.strategy == "public"
-                and policy.catalog.browser
-                and policy.confirmation == "none"
-                and not policy.file_inputs
-                and not policy.file_outputs
-                and not policy.sensitive_output
-                and policy.fallback_before == "browser_agent"
-                and policy.fallback_after == "browser_agent"
-            )
-        elif policy.executor == _BROWSER_PRIVATE_READ_EXECUTOR:
-            sensitive_labels = tuple(label.lower() for label in policy.sensitive_output)
-            declares_secret_material = any(
-                marker in label
-                for label in sensitive_labels
-                for marker in (
-                    "authorization",
-                    "cookie",
-                    "credential",
-                    "secret",
-                    "token",
-                )
-            )
-            valid = (
-                policy.semantic_effect
-                in {"private_account_read", "private_content_read"}
-                and policy.auth == "required"
-                and policy.risk == "medium"
-                and policy.transport == "browser_cookie"
-                and policy.catalog.access == "read"
-                and policy.catalog.strategy == "cookie"
-                and policy.catalog.browser
-                and policy.confirmation == "none"
-                and not policy.file_inputs
-                and not policy.file_outputs
-                and bool(policy.sensitive_output)
-                and not declares_secret_material
-                and policy.fallback_before == "browser_agent"
-                and policy.fallback_after == "none"
-            )
-        else:
-            raise GenerationError(
-                f"{identity} enabled command has no reviewed executor lane"
-            )
-        if not valid:
-            raise GenerationError(f"{identity} violates its reviewed executor lane")
-    elif policy.execution_state == "custom":
-        if policy.executor != "xiaohongshu_guarded_publish":
-            raise GenerationError(f"{identity} has an unregistered custom executor")
-        if identity != "xiaohongshu/publish":
-            raise GenerationError(
-                f"{identity} custom executor is not compile-time registered"
-            )
-    elif policy.executor != "none":
-        raise GenerationError(
-            f"{identity} non-executable command must use executor=none"
-        )
     if policy.semantic_effect != "public_read" and policy.fallback_after != "none":
         raise GenerationError(
             f"{identity} mutating/private command cannot auto-fallback after failure"
         )
-    if policy.execution_state in {"disabled", "quarantined"}:
-        if policy.confirmation != "unsupported":
-            raise GenerationError(
-                f"{identity} disabled command must declare confirmation=unsupported"
-            )
 
 
 def _validate_site_terminal(
@@ -786,7 +650,6 @@ def _validate_site_terminal(
             command.semantic_effect != "public_read"
             or command.risk != "low"
             or command.auth != "none"
-            or command.execution_state != "enabled"
             or command.catalog.access != "read"
             or command.catalog.strategy != "public"
             or command.catalog.browser
@@ -798,19 +661,35 @@ def _validate_site_terminal(
             )
 
 
+def _argument_placeholder(argument: Mapping[str, Any]) -> str:
+    """Render one human-readable CLI value placeholder."""
+    name = str(argument["name"])
+    choices = argument.get("choices") or []
+    type_name = str(argument.get("type", "")).lower()
+    if choices:
+        label = "|".join(str(choice) for choice in choices)
+    elif type_name in {"bool", "boolean"}:
+        label = "true|false"
+    else:
+        label = name
+    placeholder = f"<{label}>"
+    if type_name in {"int", "integer", "float", "number", "bool", "boolean"}:
+        return placeholder
+    return f'"{placeholder}"'
+
+
 def _command_invocation(site: SitePolicy, command: CommandPolicy) -> str:
-    arguments = {
-        arg["name"]: f"<{arg['name']}>" for arg in command.args if arg.get("required")
-    }
-    parts = [
-        f'site="{site.slug}"',
-        f'operation="{command.operation}"',
-        f'command="{command.name}"',
-    ]
-    if arguments:
-        rendered = json.dumps(arguments, ensure_ascii=False, separators=(",", ":"))
-        parts.append(f"arguments={rendered}")
-    return f"opencli_execute({', '.join(parts)})"
+    """Render the exact OpenCLI CLI shape for one command."""
+    parts = ["opencli", site.slug, command.name]
+    for argument in command.args:
+        name = str(argument["name"])
+        value = _argument_placeholder(argument)
+        item = value if argument.get("positional") else f"--{name} {value}"
+        if not argument.get("required"):
+            item = f"[{item}]"
+        parts.append(item)
+    parts.extend(["-f", "json"])
+    return " ".join(parts)
 
 
 def _argument_summary(command: CommandPolicy) -> str:
@@ -841,191 +720,120 @@ def _argument_summary(command: CommandPolicy) -> str:
     return "; ".join(summaries)
 
 
+def _command_policy_summary(command: CommandPolicy) -> str:
+    return (
+        f"auth={command.auth}; transport={command.transport}; "
+        f"fallback_before={command.fallback_before}; "
+        f"fallback_after={command.fallback_after}"
+    )
+
+
 def _render_command_table(
     site: SitePolicy,
     commands: Iterable[CommandPolicy],
 ) -> str:
     lines = [
-        "| Command | State | Effect / risk | Exact structured use | Exact arguments |",
+        "| Command | Effect / risk | Exact usage | Arguments | Runtime |",
         "|---|---|---|---|---|",
     ]
     for command in commands:
-        state = command.execution_state
-        invocation = (
-            f"`{_command_invocation(site, command)}`"
-            if state in {"enabled", "custom"}
-            else "Not executable; use the declared fallback if permitted"
-        )
+        invocation = f"`{_command_invocation(site, command)}`"
         description = command.catalog.description.replace("|", "\\|").replace("\n", " ")
+        invocation = invocation.replace("|", "\\|")
         argument_summary = _argument_summary(command).replace("|", "\\|")
+        policy_summary = _command_policy_summary(command).replace("|", "\\|")
         lines.append(
-            f"| `{command.name}` | `{state}` | "
-            f"`{command.semantic_effect}` / `{command.risk}` | "
+            f"| `{command.name}` | `{command.semantic_effect}` / `{command.risk}` | "
             f"{invocation}<br>{description} | "
-            f"{argument_summary} |"
+            f"{argument_summary} | {policy_summary} |"
         )
     return "\n".join(lines)
 
 
-def _render_site_skill(site: SitePolicy) -> bytes:
-    frontmatter = _yaml_frontmatter(
-        {
-            "name": f"opencli-{site.slug}",
-            "description": (
-                f"Route reviewed {site.display_name} website operations through "
-                "the OpenCLI Web structured execution boundary."
-            ),
-        }
-    )
+def _render_operation_constraints(
+    site: SitePolicy,
+    operation: OperationPolicy,
+) -> str:
+    lines: list[str] = []
+    for name in operation.commands:
+        command = site.commands[name]
+        details: list[str] = []
+        if command.notes:
+            details.append(command.notes)
+        if command.file_inputs:
+            details.append(f"file inputs: {', '.join(command.file_inputs)}")
+        if command.file_outputs:
+            details.append(f"file outputs: {', '.join(command.file_outputs)}")
+        if command.sensitive_output:
+            details.append(
+                f"sensitive output: {', '.join(command.sensitive_output)}"
+            )
+        if details:
+            lines.append(f"- `{name}`: {'; '.join(details)}")
+    if not lines:
+        return ""
+    return "## Operation-specific constraints\n\n" + "\n".join(lines)
+
+
+def _render_site_index(site: SitePolicy) -> bytes:
     lines = [
-        frontmatter.rstrip(),
-        "",
         f"# {site.display_name}",
         "",
-        f"Catalog site slug: `{site.slug}`.",
-        (
-            " Known domains: "
-            + (
-                ", ".join(f"`{domain}`" for domain in site.domains)
-                or "catalog did not declare one"
-            )
-            + "."
-        ),
+        f"- Site slug: `{site.slug}`",
+        "- Domains: "
+        + (", ".join(f"`{domain}`" for domain in site.domains) or "none"),
+        "- Aliases: "
+        + (", ".join(f"`{alias}`" for alias in site.aliases) or "none"),
         "",
-        "Read this file only through the main Agent's SkillTool. Do not delegate "
-        "disclosure to a general-purpose or browser subagent and do not replace "
-        "it with a filesystem read.",
+        "## Operations",
         "",
+        "| Operation | Purpose | Commands | Terminal contract |",
+        "|---|---|---|---|",
     ]
+    for operation in site.operations.values():
+        command_list = ", ".join(f"`{name}`" for name in operation.commands)
+        path = (
+            f"sites/{site.slug}/index.md"
+            if site.terminal == "site"
+            else f"sites/{site.slug}/operations/{operation.slug}.md"
+        )
+        lines.append(
+            f"| `{operation.slug}` | {operation.purpose} | {command_list} | "
+            f"`{path}` |"
+        )
     if site.terminal == "site":
         operation = next(iter(site.operations.values()))
         lines.extend(
             [
-                "## Terminal site contract",
                 "",
-                "This compact site router is also the terminal execution contract. "
-                "Its single operation has one low-risk public-read boundary. A "
-                "successful exact SkillTool read of this path is required before "
-                "`opencli_execute`.",
-                "",
-                f"Logical operation: `{operation.slug}` — {operation.purpose}",
+                "## Commands",
                 "",
                 _render_command_table(
                     site,
                     (site.commands[name] for name in operation.commands),
                 ),
-                "",
-                _render_policy_rules(site, operation),
             ]
         )
-    else:
-        lines.extend(
-            [
-                "## Capability groups",
-                "",
-                "This file is a router, not an execution receipt. Select exactly "
-                "one operation and read its full path again with SkillTool from "
-                "the same main Agent.",
-                "",
-                "| Operation | Purpose | Commands | Terminal contract path |",
-                "|---|---|---|---|",
-            ]
-        )
-        for operation in site.operations.values():
-            command_list = ", ".join(f"`{name}`" for name in operation.commands)
-            path = f"sites/{site.slug}/operations/{operation.slug}.md"
-            lines.append(
-                f"| `{operation.slug}` | {operation.purpose} | {command_list} | "
-                f"`{path}` |"
-            )
-        lines.extend(
-            [
-                "",
-                "Do not skip the operation read. Optional references can explain "
-                "examples or output shape, but they never authorize execution.",
-            ]
-        )
+        constraints = _render_operation_constraints(site, operation)
+        if constraints:
+            lines.extend(["", constraints])
     return ("\n".join(lines).rstrip() + "\n").encode("utf-8")
 
 
-def _render_policy_rules(
-    site: SitePolicy,
-    operation: OperationPolicy,
-) -> str:
-    commands = [site.commands[name] for name in operation.commands]
-    rules = [
-        "## Safety and fallback",
-        "",
-        "- Unknown commands and arguments are rejected before subprocess start.",
-        "- Arguments are rendered from the frozen catalog schema; no shell, "
-        "arbitrary argv prefix, executable override, or environment override is "
-        "accepted.",
-    ]
-    if all(
-        command.execution_state == "enabled"
-        and command.semantic_effect == "public_read"
-        for command in commands
-    ):
-        rules.append(
-            "- These commands are reviewed public reads. A proven pre-dispatch "
-            "failure and a read failure may use `browser_agent` once; never run "
-            "both paths concurrently."
-        )
-    elif any(
-        command.execution_state == "enabled"
-        and command.semantic_effect in {"private_account_read", "private_content_read"}
-        for command in commands
-    ):
-        rules.append(
-            "- Enabled private/account reads use the current browser session. "
-            "Treat declared sensitive output as session-private, and never retry "
-            "through a browser after OpenCLI dispatch starts."
-        )
-    else:
-        rules.append(
-            "- A `disabled` or `quarantined` command has documentation but no "
-            "OpenCLI execution authority. Use only its declared browser fallback."
-        )
-    if any(command.semantic_effect != "public_read" for command in commands):
-        rules.append(
-            "- Any operation that may change state, expose private data, write a "
-            "file, or consume quota is fail-closed after dispatch and cannot be "
-            "automatically retried through a browser."
-        )
-    return "\n".join(rules)
-
-
 def _render_operation(site: SitePolicy, operation: OperationPolicy) -> bytes:
-    command_specs = {
-        name: site.commands[name].runtime_spec() for name in operation.commands
-    }
-    contract = {
-        "opencli_contract": {
-            "version": 2,
-            "site": site.slug,
-            "operation": operation.slug,
-            "policy_sha256": site.policy_sha256,
-            "commands": command_specs,
-        }
-    }
     lines = [
-        _yaml_frontmatter(contract).rstrip(),
-        "",
         f"# {site.display_name}: {operation.slug}",
         "",
         operation.purpose,
-        "",
-        "This is the terminal contract. The same main Agent must read this exact "
-        "path with SkillTool immediately before invoking `opencli_execute`. Do not "
-        "delegate the read or execution.",
         "",
         _render_command_table(
             site,
             (site.commands[name] for name in operation.commands),
         ),
-        "",
-        _render_policy_rules(site, operation),
     ]
+    constraints = _render_operation_constraints(site, operation)
+    if constraints:
+        lines.extend(["", constraints])
     return ("\n".join(lines).rstrip() + "\n").encode("utf-8")
 
 
@@ -1037,20 +845,17 @@ def _render_root_index(model: GenerationModel, root_skill: bytes) -> bytes:
     lines = [
         "## Supported websites",
         "",
-        "The terminal contract may be the site `SKILL.md` itself for a compact "
-        "low-risk public-read adapter, or an `operations/*.md` file for ordinary "
-        "and mixed-risk adapters. Always follow the site router's exact path.",
-        "",
-        "| Website | Commands | Layout | Site module |",
-        "|---|---:|---|---|",
+        "| Website | Aliases | Domains | Site module |",
+        "|---|---|---|---|",
     ]
     for site in model.sites.values():
-        domains = f" ({', '.join(site.domains[:2])})" if site.domains else ""
+        aliases = ", ".join(site.aliases) or "none"
+        domains = ", ".join(site.domains) or "none"
         lines.append(
-            f"| {site.display_name}{domains} | {len(site.commands)} | "
-            f"`terminal-{site.terminal}` | `sites/{site.slug}/SKILL.md` |"
+            f"| {site.display_name} | {aliases} | {domains} | "
+            f"`sites/{site.slug}/index.md` |"
         )
-    replacement = "\n".join(lines) + "\n\n"
+    replacement = "\n".join(lines) + "\n"
     if not _INDEX_RE.search(text):
         raise GenerationError(
             "root SKILL.md lacks replaceable Supported websites section"
@@ -1081,7 +886,9 @@ def _load_manual_files(manual_root: Path) -> dict[str, bytes]:
         relative = path.relative_to(manual_root).as_posix()
         if "__pycache__" in path.parts or path.suffix == ".pyc":
             continue
-        if relative in {_MANIFEST_NAME, _RUNTIME_NAME}:
+        if relative in {_MANIFEST_NAME, _LEGACY_RUNTIME_NAME}:
+            continue
+        if relative == "sites/xiaohongshu/SKILL.md":
             continue
         if relative.startswith("sites/") and not relative.startswith(
             "sites/xiaohongshu/"
@@ -1089,56 +896,6 @@ def _load_manual_files(manual_root: Path) -> dict[str, bytes]:
             continue
         files[relative] = path.read_bytes()
     return files
-
-
-def _runtime_manifest(
-    model: GenerationModel,
-    files: Mapping[str, bytes],
-) -> dict[str, Any]:
-    sites: dict[str, Any] = {}
-    for site in model.sites.values():
-        operations: dict[str, Any] = {}
-        for operation in site.operations.values():
-            terminal_path = (
-                f"sites/{site.slug}/SKILL.md"
-                if site.terminal == "site"
-                else f"sites/{site.slug}/operations/{operation.slug}.md"
-            )
-            terminal_content = files.get(terminal_path)
-            if terminal_content is None:
-                raise GenerationError(
-                    f"terminal contract was not generated: {terminal_path}"
-                )
-            operations[operation.slug] = {
-                "purpose": operation.purpose,
-                "terminal": {
-                    "kind": site.terminal,
-                    "path": terminal_path,
-                    "sha256": _sha256(terminal_content),
-                },
-                "policy_sha256": site.policy_sha256,
-                "commands": {
-                    name: site.commands[name].runtime_spec()
-                    for name in operation.commands
-                },
-            }
-        sites[site.slug] = {
-            "display_name": site.display_name,
-            "policy_sha256": site.policy_sha256,
-            "terminal": site.terminal,
-            "operations": operations,
-        }
-    return {
-        "schema_version": 1,
-        "generator_version": GENERATOR_VERSION,
-        "catalog": {
-            "opencli_version": model.catalog.opencli_version,
-            "source_sha256": model.catalog.source_sha256,
-            "canonical_sha256": model.catalog.canonical_sha256,
-            "command_count": sum(len(site.commands) for site in model.sites.values()),
-        },
-        "sites": sites,
-    }
 
 
 def _write_generated_files(
@@ -1213,13 +970,13 @@ def generate(
         }
     for site_slug in sorted(selected):
         site = model.sites[site_slug]
-        if site_slug != "xiaohongshu":
-            files[f"sites/{site_slug}/SKILL.md"] = _render_site_skill(site)
-            if site.terminal == "operation":
-                for operation in site.operations.values():
-                    files[f"sites/{site_slug}/operations/{operation.slug}.md"] = (
-                        _render_operation(site, operation)
-                    )
+        files[f"sites/{site_slug}/index.md"] = _render_site_index(site)
+        if site.terminal == "operation":
+            for operation in site.operations.values():
+                relative = (
+                    f"sites/{site_slug}/operations/{operation.slug}.md"
+                )
+                files[relative] = _render_operation(site, operation)
 
     if selected_sites is not None:
         scoped_files = {
@@ -1236,8 +993,6 @@ def generate(
         )
 
     files["SKILL.md"] = _render_root_index(model, files["SKILL.md"])
-    runtime = _runtime_manifest(model, files)
-    files[_RUNTIME_NAME] = _json_bytes(runtime)
     owned_hashes = {
         relative: _sha256(content) for relative, content in sorted(files.items())
     }

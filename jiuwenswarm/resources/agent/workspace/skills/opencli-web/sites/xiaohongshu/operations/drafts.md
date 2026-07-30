@@ -1,27 +1,15 @@
-# Xiaohongshu Draft Operations
+# Xiaohongshu: drafts
 
-This operation contract is selected by the Xiaohongshu site router. It
-authorizes only the commands listed below. Keep all parent routing, shell,
-confirmation, and fallback rules in force.
+Read or change local or remote draft state.
 
-| Command | Access | Exact usage | Purpose and important options |
-|---|---|---|---|
-| `draft-clear` | write | `opencli xiaohongshu draft-clear [--type image\|video\|article\|audio\|all] [--execute true] -f json` | Count matching local drafts by default. After final confirmation, `--execute true` clears them. |
-| `draft-delete` | write | `opencli xiaohongshu draft-delete <draft-id> [--type image\|video\|article\|audio] [--execute true] -f json` | Verify one local draft by default. After final confirmation, `--execute true` deletes it. |
-| `draft-open` | read | `opencli xiaohongshu draft-open <draft-id> [--type image\|video\|article\|audio] -f json` | Read one local draft's title, content, images, and update time. |
-| `drafts` | read | `opencli xiaohongshu drafts [--type image\|video\|article\|audio] -f json` | List local drafts of the selected type. |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
+|---|---|---|---|---|
+| `draft-clear` | `destructive_or_admin` / `critical` | `opencli xiaohongshu draft-clear [--type "<type>"] [--execute <true\|false>] -f json`<br>清空小红书本地草稿 | `type` (str, optional, default='image'); `execute` (bool, optional, default=False) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `draft-delete` | `destructive_or_admin` / `critical` | `opencli xiaohongshu draft-delete "<id>" [--type "<type>"] [--execute <true\|false>] -f json`<br>删除一条小红书本地草稿 | `id` (str, required, positional); `type` (str, optional, default='image'); `execute` (bool, optional, default=False) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `draft-open` | `private_content_read` / `medium` | `opencli xiaohongshu draft-open "<id>" [--type "<type>"] -f json`<br>读取一条小红书本地草稿详情 | `id` (str, required, positional); `type` (str, optional, default='image') | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `drafts` | `private_content_read` / `medium` | `opencli xiaohongshu drafts [--type "<type>"] -f json`<br>小红书本地草稿箱列表 | `type` (str, optional, default='image') | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 
-## Inspect drafts
+## Operation-specific constraints
 
-1. Use `drafts` to identify candidate IDs and types.
-2. Use `draft-open` to verify the exact draft before any destructive action.
-3. Preserve the exact draft ID and type between inspection and confirmation.
-
-## Delete drafts safely
-
-1. Run `draft-delete` or `draft-clear` without `--execute true` first.
-2. Show the exact target or matching count and obtain final Web-channel
-   confirmation.
-3. Repeat the same command once with `--execute true`.
-4. Do not retry through `browser_agent` after the execute call starts. Verify
-   with `drafts` or `draft-open`, or report uncertainty.
+- `draft-open`: sensitive output: private content, account identifiers
+- `drafts`: sensitive output: private content, account identifiers

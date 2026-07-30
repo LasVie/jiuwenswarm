@@ -1,45 +1,11 @@
----
-opencli_contract:
-  version: 2
-  site: upwork
-  operation: account
-  policy_sha256: 1d10bc6218b6d560645d06ab55894f4993fe0c04ae042f221c635f1db2599946
-  commands:
-    whoami:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_account_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - account identifiers
----
-
 # Upwork: account
 
 Read account identity or account-scoped metadata.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `whoami` | `disabled` | `private_account_read` / `medium` | Not executable; use the declared fallback if permitted<br>Show the current logged-in upwork account | none |
+| `whoami` | `private_account_read` / `medium` | `opencli upwork whoami -f json`<br>Show the current logged-in upwork account | none | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 
-## Safety and fallback
+## Operation-specific constraints
 
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
-- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.
+- `whoami`: Source-audited against OpenCLI 1.8.6 upwork/auth.js; reads current browser-session or account-scoped metadata.; sensitive output: account identifiers

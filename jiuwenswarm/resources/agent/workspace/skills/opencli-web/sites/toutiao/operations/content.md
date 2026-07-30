@@ -1,48 +1,7 @@
----
-opencli_contract:
-  version: 2
-  site: toutiao
-  operation: content
-  policy_sha256: 976fee660f57933ec2c7c8f13fc42b84a380852912cb8037602a46f3e52965e0
-  commands:
-    hot:
-      executor: generic_manifest_read
-      execution_state: enabled
-      semantic_effect: public_read
-      risk: low
-      auth: none
-      transport: public_http
-      strategy: public
-      browser: false
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 30
-        help: 返回条数 (1-50)
-        name: limit
-        required: false
-        type: int
-      confirmation: none
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
----
-
 # Toutiao: content
 
 Read site content and metadata.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `hot` | `enabled` | `public_read` / `low` | `opencli_execute(site="toutiao", operation="content", command="hot")`<br>今日头条首页热榜（公开 API，无需登录） | `limit` (int, optional, default=30) |
-
-## Safety and fallback
-
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- These commands are reviewed public reads. A proven pre-dispatch failure and a read failure may use `browser_agent` once; never run both paths concurrently.
+| `hot` | `public_read` / `low` | `opencli toutiao hot [--limit <limit>] -f json`<br>今日头条首页热榜（公开 API，无需登录） | `limit` (int, optional, default=30) | auth=none; transport=public_http; fallback_before=browser_agent; fallback_after=browser_agent |

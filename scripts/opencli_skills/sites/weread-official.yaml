@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: weread-official
 display_name: Weread Official
@@ -7,10 +7,6 @@ domains:
 - i.weread.qq.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-a
-  notes: Credential-gated capabilities source-reviewed; execution remains disabled pending a credential-aware executor.
 operations:
   content:
     purpose: Read site content and metadata.
@@ -36,9 +32,6 @@ commands:
     risk: medium
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -53,9 +46,6 @@ commands:
     risk: medium
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -70,9 +60,6 @@ commands:
     risk: low
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -85,9 +72,6 @@ commands:
     risk: medium
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -102,9 +86,6 @@ commands:
     risk: medium
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -119,9 +100,6 @@ commands:
     risk: low
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -134,9 +112,6 @@ commands:
     risk: low
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -149,9 +124,6 @@ commands:
     risk: medium
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

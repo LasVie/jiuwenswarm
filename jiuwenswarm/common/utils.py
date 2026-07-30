@@ -34,33 +34,18 @@ import os
 import re
 import sys
 import datetime
-import filecmp
 import shutil
 import socket
-import tempfile
-import threading
 import time
-from pathlib import Path, PurePosixPath, PureWindowsPath
+from pathlib import Path
 from dataclasses import dataclass
 from typing import Any, Literal, Optional
 import logging
 from logging.handlers import BaseRotatingHandler
-import portalocker
 from ruamel.yaml import YAML
 
 _LOG_FILE_MAX_BYTES = 20 * 1024 * 1024
 _LOG_FILE_BACKUP_COUNT = 20
-_DEFAULT_BUILTIN_SKILLS = (
-    "skill-creator",
-    "swarmskill-creator",
-    "opencli-web",
-)
-_MANAGED_DEFAULT_BUILTIN_SKILLS = frozenset({"opencli-web"})
-_MANAGED_BUILTIN_MANIFEST_NAME = "generated-manifest.json"
-_MANAGED_BUILTIN_MANIFEST_SCHEMA_VERSION = 1
-_SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
-_WORKSPACE_BOOTSTRAP_LOCK_TIMEOUT_SECONDS = 30
-_WORKSPACE_BOOTSTRAP_THREAD_LOCK = threading.Lock()
 
 
 @dataclass
@@ -69,14 +54,6 @@ class CopyDiffResult:
     added_dirs: list[str]
     added_files: list[str]
     overwritten_files: list[str]
-
-
-@dataclass(frozen=True)
-class _ManagedBuiltinManifest:
-    """Validated package-owned file inventory for one builtin Skill."""
-
-    raw_bytes: bytes
-    files: dict[str, str]
 
 
 class TrackCopyDiff:
@@ -608,7 +585,6 @@ def _update_skills_state_for_builtin(
     }
 
     # 添加新安装的技能记录
-    changed = False
     installed_at = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
     for skill_name in skill_names:
         if skill_name not in existing_names:
@@ -621,10 +597,6 @@ def _update_skills_state_for_builtin(
                 "installed_at": installed_at,
             })
             logger.info(f"已将默认技能记录到状态文件: {skill_name}")
-            changed = True
-
-    if not changed:
-        return
 
     # 保存状态文件
     try:
@@ -649,7 +621,6 @@ def _install_default_builtin_skills(
     默认安装的技能：
     - skill-creator: 技能创建助手
     - swarmskill-creator: Swarm技能创建助手
-    - opencli-web: OpenCLI 网站能力自动路由
 
     Args:
         builtin_dir: 内置技能目录路径
@@ -657,16 +628,19 @@ def _install_default_builtin_skills(
         overwrite: 是否覆盖已存在的技能
         cumulative_diff: 累积的文件变更追踪结果
     """
+    # 定义默认安装的技能列表
+    default_skills = ["skill-creator", "swarmskill-creator"]
+
     if not builtin_dir.exists() or not builtin_dir.is_dir():
         logger.warning(f"内置技能目录不存在，跳过默认技能安装: {builtin_dir}")
         return
 
     user_skills_dir.mkdir(parents=True, exist_ok=True)
 
-    # 记录已存在或成功安装的默认技能，用于同步状态文件
-    available_skills = []
+    # 记录成功安装的技能，用于后续更新状态文件
+    installed_skills = []
 
-    for skill_name in _DEFAULT_BUILTIN_SKILLS:
+    for skill_name in default_skills:
         builtin_skill_path = builtin_dir / skill_name
         user_skill_path = user_skills_dir / skill_name
 
@@ -677,35 +651,7 @@ def _install_default_builtin_skills(
 
         # 如果用户目录已存在该技能且不是覆盖模式，则跳过
         if user_skill_path.exists() and not overwrite:
-            if user_skill_path.is_dir():
-                if skill_name in _MANAGED_DEFAULT_BUILTIN_SKILLS:
-                    try:
-                        if _managed_builtin_skill_is_current(
-                            builtin_skill_path,
-                            user_skill_path,
-                        ):
-                            logger.debug(
-                                "受管默认技能已是最新版本: %s",
-                                skill_name,
-                            )
-                        else:
-                            with TrackCopyDiff(
-                                dest=user_skill_path,
-                                cumulative=cumulative_diff,
-                            ):
-                                _sync_managed_builtin_skill(
-                                    builtin_skill_path,
-                                    user_skill_path,
-                                )
-                            logger.info("已同步受管默认技能: %s", skill_name)
-                    except Exception as e:
-                        logger.error(f"同步受管默认技能失败 {skill_name}: {e}")
-                        continue
-                else:
-                    logger.info(f"技能已存在，跳过安装: {skill_name}")
-                available_skills.append(skill_name)
-            else:
-                logger.warning(f"默认技能路径不是目录，无法登记: {user_skill_path}")
+            logger.info(f"技能已存在，跳过安装: {skill_name}")
             continue
 
         # 复制技能到用户目录
@@ -717,424 +663,15 @@ def _install_default_builtin_skills(
             ):
                 if user_skill_path.exists() and overwrite:
                     shutil.rmtree(user_skill_path)
-                if skill_name in _MANAGED_DEFAULT_BUILTIN_SKILLS:
-                    user_skill_path.mkdir(parents=True, exist_ok=False)
-                    _sync_managed_builtin_skill(
-                        builtin_skill_path,
-                        user_skill_path,
-                    )
-                else:
-                    shutil.copytree(builtin_skill_path, user_skill_path)
+                shutil.copytree(builtin_skill_path, user_skill_path)
             logger.info(f"已安装默认技能: {skill_name}")
-            available_skills.append(skill_name)
+            installed_skills.append(skill_name)
         except Exception as e:
             logger.error(f"安装默认技能失败 {skill_name}: {e}")
 
-    # 更新 skills_state.json，补齐所有当前可用默认技能的注册记录
-    if available_skills:
-        _update_skills_state_for_builtin(user_skills_dir, available_skills)
-
-
-def _validate_managed_manifest_relative_path(relative_path: object) -> str:
-    """Return a canonical manifest path or reject unsafe/non-portable input."""
-    if not isinstance(relative_path, str) or not relative_path:
-        raise ValueError("managed Skill manifest path must be a non-empty string")
-    if "\\" in relative_path or "\x00" in relative_path:
-        raise ValueError(
-            f"managed Skill manifest path is not canonical: {relative_path!r}"
-        )
-
-    posix_path = PurePosixPath(relative_path)
-    windows_path = PureWindowsPath(relative_path)
-    if (
-        posix_path.is_absolute()
-        or windows_path.is_absolute()
-        or windows_path.drive
-        or posix_path.as_posix() != relative_path
-        or any(part in {"", ".", ".."} or ":" in part for part in posix_path.parts)
-    ):
-        raise ValueError(
-            f"managed Skill manifest path is unsafe: {relative_path!r}"
-        )
-    if relative_path == _MANAGED_BUILTIN_MANIFEST_NAME:
-        raise ValueError("managed Skill manifest must not list itself")
-    return relative_path
-
-
-def _managed_manifest_path(root: Path) -> Path:
-    """Resolve the manifest path while rejecting a link outside its Skill root."""
-    resolved_root = root.resolve(strict=True)
-    manifest_path = root / _MANAGED_BUILTIN_MANIFEST_NAME
-    if manifest_path.is_symlink():
-        raise ValueError("managed Skill manifest must be a regular file")
-    try:
-        manifest_path.resolve(strict=True).relative_to(resolved_root)
-    except (FileNotFoundError, ValueError) as exc:
-        raise ValueError("managed Skill manifest path escapes its Skill root") from exc
-    if not manifest_path.is_file():
-        raise ValueError("managed Skill manifest must be a regular file")
-    return manifest_path
-
-
-def _parse_managed_builtin_manifest(root: Path) -> _ManagedBuiltinManifest:
-    """Load and strictly validate the supported managed Skill manifest schema."""
-    manifest_path = _managed_manifest_path(root)
-    raw_bytes = manifest_path.read_bytes()
-    try:
-        payload = json.loads(raw_bytes.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise ValueError("managed Skill manifest is not valid UTF-8 JSON") from exc
-    if not isinstance(payload, dict):
-        raise ValueError("managed Skill manifest root must be an object")
-
-    schema_version = payload.get("schema_version")
-    if (
-        isinstance(schema_version, bool)
-        or schema_version != _MANAGED_BUILTIN_MANIFEST_SCHEMA_VERSION
-    ):
-        raise ValueError(
-            "managed Skill manifest schema_version must be "
-            f"{_MANAGED_BUILTIN_MANIFEST_SCHEMA_VERSION}"
-        )
-
-    raw_files = payload.get("files")
-    if not isinstance(raw_files, dict):
-        raise ValueError("managed Skill manifest files must be an object")
-    files: dict[str, str] = {}
-    for raw_relative_path, raw_hash in raw_files.items():
-        relative_path = _validate_managed_manifest_relative_path(raw_relative_path)
-        if (
-            not isinstance(raw_hash, str)
-            or not _SHA256_PATTERN.fullmatch(raw_hash)
-        ):
-            raise ValueError(
-                f"managed Skill manifest hash is invalid for {relative_path!r}"
-            )
-        files[relative_path] = raw_hash
-
-    return _ManagedBuiltinManifest(raw_bytes=raw_bytes, files=files)
-
-
-def _load_destination_managed_manifest(
-    destination: Path,
-) -> _ManagedBuiltinManifest | None:
-    """Load a current destination manifest, treating old/corrupt data as legacy."""
-    manifest_path = destination / _MANAGED_BUILTIN_MANIFEST_NAME
-    if not os.path.lexists(manifest_path):
-        return None
-    try:
-        return _parse_managed_builtin_manifest(destination)
-    except (OSError, ValueError) as exc:
-        logger.warning(
-            "Ignoring unusable managed Skill manifest at %s: %s",
-            manifest_path,
-            exc,
-        )
-        return None
-
-
-def _managed_builtin_skill_is_current(source: Path, destination: Path) -> bool:
-    """Use deterministic manifest bytes as the no-tree-scan startup fast path."""
-    source_manifest_path = source / _MANAGED_BUILTIN_MANIFEST_NAME
-    if not source_manifest_path.is_file():
-        return False
-    source_manifest = _parse_managed_builtin_manifest(source)
-    destination_manifest = _load_destination_managed_manifest(destination)
-    return (
-        destination_manifest is not None
-        and destination_manifest.raw_bytes == source_manifest.raw_bytes
-    )
-
-
-def _resolve_managed_manifest_entry(
-    root: Path,
-    relative_path: str,
-    *,
-    strict: bool,
-) -> Path:
-    """Resolve one validated manifest entry and enforce root containment."""
-    canonical_path = _validate_managed_manifest_relative_path(relative_path)
-    candidate = root.joinpath(*PurePosixPath(canonical_path).parts)
-    resolved_root = root.resolve(strict=True)
-    try:
-        candidate.resolve(strict=strict).relative_to(resolved_root)
-    except (FileNotFoundError, ValueError) as exc:
-        raise ValueError(
-            f"managed Skill manifest path escapes its root: {relative_path!r}"
-        ) from exc
-    return candidate
-
-
-def _sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def _validate_source_managed_files(
-    source: Path,
-    manifest: _ManagedBuiltinManifest,
-) -> dict[str, Path]:
-    """Validate every source file before mutating an installed Skill."""
-    source_files: dict[str, Path] = {}
-    for relative_path, expected_hash in sorted(manifest.files.items()):
-        source_path = _resolve_managed_manifest_entry(
-            source,
-            relative_path,
-            strict=True,
-        )
-        if source_path.is_symlink() or not source_path.is_file():
-            raise ValueError(
-                "managed Skill manifest entry is not a regular file: "
-                f"{relative_path!r}"
-            )
-        actual_hash = _sha256_file(source_path)
-        if actual_hash != expected_hash:
-            raise ValueError(
-                f"managed Skill manifest hash mismatch for {relative_path!r}"
-            )
-        source_files[relative_path] = source_path
-    return source_files
-
-
-def _copy_managed_file(source_path: Path, destination_path: Path) -> None:
-    """Copy one managed file without following a destination link."""
-    if os.path.lexists(destination_path):
-        if destination_path.is_symlink() or not destination_path.is_file():
-            raise OSError(
-                "managed builtin destination is not a regular file: "
-                f"{destination_path}"
-            )
-    destination_path.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(source_path, destination_path)
-
-
-def _remove_empty_managed_parents(path: Path, destination: Path) -> None:
-    """Remove only empty directories below the managed Skill root."""
-    resolved_destination = destination.resolve(strict=True)
-    parent = path.parent
-    while parent != destination:
-        try:
-            parent.resolve(strict=True).relative_to(resolved_destination)
-            parent.rmdir()
-        except OSError:
-            break
-        except ValueError as exc:
-            raise ValueError("managed Skill cleanup escaped its root") from exc
-        parent = parent.parent
-
-
-def _delete_stale_managed_file(destination: Path, relative_path: str) -> None:
-    """Delete one previously package-owned file, never a directory tree."""
-    destination_path = _resolve_managed_manifest_entry(
-        destination,
-        relative_path,
-        strict=False,
-    )
-    if not os.path.lexists(destination_path):
-        return
-    if destination_path.is_symlink():
-        resolved_destination = destination.resolve(strict=True)
-        try:
-            destination_path.resolve(strict=True).relative_to(resolved_destination)
-        except (FileNotFoundError, ValueError) as exc:
-            raise ValueError(
-                f"stale managed Skill link escapes its root: {relative_path!r}"
-            ) from exc
-        destination_path.unlink()
-    elif destination_path.is_file():
-        destination_path.unlink()
-    else:
-        raise OSError(
-            f"stale managed builtin path is not a regular file: {destination_path}"
-        )
-    _remove_empty_managed_parents(destination_path, destination)
-
-
-def _write_managed_manifest_last(
-    destination: Path,
-    manifest: _ManagedBuiltinManifest,
-) -> None:
-    """Atomically checkpoint new ownership after file synchronization."""
-    destination_manifest = destination / _MANAGED_BUILTIN_MANIFEST_NAME
-    if os.path.lexists(destination_manifest) and (
-        destination_manifest.is_symlink() or not destination_manifest.is_file()
-    ):
-        raise OSError(
-            "managed builtin manifest destination is not a regular file: "
-            f"{destination_manifest}"
-        )
-    descriptor, temporary_name = tempfile.mkstemp(
-        prefix=f".{_MANAGED_BUILTIN_MANIFEST_NAME}.",
-        suffix=".tmp",
-        dir=destination,
-    )
-    temporary_path = Path(temporary_name)
-    try:
-        with os.fdopen(descriptor, "wb") as stream:
-            stream.write(manifest.raw_bytes)
-            stream.flush()
-            os.fsync(stream.fileno())
-        os.replace(temporary_path, destination_manifest)
-    finally:
-        if os.path.lexists(temporary_path):
-            temporary_path.unlink()
-
-
-def _managed_paths_have_type_transition(first: str, second: str) -> bool:
-    """Return whether either managed file path is an ancestor of the other."""
-    first_parts = PurePosixPath(first).parts
-    second_parts = PurePosixPath(second).parts
-    return (
-        first_parts == second_parts[: len(first_parts)]
-        or second_parts == first_parts[: len(second_parts)]
-    )
-
-
-def _sync_manifest_managed_builtin_skill(
-    source: Path,
-    destination: Path,
-    source_manifest: _ManagedBuiltinManifest,
-) -> None:
-    """Refresh one manifest-managed Skill and checkpoint ownership last."""
-    source_files = _validate_source_managed_files(source, source_manifest)
-    destination_manifest = _load_destination_managed_manifest(destination)
-    if (
-        destination_manifest is not None
-        and destination_manifest.raw_bytes == source_manifest.raw_bytes
-    ):
-        return
-
-    previous_files = (
-        destination_manifest.files if destination_manifest is not None else {}
-    )
-    stale_paths = set(previous_files) - set(source_manifest.files)
-    blocking_stale_paths = {
-        stale_path
-        for stale_path in stale_paths
-        if any(
-            _managed_paths_have_type_transition(stale_path, current_path)
-            for current_path in source_manifest.files
-        )
-    }
-    for relative_path in sorted(
-        blocking_stale_paths,
-        key=lambda path: (-len(PurePosixPath(path).parts), path),
-    ):
-        _delete_stale_managed_file(destination, relative_path)
-    stale_paths -= blocking_stale_paths
-
-    for relative_path, expected_hash in sorted(source_manifest.files.items()):
-        destination_path = _resolve_managed_manifest_entry(
-            destination,
-            relative_path,
-            strict=False,
-        )
-        unchanged_entry = previous_files.get(relative_path) == expected_hash
-        if (
-            unchanged_entry
-            and os.path.lexists(destination_path)
-            and destination_path.is_file()
-            and not destination_path.is_symlink()
-        ):
-            continue
-        _copy_managed_file(source_files[relative_path], destination_path)
-
-    if destination_manifest is not None:
-        for relative_path in sorted(
-            stale_paths,
-            key=lambda path: (-len(PurePosixPath(path).parts), path),
-        ):
-            _delete_stale_managed_file(destination, relative_path)
-
-    _write_managed_manifest_last(destination, source_manifest)
-
-
-def _sync_legacy_managed_builtin_skill(source: Path, destination: Path) -> None:
-    """Overlay legacy package-owned files without deleting user-added files."""
-    for source_path in sorted(source.rglob("*")):
-        relative_path = source_path.relative_to(source)
-        destination_path = destination / relative_path
-        if source_path.is_dir():
-            destination_path.mkdir(parents=True, exist_ok=True)
-            continue
-        if not source_path.is_file():
-            continue
-        if destination_path.exists():
-            if not destination_path.is_file():
-                raise OSError(
-                    f"managed builtin destination is not a file: {destination_path}"
-                )
-            if filecmp.cmp(source_path, destination_path, shallow=False):
-                continue
-        destination_path.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source_path, destination_path)
-
-
-def _sync_managed_builtin_skill(source: Path, destination: Path) -> None:
-    """Synchronize a managed builtin Skill with legacy migration safety."""
-    source_manifest_path = source / _MANAGED_BUILTIN_MANIFEST_NAME
-    if not source_manifest_path.is_file():
-        _sync_legacy_managed_builtin_skill(source, destination)
-        return
-
-    source_manifest = _parse_managed_builtin_manifest(source)
-    _sync_manifest_managed_builtin_skill(
-        source,
-        destination,
-        source_manifest,
-    )
-
-
-def bootstrap_workspace(
-    workspace_dir: Optional[Path] = None,
-) -> CopyDiffResult:
-    """Initialize or reconcile the runtime workspace before services start.
-
-    Full workspace initialization is still conditional. Default builtin Skills
-    are reconciled on every startup so an existing workspace receives defaults
-    introduced by a package upgrade. Application-managed builtin files are
-    refreshed while user-added files and non-managed Skills remain untouched.
-    """
-    resolved_workspace_dir = (
-        get_user_workspace_dir()
-        if workspace_dir is None
-        else Path(workspace_dir)
-    )
-    resolved_workspace_dir.mkdir(parents=True, exist_ok=True)
-    lock_file = resolved_workspace_dir / ".workspace-bootstrap.lock"
-
-    with _WORKSPACE_BOOTSTRAP_THREAD_LOCK:
-        with portalocker.Lock(
-            str(lock_file),
-            mode="a",
-            timeout=_WORKSPACE_BOOTSTRAP_LOCK_TIMEOUT_SECONDS,
-        ):
-            config_file = resolved_workspace_dir / "config" / "config.yaml"
-            new_workspace = resolved_workspace_dir / "agent" / "workspace"
-            old_workspace = (
-                resolved_workspace_dir / "agent" / "jiuwenclaw_workspace"
-            )
-
-            if not config_file.exists() or (
-                old_workspace.exists() and not new_workspace.exists()
-            ):
-                cumulative_diff = prepare_workspace(
-                    overwrite=False,
-                    workspace_dir=resolved_workspace_dir,
-                )
-            else:
-                cumulative_diff = CopyDiffResult([], [], [])
-
-            _install_default_builtin_skills(
-                builtin_dir=get_builtin_skills_dir(),
-                user_skills_dir=new_workspace / "skills",
-                overwrite=False,
-                cumulative_diff=cumulative_diff,
-            )
-            return cumulative_diff
+    # 更新 skills_state.json，记录已安装的技能
+    if installed_skills:
+        _update_skills_state_for_builtin(user_skills_dir, installed_skills)
 
 
 def _migrate_from_jiuwenclaw_root() -> bool:
@@ -1677,7 +1214,7 @@ def prepare_workspace(
     migrate_config_from_template(config_yaml_src, config_yaml_dest)
     set_preferred_language_in_config_file(config_yaml_dest, resolved_lang)
 
-    # ----- 默认安装内置技能 -----
+    # ----- 默认安装内置技能: skill-creator 和 swarmskill-creator -----
     _install_default_builtin_skills(
         builtin_dir=get_builtin_skills_dir(),
         user_skills_dir=agent_skills,

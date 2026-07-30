@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: mercury
 display_name: Mercury
@@ -6,10 +6,6 @@ domains:
 - app.mercury.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-b
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
 operations:
   financial-actions:
     purpose: Financial or reimbursement state changes.
@@ -30,9 +26,6 @@ commands:
     risk: medium
     auth: optional
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -46,9 +39,6 @@ commands:
     risk: critical
     auth: required
     transport: browser_dom
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -61,9 +51,6 @@ commands:
     risk: medium
     auth: required
     transport: local
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

@@ -1,78 +1,13 @@
----
-opencli_contract:
-  version: 2
-  site: linux-do
-  operation: content
-  policy_sha256: cc2e02c6a9d1c322af5f087ca9458e5beda0949cc685cd56fa744162f7655b8a
-  commands:
-    topic:
-      executor: none
-      execution_state: disabled
-      semantic_effect: public_read
-      risk: low
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Topic ID
-        name: id
-        positional: true
-        required: true
-        type: int
-      - default: 20
-        help: Number of posts
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
-    topic-content:
-      executor: none
-      execution_state: disabled
-      semantic_effect: public_read
-      risk: low
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Topic ID
-        name: id
-        positional: true
-        required: true
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
----
-
 # Linux Do: content
 
 Read one public item, record, page, or resource.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `topic` | `disabled` | `public_read` / `low` | Not executable; use the declared fallback if permitted<br>linux.do 帖子首页摘要和回复（首屏） | `id` (int, required, positional); `limit` (int, optional, default=20) |
-| `topic-content` | `disabled` | `public_read` / `low` | Not executable; use the declared fallback if permitted<br>Get the main topic body as Markdown | `id` (int, required, positional) |
+| `topic` | `public_read` / `low` | `opencli linux-do topic <id> [--limit <limit>] -f json`<br>linux.do 帖子首页摘要和回复（首屏） | `id` (int, required, positional); `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=browser_agent |
+| `topic-content` | `public_read` / `low` | `opencli linux-do topic-content <id> -f json`<br>Get the main topic body as Markdown | `id` (int, required, positional) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=browser_agent |
 
-## Safety and fallback
+## Operation-specific constraints
 
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
+- `topic`: Source-audited against OpenCLI 1.8.6 linux-do/topic.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.
+- `topic-content`: Source-audited against OpenCLI 1.8.6 linux-do/topic-content.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.

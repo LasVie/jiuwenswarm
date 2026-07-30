@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: mubu
 display_name: Mubu
@@ -6,10 +6,6 @@ domains:
 - mubu.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-a
-  notes: Browser-backed reads source-reviewed; remaining disabled capabilities pending review application.
 operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
@@ -26,9 +22,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -43,9 +36,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -60,9 +50,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -77,9 +64,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -94,9 +78,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

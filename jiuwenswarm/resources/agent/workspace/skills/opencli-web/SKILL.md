@@ -1,256 +1,173 @@
 ---
 name: opencli-web
-description: Use automatically at the start of any task involving a live website or webpage, including searching, reading, navigation, data extraction, form filling, login, posting, publishing, commenting, or account actions, even when the user does not mention OpenCLI. Route supported site operations through the bundled site router and operation contract before using browser_agent.
+description: Catalog of OpenCLI-supported websites, aliases, domains, and terminal contract paths.
 ---
 
-# OpenCLI Web Router
-
-Use this preinstalled Skill as the automatic entry point for every live website
-task. The user does not need to find, install, enable, or select a site Skill.
-
-## Route automatically
-
-1. Read `opencli-web` before starting `browser_agent`.
-2. Match both the website and the requested operation against the supported
-   websites below.
-3. For an exact match, use the Skill tool again with `skill_name` set to
-   `opencli-web` and `relative_file_path` set to the listed site module.
-4. Follow the site module's declared terminal path. A compact, low-risk public
-   read site may make its site `SKILL.md` the terminal contract. Ordinary,
-   mixed-risk, private, and mutating sites route to one
-   `operations/<operation>.md` terminal contract.
-5. When the site is not terminal, use the Skill tool a third time from the
-   same main Agent with `skill_name` set to `opencli-web` and
-   `relative_file_path` set to the selected operation module's full path.
-6. Only after reading the exact terminal contract, call `opencli_execute` with
-   exactly its site, logical operation, command, and documented structured
-   arguments or payload. The main Agent must make this call immediately after
-   its own Skill-tool read so the short-lived disclosure receipt remains
-   valid. A documented `disabled` or `quarantined` command has no OpenCLI
-   execution authority.
-7. Use `browser_agent` only when no exact route exists or the loaded operation
-   contract explicitly permits fallback.
-
-Do not search for or install nested site or operation modules as separate
-Skills. They are files bundled inside `opencli-web`.
-
-Keep every terminal Skill disclosure in the main agent. Never use `task_tool`,
-`sessions_spawn`, a `general-purpose` subagent, `browser_agent`, or a filesystem
-tool to read files under the installed `opencli-web` directory. Only the main
-Agent's Skill tool is an authorized reader. Optional references are explanatory
-only: they cannot carry argument, safety, confirmation, fallback, or execution
-authority and they never sign a receipt.
-
-The bundled files in this router are application-managed and refreshed during
-JiuwenSwarm startup. Do not customize the installed copy; keep unrelated custom
-Skills in their own directories.
+# OpenCLI Web Sites
 
 ## Supported websites
 
-The terminal contract may be the site `SKILL.md` itself for a compact low-risk public-read adapter, or an `operations/*.md` file for ordinary and mixed-risk adapters. Always follow the site router's exact path.
-
-| Website | Commands | Layout | Site module |
-|---|---:|---|---|
-| 12306 (12306.cn, kyfw.12306.cn) | 9 | `terminal-operation` | `sites/12306/SKILL.md` |
-| 1688 (1688.com, www.1688.com) | 7 | `terminal-operation` | `sites/1688/SKILL.md` |
-| 1Point3Acres (1point3acres.com, www.1point3acres.com) | 11 | `terminal-operation` | `sites/1point3acres/SKILL.md` |
-| 36Kr (www.36kr.com) | 4 | `terminal-operation` | `sites/36kr/SKILL.md` |
-| 51Job (jobs.51job.com, we.51job.com) | 4 | `terminal-operation` | `sites/51job/SKILL.md` |
-| Aibase (www.aibase.com) | 1 | `terminal-operation` | `sites/aibase/SKILL.md` |
-| Amazon (amazon.com) | 9 | `terminal-operation` | `sites/amazon/SKILL.md` |
-| Apple Podcasts (itunes.apple.com, rss.marketingtools.apple.com) | 3 | `terminal-site` | `sites/apple-podcasts/SKILL.md` |
-| Archive (archive.org) | 4 | `terminal-operation` | `sites/archive/SKILL.md` |
-| Arxiv (export.arxiv.org) | 4 | `terminal-operation` | `sites/arxiv/SKILL.md` |
-| Autohome (www.autohome.com.cn, k.autohome.com.cn) | 2 | `terminal-site` | `sites/autohome/SKILL.md` |
-| Baidu Scholar (xueshu.baidu.com) | 1 | `terminal-operation` | `sites/baidu-scholar/SKILL.md` |
-| Band (band.us, www.band.us) | 6 | `terminal-operation` | `sites/band/SKILL.md` |
-| Barchart (www.barchart.com) | 4 | `terminal-operation` | `sites/barchart/SKILL.md` |
-| Bbc (www.bbc.com) | 2 | `terminal-site` | `sites/bbc/SKILL.md` |
-| Bilibili (www.bilibili.com) | 21 | `terminal-operation` | `sites/bilibili/SKILL.md` |
-| Binance (data-api.binance.vision) | 11 | `terminal-operation` | `sites/binance/SKILL.md` |
-| Bloomberg (feeds.bloomberg.com, www.bloomberg.com) | 13 | `terminal-operation` | `sites/bloomberg/SKILL.md` |
-| Bluesky (public.api.bsky.app) | 9 | `terminal-operation` | `sites/bluesky/SKILL.md` |
-| Booking (www.booking.com) | 1 | `terminal-operation` | `sites/booking/SKILL.md` |
-| Boss (www.zhipin.com, zhipin.com) | 16 | `terminal-operation` | `sites/boss/SKILL.md` |
-| Brave (search.brave.com) | 1 | `terminal-operation` | `sites/brave/SKILL.md` |
-| Chaoxing (chaoxing.com, mooc2-ans.chaoxing.com) | 4 | `terminal-operation` | `sites/chaoxing/SKILL.md` |
-| Chatgpt (chatgpt.com) | 14 | `terminal-operation` | `sites/chatgpt/SKILL.md` |
-| Chess (api.chess.com, www.chess.com) | 4 | `terminal-operation` | `sites/chess/SKILL.md` |
-| Claude (claude.ai) | 9 | `terminal-operation` | `sites/claude/SKILL.md` |
-| Cnki (oversea.cnki.net) | 1 | `terminal-operation` | `sites/cnki/SKILL.md` |
-| Coingecko (api.coingecko.com) | 7 | `terminal-operation` | `sites/coingecko/SKILL.md` |
-| Confluence (atlassian.net) | 4 | `terminal-operation` | `sites/confluence/SKILL.md` |
-| Coupang (coupang.com, www.coupang.com) | 5 | `terminal-operation` | `sites/coupang/SKILL.md` |
-| Crates (crates.io) | 2 | `terminal-site` | `sites/crates/SKILL.md` |
-| Ctrip (ctrip.com, flights.ctrip.com) | 6 | `terminal-operation` | `sites/ctrip/SKILL.md` |
-| Dblp (dblp.org) | 4 | `terminal-operation` | `sites/dblp/SKILL.md` |
-| Deepseek (chat.deepseek.com) | 9 | `terminal-operation` | `sites/deepseek/SKILL.md` |
-| Defillama (defillama.com) | 2 | `terminal-site` | `sites/defillama/SKILL.md` |
-| Devto (dev.to) | 5 | `terminal-operation` | `sites/devto/SKILL.md` |
-| Dianping (dianping.com, www.dianping.com) | 4 | `terminal-operation` | `sites/dianping/SKILL.md` |
-| Dictionary (api.dictionaryapi.dev) | 3 | `terminal-site` | `sites/dictionary/SKILL.md` |
-| Dockerhub (hub.docker.com) | 2 | `terminal-operation` | `sites/dockerhub/SKILL.md` |
-| Dongchedi (www.dongchedi.com) | 6 | `terminal-operation` | `sites/dongchedi/SKILL.md` |
-| Douban (book.douban.com, douban.com) | 11 | `terminal-operation` | `sites/douban/SKILL.md` |
-| Doubao (www.doubao.com) | 11 | `terminal-operation` | `sites/doubao/SKILL.md` |
-| Douyin (creator.douyin.com, www.douyin.com) | 16 | `terminal-operation` | `sites/douyin/SKILL.md` |
-| Duckduckgo (duckduckgo.com, html.duckduckgo.com) | 2 | `terminal-operation` | `sites/duckduckgo/SKILL.md` |
-| Eastmoney (datacenter-web.eastmoney.com, guba.eastmoney.com) | 14 | `terminal-operation` | `sites/eastmoney/SKILL.md` |
-| Endoflife (endoflife.date) | 1 | `terminal-site` | `sites/endoflife/SKILL.md` |
-| Facebook (facebook.com, www.facebook.com) | 14 | `terminal-operation` | `sites/facebook/SKILL.md` |
-| Flathub (flathub.org) | 2 | `terminal-site` | `sites/flathub/SKILL.md` |
-| Flomo (flomoapp.com) | 3 | `terminal-operation` | `sites/flomo/SKILL.md` |
-| Gemini (gemini.google.com) | 12 | `terminal-operation` | `sites/gemini/SKILL.md` |
-| Geogebra (www.geogebra.org) | 9 | `terminal-operation` | `sites/geogebra/SKILL.md` |
-| Gitee (gitee.com) | 5 | `terminal-operation` | `sites/gitee/SKILL.md` |
-| Github (github.com) | 2 | `terminal-operation` | `sites/github/SKILL.md` |
-| Github Trending (github.com) | 1 | `terminal-site` | `sites/github-trending/SKILL.md` |
-| Google (google.com) | 4 | `terminal-operation` | `sites/google/SKILL.md` |
-| Google Scholar (scholar.google.com) | 3 | `terminal-operation` | `sites/google-scholar/SKILL.md` |
-| Goproxy (proxy.golang.org) | 2 | `terminal-site` | `sites/goproxy/SKILL.md` |
-| Gov Law (flk.npc.gov.cn) | 2 | `terminal-operation` | `sites/gov-law/SKILL.md` |
-| Gov Policy (sousuo.www.gov.cn, www.gov.cn) | 2 | `terminal-operation` | `sites/gov-policy/SKILL.md` |
-| Grok (grok.com) | 15 | `terminal-operation` | `sites/grok/SKILL.md` |
-| Guazi (m.guazi.com) | 2 | `terminal-site` | `sites/guazi/SKILL.md` |
-| Hackernews (news.ycombinator.com, hacker-news.firebaseio.com) | 9 | `terminal-operation` | `sites/hackernews/SKILL.md` |
-| Hf (huggingface.co) | 7 | `terminal-operation` | `sites/hf/SKILL.md` |
-| Hltv (www.hltv.org) | 13 | `terminal-operation` | `sites/hltv/SKILL.md` |
-| Homebrew (formulae.brew.sh) | 3 | `terminal-site` | `sites/homebrew/SKILL.md` |
-| Huodongxing (www.huodongxing.com) | 1 | `terminal-operation` | `sites/huodongxing/SKILL.md` |
-| Hupu (bbs.hupu.com, hupu.com) | 9 | `terminal-operation` | `sites/hupu/SKILL.md` |
-| Imdb (www.imdb.com) | 6 | `terminal-operation` | `sites/imdb/SKILL.md` |
-| Indeed (www.indeed.com) | 2 | `terminal-operation` | `sites/indeed/SKILL.md` |
-| Instagram (instagram.com, www.instagram.com) | 23 | `terminal-operation` | `sites/instagram/SKILL.md` |
-| Jd (cart.jd.com, item.jd.com) | 8 | `terminal-operation` | `sites/jd/SKILL.md` |
-| Jianyu (jianyu360.cn, www.jianyu360.cn) | 4 | `terminal-operation` | `sites/jianyu/SKILL.md` |
-| Jike (m.okjike.com, web.okjike.com) | 12 | `terminal-operation` | `sites/jike/SKILL.md` |
-| Jimeng (jimeng.jianying.com) | 6 | `terminal-operation` | `sites/jimeng/SKILL.md` |
-| Jira (atlassian.net) | 5 | `terminal-operation` | `sites/jira/SKILL.md` |
-| Juejin (api.juejin.cn) | 2 | `terminal-site` | `sites/juejin/SKILL.md` |
-| Ke (ke.com) | 6 | `terminal-operation` | `sites/ke/SKILL.md` |
-| Kimi (kimi.com) | 29 | `terminal-operation` | `sites/kimi/SKILL.md` |
-| Lesswrong (www.lesswrong.com) | 15 | `terminal-operation` | `sites/lesswrong/SKILL.md` |
-| Lichess (lichess.org) | 2 | `terminal-site` | `sites/lichess/SKILL.md` |
-| Linkedin (www.linkedin.com) | 23 | `terminal-operation` | `sites/linkedin/SKILL.md` |
-| Linkedin Learning (linkedin.com, www.linkedin.com) | 5 | `terminal-operation` | `sites/linkedin-learning/SKILL.md` |
-| Linux Do (linux.do) | 10 | `terminal-operation` | `sites/linux-do/SKILL.md` |
-| Lobsters (lobste.rs) | 6 | `terminal-operation` | `sites/lobsters/SKILL.md` |
-| Maimai (maimai.cn) | 3 | `terminal-operation` | `sites/maimai/SKILL.md` |
-| Manus (manus.im) | 8 | `terminal-operation` | `sites/manus/SKILL.md` |
-| Maven (search.maven.org) | 2 | `terminal-site` | `sites/maven/SKILL.md` |
-| Mdn (developer.mozilla.org) | 1 | `terminal-site` | `sites/mdn/SKILL.md` |
-| Medium (medium.com) | 4 | `terminal-operation` | `sites/medium/SKILL.md` |
-| Mercury (app.mercury.com) | 3 | `terminal-operation` | `sites/mercury/SKILL.md` |
-| Mubu (mubu.com) | 5 | `terminal-operation` | `sites/mubu/SKILL.md` |
-| Notebooklm (google.com, notebooklm.google.com) | 20 | `terminal-operation` | `sites/notebooklm/SKILL.md` |
-| Nowcoder (nowcoder.com, www.nowcoder.com) | 18 | `terminal-operation` | `sites/nowcoder/SKILL.md` |
-| Npm (api.npmjs.org, registry.npmjs.org) | 3 | `terminal-site` | `sites/npm/SKILL.md` |
-| Nuget (api.nuget.org) | 2 | `terminal-site` | `sites/nuget/SKILL.md` |
-| Nvd (services.nvd.nist.gov) | 1 | `terminal-site` | `sites/nvd/SKILL.md` |
-| Oeis (oeis.org) | 2 | `terminal-site` | `sites/oeis/SKILL.md` |
-| Ones (ones.cn) | 8 | `terminal-operation` | `sites/ones/SKILL.md` |
-| Openalex (api.openalex.org) | 2 | `terminal-site` | `sites/openalex/SKILL.md` |
-| Openfda (fda.gov) | 2 | `terminal-site` | `sites/openfda/SKILL.md` |
-| Openreview (openreview.net) | 5 | `terminal-operation` | `sites/openreview/SKILL.md` |
-| Osv (osv.dev) | 2 | `terminal-site` | `sites/osv/SKILL.md` |
-| Packagist (packagist.org) | 2 | `terminal-site` | `sites/packagist/SKILL.md` |
-| Paperreview (paperreview.ai) | 3 | `terminal-operation` | `sites/paperreview/SKILL.md` |
-| Pixiv (pixiv.net, www.pixiv.net) | 8 | `terminal-operation` | `sites/pixiv/SKILL.md` |
-| Powerchina (bid.powerchina.cn, powerchina.cn) | 3 | `terminal-operation` | `sites/powerchina/SKILL.md` |
-| Producthunt (www.producthunt.com) | 4 | `terminal-operation` | `sites/producthunt/SKILL.md` |
-| Pubmed (pubmed.ncbi.nlm.nih.gov) | 9 | `terminal-operation` | `sites/pubmed/SKILL.md` |
-| Pypi (pypi.org, pypistats.org) | 2 | `terminal-site` | `sites/pypi/SKILL.md` |
-| Quark (pan.quark.cn, quark.cn) | 9 | `terminal-operation` | `sites/quark/SKILL.md` |
-| Qwen (qwen.ai, www.qianwen.com) | 10 | `terminal-operation` | `sites/qwen/SKILL.md` |
-| Reddit (reddit.com, www.reddit.com) | 21 | `terminal-operation` | `sites/reddit/SKILL.md` |
-| Rednote (rednote.com, www.rednote.com) | 9 | `terminal-operation` | `sites/rednote/SKILL.md` |
-| Rest Countries (restcountries.com) | 2 | `terminal-site` | `sites/rest-countries/SKILL.md` |
-| Reuters (reuters.com, www.reuters.com) | 4 | `terminal-operation` | `sites/reuters/SKILL.md` |
-| Rfc (datatracker.ietf.org) | 1 | `terminal-site` | `sites/rfc/SKILL.md` |
-| Rubygems (rubygems.org) | 2 | `terminal-site` | `sites/rubygems/SKILL.md` |
-| Semanticscholar (api.semanticscholar.org) | 4 | `terminal-operation` | `sites/semanticscholar/SKILL.md` |
-| Sinablog (blog.sina.com.cn) | 4 | `terminal-operation` | `sites/sinablog/SKILL.md` |
-| Sinafinance (app.cj.sina.com.cn, finance.sina.com.cn) | 4 | `terminal-operation` | `sites/sinafinance/SKILL.md` |
-| Slock (app.slock.ai) | 44 | `terminal-operation` | `sites/slock/SKILL.md` |
-| Smzdm (www.smzdm.com) | 1 | `terminal-operation` | `sites/smzdm/SKILL.md` |
-| Spotify (accounts.spotify.com, api.spotify.com) | 11 | `terminal-operation` | `sites/spotify/SKILL.md` |
-| Stackoverflow (stackoverflow.com, api.stackexchange.com) | 8 | `terminal-operation` | `sites/stackoverflow/SKILL.md` |
-| Steam (store.steampowered.com) | 3 | `terminal-site` | `sites/steam/SKILL.md` |
-| Substack (substack.com) | 3 | `terminal-operation` | `sites/substack/SKILL.md` |
-| Suno (suno.com) | 6 | `terminal-operation` | `sites/suno/SKILL.md` |
-| Taobao (cart.taobao.com, item.taobao.com) | 7 | `terminal-operation` | `sites/taobao/SKILL.md` |
-| Tdx (pul.tdx.com.cn) | 1 | `terminal-operation` | `sites/tdx/SKILL.md` |
-| Ths (eq.10jqka.com.cn) | 1 | `terminal-operation` | `sites/ths/SKILL.md` |
-| Tieba (tieba.baidu.com) | 4 | `terminal-operation` | `sites/tieba/SKILL.md` |
-| Tiktok (tiktok.com, www.tiktok.com) | 18 | `terminal-operation` | `sites/tiktok/SKILL.md` |
-| Toutiao (mp.toutiao.com, toutiao.com) | 4 | `terminal-operation` | `sites/toutiao/SKILL.md` |
-| Tvmaze (tvmaze.com) | 2 | `terminal-site` | `sites/tvmaze/SKILL.md` |
-| Twitter (x.com) | 44 | `terminal-operation` | `sites/twitter/SKILL.md` |
-| Uisdc (www.uisdc.com) | 1 | `terminal-operation` | `sites/uisdc/SKILL.md` |
-| Uiverse (uiverse.io) | 2 | `terminal-operation` | `sites/uiverse/SKILL.md` |
-| Upwork (upwork.com, www.upwork.com) | 5 | `terminal-operation` | `sites/upwork/SKILL.md` |
-| V2Ex (v2ex.com, www.v2ex.com) | 13 | `terminal-operation` | `sites/v2ex/SKILL.md` |
-| Wanfang (s.wanfangdata.com.cn) | 1 | `terminal-operation` | `sites/wanfang/SKILL.md` |
-| Wechat Channels (channels.weixin.qq.com) | 3 | `terminal-operation` | `sites/wechat-channels/SKILL.md` |
-| Weibo (weibo.com) | 13 | `terminal-operation` | `sites/weibo/SKILL.md` |
-| Weixin (mp.weixin.qq.com, weixin.sogou.com) | 4 | `terminal-operation` | `sites/weixin/SKILL.md` |
-| Weread (weread.qq.com) | 11 | `terminal-operation` | `sites/weread/SKILL.md` |
-| Weread Official (weread.qq.com, i.weread.qq.com) | 8 | `terminal-operation` | `sites/weread-official/SKILL.md` |
-| Wikidata (www.wikidata.org) | 2 | `terminal-site` | `sites/wikidata/SKILL.md` |
-| Wikipedia (wikipedia.org) | 5 | `terminal-operation` | `sites/wikipedia/SKILL.md` |
-| Wttr (wttr.in) | 2 | `terminal-site` | `sites/wttr/SKILL.md` |
-| Xianyu (goofish.com, www.goofish.com) | 9 | `terminal-operation` | `sites/xianyu/SKILL.md` |
-| Xiaoe (h5.xet.citv.cn, study.xiaoe-tech.com) | 7 | `terminal-operation` | `sites/xiaoe/SKILL.md` |
-| Xiaohongshu (creator.xiaohongshu.com, www.xiaohongshu.com) | 25 | `terminal-operation` | `sites/xiaohongshu/SKILL.md` |
-| Xiaoyuzhou (www.xiaoyuzhoufm.com) | 5 | `terminal-operation` | `sites/xiaoyuzhou/SKILL.md` |
-| Xueqiu (danjuanfunds.com, xueqiu.com) | 14 | `terminal-operation` | `sites/xueqiu/SKILL.md` |
-| Yahoo (search.yahoo.com) | 1 | `terminal-operation` | `sites/yahoo/SKILL.md` |
-| Yahoo Finance (finance.yahoo.com) | 1 | `terminal-operation` | `sites/yahoo-finance/SKILL.md` |
-| Yollomi (yollomi.com) | 12 | `terminal-operation` | `sites/yollomi/SKILL.md` |
-| Youdao (share.note.youdao.com) | 1 | `terminal-operation` | `sites/youdao/SKILL.md` |
-| Youtube (www.youtube.com) | 16 | `terminal-operation` | `sites/youtube/SKILL.md` |
-| Yuanbao (yuanbao.tencent.com) | 9 | `terminal-operation` | `sites/yuanbao/SKILL.md` |
-| Zhihu (www.zhihu.com, zhihu.com) | 22 | `terminal-operation` | `sites/zhihu/SKILL.md` |
-| Zlibrary (z-library.im) | 2 | `terminal-operation` | `sites/zlibrary/SKILL.md` |
-| Zsxq (wx.zsxq.com, zsxq.com) | 7 | `terminal-operation` | `sites/zsxq/SKILL.md` |
-
-## Execute documented commands
-
-- `opencli_execute` is the only authorized entry for OpenCLI operations. Never invoke its
-  underlying package executor, Python compatibility wrapper, adapter command,
-  runtime probe, or executable through BashTool, PowerShell, execute-code, a
-  subagent, or a filesystem tool.
-- Preserve structured argument types and absolute Windows payload paths
-  exactly as documented by the terminal contract. The tool constructs a
-  reviewed shell-free argv and rejects executable, prefix-argument,
-  environment, site, command, and unknown-argument overrides.
-- On Windows, use `shell_type: "auto"` for any separately documented,
-  non-OpenCLI fallback subprocess. Do not force `bash` or `sh` merely to run
-  Python or translate Windows paths.
-- Do not invoke `scripts/opencli_runtime.py` separately. A structured or
-  documented guarded executor runs the shared readiness check internally
-  before adapter dispatch and classifies typed connection failures itself.
-
-## Enforce one automation path
-
-- Never run OpenCLI and `browser_agent` concurrently for the same operation.
-- A route exists only when the root router lists the site, the site router
-  lists the capability group, and the runtime manifest binds the selected
-  terminal contract to the exact command. Do not infer write support from a
-  read command.
-- Invoke only the structured entry documented by the loaded terminal
-  contract. Catalog discovery and help output never authorize an undocumented,
-  disabled, or quarantined command.
-- Preserve all channel-specific confirmation gates. An operation module cannot
-  waive a required user approval or A2UI confirmation.
-- If a write process starts, do not repeat the operation through
-  `browser_agent`, even after a timeout or ambiguous result. Prefer a supported
-  read-only verification; otherwise stop and report uncertainty.
-- A missing executable, disabled or unreadable module, unsupported operation,
-  or other provable pre-execution infrastructure failure is fallback-safe.
-- Read-only OpenCLI failures may fall back to `browser_agent` when that does not
-  risk duplicating a side effect.
-
-Use `opencli list -f json` only to inspect locally installed adapter
-capabilities. Add reviewed site and operation modules before routing production
-work to a new adapter.
+| Website | Aliases | Domains | Site module |
+|---|---|---|---|
+| 12306 | none | 12306.cn, kyfw.12306.cn | `sites/12306/index.md` |
+| 1688 | none | 1688.com, www.1688.com | `sites/1688/index.md` |
+| 1Point3Acres | none | 1point3acres.com, www.1point3acres.com | `sites/1point3acres/index.md` |
+| 36Kr | none | www.36kr.com | `sites/36kr/index.md` |
+| 51Job | none | jobs.51job.com, we.51job.com | `sites/51job/index.md` |
+| Aibase | none | www.aibase.com | `sites/aibase/index.md` |
+| Amazon | none | amazon.com | `sites/amazon/index.md` |
+| Apple Podcasts | none | itunes.apple.com, rss.marketingtools.apple.com | `sites/apple-podcasts/index.md` |
+| Archive | none | archive.org | `sites/archive/index.md` |
+| Arxiv | none | export.arxiv.org | `sites/arxiv/index.md` |
+| Autohome | none | www.autohome.com.cn, k.autohome.com.cn | `sites/autohome/index.md` |
+| Baidu Scholar | none | xueshu.baidu.com | `sites/baidu-scholar/index.md` |
+| Band | none | band.us, www.band.us | `sites/band/index.md` |
+| Barchart | none | www.barchart.com | `sites/barchart/index.md` |
+| Bbc | none | www.bbc.com | `sites/bbc/index.md` |
+| Bilibili | none | www.bilibili.com | `sites/bilibili/index.md` |
+| Binance | none | data-api.binance.vision | `sites/binance/index.md` |
+| Bloomberg | none | feeds.bloomberg.com, www.bloomberg.com | `sites/bloomberg/index.md` |
+| Bluesky | none | public.api.bsky.app | `sites/bluesky/index.md` |
+| Booking | none | www.booking.com | `sites/booking/index.md` |
+| Boss | none | www.zhipin.com, zhipin.com | `sites/boss/index.md` |
+| Brave | none | search.brave.com | `sites/brave/index.md` |
+| Chaoxing | none | chaoxing.com, mooc2-ans.chaoxing.com | `sites/chaoxing/index.md` |
+| Chatgpt | none | chatgpt.com | `sites/chatgpt/index.md` |
+| Chess | none | api.chess.com, www.chess.com | `sites/chess/index.md` |
+| Claude | none | claude.ai | `sites/claude/index.md` |
+| Cnki | none | oversea.cnki.net | `sites/cnki/index.md` |
+| Coingecko | none | api.coingecko.com | `sites/coingecko/index.md` |
+| Confluence | none | atlassian.net | `sites/confluence/index.md` |
+| Coupang | none | coupang.com, www.coupang.com | `sites/coupang/index.md` |
+| Crates | none | crates.io | `sites/crates/index.md` |
+| Ctrip | none | ctrip.com, flights.ctrip.com, hotels.ctrip.com, m.ctrip.com | `sites/ctrip/index.md` |
+| Dblp | none | dblp.org | `sites/dblp/index.md` |
+| Deepseek | none | chat.deepseek.com | `sites/deepseek/index.md` |
+| Defillama | none | defillama.com | `sites/defillama/index.md` |
+| Devto | none | dev.to | `sites/devto/index.md` |
+| Dianping | none | dianping.com, www.dianping.com | `sites/dianping/index.md` |
+| Dictionary | none | api.dictionaryapi.dev | `sites/dictionary/index.md` |
+| Dockerhub | none | hub.docker.com | `sites/dockerhub/index.md` |
+| Dongchedi | none | www.dongchedi.com | `sites/dongchedi/index.md` |
+| Douban | none | book.douban.com, douban.com, movie.douban.com, search.douban.com | `sites/douban/index.md` |
+| Doubao | none | www.doubao.com | `sites/doubao/index.md` |
+| Douyin | none | creator.douyin.com, www.douyin.com | `sites/douyin/index.md` |
+| Duckduckgo | none | duckduckgo.com, html.duckduckgo.com | `sites/duckduckgo/index.md` |
+| Eastmoney | none | datacenter-web.eastmoney.com, guba.eastmoney.com, np-anotice-stock.eastmoney.com, np-listapi.eastmoney.com, push2.eastmoney.com, push2his.eastmoney.com | `sites/eastmoney/index.md` |
+| Endoflife | none | endoflife.date | `sites/endoflife/index.md` |
+| Facebook | none | facebook.com, www.facebook.com | `sites/facebook/index.md` |
+| Flathub | none | flathub.org | `sites/flathub/index.md` |
+| Flomo | none | flomoapp.com | `sites/flomo/index.md` |
+| Gemini | none | gemini.google.com | `sites/gemini/index.md` |
+| Geogebra | none | www.geogebra.org | `sites/geogebra/index.md` |
+| Gitee | none | gitee.com | `sites/gitee/index.md` |
+| Github | none | github.com | `sites/github/index.md` |
+| Github Trending | none | github.com | `sites/github-trending/index.md` |
+| Google | none | google.com | `sites/google/index.md` |
+| Google Scholar | none | scholar.google.com | `sites/google-scholar/index.md` |
+| Goproxy | none | proxy.golang.org | `sites/goproxy/index.md` |
+| Gov Law | none | flk.npc.gov.cn | `sites/gov-law/index.md` |
+| Gov Policy | none | sousuo.www.gov.cn, www.gov.cn | `sites/gov-policy/index.md` |
+| Grok | none | grok.com | `sites/grok/index.md` |
+| Guazi | none | m.guazi.com | `sites/guazi/index.md` |
+| Hackernews | none | news.ycombinator.com, hacker-news.firebaseio.com, hn.algolia.com | `sites/hackernews/index.md` |
+| Hf | none | huggingface.co | `sites/hf/index.md` |
+| Hltv | none | www.hltv.org | `sites/hltv/index.md` |
+| Homebrew | none | formulae.brew.sh | `sites/homebrew/index.md` |
+| Huodongxing | none | www.huodongxing.com | `sites/huodongxing/index.md` |
+| Hupu | none | bbs.hupu.com, hupu.com, my.hupu.com | `sites/hupu/index.md` |
+| Imdb | none | www.imdb.com | `sites/imdb/index.md` |
+| Indeed | none | www.indeed.com | `sites/indeed/index.md` |
+| Instagram | none | instagram.com, www.instagram.com | `sites/instagram/index.md` |
+| Jd | none | cart.jd.com, item.jd.com, jd.com, search.jd.com | `sites/jd/index.md` |
+| Jianyu | none | jianyu360.cn, www.jianyu360.cn | `sites/jianyu/index.md` |
+| Jike | none | m.okjike.com, web.okjike.com | `sites/jike/index.md` |
+| Jimeng | none | jimeng.jianying.com | `sites/jimeng/index.md` |
+| Jira | none | atlassian.net | `sites/jira/index.md` |
+| Juejin | none | api.juejin.cn | `sites/juejin/index.md` |
+| Ke | none | ke.com | `sites/ke/index.md` |
+| Kimi | none | kimi.com | `sites/kimi/index.md` |
+| Lesswrong | none | www.lesswrong.com | `sites/lesswrong/index.md` |
+| Lichess | none | lichess.org | `sites/lichess/index.md` |
+| Linkedin | none | www.linkedin.com | `sites/linkedin/index.md` |
+| Linkedin Learning | none | linkedin.com, www.linkedin.com | `sites/linkedin-learning/index.md` |
+| Linux Do | none | linux.do | `sites/linux-do/index.md` |
+| Lobsters | none | lobste.rs | `sites/lobsters/index.md` |
+| Maimai | none | maimai.cn | `sites/maimai/index.md` |
+| Manus | none | manus.im | `sites/manus/index.md` |
+| Maven | none | search.maven.org | `sites/maven/index.md` |
+| Mdn | none | developer.mozilla.org | `sites/mdn/index.md` |
+| Medium | none | medium.com | `sites/medium/index.md` |
+| Mercury | none | app.mercury.com | `sites/mercury/index.md` |
+| Mubu | none | mubu.com | `sites/mubu/index.md` |
+| Notebooklm | none | google.com, notebooklm.google.com | `sites/notebooklm/index.md` |
+| Nowcoder | none | nowcoder.com, www.nowcoder.com | `sites/nowcoder/index.md` |
+| Npm | none | api.npmjs.org, registry.npmjs.org | `sites/npm/index.md` |
+| Nuget | none | api.nuget.org | `sites/nuget/index.md` |
+| Nvd | none | services.nvd.nist.gov | `sites/nvd/index.md` |
+| Oeis | none | oeis.org | `sites/oeis/index.md` |
+| Ones | none | ones.cn | `sites/ones/index.md` |
+| Openalex | none | api.openalex.org | `sites/openalex/index.md` |
+| Openfda | none | fda.gov | `sites/openfda/index.md` |
+| Openreview | none | openreview.net | `sites/openreview/index.md` |
+| Osv | none | osv.dev | `sites/osv/index.md` |
+| Packagist | none | packagist.org | `sites/packagist/index.md` |
+| Paperreview | none | paperreview.ai | `sites/paperreview/index.md` |
+| Pixiv | none | pixiv.net, www.pixiv.net | `sites/pixiv/index.md` |
+| Powerchina | none | bid.powerchina.cn, powerchina.cn | `sites/powerchina/index.md` |
+| Producthunt | none | www.producthunt.com | `sites/producthunt/index.md` |
+| Pubmed | none | pubmed.ncbi.nlm.nih.gov | `sites/pubmed/index.md` |
+| Pypi | none | pypi.org, pypistats.org | `sites/pypi/index.md` |
+| Quark | none | pan.quark.cn, quark.cn | `sites/quark/index.md` |
+| Qwen | none | qwen.ai, www.qianwen.com | `sites/qwen/index.md` |
+| Reddit | none | reddit.com, www.reddit.com | `sites/reddit/index.md` |
+| Rednote | none | rednote.com, www.rednote.com | `sites/rednote/index.md` |
+| Rest Countries | none | restcountries.com | `sites/rest-countries/index.md` |
+| Reuters | none | reuters.com, www.reuters.com | `sites/reuters/index.md` |
+| Rfc | none | datatracker.ietf.org | `sites/rfc/index.md` |
+| Rubygems | none | rubygems.org | `sites/rubygems/index.md` |
+| Semanticscholar | none | api.semanticscholar.org | `sites/semanticscholar/index.md` |
+| Sinablog | none | blog.sina.com.cn | `sites/sinablog/index.md` |
+| Sinafinance | none | app.cj.sina.com.cn, finance.sina.com.cn, finance.sina.cn, suggest3.sinajs.cn, hq.sinajs.cn | `sites/sinafinance/index.md` |
+| Slock | none | app.slock.ai | `sites/slock/index.md` |
+| Smzdm | none | www.smzdm.com | `sites/smzdm/index.md` |
+| Spotify | none | accounts.spotify.com, api.spotify.com | `sites/spotify/index.md` |
+| Stackoverflow | none | stackoverflow.com, api.stackexchange.com | `sites/stackoverflow/index.md` |
+| Steam | none | store.steampowered.com | `sites/steam/index.md` |
+| Substack | none | substack.com | `sites/substack/index.md` |
+| Suno | none | suno.com | `sites/suno/index.md` |
+| Taobao | none | cart.taobao.com, item.taobao.com, s.taobao.com, taobao.com | `sites/taobao/index.md` |
+| Tdx | none | pul.tdx.com.cn | `sites/tdx/index.md` |
+| Ths | none | eq.10jqka.com.cn | `sites/ths/index.md` |
+| Tieba | none | tieba.baidu.com | `sites/tieba/index.md` |
+| Tiktok | none | tiktok.com, www.tiktok.com | `sites/tiktok/index.md` |
+| Toutiao | none | mp.toutiao.com, toutiao.com, www.toutiao.com | `sites/toutiao/index.md` |
+| Tvmaze | none | tvmaze.com | `sites/tvmaze/index.md` |
+| Twitter | none | x.com | `sites/twitter/index.md` |
+| Uisdc | none | www.uisdc.com | `sites/uisdc/index.md` |
+| Uiverse | none | uiverse.io | `sites/uiverse/index.md` |
+| Upwork | none | upwork.com, www.upwork.com | `sites/upwork/index.md` |
+| V2Ex | none | v2ex.com, www.v2ex.com | `sites/v2ex/index.md` |
+| Wanfang | none | s.wanfangdata.com.cn | `sites/wanfang/index.md` |
+| Wechat Channels | none | channels.weixin.qq.com | `sites/wechat-channels/index.md` |
+| Weibo | none | weibo.com | `sites/weibo/index.md` |
+| Weixin | none | mp.weixin.qq.com, weixin.sogou.com | `sites/weixin/index.md` |
+| Weread | none | weread.qq.com | `sites/weread/index.md` |
+| Weread Official | none | weread.qq.com, i.weread.qq.com | `sites/weread-official/index.md` |
+| Wikidata | none | www.wikidata.org | `sites/wikidata/index.md` |
+| Wikipedia | none | wikipedia.org | `sites/wikipedia/index.md` |
+| Wttr | none | wttr.in | `sites/wttr/index.md` |
+| Xianyu | none | goofish.com, www.goofish.com | `sites/xianyu/index.md` |
+| Xiaoe | none | h5.xet.citv.cn, study.xiaoe-tech.com, xiaoe-tech.com | `sites/xiaoe/index.md` |
+| Xiaohongshu | none | creator.xiaohongshu.com, www.xiaohongshu.com | `sites/xiaohongshu/index.md` |
+| Xiaoyuzhou | none | www.xiaoyuzhoufm.com | `sites/xiaoyuzhou/index.md` |
+| Xueqiu | none | danjuanfunds.com, xueqiu.com | `sites/xueqiu/index.md` |
+| Yahoo | none | search.yahoo.com | `sites/yahoo/index.md` |
+| Yahoo Finance | none | finance.yahoo.com | `sites/yahoo-finance/index.md` |
+| Yollomi | none | yollomi.com | `sites/yollomi/index.md` |
+| Youdao | none | share.note.youdao.com | `sites/youdao/index.md` |
+| Youtube | none | www.youtube.com | `sites/youtube/index.md` |
+| Yuanbao | none | yuanbao.tencent.com | `sites/yuanbao/index.md` |
+| Zhihu | none | www.zhihu.com, zhihu.com, zhuanlan.zhihu.com | `sites/zhihu/index.md` |
+| Zlibrary | none | z-library.im | `sites/zlibrary/index.md` |
+| Zsxq | none | wx.zsxq.com, zsxq.com | `sites/zsxq/index.md` |

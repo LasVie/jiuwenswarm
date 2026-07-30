@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: gov-law
 display_name: Gov Law
@@ -6,10 +6,6 @@ domains:
 - flk.npc.gov.cn
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-c
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
 operations:
   content:
     purpose: Read site content and metadata.
@@ -26,9 +22,6 @@ commands:
     risk: low
     auth: none
     transport: browser_dom
-    execution_state: enabled
-    executor: browser_manifest_public_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -41,9 +34,6 @@ commands:
     risk: low
     auth: none
     transport: browser_dom
-    execution_state: enabled
-    executor: browser_manifest_public_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []

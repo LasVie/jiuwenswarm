@@ -22,10 +22,10 @@ parse_dotenv_early("jiuwenswarm-app")
 # --- Now safe to import jiuwenswarm modules ---
 from jiuwenswarm.common.debug_dump import install_async_dump_handler
 from jiuwenswarm.common.utils import (
-    bootstrap_workspace,
     cleanup_team_files,
     get_env_file,
     get_user_workspace_dir,
+    prepare_workspace,
     reset_free_search_runtime_flags,
 )
 
@@ -34,12 +34,16 @@ _parsed_dotenv_path = get_parsed_dotenv()
 
 
 _workspace_dir = get_user_workspace_dir()
+_config_file = _workspace_dir / "config" / "config.yaml"
+_new_workspace = _workspace_dir / "agent" / "workspace"
+_old_workspace = _workspace_dir / "agent" / "jiuwenclaw_workspace"
 
 # 始终清理 Team 旧版本遗留文件（幂等操作，在 prepare_workspace 之前执行）
 cleanup_team_files(_workspace_dir)
 
-# Initialize a new workspace or reconcile new default builtins into an existing one.
-bootstrap_workspace(_workspace_dir)
+# Initialize if config doesn't exist, or if legacy workspace exists but new doesn't (migration)
+if not _config_file.exists() or (_old_workspace.exists() and not _new_workspace.exists()):
+    prepare_workspace(overwrite=False)
 
 load_dotenv(dotenv_path=get_env_file(), override=True)
 reset_free_search_runtime_flags()

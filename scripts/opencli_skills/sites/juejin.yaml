@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: juejin
 display_name: Juejin
@@ -6,10 +6,6 @@ domains:
 - api.juejin.cn
 aliases: []
 terminal: site
-review:
-  status: reviewed
-  owner: agent-c
-  notes: All commands reviewed as low-risk public browser-free reads.
 operations:
   public-data:
     purpose: Read low-risk public data without browser state.
@@ -23,9 +19,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -38,9 +31,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []

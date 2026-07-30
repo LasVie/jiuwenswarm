@@ -19,21 +19,10 @@ EXPECTED_OPENCLI_VERSION = "1.8.6"
 EXPECTED_SITE_COUNT = 162
 EXPECTED_COMMAND_COUNT = 1123
 MANAGED_MANIFEST_NAME = "generated-manifest.json"
-RUNTIME_MANIFEST_NAME = "opencli-runtime.json"
 REQUIRED_SKILL_RESOURCES = frozenset(
     {
         "SKILL.md",
         MANAGED_MANIFEST_NAME,
-        RUNTIME_MANIFEST_NAME,
-    }
-)
-REQUIRED_RUNTIME_MEMBERS = frozenset(
-    {
-        ("jiuwenswarm/agents/harness/common/opencli/executors/__init__.py"),
-        ("jiuwenswarm/agents/harness/common/opencli/executors/launcher.py"),
-        ("jiuwenswarm/agents/harness/common/opencli/executors/manifest.py"),
-        ("jiuwenswarm/agents/harness/common/opencli/executors/runtime.py"),
-        ("jiuwenswarm/agents/harness/common/opencli/executors/xiaohongshu_publish.py"),
     }
 )
 
@@ -55,7 +44,6 @@ class WheelVerificationResult:
     managed_file_count: int
     wheel_member_count: int
     managed_manifest_sha256: str
-    runtime_manifest_sha256: str
 
 
 def _sha256(value: bytes) -> str:
@@ -153,18 +141,12 @@ def _read_wheel(
 
 
 def _validate_required_members(
-    wheel_members: set[str],
     skill_files: Mapping[str, bytes],
 ) -> None:
     missing_resources = sorted(REQUIRED_SKILL_RESOURCES - set(skill_files))
     if missing_resources:
         raise WheelVerificationError(
             f"wheel is missing required OpenCLI resources: {missing_resources}"
-        )
-    missing_runtime = sorted(REQUIRED_RUNTIME_MEMBERS - wheel_members)
-    if missing_runtime:
-        raise WheelVerificationError(
-            f"wheel is missing required OpenCLI runtime modules: {missing_runtime}"
         )
 
 
@@ -182,7 +164,7 @@ def _validate_managed_manifest(
     )
     if manifest.get("opencli_version") != EXPECTED_OPENCLI_VERSION:
         raise WheelVerificationError(
-            "managed manifest OpenCLI version does not match the reviewed release"
+            "managed manifest OpenCLI version does not match the pinned release"
         )
     _require_exact_int(
         manifest.get("site_count"),
@@ -232,128 +214,41 @@ def _validate_managed_manifest(
     return managed_files, manifest
 
 
-def _validate_runtime_manifest(
-    runtime_bytes: bytes,
-    managed_files: Mapping[str, str],
-) -> tuple[int, int]:
-    runtime = _load_json(runtime_bytes, RUNTIME_MANIFEST_NAME)
-    _require_exact_int(
-        runtime.get("schema_version"),
-        expected=1,
-        label="runtime manifest schema_version",
-    )
-    catalog = _require_mapping(runtime.get("catalog"), "runtime catalog")
-    if catalog.get("opencli_version") != EXPECTED_OPENCLI_VERSION:
-        raise WheelVerificationError(
-            "runtime manifest OpenCLI version does not match the reviewed release"
-        )
-    _require_exact_int(
-        catalog.get("command_count"),
-        expected=EXPECTED_COMMAND_COUNT,
-        label="runtime catalog commands count",
-    )
-    sites = _require_mapping(runtime.get("sites"), "runtime sites")
+def _validate_packaged_sites(managed_files: Mapping[str, str]) -> int:
+    sites: set[str] = set()
+    for relative in managed_files:
+        parts = PurePosixPath(relative).parts
+        if (
+            len(parts) == 3
+            and parts[0] == "sites"
+            and parts[2] == "index.md"
+        ):
+            site = parts[1]
+            if not _SLUG_RE.fullmatch(site):
+                raise WheelVerificationError(
+                    f"packaged site is not a canonical slug: {site!r}"
+                )
+            sites.add(site)
     if len(sites) != EXPECTED_SITE_COUNT:
         raise WheelVerificationError(
-            f"runtime sites count is {len(sites)}, expected {EXPECTED_SITE_COUNT}"
+            f"packaged sites count is {len(sites)}, expected {EXPECTED_SITE_COUNT}"
         )
-
-    packaged_sites = {
-        PurePosixPath(relative).parts[1]
-        for relative in managed_files
-        if len(PurePosixPath(relative).parts) == 3
-        and PurePosixPath(relative).parts[0] == "sites"
-        and PurePosixPath(relative).parts[2] == "SKILL.md"
-    }
-    if set(sites) != packaged_sites:
-        raise WheelVerificationError(
-            "runtime sites do not match packaged site Skill directories"
-        )
-
-    command_identities: set[tuple[str, str]] = set()
-    for raw_site, raw_site_spec in sorted(sites.items()):
-        if not isinstance(raw_site, str) or not _SLUG_RE.fullmatch(raw_site):
-            raise WheelVerificationError(
-                f"runtime site is not a canonical slug: {raw_site!r}"
-            )
-        site_spec = _require_mapping(
-            raw_site_spec,
-            f"runtime site {raw_site}",
-        )
-        operations = _require_mapping(
-            site_spec.get("operations"),
-            f"runtime operations for {raw_site}",
-        )
-        if not operations:
-            raise WheelVerificationError(f"runtime site has no operations: {raw_site}")
-        for raw_operation, raw_operation_spec in sorted(operations.items()):
-            operation_spec = _require_mapping(
-                raw_operation_spec,
-                f"runtime operation {raw_site}/{raw_operation}",
-            )
-            commands = _require_mapping(
-                operation_spec.get("commands"),
-                f"runtime commands for {raw_site}/{raw_operation}",
-            )
-            for raw_command in commands:
-                if not isinstance(raw_command, str) or not _SLUG_RE.fullmatch(
-                    raw_command
-                ):
-                    raise WheelVerificationError(
-                        "runtime command is not a canonical slug: "
-                        f"{raw_site}/{raw_command!r}"
-                    )
-                identity = (raw_site, raw_command)
-                if identity in command_identities:
-                    raise WheelVerificationError(
-                        f"runtime command is listed more than once: "
-                        f"{raw_site}/{raw_command}"
-                    )
-                command_identities.add(identity)
-
-            terminal = _require_mapping(
-                operation_spec.get("terminal"),
-                f"runtime terminal for {raw_site}/{raw_operation}",
-            )
-            terminal_path = _canonical_relative_path(
-                terminal.get("path"),
-                f"runtime terminal path for {raw_site}/{raw_operation}",
-            )
-            terminal_hash = _require_sha256(
-                terminal.get("sha256"),
-                f"runtime terminal hash for {raw_site}/{raw_operation}",
-            )
-            if managed_files.get(terminal_path) != terminal_hash:
-                raise WheelVerificationError(
-                    "runtime terminal is absent or its hash does not match the "
-                    f"managed file: {raw_site}/{raw_operation}"
-                )
-
-    if len(command_identities) != EXPECTED_COMMAND_COUNT:
-        raise WheelVerificationError(
-            "runtime commands count is "
-            f"{len(command_identities)}, expected {EXPECTED_COMMAND_COUNT}"
-        )
-    return len(sites), len(command_identities)
+    return len(sites)
 
 
 def verify_wheel(wheel_path: str | Path) -> WheelVerificationResult:
     """Validate one built wheel without extracting or importing it."""
     resolved, wheel_members, skill_files = _read_wheel(Path(wheel_path))
-    _validate_required_members(wheel_members, skill_files)
-    managed_files, _ = _validate_managed_manifest(skill_files)
-    site_count, command_count = _validate_runtime_manifest(
-        skill_files[RUNTIME_MANIFEST_NAME],
-        managed_files,
-    )
+    _validate_required_members(skill_files)
+    managed_files, manifest = _validate_managed_manifest(skill_files)
+    site_count = _validate_packaged_sites(managed_files)
     return WheelVerificationResult(
         wheel_path=resolved,
         site_count=site_count,
-        command_count=command_count,
+        command_count=int(manifest["command_count"]),
         managed_file_count=len(managed_files),
         wheel_member_count=len(wheel_members),
         managed_manifest_sha256=_sha256(skill_files[MANAGED_MANIFEST_NAME]),
-        runtime_manifest_sha256=_sha256(skill_files[RUNTIME_MANIFEST_NAME]),
     )
 
 

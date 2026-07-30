@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: confluence
 display_name: Confluence
@@ -6,10 +6,6 @@ domains:
 - atlassian.net
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-a
-  notes: Public non-browser read candidates source-reviewed; credential-gated and remaining disabled capabilities pending review application.
 operations:
   private-content:
     purpose: Read credential-gated content from a configured Confluence tenant.
@@ -28,9 +24,6 @@ commands:
     risk: high
     auth: none
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs:
@@ -44,9 +37,6 @@ commands:
     risk: medium
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -61,9 +51,6 @@ commands:
     risk: medium
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -78,9 +65,6 @@ commands:
     risk: high
     auth: none
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs:

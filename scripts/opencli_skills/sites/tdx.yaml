@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: tdx
 display_name: Tdx
@@ -6,10 +6,6 @@ domains:
 - pul.tdx.com.cn
 aliases: []
 terminal: operation
-review:
-  status: reviewed
-  owner: agent-a
-  notes: All commands source-reviewed; browser-backed reads remain disabled pending a guarded browser executor.
 operations:
   discovery:
     purpose: Search, browse, recommend, or discover site content.
@@ -22,9 +18,6 @@ commands:
     risk: low
     auth: none
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

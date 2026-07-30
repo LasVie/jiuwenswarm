@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: bluesky
 display_name: Bluesky
@@ -6,10 +6,6 @@ domains:
 - public.api.bsky.app
 aliases: []
 terminal: operation
-review:
-  status: reviewed
-  owner: agent-b
-  notes: Source-audited against OpenCLI 1.8.6; all commands are public browser-free reads.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.
@@ -36,9 +32,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -51,9 +44,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -66,9 +56,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -81,9 +68,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -96,9 +80,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -111,9 +92,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -126,9 +104,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -141,9 +116,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -156,9 +128,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []

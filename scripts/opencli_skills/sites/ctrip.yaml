@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: ctrip
 display_name: Ctrip
@@ -9,10 +9,6 @@ domains:
 - m.ctrip.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-c
-  notes: Public browser-free read commands reviewed; remaining commands stay fail-closed pending later review.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.
@@ -36,9 +32,6 @@ commands:
     risk: low
     auth: optional
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -51,9 +44,6 @@ commands:
     risk: low
     auth: optional
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -66,9 +56,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -81,9 +68,6 @@ commands:
     risk: high
     auth: interactive
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -96,9 +80,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -111,9 +92,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

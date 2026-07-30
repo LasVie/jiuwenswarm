@@ -1,7 +1,7 @@
 interface:
   display_name: "OpenCLI Web Router"
   short_description: "Automatically route supported website tasks via OpenCLI"
-  default_prompt: "Use $opencli-web automatically to route this live website task through the matching bundled site router and operation contract, then use its structured execution entry when declared."
+  default_prompt: "Use $opencli-web to find the matching site and terminal contract, then run only an exact OpenCLI command declared there."
 
 policy:
   allow_implicit_invocation: true

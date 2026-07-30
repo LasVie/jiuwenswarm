@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: bloomberg
 display_name: Bloomberg
@@ -7,10 +7,6 @@ domains:
 - www.bloomberg.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-c
-  notes: Public browser-free read commands reviewed; remaining commands stay fail-closed pending later review.
 operations:
   content:
     purpose: Read site content and metadata.
@@ -38,9 +34,6 @@ commands:
     risk: low
     auth: none
     transport: browser_dom
-    execution_state: enabled
-    executor: browser_manifest_public_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -53,9 +46,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -68,9 +58,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -83,9 +70,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -98,9 +82,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -113,9 +94,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -128,9 +106,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -143,9 +118,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -158,9 +130,6 @@ commands:
     risk: medium
     auth: optional
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -174,9 +143,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -189,9 +155,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -204,9 +167,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -219,9 +179,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []

@@ -1,26 +1,23 @@
-# Xiaohongshu Note Operations
+# Xiaohongshu: notes
 
-This operation contract is selected by the Xiaohongshu site router. It
-authorizes only the commands listed below. Keep all parent routing, shell,
-confirmation, and fallback rules in force.
+Read Xiaohongshu note and notification data.
 
-| Command | Access | Exact usage | Purpose and important options |
-|---|---|---|---|
-| `comments` | read | `opencli xiaohongshu comments <note-url> [--limit <count>] [--with-replies true\|false] -f json` | Read comments and optional nested replies. Supply the full note URL with `xsec_token`; limit defaults to 20 and is capped at 50. |
-| `download` | read | `opencli xiaohongshu download <note-url-or-xhslink> [--output <directory>] -f json` | Download a note's images and videos. The default output is `./xiaohongshu-downloads`. |
-| `liked` | read | `opencli xiaohongshu liked [--id <user-id-or-profile-url>] [--limit <count>] -f json` | List liked notes for the current or specified user. Limit defaults to 20. |
-| `note` | read | `opencli xiaohongshu note <note-url> -f json` | Read note content and engagement data. Supply the full note URL with `xsec_token`. |
-| `notifications` | read | `opencli xiaohongshu notifications [--type mentions\|likes\|connections] [--limit <count>] -f json` | Read account notifications. Defaults: type `mentions`, limit 20. |
-| `saved` | read | `opencli xiaohongshu saved [--id <user-id-or-profile-url>] [--limit <count>] -f json` | List saved notes for the current or specified user. Limit defaults to 20. |
-| `user` | read | `opencli xiaohongshu user <user-id-or-profile-url> [--limit <count>] -f json` | Read public notes from a user profile. Limit defaults to 15. |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
+|---|---|---|---|---|
+| `comments` | `private_content_read` / `medium` | `opencli xiaohongshu comments "<note-id>" [--limit <limit>] [--with-replies <true\|false>] -f json`<br>获取小红书笔记评论（支持楼中楼子回复） | `note-id` (str, required, positional); `limit` (int, optional, default=20); `with-replies` (boolean, optional, default=False) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `download` | `local_write` / `high` | `opencli xiaohongshu download "<note-id>" [--output "<output>"] -f json`<br>下载小红书笔记中的图片和视频 | `note-id` (str, required, positional); `output` (str, optional, default='./xiaohongshu-downloads') | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `liked` | `private_content_read` / `medium` | `opencli xiaohongshu liked [--id "<id>"] [--limit <limit>] -f json`<br>小红书赞过笔记列表 | `id` (string, optional); `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `note` | `private_content_read` / `medium` | `opencli xiaohongshu note "<note-id>" -f json`<br>获取小红书笔记正文和互动数据 | `note-id` (str, required, positional) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `notifications` | `private_content_read` / `medium` | `opencli xiaohongshu notifications [--type "<type>"] [--limit <limit>] -f json`<br>小红书通知 (mentions/likes/connections) | `type` (str, optional, default='mentions'); `limit` (int, optional, default=20) | auth=required; transport=browser_intercept; fallback_before=browser_agent; fallback_after=none |
+| `saved` | `private_content_read` / `medium` | `opencli xiaohongshu saved [--id "<id>"] [--limit <limit>] -f json`<br>小红书收藏笔记列表 | `id` (string, optional); `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `user` | `private_content_read` / `medium` | `opencli xiaohongshu user "<id>" [--limit <limit>] -f json`<br>Get public notes from a Xiaohongshu user profile | `id` (string, required, positional); `limit` (int, optional, default=15) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 
-## Read note data
+## Operation-specific constraints
 
-1. Preserve full note URLs, including `xsec_token`, exactly as received.
-2. Collect only the identifier, URL, limit, and reply option required by the
-   selected command.
-3. Run one exact command and inspect both exit status and structured output.
-4. A read failure may fall back to `browser_agent` when no write occurred.
-
-`download` is read-class in OpenCLI but writes local files. Confirm the absolute
-output directory before execution and do not overwrite existing user files.
+- `comments`: sensitive output: private content, account identifiers
+- `download`: file outputs: workspace-relative output
+- `liked`: sensitive output: private content, account identifiers
+- `note`: sensitive output: private content, account identifiers
+- `notifications`: sensitive output: private content, account identifiers
+- `saved`: sensitive output: private content, account identifiers
+- `user`: sensitive output: private content, account identifiers

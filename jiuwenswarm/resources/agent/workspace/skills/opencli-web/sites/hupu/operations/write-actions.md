@@ -1,58 +1,7 @@
----
-opencli_contract:
-  version: 2
-  site: hupu
-  operation: write-actions
-  policy_sha256: 86a3ddfcf16b3fc55407f3ac6dca5cc09098caa7777218d355d2b7e11cea3261
-  commands:
-    unlike:
-      executor: none
-      execution_state: disabled
-      semantic_effect: reversible_remote_write
-      risk: high
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: write
-      args:
-      - help: 帖子ID（9位数字）
-        name: tid
-        positional: true
-        required: true
-        type: str
-      - help: 回复ID
-        name: pid
-        positional: true
-        required: true
-        type: str
-      - help: 板块ID（如278汽车区）
-        name: fid
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
----
-
 # Hupu: write-actions
 
 Change remote service state.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `unlike` | `disabled` | `reversible_remote_write` / `high` | Not executable; use the declared fallback if permitted<br>取消点赞虎扑回复 (需要登录) | `tid` (str, required, positional); `pid` (str, required, positional); `fid` (str, required) |
-
-## Safety and fallback
-
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
-- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.
+| `unlike` | `reversible_remote_write` / `high` | `opencli hupu unlike "<tid>" "<pid>" --fid "<fid>" -f json`<br>取消点赞虎扑回复 (需要登录) | `tid` (str, required, positional); `pid` (str, required, positional); `fid` (str, required) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |

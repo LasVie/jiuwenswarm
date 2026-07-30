@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: xiaohongshu
 display_name: Xiaohongshu
@@ -7,10 +7,6 @@ domains:
 - www.xiaohongshu.com
 aliases: []
 terminal: operation
-review:
-  status: reviewed
-  owner: coordinator
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.
@@ -65,9 +61,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -80,9 +73,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -97,9 +87,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -114,9 +101,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -131,9 +115,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -148,9 +129,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -164,9 +142,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -181,9 +156,6 @@ commands:
     risk: critical
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -196,9 +168,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -212,9 +181,6 @@ commands:
     risk: critical
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -227,9 +193,6 @@ commands:
     risk: critical
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -242,9 +205,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -259,9 +219,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -276,9 +233,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -293,9 +247,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -308,9 +259,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -325,9 +273,6 @@ commands:
     risk: high
     auth: interactive
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -340,9 +285,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -357,9 +299,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_intercept
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -374,9 +313,6 @@ commands:
     risk: high
     auth: required
     transport: browser_cookie
-    execution_state: custom
-    executor: xiaohongshu_guarded_publish
-    confirmation: structured_receipt
     fallback_before: browser_agent
     fallback_after: none
     file_inputs:
@@ -390,9 +326,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -407,9 +340,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -424,9 +354,6 @@ commands:
     risk: critical
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -439,9 +366,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -456,9 +380,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

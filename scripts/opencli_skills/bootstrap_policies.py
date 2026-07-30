@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Bootstrap explicit fail-closed site policies from the frozen catalog.
+"""Bootstrap OpenCLI site capability policies from the frozen catalog.
 
-The output is intentionally conservative.  It enables only manifest-declared
-public, browser-free reads.  Every other command remains documented but is
-disabled or quarantined until its owning review wave approves an executor.
+Every catalog command is exposed through the generated Skill.  The generated
+policy adds routing, semantic risk, fallback, file, and sensitive-output data;
+it does not maintain a second command execution allowlist.
 """
 
 from __future__ import annotations
@@ -171,42 +171,21 @@ def _classify(command: CatalogCommand) -> dict[str, Any]:
     else:
         notes = ""
 
-    enabled = (
+    retryable_public_read = (
         effect == "public_read"
         and risk == "low"
         and auth == "none"
-        and transport == "public_http"
         and command.access == "read"
-        and command.strategy == "public"
-        and not command.browser
     )
-    state = "enabled" if enabled else "disabled"
-    executor = "generic_manifest_read" if enabled else "none"
-    confirmation = "none" if enabled else "unsupported"
     fallback_before = "browser_agent"
-    fallback_after = "browser_agent" if enabled else "none"
+    fallback_after = "browser_agent" if retryable_public_read else "none"
 
-    if command.site == "zlibrary" or effect == "arbitrary_execution":
-        state = "quarantined"
-        executor = "none"
-        confirmation = "unsupported"
+    if effect == "arbitrary_execution":
         fallback_before = "none"
         fallback_after = "none"
-    if command.site == "flomo":
-        state = "quarantined"
-        executor = "none"
-        confirmation = "unsupported"
-        fallback_before = "browser_agent"
-        fallback_after = "none"
     if command.site == "xiaohongshu":
-        state = "disabled"
-        executor = "none"
-        confirmation = "unsupported"
         fallback_after = "none"
         if name == "publish":
-            state = "custom"
-            executor = "xiaohongshu_guarded_publish"
-            confirmation = "structured_receipt"
             effect = "public_write"
             risk = "high"
             auth = "required"
@@ -232,9 +211,6 @@ def _classify(command: CatalogCommand) -> dict[str, Any]:
         "risk": risk,
         "auth": auth,
         "transport": transport,
-        "execution_state": state,
-        "executor": executor,
-        "confirmation": confirmation,
         "fallback_before": fallback_before,
         "fallback_after": fallback_after,
         "file_inputs": file_inputs,
@@ -368,7 +344,6 @@ def _is_compact_terminal(command_specs: Iterable[dict[str, Any]]) -> bool:
         and spec["risk"] == "low"
         and spec["auth"] == "none"
         and spec["transport"] == "public_http"
-        and spec["execution_state"] == "enabled"
         and not spec["file_inputs"]
         and not spec["file_outputs"]
         for spec in specs
@@ -381,7 +356,7 @@ def bootstrap_policies(
     output_root: Path,
 ) -> None:
     catalog = load_catalog(catalog_path)
-    ownership = load_ownership(ownership_path)
+    load_ownership(ownership_path)
     sites = sorted(
         {
             command.site
@@ -425,39 +400,14 @@ def bootstrap_policies(
                 if command.raw.get("domain")
             }
         )
-        owner = (
-            "coordinator" if site in ownership.completed else ownership.owner_for(site)
-        )
-        review_status = (
-            "quarantined"
-            if site == "zlibrary"
-            else "reviewed"
-            if site
-            in {
-                "flomo",
-                "google",
-                "rest-countries",
-                "wikipedia",
-                "xiaohongshu",
-            }
-            else "generated"
-        )
         policy = {
-            "schema_version": 1,
+            "schema_version": 2,
             "catalog_version": f"opencli-{OPENCLI_VERSION}",
             "site": site,
             "display_name": site.replace("-", " ").title(),
             "domains": domains,
             "aliases": [],
             "terminal": "site" if compact else "operation",
-            "review": {
-                "status": review_status,
-                "owner": owner,
-                "notes": (
-                    "Initial conservative policy; non-public-read commands remain "
-                    "fail-closed until their review wave."
-                ),
-            },
             "operations": operations,
             "commands": {name: command_specs[name] for name in sorted(command_specs)},
         }

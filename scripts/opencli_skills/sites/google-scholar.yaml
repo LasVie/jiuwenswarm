@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: google-scholar
 display_name: Google Scholar
@@ -6,10 +6,6 @@ domains:
 - scholar.google.com
 aliases: []
 terminal: operation
-review:
-  status: reviewed
-  owner: agent-a
-  notes: All commands source-reviewed; eligible public browser reads use the guarded browser manifest executor.
 operations:
   content:
     purpose: Read site content and metadata.
@@ -27,9 +23,6 @@ commands:
     risk: low
     auth: none
     transport: browser_dom
-    execution_state: enabled
-    executor: browser_manifest_public_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -42,9 +35,6 @@ commands:
     risk: low
     auth: none
     transport: browser_dom
-    execution_state: enabled
-    executor: browser_manifest_public_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -57,9 +47,6 @@ commands:
     risk: low
     auth: none
     transport: browser_dom
-    execution_state: enabled
-    executor: browser_manifest_public_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []

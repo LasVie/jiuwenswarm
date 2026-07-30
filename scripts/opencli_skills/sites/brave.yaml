@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: brave
 display_name: Brave
@@ -6,10 +6,6 @@ domains:
 - search.brave.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-c
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
 operations:
   web-search:
     purpose: Read browser-rendered web search results.
@@ -22,9 +18,6 @@ commands:
     risk: low
     auth: none
     transport: browser_dom
-    execution_state: enabled
-    executor: browser_manifest_public_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []

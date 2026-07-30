@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: zlibrary
 display_name: Zlibrary
@@ -6,10 +6,6 @@ domains:
 - z-library.im
 aliases: []
 terminal: operation
-review:
-  status: quarantined
-  owner: agent-b
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
 operations:
   private-content:
     purpose: Read content that depends on an authenticated account.
@@ -23,9 +19,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: quarantined
-    executor: none
-    confirmation: unsupported
     fallback_before: none
     fallback_after: none
     file_inputs: []
@@ -40,9 +33,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: quarantined
-    executor: none
-    confirmation: unsupported
     fallback_before: none
     fallback_after: none
     file_inputs: []

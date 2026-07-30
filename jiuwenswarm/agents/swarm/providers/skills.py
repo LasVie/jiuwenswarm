@@ -59,7 +59,7 @@ def _resolve_member_skill_view(
 ) -> list[str]:
     """Resolve the runtime skill view, including the managed OpenCLI router.
 
-    The OpenCLI router is preinstalled and must be discoverable by the team
+    When the OpenCLI router is installed, it must be discoverable by the team
     leader without a UI/config selection. An explicit global disable still
     wins. Invalid state fails closed for this automatic capability.
     """

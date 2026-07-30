@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: sinafinance
 display_name: Sinafinance
@@ -10,10 +10,6 @@ domains:
 - hq.sinajs.cn
 aliases: []
 terminal: operation
-review:
-  status: reviewed
-  owner: agent-a
-  notes: All commands source-reviewed; browser-backed reads remain disabled pending a guarded browser executor.
 operations:
   content:
     purpose: Read site content and metadata.
@@ -32,9 +28,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -47,9 +40,6 @@ commands:
     risk: low
     auth: none
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -62,9 +52,6 @@ commands:
     risk: low
     auth: none
     transport: public_http
-    execution_state: enabled
-    executor: generic_manifest_read
-    confirmation: none
     fallback_before: browser_agent
     fallback_after: browser_agent
     file_inputs: []
@@ -77,9 +64,6 @@ commands:
     risk: low
     auth: none
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

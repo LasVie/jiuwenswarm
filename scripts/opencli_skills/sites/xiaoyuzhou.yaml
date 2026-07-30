@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: xiaoyuzhou
 display_name: Xiaoyuzhou
@@ -6,10 +6,6 @@ domains:
 - www.xiaoyuzhoufm.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-c
-  notes: Initial conservative policy; non-public-read commands remain fail-closed until their review wave.
 operations:
   file-operations:
     purpose: Create or download workspace files.
@@ -29,9 +25,6 @@ commands:
     risk: high
     auth: required
     transport: local
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -45,9 +38,6 @@ commands:
     risk: medium
     auth: required
     transport: local
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -62,9 +52,6 @@ commands:
     risk: medium
     auth: required
     transport: local
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -79,9 +66,6 @@ commands:
     risk: medium
     auth: required
     transport: local
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -96,9 +80,6 @@ commands:
     risk: high
     auth: none
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []

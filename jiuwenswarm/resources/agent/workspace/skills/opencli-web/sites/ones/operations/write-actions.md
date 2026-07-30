@@ -1,70 +1,7 @@
----
-opencli_contract:
-  version: 2
-  site: ones
-  operation: write-actions
-  policy_sha256: 64d44ee783edfb380e515b610ab3f68cdc26d3c6e52d68eae4e61b20a8f378e0
-  commands:
-    worklog:
-      executor: none
-      execution_state: disabled
-      semantic_effect: reversible_remote_write
-      risk: high
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: write
-      args:
-      - help: Work item UUID (usually 16 chars), from my-tasks or browser URL …/task/<id>
-        name: task
-        positional: true
-        required: true
-        type: str
-      - help: Hours to log for this entry (e.g. 2 or 1.5), converted with ONES_MANHOUR_SCALE
-        name: hours
-        positional: true
-        required: true
-        type: str
-      - help: Team UUID from URL …/team/<uuid>/…, or set ONES_TEAM_UUID
-        name: team
-        required: false
-        type: str
-      - help: Entry date YYYY-MM-DD, defaults to today (local timezone); use for backfill
-        name: date
-        required: false
-        type: str
-      - help: Optional note (written to description/desc)
-        name: note
-        required: false
-        type: str
-      - help: Owner user UUID (defaults to current logged-in user)
-        name: owner
-        required: false
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
----
-
 # Ones: write-actions
 
 Change remote service state.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `worklog` | `disabled` | `reversible_remote_write` / `high` | Not executable; use the declared fallback if permitted<br>ONES — log work hours on a task (defaults to today; use --date to backfill; endpoint falls back by deployment). | `task` (str, required, positional); `hours` (str, required, positional); `team` (str, optional); `date` (str, optional); `note` (str, optional); `owner` (str, optional) |
-
-## Safety and fallback
-
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
-- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.
+| `worklog` | `reversible_remote_write` / `high` | `opencli ones worklog "<task>" "<hours>" [--team "<team>"] [--date "<date>"] [--note "<note>"] [--owner "<owner>"] -f json`<br>ONES — log work hours on a task (defaults to today; use --date to backfill; endpoint falls back by deployment). | `task` (str, required, positional); `hours` (str, required, positional); `team` (str, optional); `date` (str, optional); `note` (str, optional); `owner` (str, optional) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |

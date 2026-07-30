@@ -1,76 +1,13 @@
----
-opencli_contract:
-  version: 2
-  site: geogebra
-  operation: private-content
-  policy_sha256: 96b5e0ced92cddb4cb2074e33e62e5c7e81e94d600703a48694341552ae52a5d
-  commands:
-    info:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: optional
-      transport: browser_dom
-      strategy: public
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Object label (e.g. A, c1, poly1)
-        name: name
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    list:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: optional
-      transport: browser_dom
-      strategy: public
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Filter by object type (e.g. "point", "line", "circle")
-        name: type
-        required: false
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
----
-
 # Geogebra: private-content
 
 Read content that depends on an authenticated account.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `info` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get detailed properties of a GeoGebra object | `name` (str, required) |
-| `list` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List all geometric objects on the GeoGebra canvas | `type` (str, optional) |
+| `info` | `private_content_read` / `medium` | `opencli geogebra info --name "<name>" -f json`<br>Get detailed properties of a GeoGebra object | `name` (str, required) | auth=optional; transport=browser_dom; fallback_before=browser_agent; fallback_after=none |
+| `list` | `private_content_read` / `medium` | `opencli geogebra list [--type "<type>"] -f json`<br>List all geometric objects on the GeoGebra canvas | `type` (str, optional) | auth=optional; transport=browser_dom; fallback_before=browser_agent; fallback_after=none |
 
-## Safety and fallback
+## Operation-specific constraints
 
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
-- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.
+- `info`: sensitive output: private content, account identifiers
+- `list`: sensitive output: private content, account identifiers

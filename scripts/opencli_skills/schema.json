@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://openjiuwen.example/schemas/opencli-site-policy-v1.json",
+  "$id": "https://openjiuwen.example/schemas/opencli-site-policy-v2.json",
   "title": "OpenCLI site policy",
   "type": "object",
   "additionalProperties": false,
@@ -17,7 +17,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": 1
+      "const": 2
     },
     "catalog_version": {
       "const": "opencli-1.8.6"
@@ -51,30 +51,6 @@
         "site",
         "operation"
       ]
-    },
-    "review": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "status",
-        "owner"
-      ],
-      "properties": {
-        "status": {
-          "enum": [
-            "generated",
-            "reviewed",
-            "quarantined"
-          ]
-        },
-        "owner": {
-          "type": "string",
-          "minLength": 1
-        },
-        "notes": {
-          "type": "string"
-        }
-      }
     },
     "operations": {
       "type": "object",
@@ -115,9 +91,6 @@
           "risk",
           "auth",
           "transport",
-          "execution_state",
-          "executor",
-          "confirmation",
           "fallback_before",
           "fallback_after",
           "file_inputs",
@@ -169,31 +142,6 @@
               "browser_intercept",
               "local",
               "mixed"
-            ]
-          },
-          "execution_state": {
-            "enum": [
-              "enabled",
-              "disabled",
-              "quarantined",
-              "custom"
-            ]
-          },
-          "executor": {
-            "enum": [
-              "generic_manifest_read",
-              "browser_manifest_public_read",
-              "browser_manifest_private_read",
-              "xiaohongshu_guarded_publish",
-              "none"
-            ]
-          },
-          "confirmation": {
-            "enum": [
-              "none",
-              "interactive_user",
-              "structured_receipt",
-              "unsupported"
             ]
           },
           "fallback_before": {

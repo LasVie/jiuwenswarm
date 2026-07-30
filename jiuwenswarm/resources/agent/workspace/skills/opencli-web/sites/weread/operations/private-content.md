@@ -1,179 +1,19 @@
----
-opencli_contract:
-  version: 2
-  site: weread
-  operation: private-content
-  policy_sha256: 2345432046fe5a6fb8663c41d6493c34c7ad68f543993ae9cfc313e120ab29f1
-  commands:
-    ai-outline:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Book ID (from shelf or search results)
-        name: book-id
-        positional: true
-        required: true
-        type: str
-      - default: 200
-        help: Max outline items to return
-        name: limit
-        required: false
-        type: int
-      - default: 4
-        help: Max outline depth (2=topics, 3=key points, 4=details)
-        name: depth
-        required: false
-        type: int
-      - default: false
-        help: Output structured rows (chapter/idx/level/text) for programmatic use
-        name: raw
-        required: false
-        type: boolean
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - licensed book-derived content
-      - account identifiers
-    highlights:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Book ID (from shelf or search results)
-        name: book-id
-        positional: true
-        required: true
-        type: str
-      - default: 20
-        help: Max results
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private reading data
-      - account identifiers
-    notebooks:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args: []
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private reading data
-      - account identifiers
-    notes:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Book ID (from shelf or search results)
-        name: book-id
-        positional: true
-        required: true
-        type: str
-      - default: 20
-        help: Max results
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private reading data
-      - account identifiers
-    shelf:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 20
-        help: Max results
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private reading data
-      - account identifiers
----
-
 # Weread: private-content
 
 Read content that depends on an authenticated account.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `ai-outline` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>Get AI-generated outline for a book | `book-id` (str, required, positional); `limit` (int, optional, default=200); `depth` (int, optional, default=4); `raw` (boolean, optional, default=False) |
-| `highlights` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List your highlights (underlines) in a book | `book-id` (str, required, positional); `limit` (int, optional, default=20) |
-| `notebooks` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List books that have highlights or notes | none |
-| `notes` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List your notes (thoughts) on a book | `book-id` (str, required, positional); `limit` (int, optional, default=20) |
-| `shelf` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>List books on your WeRead bookshelf | `limit` (int, optional, default=20) |
+| `ai-outline` | `private_content_read` / `medium` | `opencli weread ai-outline "<book-id>" [--limit <limit>] [--depth <depth>] [--raw <true\|false>] -f json`<br>Get AI-generated outline for a book | `book-id` (str, required, positional); `limit` (int, optional, default=200); `depth` (int, optional, default=4); `raw` (boolean, optional, default=False) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `highlights` | `private_content_read` / `medium` | `opencli weread highlights "<book-id>" [--limit <limit>] -f json`<br>List your highlights (underlines) in a book | `book-id` (str, required, positional); `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `notebooks` | `private_content_read` / `medium` | `opencli weread notebooks -f json`<br>List books that have highlights or notes | none | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `notes` | `private_content_read` / `medium` | `opencli weread notes "<book-id>" [--limit <limit>] -f json`<br>List your notes (thoughts) on a book | `book-id` (str, required, positional); `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `shelf` | `private_content_read` / `medium` | `opencli weread shelf [--limit <limit>] -f json`<br>List books on your WeRead bookshelf | `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 
-## Safety and fallback
+## Operation-specific constraints
 
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
-- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.
+- `ai-outline`: Source-audited against OpenCLI 1.8.6 weread/ai-outline.js; retrieves an existing account-accessible outline and does not request new AI generation or consume generation quota.; sensitive output: licensed book-derived content, account identifiers
+- `highlights`: Source-audited against OpenCLI 1.8.6 weread/highlights.js; reads authenticated or session-scoped content that can expose private account data.; sensitive output: private reading data, account identifiers
+- `notebooks`: Source-audited against OpenCLI 1.8.6 weread/notebooks.js; reads authenticated or session-scoped content that can expose private account data.; sensitive output: private reading data, account identifiers
+- `notes`: Source-audited against OpenCLI 1.8.6 weread/notes.js; reads authenticated or session-scoped content that can expose private account data.; sensitive output: private reading data, account identifiers
+- `shelf`: Source-audited against OpenCLI 1.8.6 weread/shelf.js; reads authenticated or session-scoped content that can expose private account data.; sensitive output: private reading data, account identifiers

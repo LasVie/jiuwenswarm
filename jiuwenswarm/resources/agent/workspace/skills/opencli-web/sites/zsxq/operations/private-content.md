@@ -1,181 +1,19 @@
----
-opencli_contract:
-  version: 2
-  site: zsxq
-  operation: private-content
-  policy_sha256: 7289cdf37f04f10e8d37968367ab1bd8a6189a1aeddd45761e81b9770e4781fe
-  commands:
-    dynamics:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 20
-        help: Number of dynamics to return
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    groups:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 50
-        help: Number of groups to return
-        name: limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    search:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Search keyword
-        name: keyword
-        positional: true
-        required: true
-        type: str
-      - default: 20
-        help: Number of results to return
-        name: limit
-        required: false
-        type: int
-      - help: Optional group id; defaults to the active group in Chrome
-        name: group_id
-        required: false
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    topic:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Topic ID
-        name: id
-        positional: true
-        required: true
-        type: str
-      - help: Group ID (optional; defaults to active group in Chrome)
-        name: group_id
-        required: false
-        type: str
-      - default: 20
-        help: Number of comments to fetch
-        name: comment_limit
-        required: false
-        type: int
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
-    topics:
-      executor: none
-      execution_state: disabled
-      semantic_effect: private_content_read
-      risk: medium
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - default: 20
-        help: Number of topics to return
-        name: limit
-        required: false
-        type: int
-      - help: Optional group id; defaults to the active group in Chrome
-        name: group_id
-        required: false
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output:
-      - private content
-      - account identifiers
----
-
 # Zsxq: private-content
 
 Read content that depends on an authenticated account.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `dynamics` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>获取所有星球的最新动态 | `limit` (int, optional, default=20) |
-| `groups` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>列出当前账号加入的星球 | `limit` (int, optional, default=50) |
-| `search` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>搜索星球内容 | `keyword` (str, required, positional); `limit` (int, optional, default=20); `group_id` (str, optional) |
-| `topic` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>获取单个话题详情和评论 | `id` (str, required, positional); `group_id` (str, optional); `comment_limit` (int, optional, default=20) |
-| `topics` | `disabled` | `private_content_read` / `medium` | Not executable; use the declared fallback if permitted<br>获取当前星球的话题列表 | `limit` (int, optional, default=20); `group_id` (str, optional) |
+| `dynamics` | `private_content_read` / `medium` | `opencli zsxq dynamics [--limit <limit>] -f json`<br>获取所有星球的最新动态 | `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `groups` | `private_content_read` / `medium` | `opencli zsxq groups [--limit <limit>] -f json`<br>列出当前账号加入的星球 | `limit` (int, optional, default=50) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `search` | `private_content_read` / `medium` | `opencli zsxq search "<keyword>" [--limit <limit>] [--group_id "<group_id>"] -f json`<br>搜索星球内容 | `keyword` (str, required, positional); `limit` (int, optional, default=20); `group_id` (str, optional) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `topic` | `private_content_read` / `medium` | `opencli zsxq topic "<id>" [--group_id "<group_id>"] [--comment_limit <comment_limit>] -f json`<br>获取单个话题详情和评论 | `id` (str, required, positional); `group_id` (str, optional); `comment_limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `topics` | `private_content_read` / `medium` | `opencli zsxq topics [--limit <limit>] [--group_id "<group_id>"] -f json`<br>获取当前星球的话题列表 | `limit` (int, optional, default=20); `group_id` (str, optional) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 
-## Safety and fallback
+## Operation-specific constraints
 
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
-- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.
+- `dynamics`: sensitive output: private content, account identifiers
+- `groups`: sensitive output: private content, account identifiers
+- `search`: sensitive output: private content, account identifiers
+- `topic`: sensitive output: private content, account identifiers
+- `topics`: sensitive output: private content, account identifiers

@@ -1,59 +1,7 @@
----
-opencli_contract:
-  version: 2
-  site: jd
-  operation: account-actions
-  policy_sha256: c50ca26ce20d4fdc7cb32d0e4930d9ef74069f8057059acb06c45d3311c2cf09
-  commands:
-    add-cart:
-      executor: none
-      execution_state: disabled
-      semantic_effect: reversible_remote_write
-      risk: high
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: write
-      args:
-      - help: 商品 SKU ID
-        name: sku
-        positional: true
-        required: true
-        type: str
-      - default: 1
-        help: 数量
-        name: num
-        required: false
-        type: int
-      - default: false
-        help: 仅预览，不实际加入购物车
-        name: dry-run
-        required: false
-        type: bool
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: none
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
----
-
 # Jd: account-actions
 
 Change reversible account relationship or saved state.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `add-cart` | `disabled` | `reversible_remote_write` / `high` | Not executable; use the declared fallback if permitted<br>京东加入购物车 | `sku` (str, required, positional); `num` (int, optional, default=1); `dry-run` (bool, optional, default=False) |
-
-## Safety and fallback
-
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
-- Any operation that may change state, expose private data, write a file, or consume quota is fail-closed after dispatch and cannot be automatically retried through a browser.
+| `add-cart` | `reversible_remote_write` / `high` | `opencli jd add-cart "<sku>" [--num <num>] [--dry-run <true\|false>] -f json`<br>京东加入购物车 | `sku` (str, required, positional); `num` (int, optional, default=1); `dry-run` (bool, optional, default=False) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |

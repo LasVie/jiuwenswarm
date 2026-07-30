@@ -18,6 +18,7 @@ from scripts.opencli_skills.generate import (
     GenerationError,
     OPENCLI_VERSION,
     OperationPolicy,
+    _command_invocation,
     _validate_command_policy,
     _validate_site_terminal,
     build_generation_model,
@@ -46,7 +47,6 @@ BUILTIN_SKILL_ROOT = (
 
 def _browser_read_policy(
     *,
-    executor: str,
     semantic_effect: str,
     risk: str,
     auth: str,
@@ -73,9 +73,6 @@ def _browser_read_policy(
         risk=risk,
         auth=auth,
         transport=transport,
-        execution_state="enabled",
-        executor=executor,
-        confirmation="none",
         fallback_before=fallback_before,
         fallback_after=fallback_after,
         file_inputs=(),
@@ -94,19 +91,8 @@ def _tree_digest(root: Path) -> dict[str, str]:
     }
 
 
-def test_browser_read_policy_lanes_are_closed_and_disjoint() -> None:
-    public = _browser_read_policy(
-        executor="browser_manifest_public_read",
-        semantic_effect="public_read",
-        risk="low",
-        auth="none",
-        transport="browser_dom",
-        strategy="public",
-        sensitive_output=(),
-        fallback_after="browser_agent",
-    )
+def test_private_commands_cannot_fallback_after_dispatch() -> None:
     private = _browser_read_policy(
-        executor="browser_manifest_private_read",
         semantic_effect="private_content_read",
         risk="medium",
         auth="required",
@@ -116,25 +102,16 @@ def test_browser_read_policy_lanes_are_closed_and_disjoint() -> None:
         fallback_after="none",
     )
 
-    _validate_command_policy(public)
     _validate_command_policy(private)
 
-    invalid = (
-        replace(public, auth="required"),
-        replace(public, fallback_before="none"),
-        replace(public, fallback_after="none"),
-        replace(private, sensitive_output=()),
-        replace(private, fallback_before="none"),
-        replace(private, fallback_after="browser_agent"),
-    )
-    for policy in invalid:
-        with pytest.raises(GenerationError):
-            _validate_command_policy(policy)
+    with pytest.raises(GenerationError, match="cannot auto-fallback"):
+        _validate_command_policy(
+            replace(private, fallback_after="browser_agent")
+        )
 
 
 def test_browser_read_commands_cannot_use_a_site_terminal() -> None:
     public = _browser_read_policy(
-        executor="browser_manifest_public_read",
         semantic_effect="public_read",
         risk="low",
         auth="none",
@@ -155,57 +132,7 @@ def test_browser_read_commands_cannot_use_a_site_terminal() -> None:
             {"content": operation},
             {"read": public},
         )
-
-
-def test_private_browser_reads_remain_deployment_gated() -> None:
-    model = build_generation_model(
-        load_catalog(CATALOG_PATH),
-        load_ownership(OWNERSHIP_PATH),
-        load_policies(POLICY_ROOT),
-    )
-
-    enabled_private_reads = {
-        f"{site.slug}/{command.name}"
-        for site in model.sites.values()
-        for command in site.commands.values()
-        if command.execution_state == "enabled"
-        and command.executor == "browser_manifest_private_read"
-    }
-
-    # The executor contract is implemented and unit-tested, but the current
-    # ToolOutput/trace boundary cannot yet label private result data for trace
-    # handling. Keep the deployment allowlist explicitly empty until that
-    # boundary exists.
-    assert enabled_private_reads == set()
-
-
-def test_reviewed_browser_public_reads_match_the_deployment_allowlist() -> None:
-    model = build_generation_model(
-        load_catalog(CATALOG_PATH),
-        load_ownership(OWNERSHIP_PATH),
-        load_policies(POLICY_ROOT),
-    )
-    enabled_public_browser_reads = {
-        f"{site.slug}/{command.name}"
-        for site in model.sites.values()
-        for command in site.commands.values()
-        if command.execution_state == "enabled"
-        and command.executor == "browser_manifest_public_read"
-    }
-
-    # This exact set was promoted only after adapter-source review and the
-    # closed browser/public executor checks. Keep later generated-policy edits
-    # from silently expanding executable browser authority.
-    assert len(enabled_public_browser_reads) == 36
-    assert (
-        hashlib.sha256(
-            ("\n".join(sorted(enabled_public_browser_reads)) + "\n").encode()
-        ).hexdigest()
-        == "f48dd57fd3e30a6a04a1754f320073b9da0d6964c8d5b7409b643b5564a38772"
-    )
-
-
-def test_frozen_catalog_matches_reviewed_opencli_release() -> None:
+def test_frozen_catalog_matches_pinned_opencli_release() -> None:
     catalog = load_catalog(CATALOG_PATH)
 
     assert catalog.opencli_version == OPENCLI_VERSION == "1.8.6"
@@ -278,6 +205,13 @@ def test_policies_cover_each_catalog_command_exactly_once() -> None:
         ]
         assert len(covered) == len(set(covered)), site_slug
         assert set(covered) == catalog_names, site_slug
+        raw_site = policies[site_slug]
+        assert raw_site["schema_version"] == 2
+        assert "review" not in raw_site
+        for command in raw_site["commands"].values():
+            assert "execution_state" not in command
+            assert "executor" not in command
+            assert "confirmation" not in command
 
 
 def test_physical_depth_follows_safety_boundary_not_command_count_alone() -> None:
@@ -348,20 +282,86 @@ def test_generation_is_deterministic_and_links_are_complete(
         if relative != "generated-manifest.json"
     }
 
-    runtime = json.loads((first / "opencli-runtime.json").read_text(encoding="utf-8"))
-    assert runtime["catalog"]["source_sha256"] == (
-        "310a143b41ea677de88f05bfd9c525e3b1e19c14f88d0377356508b161adf3e6"
+    assert not (first / "opencli-runtime.json").exists()
+
+    root_skill = (first / "SKILL.md").read_text(encoding="utf-8")
+    assert "| Website | Aliases | Domains | Site module |" in root_skill
+    assert "relative_file_path" not in root_skill
+    assert "browser_agent" not in root_skill
+
+    terminal_site = (first / "sites" / "apple-podcasts" / "index.md").read_text(
+        encoding="utf-8"
     )
-    assert len(runtime["sites"]) == 162
+    assert not terminal_site.startswith("---")
+    assert "`sites/apple-podcasts/index.md`" in terminal_site
+    assert "opencli apple-podcasts search" in terminal_site
+
+    routed_site = (first / "sites" / "google" / "index.md").read_text(
+        encoding="utf-8"
+    )
+    routed_operation = (
+        first / "sites" / "google" / "operations" / "web-search.md"
+    ).read_text(encoding="utf-8")
+    assert "`sites/google/operations/web-search.md`" in routed_site
+    assert "opencli google search" not in routed_site
+    assert "opencli google search" in routed_operation
+
+    generated_markdown = "\n".join(
+        path.read_text(encoding="utf-8") for path in first.rglob("*.md")
+    )
+    assert "opencli_execute" not in generated_markdown
+    assert "opencli_contract:" not in generated_markdown
+    assert "| Command | State |" not in generated_markdown
+    assert "Not available through OpenCLI" not in generated_markdown
+    assert not list(first.glob("sites/*/SKILL.md"))
 
     for site in model.sites.values():
-        site_skill = first / "sites" / site.slug / "SKILL.md"
-        assert site_skill.is_file(), site.slug
+        site_index = first / "sites" / site.slug / "index.md"
+        assert site_index.is_file(), site.slug
         if site.terminal == "site":
-            assert not (site_skill.parent / "operations").exists()
+            assert not (site_index.parent / "operations").exists()
         else:
             for operation in site.operations:
-                assert (site_skill.parent / "operations" / f"{operation}.md").is_file()
+                assert (
+                    site_index.parent / "operations" / f"{operation}.md"
+                ).is_file()
+
+
+def test_every_catalog_command_has_an_execution_contract(tmp_path: Path) -> None:
+    model = build_generation_model(
+        load_catalog(CATALOG_PATH),
+        load_ownership(OWNERSHIP_PATH),
+        load_policies(POLICY_ROOT),
+    )
+    generated = tmp_path / "opencli-web"
+    generate(
+        model,
+        output_root=generated,
+        manual_skill_root=BUILTIN_SKILL_ROOT,
+    )
+
+    exposed = 0
+    for site in model.sites.values():
+        for operation in site.operations.values():
+            terminal = (
+                generated / "sites" / site.slug / "index.md"
+                if site.terminal == "site"
+                else generated
+                / "sites"
+                / site.slug
+                / "operations"
+                / f"{operation.slug}.md"
+            )
+            content = terminal.read_text(encoding="utf-8")
+            for command_name in operation.commands:
+                command = site.commands[command_name]
+                invocation = _command_invocation(site, command).replace(
+                    "|", "\\|"
+                )
+                assert f"`{invocation}`" in content
+                exposed += 1
+
+    assert exposed == 1123
 
 
 def test_full_generation_matches_checked_in_tree(tmp_path: Path) -> None:
@@ -383,18 +383,19 @@ def test_full_generation_matches_checked_in_tree(tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize(
-    ("site", "command", "expected_state"),
+    ("site", "command", "effect", "risk"),
     [
-        ("google", "search", "enabled"),
-        ("flomo", "memos", "disabled"),
-        ("zlibrary", "search", "quarantined"),
-        ("xiaohongshu", "publish", "custom"),
+        ("google", "search", "public_read", "low"),
+        ("flomo", "memos", "private_content_read", "medium"),
+        ("zlibrary", "search", "private_content_read", "medium"),
+        ("xiaohongshu", "publish", "public_write", "high"),
     ],
 )
-def test_representative_execution_states(
+def test_representative_capabilities_keep_risk_metadata(
     site: str,
     command: str,
-    expected_state: str,
+    effect: str,
+    risk: str,
 ) -> None:
     model = build_generation_model(
         load_catalog(CATALOG_PATH),
@@ -402,95 +403,5 @@ def test_representative_execution_states(
         load_policies(POLICY_ROOT),
     )
     command_policy = model.sites[site].command(command)
-    assert command_policy.execution_state == expected_state
-
-
-def test_reviewed_public_reads_exclude_credential_gated_false_positives() -> None:
-    model = build_generation_model(
-        load_catalog(CATALOG_PATH),
-        load_ownership(OWNERSHIP_PATH),
-        load_policies(POLICY_ROOT),
-    )
-    enabled = {
-        f"{site.slug}/{command.name}"
-        for site in model.sites.values()
-        for command in site.commands.values()
-        if command.execution_state == "enabled"
-        and command.executor == "generic_manifest_read"
-    }
-
-    # The OpenCLI 1.8.6 adapter-source audit found 253 genuinely public,
-    # browser-free HTTP reads supported by the generic executor. The generated
-    # catalog metadata alone overstates this boundary for credential-gated APIs
-    # and misses four name-heuristic cases. Adapter-local reads remain closed
-    # until a dedicated local-read executor is reviewed.
-    assert len(enabled) == 253
-    assert (
-        hashlib.sha256(("\n".join(sorted(enabled)) + "\n").encode()).hexdigest()
-        == "a609a674b831c2137659997d8e7b2e460f462d6fc75852d69909bec06b052b49"
-    )
-    assert {
-        "dockerhub/image",
-        "hackernews/ask",
-        "hackernews/new",
-        "lesswrong/new",
-    } <= enabled
-    assert enabled.isdisjoint(
-        {
-            "confluence/page",
-            "confluence/search",
-            "jira/attachments",
-            "jira/comments",
-            "jira/issue",
-            "jira/links",
-            "jira/search",
-            "paperreview/review",
-            "spotify/search",
-            "spotify/status",
-            "weread-official/book",
-            "weread-official/discover",
-            "weread-official/list-apis",
-            "weread-official/notes",
-            "weread-official/readdata",
-            "weread-official/review",
-            "weread-official/search",
-            "weread-official/shelf",
-            "yollomi/models",
-        }
-    )
-
-    paper_review = model.sites["paperreview"].command("review")
-    assert paper_review.semantic_effect == "private_content_read"
-    assert paper_review.auth == "required"
-    assert paper_review.risk == "high"
-    assert paper_review.execution_state == "disabled"
-    assert paper_review.fallback_after == "none"
-
-    jira_issue = model.sites["jira"].command("issue")
-    assert jira_issue.semantic_effect == "private_content_read"
-    assert jira_issue.auth == "required"
-    assert jira_issue.execution_state == "quarantined"
-    assert jira_issue.fallback_before == "none"
-    assert jira_issue.fallback_after == "none"
-
-    confluence_page = model.sites["confluence"].command("page")
-    assert confluence_page.semantic_effect == "private_content_read"
-    assert confluence_page.auth == "required"
-    assert confluence_page.execution_state == "disabled"
-
-    spotify_status = model.sites["spotify"].command("status")
-    assert spotify_status.semantic_effect == "private_account_read"
-    assert spotify_status.auth == "required"
-    assert spotify_status.transport == "mixed"
-    assert spotify_status.execution_state == "disabled"
-
-    yollomi_models = model.sites["yollomi"].command("models")
-    assert yollomi_models.semantic_effect == "public_read"
-    assert yollomi_models.transport == "local"
-    assert yollomi_models.execution_state == "disabled"
-    assert yollomi_models.executor == "none"
-
-    weread_notes = model.sites["weread-official"].command("notes")
-    assert weread_notes.semantic_effect == "private_content_read"
-    assert weread_notes.auth == "required"
-    assert weread_notes.execution_state == "disabled"
+    assert command_policy.semantic_effect == effect
+    assert command_policy.risk == risk

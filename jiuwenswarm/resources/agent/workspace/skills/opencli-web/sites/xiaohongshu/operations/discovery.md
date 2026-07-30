@@ -1,22 +1,14 @@
-# Xiaohongshu Discovery Operations
+# Xiaohongshu: discovery
 
-This operation contract is selected by the Xiaohongshu site router. It
-authorizes only the commands listed below. Keep all parent routing, shell,
-confirmation, and fallback rules in force.
+Search, browse, recommend, or discover site content.
 
-| Command | Access | Exact usage | Purpose and important options |
-|---|---|---|---|
-| `ask` | write | `opencli xiaohongshu ask <query> [--timeout <seconds>] [--source-limit <count>] -f json` | Ask 小红书点点 and return an answer with sources. Defaults: timeout 90, source limit 10. |
-| `feed` | read | `opencli xiaohongshu feed [--limit <count>] -f json` | Read the home recommendation feed. Limit defaults to 20. |
-| `search` | read | `opencli xiaohongshu search <query> [--limit <count>] -f json` | Search notes. Limit defaults to 20. |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
+|---|---|---|---|---|
+| `ask` | `quota_consumption` / `high` | `opencli xiaohongshu ask "<query>" [--timeout <timeout>] [--source-limit <source-limit>] -f json`<br>Ask 小红书点点 and return the answer with citation sources. | `query` (str, required, positional); `timeout` (int, optional, default=90); `source-limit` (int, optional, default=10) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `feed` | `private_content_read` / `medium` | `opencli xiaohongshu feed [--limit <limit>] -f json`<br>小红书首页推荐 Feed (reads hydrated Pinia store) | `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `search` | `private_content_read` / `medium` | `opencli xiaohongshu search "<query>" [--limit <limit>] -f json`<br>搜索小红书笔记 | `query` (str, required, positional); `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 
-## Run discovery
+## Operation-specific constraints
 
-1. Preserve the user's query as one argument; do not add shell quoting inside
-   the value.
-2. Use `search` for explicit keywords and `feed` only for the current account's
-   recommendation stream.
-3. Treat `ask` as a write-class browser interaction. Once it starts, do not
-   repeat the request through `browser_agent`.
-4. A failed read-only `search` or `feed` may fall back to `browser_agent` when
-   no side effect occurred and the parent router otherwise permits fallback.
+- `feed`: sensitive output: private content, account identifiers
+- `search`: sensitive output: private content, account identifiers

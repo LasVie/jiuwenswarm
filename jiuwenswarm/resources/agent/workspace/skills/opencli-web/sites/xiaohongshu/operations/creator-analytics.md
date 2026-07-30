@@ -1,24 +1,19 @@
-# Xiaohongshu Creator Analytics Operations
+# Xiaohongshu: creator-analytics
 
-This operation contract is selected by the Xiaohongshu site router. It
-authorizes only the commands listed below. Keep all parent routing, shell,
-confirmation, and fallback rules in force.
+Read creator account and note performance metrics.
 
-| Command | Access | Exact usage | Purpose and important options |
-|---|---|---|---|
-| `creator-note-detail` | read | `opencli xiaohongshu creator-note-detail <note-id> -f json` | Read one creator note's content metrics, traffic sources, audience profile, and trends. |
-| `creator-notes` | read | `opencli xiaohongshu creator-notes [--limit <count>] -f json` | List creator notes and per-note views, likes, saves, and comments. Limit defaults to 20. |
-| `creator-notes-summary` | read | `opencli xiaohongshu creator-notes-summary [--limit <count>] [--timeout <seconds>] -f json` | Summarize recent creator notes and key metrics. Defaults: limit 3, timeout 180. |
-| `creator-profile` | read | `opencli xiaohongshu creator-profile -f json` | Read the current creator account profile, followers, following, likes, and growth level. |
-| `creator-stats` | read | `opencli xiaohongshu creator-stats [--period seven\|thirty] -f json` | Read creator totals and daily trends for seven or thirty days. |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
+|---|---|---|---|---|
+| `creator-note-detail` | `private_content_read` / `medium` | `opencli xiaohongshu creator-note-detail "<note-id>" -f json`<br>小红书单篇笔记详情页数据 (笔记信息 + 核心/互动数据 + 观看来源 + 观众画像 + 趋势数据) | `note-id` (string, required, positional) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `creator-notes` | `private_content_read` / `medium` | `opencli xiaohongshu creator-notes [--limit <limit>] -f json`<br>小红书创作者笔记列表 + 每篇数据 (标题/日期/观看/点赞/收藏/评论) | `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `creator-notes-summary` | `private_content_read` / `medium` | `opencli xiaohongshu creator-notes-summary [--limit <limit>] [--timeout <timeout>] -f json`<br>小红书最近笔记批量摘要 (列表 + 单篇关键数据汇总) | `limit` (int, optional, default=3); `timeout` (int, optional, default=180) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `creator-profile` | `private_account_read` / `medium` | `opencli xiaohongshu creator-profile -f json`<br>小红书创作者账号信息 (粉丝/关注/获赞/成长等级) | none | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `creator-stats` | `private_content_read` / `medium` | `opencli xiaohongshu creator-stats [--period "<seven\|thirty>"] -f json`<br>小红书创作者数据总览 (观看/点赞/收藏/评论/分享/涨粉，含每日趋势) | `period` (string, optional, default='seven', choices=seven,thirty) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 
-## Read creator analytics
+## Operation-specific constraints
 
-1. Use `creator-profile` for account-level identity and totals.
-2. Use `creator-stats` for seven- or thirty-day aggregate trends.
-3. Use `creator-notes` or `creator-notes-summary` for a recent-note collection,
-   and `creator-note-detail` only after an exact note ID is known.
-4. Preserve returned IDs and numeric values without rounding unless the user
-   requests a derived summary.
-5. A failed read may fall back to `browser_agent` when the parent router permits
-   it and no account mutation occurred.
+- `creator-note-detail`: sensitive output: private content, account identifiers
+- `creator-notes`: sensitive output: private content, account identifiers
+- `creator-notes-summary`: sensitive output: private content, account identifiers
+- `creator-profile`: sensitive output: account identifiers
+- `creator-stats`: sensitive output: private content, account identifiers

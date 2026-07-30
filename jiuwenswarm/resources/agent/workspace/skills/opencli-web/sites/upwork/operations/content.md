@@ -1,48 +1,11 @@
----
-opencli_contract:
-  version: 2
-  site: upwork
-  operation: content
-  policy_sha256: 1d10bc6218b6d560645d06ab55894f4993fe0c04ae042f221c635f1db2599946
-  commands:
-    detail:
-      executor: none
-      execution_state: disabled
-      semantic_effect: public_read
-      risk: low
-      auth: required
-      transport: browser_cookie
-      strategy: cookie
-      browser: true
-      opencli_version: 1.8.6
-      access: read
-      args:
-      - help: Job ciphertext id (~01… / ~02…) or full /jobs/~02… URL
-        name: id
-        positional: true
-        required: true
-        type: str
-      confirmation: unsupported
-      fallback:
-        before_dispatch: browser_agent
-        after_failure: browser_agent
-      file_inputs: []
-      file_outputs: []
-      sensitive_output: []
----
-
 # Upwork: content
 
 Read one public item, record, page, or resource.
 
-This is the terminal contract. The same main Agent must read this exact path with SkillTool immediately before invoking `opencli_execute`. Do not delegate the read or execution.
-
-| Command | State | Effect / risk | Exact structured use | Exact arguments |
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
-| `detail` | `disabled` | `public_read` / `low` | Not executable; use the declared fallback if permitted<br>Read the full Upwork job posting by ciphertext id (e.g. ~022054964136512093518) | `id` (str, required, positional) |
+| `detail` | `public_read` / `low` | `opencli upwork detail "<id>" -f json`<br>Read the full Upwork job posting by ciphertext id (e.g. ~022054964136512093518) | `id` (str, required, positional) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=browser_agent |
 
-## Safety and fallback
+## Operation-specific constraints
 
-- Unknown commands and arguments are rejected before subprocess start.
-- Arguments are rendered from the frozen catalog schema; no shell, arbitrary argv prefix, executable override, or environment override is accepted.
-- A `disabled` or `quarantined` command has documentation but no OpenCLI execution authority. Use only its declared browser fallback.
+- `detail`: Source-audited against OpenCLI 1.8.6 upwork/detail.js; the adapter requires a logged-in browser session, but returns public site content rather than account-private state.

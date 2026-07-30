@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: jira
 display_name: Jira
@@ -6,10 +6,6 @@ domains:
 - atlassian.net
 aliases: []
 terminal: operation
-review:
-  status: quarantined
-  owner: agent-b
-  notes: Source audit overrides the catalog public-read classification. Every command requires a configured Jira Cloud or Data Center base URL and credentials; execution stays quarantined until tenant hosts and a credential-aware executor are explicitly approved.
 operations:
   content:
     purpose: Read site content and metadata.
@@ -29,9 +25,6 @@ commands:
     risk: high
     auth: required
     transport: public_http
-    execution_state: quarantined
-    executor: none
-    confirmation: unsupported
     fallback_before: none
     fallback_after: none
     file_inputs: []
@@ -40,16 +33,13 @@ commands:
     - private issue content
     - attachment URLs
     - account identifiers
-    notes: Requires a configured Jira base URL and secret-bound authentication; no tenant host is dispatched while quarantined.
+    notes: Requires a configured Jira base URL and secret-bound authentication.
   comments:
     operation: content
     semantic_effect: private_content_read
     risk: high
     auth: required
     transport: public_http
-    execution_state: quarantined
-    executor: none
-    confirmation: unsupported
     fallback_before: none
     fallback_after: none
     file_inputs: []
@@ -57,16 +47,13 @@ commands:
     sensitive_output:
     - private issue comments
     - account identifiers
-    notes: Requires a configured Jira base URL and secret-bound authentication; no tenant host is dispatched while quarantined.
+    notes: Requires a configured Jira base URL and secret-bound authentication.
   issue:
     operation: content
     semantic_effect: private_content_read
     risk: high
     auth: required
     transport: public_http
-    execution_state: quarantined
-    executor: none
-    confirmation: unsupported
     fallback_before: none
     fallback_after: none
     file_inputs: []
@@ -74,16 +61,13 @@ commands:
     sensitive_output:
     - private issue content
     - account identifiers
-    notes: Requires a configured Jira base URL and secret-bound authentication; no tenant host is dispatched while quarantined.
+    notes: Requires a configured Jira base URL and secret-bound authentication.
   links:
     operation: content
     semantic_effect: private_content_read
     risk: high
     auth: required
     transport: public_http
-    execution_state: quarantined
-    executor: none
-    confirmation: unsupported
     fallback_before: none
     fallback_after: none
     file_inputs: []
@@ -91,16 +75,13 @@ commands:
     sensitive_output:
     - private issue links
     - account identifiers
-    notes: Requires a configured Jira base URL and secret-bound authentication; no tenant host is dispatched while quarantined.
+    notes: Requires a configured Jira base URL and secret-bound authentication.
   search:
     operation: discovery
     semantic_effect: private_content_read
     risk: high
     auth: required
     transport: public_http
-    execution_state: quarantined
-    executor: none
-    confirmation: unsupported
     fallback_before: none
     fallback_after: none
     file_inputs: []
@@ -108,4 +89,4 @@ commands:
     sensitive_output:
     - private issue content
     - account identifiers
-    notes: Requires a configured Jira base URL and secret-bound authentication; no tenant host is dispatched while quarantined.
+    notes: Requires a configured Jira base URL and secret-bound authentication.

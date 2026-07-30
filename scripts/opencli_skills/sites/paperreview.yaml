@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: paperreview
 display_name: Paperreview
@@ -6,10 +6,6 @@ domains:
 - paperreview.ai
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-c
-  notes: Token-scoped review content is private; all commands remain fail-closed pending their applicable review.
 operations:
   private-content:
     purpose: Read private review content addressed by a bearer capability token.
@@ -30,9 +26,6 @@ commands:
     risk: high
     auth: none
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -45,9 +38,6 @@ commands:
     risk: high
     auth: required
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -62,9 +52,6 @@ commands:
     risk: high
     auth: none
     transport: public_http
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs:

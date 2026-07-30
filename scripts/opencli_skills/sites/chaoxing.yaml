@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 catalog_version: opencli-1.8.6
 site: chaoxing
 display_name: Chaoxing
@@ -7,10 +7,6 @@ domains:
 - mooc2-ans.chaoxing.com
 aliases: []
 terminal: operation
-review:
-  status: generated
-  owner: agent-a
-  notes: Browser-backed reads source-reviewed; remaining disabled capabilities pending review application.
 operations:
   account:
     purpose: Read account identity or account-scoped metadata.
@@ -32,9 +28,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -49,9 +42,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -66,9 +56,6 @@ commands:
     risk: high
     auth: interactive
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -81,9 +68,6 @@ commands:
     risk: medium
     auth: required
     transport: browser_cookie
-    execution_state: disabled
-    executor: none
-    confirmation: unsupported
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
