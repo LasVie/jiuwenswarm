@@ -631,14 +631,16 @@ def _build_social_post_draft_select_client_event_prompt(
         "You receive an A2UI social media post draft selection. The user selected "
         "one draft variant for a public social-media post. Treat "
         "event.userAction.context as the authoritative platform, account, draft "
-        "body, media/link state, visibility, and posting context. Continue by "
-        "calling spawn_sub_agent with subagent_type='browser_agent' to continue "
-        "from the current browser state/session, open or use the selected social "
-        "platform compose surface, and fill the selected draft. Do not publish, "
-        "post, comment, like, follow, delete, or perform any externally visible "
-        "action. After the draft is filled or ready, render a final A2UI "
-        "confirmation with action 'social_post_confirm' and cancel action "
-        "'social_post_cancel'.\n"
+        "body, media/link state, visibility, and posting context. Resume the normal "
+        "website execution policy, including its OpenCLI-first check; this A2UI "
+        "event does not choose or hard-code an executor. Prepare the selected "
+        "draft with the route chosen by that policy, but do not publish, post, "
+        "comment, like, follow, delete, or perform any externally visible action. "
+        "Then render a final A2UI confirmation with action 'social_post_confirm' "
+        "and cancel action 'social_post_cancel'. Its action.context must preserve "
+        "the confirmed post fields and record execution_route='opencli' or "
+        "'browser_agent' for the route that actually prepared the draft; include "
+        "operation_contract when execution_route='opencli'.\n"
     )
     return prefix + json.dumps(payload, ensure_ascii=False)
 
@@ -650,15 +652,20 @@ def _build_social_post_confirm_client_event_prompt(
 ) -> str:
     payload = _build_a2ui_event_payload(event, channel, language)
     prefix = (
-        "You receive an A2UI final social media post confirmation. Before "
-        "publishing, verify that the visible compose state matches "
-        "event.userAction.context for platform, account, body, media/link state, "
-        "visibility, and target audience. If anything differs, stop and render a "
-        "corrected A2UI confirmation. If it matches, call browser_agent to "
-        "publish the post now using the visible platform publish/post action. "
-        "Never publish different content or to a different account. If the "
-        "platform blocks publishing or requires account/security steps outside "
-        "the current browser session, stop and report the required manual step.\n"
+        "You receive an A2UI final social media post confirmation. Treat the "
+        "confirmed content fields in event.userAction.context as authoritative "
+        "user consent, but validate execution_route and operation_contract against "
+        "the route that actually prepared the draft. Before publishing, verify "
+        "that the prepared post state matches the confirmed platform, account, "
+        "body, media/link state, visibility, and target audience. If route metadata "
+        "is missing or mismatched, the state differs, or the route cannot be "
+        "resumed safely, stop and render a corrected A2UI confirmation. "
+        "The normal website execution policy already chose the route during draft "
+        "preparation; do not run route selection again. Publish exactly once using "
+        "only the recorded execution_route; do not default to or switch to "
+        "browser_agent. Never publish different content or to another account. "
+        "If publishing is blocked or requires an unconfirmed account/security "
+        "step, stop and report the required manual step.\n"
     )
     return prefix + json.dumps(payload, ensure_ascii=False)
 

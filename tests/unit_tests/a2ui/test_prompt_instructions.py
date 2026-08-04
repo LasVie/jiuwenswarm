@@ -76,6 +76,11 @@ def test_a2ui_prompt_defines_gmail_and_social_actions():
     assert "social_post_draft_select" in instruction
     assert "social_post_confirm" in instruction
     assert "social_post_cancel" in instruction
+    assert "normal website execution policy" in instruction
+    assert "A2UI collects and confirms data but does not choose" in instruction
+    assert "execution_route='opencli' or 'browser_agent'" in instruction
+    assert "operation_contract when that route is OpenCLI" in instruction
+    assert "handling webmail, posting to social media" not in instruction
 
 
 def test_a2ui_zh_prompt_section_is_readable():

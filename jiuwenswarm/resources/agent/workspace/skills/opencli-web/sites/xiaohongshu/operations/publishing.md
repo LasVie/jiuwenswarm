@@ -8,4 +8,4 @@ Publish, create, edit, or upload remote content.
 
 ## Operation-specific constraints
 
-- `publish`: file inputs: /images/*
+- `publish`: On Windows, shell_type=auto is allowed. For multiline or quote-rich user values, encode them as UTF-8 Base64 and decode them into PowerShell variables with `$value=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('<base64>'))` before invoking opencli; never inline raw multiline user text. In --card-text, use the literal characters \n for an in-card line break and ||| between cards. Pass --topics as comma-separated names without #. Style availability is dynamic: omit --card-style unless the user explicitly names an exact style, and omission uses 基础. Never infer a style from the static help catalog. If OpenCLI returns `requested style "..." is not available` with `options`, the failure is before submission; retry at most once using only an exact value from those returned options. If no suitable option is clear, ask the user or retry without --card-style; file inputs: /images/*

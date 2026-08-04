@@ -66,7 +66,14 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output: []
-    notes: ''
+    notes: >-
+      Treat a citation URL as usable only when it contains a non-empty
+      xsec_token. Before presenting citations or passing one to note, comments,
+      or download, resolve every unsigned source with search using its title and
+      author, require the returned note ID to match, and copy the signed search
+      result URL unchanged. Never expose a bare /explore/<note-id> URL as a
+      clickable link; if resolution fails, report that source as unavailable
+      without a link
   comments:
     operation: notes
     semantic_effect: private_content_read
@@ -80,7 +87,13 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: >-
+      Always pass the original full Xiaohongshu note URL containing xsec_token.
+      Copy the complete URL unchanged, including its query string; never extract
+      or substitute a bare note ID
+    arg_overrides:
+      note-id:
+        placeholder: full-note-url-with-xsec-token
   creator-note-detail:
     operation: creator-analytics
     semantic_effect: private_content_read
@@ -174,7 +187,13 @@ commands:
     file_outputs:
     - workspace-relative output
     sensitive_output: []
-    notes: ''
+    notes: >-
+      Always pass the original full Xiaohongshu note URL containing xsec_token,
+      or an xhslink short URL. Copy a signed URL unchanged, including its query
+      string; never extract or substitute a bare note ID
+    arg_overrides:
+      note-id:
+        placeholder: full-note-url-with-xsec-token-or-xhslink
   draft-clear:
     operation: drafts
     semantic_effect: destructive_or_admin
@@ -240,7 +259,10 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: >-
+      Preserve every returned note URL unchanged, including its non-empty
+      xsec_token and complete query string; never shorten it to a bare
+      /explore/<note-id> URL
   follow:
     operation: social-actions
     semantic_effect: reversible_remote_write
@@ -252,7 +274,19 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output: []
-    notes: ''
+    notes: >-
+      Before asking for confirmation, inspect the original full profile URL
+      read-only with browser_agent and capture both the visible nickname and
+      visible 小红书号. Treat /user/profile/<id> only as an internal profile ID,
+      never as the user-facing 小红书号. If the query delimiter is fullwidth ？,
+      normalize only that delimiter to ? and preserve the rest of the query.
+      Confirm using nickname, 小红书号, and internal profile ID; stop if any
+      identity or target match is uncertain. After confirmation, invoke follow
+      exactly once and stop without retry if the result or visible state is
+      uncertain. Require a separate confirmation before a later unfollow
+    arg_overrides:
+      user-id:
+        placeholder: full-profile-url
   liked:
     operation: notes
     semantic_effect: private_content_read
@@ -292,7 +326,13 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: >-
+      Always pass the original full Xiaohongshu note URL containing xsec_token.
+      Copy the complete URL unchanged, including its query string; never extract
+      or substitute a bare note ID
+    arg_overrides:
+      note-id:
+        placeholder: full-note-url-with-xsec-token
   notifications:
     operation: notes
     semantic_effect: private_content_read
@@ -319,7 +359,20 @@ commands:
     - /images/*
     file_outputs: []
     sensitive_output: []
-    notes: ''
+    notes: >-
+      On Windows, shell_type=auto is allowed. For multiline or quote-rich user
+      values, encode them as UTF-8 Base64 and decode them into PowerShell
+      variables with
+      `$value=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('<base64>'))`
+      before invoking opencli; never inline raw multiline user text. In
+      --card-text, use the literal characters \n for an in-card line break and
+      ||| between cards. Pass --topics as comma-separated names without #.
+      Style availability is dynamic: omit --card-style unless the user
+      explicitly names an exact style, and omission uses 基础. Never infer a
+      style from the static help catalog. If OpenCLI returns `requested style
+      "..." is not available` with `options`, the failure is before submission;
+      retry at most once using only an exact value from those returned options.
+      If no suitable option is clear, ask the user or retry without --card-style
   saved:
     operation: notes
     semantic_effect: private_content_read
@@ -347,7 +400,10 @@ commands:
     sensitive_output:
     - private content
     - account identifiers
-    notes: ''
+    notes: >-
+      Preserve every returned note URL unchanged, including its non-empty
+      xsec_token and complete query string; never shorten it to a bare
+      /explore/<note-id> URL
   unfollow:
     operation: social-actions
     semantic_effect: destructive_or_admin
@@ -359,7 +415,19 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output: []
-    notes: ''
+    notes: >-
+      Before asking for confirmation, inspect the original full profile URL
+      read-only with browser_agent and capture both the visible nickname and
+      visible 小红书号. Treat /user/profile/<id> only as an internal profile ID,
+      never as the user-facing 小红书号. Confirm using nickname, 小红书号, and
+      internal profile ID; stop if identity or target match is uncertain. After
+      confirmation, invoke unfollow exactly once. If the command errors, do not
+      retry: inspect the visible profile button read-only and report the command
+      error together with the observed state, without claiming success when the
+      state remains uncertain
+    arg_overrides:
+      user-id:
+        placeholder: full-profile-url
   user:
     operation: notes
     semantic_effect: private_content_read

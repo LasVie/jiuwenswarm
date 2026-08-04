@@ -30,6 +30,7 @@ parse_dotenv_early("jiuwenswarm-agentserver")
 # --- Now safe to import jiuwenswarm modules ---
 from jiuwenswarm.common.debug_dump import install_async_dump_handler
 from jiuwenswarm.common.utils import (
+    ensure_default_builtin_skills,
     get_env_file,
     get_root_dir,
     get_user_workspace_dir,
@@ -268,6 +269,8 @@ def main() -> None:
     if args.name and get_parsed_dotenv() is None:
         # Early parsing failed - error was already printed
         raise SystemExit(1)
+
+    ensure_default_builtin_skills(_workspace_dir)
 
     host = os.getenv("AGENT_SERVER_HOST", "127.0.0.1")
     port = args.port

@@ -339,7 +339,7 @@ def test_a2ui_gmail_send_confirmation_allows_confirmed_send(monkeypatch):
 
 
 def test_a2ui_social_post_draft_select_stops_before_publish(monkeypatch):
-    """Social draft selection should fill compose UI but not publish."""
+    """Social draft selection should defer executor choice and stop before publish."""
     from jiuwenswarm.server.runtime.a2ui.integration import build_user_prompt_if_a2ui_event
 
     monkeypatch.setenv("JIUWENSWARM_A2UI_ENABLED", "true")
@@ -352,11 +352,11 @@ def test_a2ui_social_post_draft_select_stops_before_publish(monkeypatch):
                 "surfaceId": "social-drafts",
                 "sourceComponentId": "draft-1",
                 "context": {
-                    "original_query": "Draft a LinkedIn product update",
+                    "original_query": "Draft a Xiaohongshu product update",
                     "task_type": "social_post",
                     "next_action": "continue_social_post_draft",
-                    "platform": "LinkedIn",
-                    "account_hint": "Company Page",
+                    "platform": "Xiaohongshu",
+                    "account_hint": "Creator account",
                     "draft_body": "We shipped a faster A2UI booking flow.",
                     "visibility": "public",
                 },
@@ -372,16 +372,19 @@ def test_a2ui_social_post_draft_select_stops_before_publish(monkeypatch):
 
     assert client_prompt is not None
     assert "social media post draft selection" in client_prompt
-    assert "spawn_sub_agent" in client_prompt
-    assert "browser_agent" in client_prompt
-    assert "fill the selected draft" in client_prompt
-    assert "Do not publish" in client_prompt
+    assert "normal website execution policy" in client_prompt
+    assert "OpenCLI-first check" in client_prompt
+    assert "does not choose or hard-code an executor" in client_prompt
+    assert "spawn_sub_agent" not in client_prompt
+    assert "execution_route='opencli' or 'browser_agent'" in client_prompt
+    assert "operation_contract when execution_route='opencli'" in client_prompt
+    assert "do not publish" in client_prompt
     assert "social_post_confirm" in client_prompt
-    assert "LinkedIn" in client_prompt
+    assert "Xiaohongshu" in client_prompt
 
 
 def test_a2ui_social_post_confirmation_is_guarded(monkeypatch):
-    """Final social publish should verify visible compose state before posting."""
+    """Final social publish should verify state and preserve the prepared route."""
     from jiuwenswarm.server.runtime.a2ui.integration import build_user_prompt_if_a2ui_event
 
     monkeypatch.setenv("JIUWENSWARM_A2UI_ENABLED", "true")
@@ -396,10 +399,12 @@ def test_a2ui_social_post_confirmation_is_guarded(monkeypatch):
                 "context": {
                     "task_type": "social_post",
                     "next_action": "confirm_social_post",
-                    "platform": "LinkedIn",
-                    "account_hint": "Company Page",
+                    "platform": "Xiaohongshu",
+                    "account_hint": "Creator account",
                     "draft_body": "We shipped a faster A2UI booking flow.",
                     "visibility": "public",
+                    "execution_route": "opencli",
+                    "operation_contract": "sites/xiaohongshu/operations/publishing.md",
                 },
             }
         },
@@ -413,7 +418,16 @@ def test_a2ui_social_post_confirmation_is_guarded(monkeypatch):
 
     assert client_prompt is not None
     assert "final social media post confirmation" in client_prompt
-    assert "verify that the visible compose state matches" in client_prompt
-    assert "publish the post now" in client_prompt
+    assert "authoritative user consent" in client_prompt
+    assert "validate execution_route and operation_contract" in client_prompt
+    assert "prepared post state matches" in client_prompt
+    assert "route metadata is missing or mismatched" in client_prompt
+    assert "already chose the route during draft preparation" in client_prompt
+    assert "do not run route selection again" in client_prompt
+    assert "publish exactly once" in client_prompt.lower()
+    assert "using only the recorded execution_route" in client_prompt
+    assert "do not default to or switch to browser_agent" in client_prompt
+    assert "call browser_agent" not in client_prompt
     assert "Never publish different content" in client_prompt
-    assert "LinkedIn" in client_prompt
+    assert '"execution_route": "opencli"' in client_prompt
+    assert "Xiaohongshu" in client_prompt

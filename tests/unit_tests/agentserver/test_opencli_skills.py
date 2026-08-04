@@ -103,6 +103,25 @@ def _install_opencli_fixture(tmp_path: Path) -> Path:
     return installed_skills_dir
 
 
+def _extract_markdown_section(prompt: str, heading: str) -> str:
+    match = re.search(
+        rf"(?ms)^{re.escape(heading)}\n\n.*?(?=^# |\Z)",
+        prompt,
+    )
+    assert match is not None
+    return match.group(0)
+
+
+def _extract_labeled_bullets(section: str) -> dict[str, str]:
+    return {
+        label: body
+        for label, body in re.findall(
+            r"(?m)^- ([^:]+): (.+)$",
+            section,
+        )
+    }
+
+
 def test_opencli_web_builtin_resource_has_nested_xiaohongshu_module():
     assert _read_frontmatter(MASTER_SKILL_DIR)["name"] == "opencli-web"
     site_index = (XIAOHONGSHU_MODULE_DIR / "index.md").read_text(encoding="utf-8")
@@ -152,6 +171,15 @@ def test_opencli_skill_uses_progressive_disclosure_and_complete_command_catalog(
     assert "opencli_adapter_incompatible" not in publishing
     assert "opencli_contract:" not in publishing
     assert "opencli_execute" not in publishing
+
+    social_actions = operation_documents["operations/social-actions.md"]
+    assert 'follow "<full-profile-url>"' in social_actions
+    assert 'unfollow "<full-profile-url>"' in social_actions
+    assert "visible nickname and visible 小红书号" in social_actions
+    assert "only as an internal profile ID" in social_actions
+    assert "invoke follow exactly once" in social_actions
+    assert "invoke unfollow exactly once" in social_actions
+    assert "do not retry" in social_actions
 
     assert "references/" not in master
     assert "references/" not in xiaohongshu
@@ -264,7 +292,48 @@ async def test_acceptance_trace_reads_native_publish_contract_before_shell_execu
 
 
 @pytest.mark.asyncio
-async def test_web_runtime_prompt_automatically_routes_supported_sites_opencli_first():
+async def test_acceptance_trace_discloses_each_needed_operation_sequentially(
+    tmp_path,
+):
+    installed_skills_dir = _install_opencli_fixture(tmp_path)
+    installed_root = installed_skills_dir / "opencli-web"
+    skill_tool = SkillTool(
+        _LocalOperation(),
+        lambda: [
+            Skill(
+                name="opencli-web",
+                description=_read_frontmatter(installed_root)["description"],
+                directory=installed_root,
+            )
+        ],
+        language="en",
+    )
+
+    reads = [
+        ("opencli-web", None),
+        ("opencli-web", XIAOHONGSHU_MODULE_PATH),
+        ("opencli-web", "sites/xiaohongshu/operations/discovery.md"),
+        ("opencli-web", "sites/xiaohongshu/operations/notes.md"),
+    ]
+    contents: list[str] = []
+    for skill_name, relative_path in reads:
+        arguments = {"skill_name": skill_name}
+        if relative_path is not None:
+            arguments["relative_file_path"] = relative_path
+        result = await skill_tool.invoke(arguments)
+        assert result.success is True
+        contents.append(result.data["skill_content"])
+
+    assert "`search`" in contents[2]
+    assert "`comments`" in contents[3]
+    assert [relative_path for _, relative_path in reads[2:]] == [
+        "sites/xiaohongshu/operations/discovery.md",
+        "sites/xiaohongshu/operations/notes.md",
+    ]
+
+
+@pytest.mark.asyncio
+async def test_web_runtime_prompt_defines_one_concise_opencli_routing_contract():
     builder = SystemPromptBuilder(language="en")
     rail = RuntimePromptRail(language="en", channel="web")
     rail.init(_FakeAgent(builder))
@@ -278,20 +347,97 @@ async def test_web_runtime_prompt_automatically_routes_supported_sites_opencli_f
     await rail.before_model_call(ctx)
 
     prompt = builder.build()
-    assert "installed and enabled `opencli-web` Skill" in prompt
-    assert "do not search for, install, or ask the user to select it" in prompt
-    assert "general-purpose" in prompt
-    assert "relative_file_path" in prompt
-    assert "points back to the site file" in prompt
-    assert "otherwise read exactly one listed operation module" in prompt
-    assert "Every command listed in that terminal contract is available" in prompt
-    assert "exact OpenCLI CLI command documented there" in prompt
-    assert "dedicated wrapper" not in prompt
-    assert "provable pre-dispatch infrastructure failure" in prompt
-    assert "Never run OpenCLI and `browser_agent` concurrently" in prompt
-    assert "A listed command grants capability, not user consent" in prompt
-    assert "`high` or `critical`" in prompt
-    assert "social_post_confirm" in prompt
-    assert "must not retry with `browser_agent`" in prompt
-    assert '`shell_type: "auto"`' in prompt
+    opencli_policy = _extract_markdown_section(prompt, "# OpenCLI Web Policy")
+    browser_policy = _extract_markdown_section(prompt, "# Browser Tool Policy")
+    bullets = _extract_labeled_bullets(opencli_policy)
+
+    assert len(opencli_policy.split()) <= 275
+    assert len(browser_policy.split()) <= 100
+    assert set(bullets) == {
+        "Scope",
+        "Disclosure",
+        "Execution",
+        "Seriality",
+        "Consent",
+        "Fallback/retry",
+    }
+    assert all(
+        term in bullets["Scope"]
+        for term in (
+            "`browser_agent`",
+            "live-site",
+            "`opencli-web`",
+            "discussion",
+            "local web development",
+            "purpose-built non-browser",
+        )
+    )
+    assert all(
+        term in bullets["Disclosure"]
+        for term in (
+            "main agent alone",
+            "relative_file_path",
+            "each operation needed",
+            "one at a time",
+            "full listed path",
+            "No unrelated modules",
+            "general-purpose",
+            "filesystem reads",
+        )
+    )
+    assert "exactly one listed operation module" not in prompt
+    assert all(
+        term in bullets["Execution"]
+        for term in (
+            "adapter capability",
+            "not readiness",
+            "authentication",
+            "consent",
+            "exact documented command and arguments",
+            "opaque URLs",
+            "query strings and fragments",
+            "separate shell arguments",
+            "unchanged absolute paths",
+            'shell_type: "auto"',
+        )
+    )
+    assert all(
+        term in bullets["Seriality"]
+        for term in ("at most one OpenCLI command", "await it", "concurrently")
+    )
+    assert all(
+        term in bullets["Consent"]
+        for term in (
+            "high",
+            "critical",
+            "side-effecting",
+            "material non-secret arguments",
+            "A2UI",
+            "Redact credentials",
+            "signed-URL secrets",
+            "preserving them at execution",
+        )
+    )
+    assert all(
+        term in bullets["Fallback/retry"]
+        for term in (
+            "capability is absent",
+            "terminal row permits",
+            "adapter process did not start",
+            "possible or unclear",
+            "fallback_after",
+            "COMMAND_EXEC",
+            "ARGUMENT",
+            "read at most once",
+            "never automatically retry writes",
+            "fallback_after=none",
+            "no browser fallback",
+            "verify read-only",
+        )
+    )
+
+    assert "opencli" not in browser_policy.lower()
+    assert "social_post_" not in browser_policy
+    assert "gmail_" not in browser_policy
+    assert "hotel_" not in browser_policy
     assert "opencli_execute" not in prompt

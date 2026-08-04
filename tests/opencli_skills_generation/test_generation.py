@@ -245,6 +245,79 @@ def test_physical_depth_follows_safety_boundary_not_command_count_alone() -> Non
     }
 
 
+def test_xiaohongshu_note_commands_preserve_full_signed_urls() -> None:
+    model = build_generation_model(
+        load_catalog(CATALOG_PATH),
+        load_ownership(OWNERSHIP_PATH),
+        load_policies(POLICY_ROOT),
+    )
+    site = model.sites["xiaohongshu"]
+
+    for command_name in ("note", "comments"):
+        command = site.command(command_name)
+        invocation = _command_invocation(site, command)
+        assert '"<full-note-url-with-xsec-token>"' in invocation
+        assert "original full Xiaohongshu note URL containing xsec_token" in (
+            command.notes
+        )
+        assert "never extract or substitute a bare note ID" in command.notes
+
+    download = site.command("download")
+    assert '"<full-note-url-with-xsec-token-or-xhslink>"' in (
+        _command_invocation(site, download)
+    )
+    assert "or an xhslink short URL" in download.notes
+    assert "never extract or substitute a bare note ID" in download.notes
+
+
+def test_xiaohongshu_discovery_resolves_unsigned_citations() -> None:
+    model = build_generation_model(
+        load_catalog(CATALOG_PATH),
+        load_ownership(OWNERSHIP_PATH),
+        load_policies(POLICY_ROOT),
+    )
+    site = model.sites["xiaohongshu"]
+    ask_notes = site.command("ask").notes
+
+    assert "only when it contains a non-empty xsec_token" in ask_notes
+    assert "resolve every unsigned source with search" in ask_notes
+    assert "require the returned note ID to match" in ask_notes
+    assert "Never expose a bare /explore/<note-id> URL" in ask_notes
+
+    for command_name in ("feed", "search"):
+        notes = site.command(command_name).notes
+        assert "Preserve every returned note URL unchanged" in notes
+        assert "non-empty xsec_token and complete query string" in notes
+        assert "never shorten it" in notes
+
+
+def test_xiaohongshu_social_actions_verify_visible_profile_identity() -> None:
+    model = build_generation_model(
+        load_catalog(CATALOG_PATH),
+        load_ownership(OWNERSHIP_PATH),
+        load_policies(POLICY_ROOT),
+    )
+    site = model.sites["xiaohongshu"]
+
+    for command_name in ("follow", "unfollow"):
+        command = site.command(command_name)
+        assert '"<full-profile-url>"' in _command_invocation(site, command)
+        assert "visible nickname" in command.notes
+        assert "visible 小红书号" in command.notes
+        assert "only as an internal profile ID" in command.notes
+        assert "stop if" in command.notes
+
+    follow_notes = site.command("follow").notes
+    assert "normalize only that delimiter to ?" in follow_notes
+    assert "invoke follow exactly once" in follow_notes
+    assert "separate confirmation before a later unfollow" in follow_notes
+
+    unfollow_notes = site.command("unfollow").notes
+    assert "invoke unfollow exactly once" in unfollow_notes
+    assert "do not retry" in unfollow_notes
+    assert "inspect the visible profile button read-only" in unfollow_notes
+
+
 def test_generation_is_deterministic_and_links_are_complete(
     tmp_path: Path,
 ) -> None:

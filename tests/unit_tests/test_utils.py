@@ -3,6 +3,7 @@
 """Unit tests for utils module."""
 
 import importlib
+import json
 import os
 import sys
 from pathlib import Path
@@ -288,6 +289,72 @@ class TestUserWorkspace:
         # This test requires more complex mocking due to file operations
         # Simplified version
         pass
+
+    @staticmethod
+    def test_ensure_default_builtin_skills_installs_only_missing_skills(
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ):
+        """Startup backfill installs missing defaults without syncing existing ones."""
+        builtin_dir = tmp_path / "builtins"
+        skill_names = ("skill-creator", "swarmskill-creator", "opencli-web")
+        for skill_name in skill_names:
+            skill_dir = builtin_dir / skill_name
+            skill_dir.mkdir(parents=True)
+            (skill_dir / "marker.txt").write_text(
+                f"builtin:{skill_name}",
+                encoding="utf-8",
+            )
+
+        workspace_dir = tmp_path / "runtime"
+        installed_skills_dir = workspace_dir / "agent" / "workspace" / "skills"
+        existing_skill_dir = installed_skills_dir / "skill-creator"
+        existing_skill_dir.mkdir(parents=True)
+        existing_marker = existing_skill_dir / "marker.txt"
+        existing_marker.write_text("user-owned", encoding="utf-8")
+
+        monkeypatch.setattr(utils, "get_builtin_skills_dir", lambda: builtin_dir)
+
+        utils.ensure_default_builtin_skills(workspace_dir)
+
+        assert existing_marker.read_text(encoding="utf-8") == "user-owned"
+        assert (
+            installed_skills_dir / "swarmskill-creator" / "marker.txt"
+        ).read_text(encoding="utf-8") == "builtin:swarmskill-creator"
+        opencli_marker = installed_skills_dir / "opencli-web" / "marker.txt"
+        assert opencli_marker.read_text(encoding="utf-8") == "builtin:opencli-web"
+
+        state = json.loads(
+            (installed_skills_dir / "skills_state.json").read_text(
+                encoding="utf-8",
+            )
+        )
+        recorded_names = {
+            item["name"] for item in state["installed_plugins"]
+        }
+        assert recorded_names == {"swarmskill-creator", "opencli-web"}
+
+        opencli_marker.write_text("user-edited", encoding="utf-8")
+        (builtin_dir / "opencli-web" / "marker.txt").write_text(
+            "builtin:updated",
+            encoding="utf-8",
+        )
+
+        utils.ensure_default_builtin_skills(workspace_dir)
+
+        assert opencli_marker.read_text(encoding="utf-8") == "user-edited"
+
+    @staticmethod
+    def test_ensure_default_builtin_skills_does_not_initialize_workspace(
+        tmp_path: Path,
+    ):
+        """Startup backfill must not create a missing workspace."""
+        workspace_dir = tmp_path / "missing-runtime"
+
+        result = utils.ensure_default_builtin_skills(workspace_dir)
+
+        assert not workspace_dir.exists()
+        assert result == utils.CopyDiffResult([], [], [])
 
 
 class TestConstants:

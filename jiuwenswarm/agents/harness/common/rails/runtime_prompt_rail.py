@@ -68,6 +68,7 @@ class RuntimePromptRail(DeepAgentRail):
             self.system_prompt_builder.remove_section("runtime.model_answer_policy")
             self.system_prompt_builder.remove_section("language_output")
             self.system_prompt_builder.remove_section("env")
+            self.system_prompt_builder.remove_section("opencli_web_policy")
             self.system_prompt_builder.remove_section("browser_tool_policy")
             self.system_prompt_builder.remove_section("tui_current_project_policy")
             self.system_prompt_builder.remove_section("trusted_dirs_policy")
@@ -170,6 +171,7 @@ class RuntimePromptRail(DeepAgentRail):
             "runtime.model_answer_policy",
             "language_output",
             "env",
+            "opencli_web_policy",
             "browser_tool_policy",
             "tui_current_project_policy",
             "trusted_dirs_policy"):
@@ -413,92 +415,47 @@ class RuntimePromptRail(DeepAgentRail):
                 section="git_status",
             )
 
-        # ── Channel: browser_tool_policy or trusted_dirs_policy──
+        # ── Channel: OpenCLI / browser policies or trusted_dirs_policy ──
         if self._channel == "web":
+            opencli_web_policy = (
+                "# OpenCLI Web Policy\n\n"
+                "- Scope: before `browser_agent` handles live-site interaction or page/account state, use the "
+                "installed, enabled `opencli-web` Skill. Exclude discussion, local web development, and "
+                "purpose-built non-browser capabilities; never search, install, or ask the user to select it.\n"
+                "- Disclosure: the main agent alone reads the root, listed site via `relative_file_path`, then "
+                "each operation needed by the task, one at a time. Use the site terminal or each operation's "
+                "full listed path. No unrelated modules, `general-purpose`/`browser_agent` delegation, or "
+                "filesystem reads.\n"
+                "- Execution: a terminal row declares adapter capability, not readiness, authentication, or "
+                "consent. Copy its exact documented command and arguments. Preserve opaque URLs, signed URLs, "
+                "tokens, identifiers, and paths verbatim at execution, including query strings and fragments. "
+                "Use separate shell arguments and unchanged absolute paths; prefer documented `-f json`. On "
+                "Windows use `shell_type: \"auto\"`, never `bash`/`sh`.\n"
+                "- Seriality: issue at most one OpenCLI command per model response/tool batch and await it. "
+                "Never run OpenCLI and `browser_agent` concurrently for the same operation.\n"
+                "- Consent: confirm `high`/`critical` and side-effecting commands with the action and material "
+                "non-secret arguments, using A2UI when available. Redact credentials, tokens, and signed-URL "
+                "secrets in confirmation while preserving them at execution.\n"
+                "- Fallback/retry: use `browser_agent` only if capability is absent or the terminal row permits "
+                "it. `fallback_before` requires proof the adapter process did not start; if start is possible or "
+                "unclear, only `fallback_after` applies. `COMMAND_EXEC` is after-start. For `ARGUMENT`, reread "
+                "the contract and correct a read at most once without switching; never automatically retry "
+                "writes. With `fallback_after=none`, or after a failed, timed-out, or ambiguous write, use no "
+                "browser fallback; verify read-only or stop with uncertainty.\n"
+            )
+            self.system_prompt_builder.add_section(PromptSection(
+                name="opencli_web_policy",
+                content={"cn": opencli_web_policy, "en": opencli_web_policy},
+                priority=99,
+            ))
+
             browser_tool_policy = (
                 "# Browser Tool Policy\n\n"
-                "- Automatic OpenCLI-first routing: for every task involving a live website, use the "
-                "installed and enabled `opencli-web` Skill before browser automation when it is available; "
-                "do not search for, install, or ask the user to select it. If it lists an exact match for both the "
-                "website and requested operation, read the bundled site module with `skill_name` set to "
-                "`opencli-web` and `relative_file_path` set to the path listed by the root router. Follow "
-                "the terminal path declared by that site module: when it points back to the site file, the "
-                "already-loaded site file is the terminal contract; otherwise read exactly one listed "
-                "operation module with the Skill tool, again using `skill_name=opencli-web` and its full "
-                "`relative_file_path`. Every command listed in that terminal contract is available. Execute "
-                "it only by copying the exact OpenCLI CLI command documented there; never invent a "
-                "command or argument from catalog knowledge.\n"
-                "- Keep Skill disclosure in the main agent. Never use `task_tool`, `sessions_spawn`, a "
-                "`general-purpose` subagent, `browser_agent`, or a filesystem tool to read files under the "
-                "installed `opencli-web` directory. Use the Skill tool's `relative_file_path` argument; the "
-                "site and operation modules are bundled resources of the same installed Skill.\n"
-                "- Use `task_tool` with `subagent_type` set to `\"browser_agent\"` only when `opencli-web` "
-                "or its matching site/operation module is unavailable, no exact operation contract is "
-                "listed, the terminal contract declares browser fallback for the selected command, or "
-                "OpenCLI reports a provable pre-dispatch infrastructure failure. A failed "
-                "read may fall back only when its terminal row permits it. Never run OpenCLI and "
-                "`browser_agent` concurrently for the same operation. Treat a write command as started "
-                "once its OpenCLI process may have dispatched; after that, a failure, timeout, or ambiguous "
-                "result must not retry through OpenCLI or `browser_agent`. Use a documented read-only "
-                "verification or stop and report uncertainty.\n"
-                "- A listed command grants capability, not user consent. Before a `high` or `critical` "
-                "risk command, or any command that changes authentication, files, remote state, sends "
-                "content, consumes quota, performs financial activity, or executes arbitrary code, show "
-                "the exact action and arguments and obtain final explicit user confirmation. Use A2UI for "
-                "that confirmation when it is available. Low/medium reads need no extra confirmation "
-                "unless their operation-specific constraints say otherwise.\n"
                 "- For browser-only tasks, put the full browser objective in `task_description`, including "
                 "opening pages, navigation, clicking, typing, login, screenshots, page inspection, or "
                 "extracting data from a live website.\n"
-                "- Before spawning `browser_agent` for booking, ticketing, purchasing, reservation, or "
-                "form-filling tasks, check whether the user has supplied enough confirmed details. "
-                "If required details are missing and A2UI is available, render a preflight A2UI form "
-                "with action name `browser_preflight_submit` instead of starting browser automation. "
-                "Do not use plain natural-language questions or `ask_user` for those missing "
-                "browser-task details when A2UI is available on the Web channel.\n"
-                "- Mandatory Web A2UI account-action gate: Gmail, email, mailbox cleanup, social "
-                "media posting, comments, and other externally visible account actions MUST use A2UI "
-                "when A2UI is available. Do not use `todo_create`, `todo_modify`, `memory_search`, "
-                "`task_tool`, plain text, Markdown, or `ask_user` as a substitute for A2UI preflight, "
-                "candidate selection, draft review, or final confirmation. For requests such as "
-                "finding emails and replying to the ones that need a reply, first use A2UI preflight "
-                "if filters or reply preferences are incomplete; after Gmail search, show the "
-                "emails/threads as A2UI candidates before opening, summarizing multiple messages, "
-                "drafting replies, or modifying mail; and show final A2UI confirmation before any "
-                "send, archive, delete, unsubscribe, label, mark-read, post, publish, comment, like, "
-                "follow, or delete action.\n"
-                "- For hotel booking flows, after `browser_agent` returns candidate hotels, render the "
-                "candidate list with A2UI selection actions named `hotel_option_select`. Include "
-                "`next_action=\"continue_hotel_booking\"`, the selected hotel identity, and the "
-                "confirmed city/date/guest context in each action context. When the user selects a "
-                "hotel, call `browser_agent` to continue from the current browser state and selected "
-                "candidate; do not restart the broad hotel search unless browser-state recovery is "
-                "needed. At the payment/order summary page, render a final A2UI confirmation using "
-                "`hotel_payment_confirm` and `hotel_payment_cancel` actions.\n"
-                "- For Gmail search, summarization, reply drafting, and cleanup flows, render search "
-                "results with `gmail_email_select` actions and cleanup candidates with "
-                "`gmail_cleanup_select` actions. When the user selects an email, continue from the "
-                "current Gmail browser state; do not repeat the broad Gmail search unless recovery is "
-                "needed. Filling a reply draft must use `gmail_reply_draft_select` and must stop "
-                "before sending. After `gmail_send_confirm`, send the email only if the visible "
-                "Gmail compose state matches the confirmed context. Final cleanup requires "
-                "`gmail_cleanup_confirm`. Respect `gmail_send_cancel` and `gmail_cleanup_cancel` "
-                "by stopping without side effects.\n"
-                "- For social media posting flows, render draft variants with "
-                "`social_post_draft_select`. After draft selection, use the matching OpenCLI operation "
-                "contract when supported; otherwise use `browser_agent` to fill the current platform compose "
-                "UI. In either path, stop before any externally visible publish action. Final publishing "
-                "requires `social_post_confirm`; after confirmation, publish exactly once and only if the "
-                "prepared state matches the confirmed context. If an OpenCLI publish attempt starts, it must "
-                "not retry with `browser_agent`. `social_post_cancel` stops without publishing.\n"
                 "- Do not use bash, execute_code, subprocess, shell commands, or direct Chrome/Edge launches "
-                "for browser automation. The only command-line exception is invoking an exact `opencli` "
-                "command documented by the loaded terminal contract. Prefer `-f json`; "
-                "preserve every argument as a separate shell argument and preserve absolute payload/media "
-                "paths. On Windows use `shell_type: \"auto\"`; never force `bash` or `sh` or translate a "
-                "Windows path. This exception does not allow direct browser launches, ad-hoc browser scripts, "
-                "catalog-derived commands, executable overrides, environment overrides, or undocumented "
-                "arguments.\n"
+                "for browser automation. Do not launch browsers or run ad-hoc browser scripts from the shell.\n"
                 "- If `task_tool` or `browser_agent` is unavailable, say that the browser "
                 "subagent is unavailable before trying to start a browser through commands."
             )

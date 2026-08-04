@@ -50,6 +50,7 @@ EXCLUDED_ADAPTERS = frozenset(
 )
 _SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_PLACEHOLDER_RE = re.compile(r'^[^\s<>"|]+$')
 _INDEX_RE = re.compile(
     r"(?ms)^## Supported websites\s*.*\Z"
 )
@@ -465,13 +466,29 @@ def _apply_arg_overrides(
         arg = dict(raw_arg)
         arg_override = overrides.get(str(arg.get("name")))
         if arg_override is not None:
-            constraints = _require_mapping(
+            fields = _require_mapping(
                 arg_override, f"{identity}.arg_overrides.{arg.get('name')}"
             )
-            allowed = {"minimum", "maximum", "pattern", "max_length"}
-            if set(constraints) - allowed:
-                raise GenerationError(f"{identity} has unknown argument constraints")
-            arg["constraints"] = dict(constraints)
+            constraint_names = {"minimum", "maximum", "pattern", "max_length"}
+            allowed = constraint_names | {"placeholder"}
+            if set(fields) - allowed:
+                raise GenerationError(
+                    f"{identity} has unknown argument override fields"
+                )
+            if "placeholder" in fields:
+                placeholder = fields["placeholder"]
+                if not isinstance(placeholder, str) or not _PLACEHOLDER_RE.fullmatch(
+                    placeholder.strip()
+                ):
+                    raise GenerationError(
+                        f"{identity} argument placeholder must be one non-empty token"
+                    )
+                arg["placeholder"] = placeholder.strip()
+            constraints = {
+                key: value for key, value in fields.items() if key in constraint_names
+            }
+            if constraints:
+                arg["constraints"] = constraints
         result.append(arg)
     return tuple(result)
 
@@ -664,9 +681,12 @@ def _validate_site_terminal(
 def _argument_placeholder(argument: Mapping[str, Any]) -> str:
     """Render one human-readable CLI value placeholder."""
     name = str(argument["name"])
+    explicit_placeholder = str(argument.get("placeholder") or "").strip()
     choices = argument.get("choices") or []
     type_name = str(argument.get("type", "")).lower()
-    if choices:
+    if explicit_placeholder:
+        label = explicit_placeholder
+    elif choices:
         label = "|".join(str(choice) for choice in choices)
     elif type_name in {"bool", "boolean"}:
         label = "true|false"

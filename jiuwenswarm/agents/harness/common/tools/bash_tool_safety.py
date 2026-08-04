@@ -1,17 +1,57 @@
 # Copyright (c) Huawei Technologies Co., Ltd. 2026. All rights reserved.
 
-"""Apply jiuwenswarm shell safety rules to openjiuwen BashTool / PowerShellTool.
+"""Apply jiuwenswarm shell compatibility hooks to harness shell tools.
 
 The agent's primary shell tool is ``bash`` (openjiuwen ``BashTool``), not
 ``mcp_exec_command``.  Safety checks in ``command_tools`` only affect the latter
-unless we hook the harness tools here.
+unless we hook the harness tools here.  OpenCLI also writes UTF-8 to redirected
+pipes on Windows, while OpenJiuwen's local shell operation otherwise decodes
+with the system code page.  The hooks below keep that UTF-8 override scoped to
+OpenCLI commands so unrelated Windows command output retains its existing
+encoding policy.
 """
 
 from __future__ import annotations
 
+import re
 from typing import Any, Awaitable, Callable
 
 _installed = False
+
+_OPENCLI_EXECUTABLE_RE = re.compile(
+    r"""
+    (?:^|(?:&&|\|\||[|;])\s*)
+    (?:call\s+|&\s*)?
+    (?:
+        "(?:[^"]*[\\/])?opencli(?:\.(?:bat|cmd|exe|ps1))?"
+        | '(?:[^']*[\\/])?opencli(?:\.(?:bat|cmd|exe|ps1))?'
+        | (?:[^\s"'|&;]+[\\/])?opencli(?:\.(?:bat|cmd|exe|ps1))?
+    )
+    (?=$|[\s|&;<>])
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _is_opencli_command(command: str) -> bool:
+    """Return whether *command* invokes an OpenCLI executable."""
+    return bool(_OPENCLI_EXECUTABLE_RE.search(str(command or "")))
+
+
+def _with_opencli_utf8_options(
+    command: str,
+    kwargs: dict[str, Any],
+) -> dict[str, Any]:
+    """Inject UTF-8 decoding for OpenCLI without mutating caller arguments."""
+    if not _is_opencli_command(command):
+        return kwargs
+
+    updated = dict(kwargs)
+    raw_options = updated.get("options")
+    options = dict(raw_options) if isinstance(raw_options, dict) else {}
+    options.setdefault("encoding", "utf-8")
+    updated["options"] = options
+    return updated
 
 
 def _pre_execute_shell_command(command: str) -> str | None:
@@ -81,15 +121,76 @@ def _patch_tool_class(tool_cls: type) -> None:
         tool_cls.stream = _wrap_stream(tool_cls.stream)
 
 
+def _wrap_shell_execute_cmd(
+    original: Callable[..., Awaitable[Any]],
+) -> Callable[..., Awaitable[Any]]:
+    async def execute_cmd(
+        self: Any,
+        command: str,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Any:
+        return await original(
+            self,
+            command,
+            *args,
+            **_with_opencli_utf8_options(command, kwargs),
+        )
+
+    execute_cmd.jiuwenswarm_opencli_utf8_wrapped = True
+    return execute_cmd
+
+
+def _wrap_shell_execute_cmd_stream(
+    original: Callable[..., Any],
+) -> Callable[..., Any]:
+    async def execute_cmd_stream(
+        self: Any,
+        command: str,
+        *args: Any,
+        **kwargs: Any,
+    ):
+        async for item in original(
+            self,
+            command,
+            *args,
+            **_with_opencli_utf8_options(command, kwargs),
+        ):
+            yield item
+
+    execute_cmd_stream.jiuwenswarm_opencli_utf8_wrapped = True
+    return execute_cmd_stream
+
+
+def _patch_local_shell_operation(shell_cls: type) -> None:
+    """Patch local shell output decoding for OpenCLI commands only."""
+    if not getattr(
+        shell_cls.execute_cmd,
+        "jiuwenswarm_opencli_utf8_wrapped",
+        False,
+    ):
+        shell_cls.execute_cmd = _wrap_shell_execute_cmd(shell_cls.execute_cmd)
+    if not getattr(
+        shell_cls.execute_cmd_stream,
+        "jiuwenswarm_opencli_utf8_wrapped",
+        False,
+    ):
+        shell_cls.execute_cmd_stream = _wrap_shell_execute_cmd_stream(
+            shell_cls.execute_cmd_stream
+        )
+
+
 def install_shell_tool_safety_hooks() -> None:
-    """Idempotently wire safety checks into harness shell tools."""
+    """Idempotently wire safety and OpenCLI encoding hooks."""
     global _installed
     if _installed:
         return
 
     from openjiuwen.harness.tools.shell.bash._tool import BashTool
+    from openjiuwen.core.sys_operation.local.shell_operation import ShellOperation
 
     _patch_tool_class(BashTool)
+    _patch_local_shell_operation(ShellOperation)
 
     try:
         from openjiuwen.harness.tools.shell.powershell._tool import PowerShellTool

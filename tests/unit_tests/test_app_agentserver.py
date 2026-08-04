@@ -14,6 +14,48 @@ async def _run_agentserver_for_test(host: str, port: int) -> None:
     await getattr(app_agentserver, "_run")(host, port)
 
 
+def test_main_ensures_default_builtin_skills_before_server_run(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    events: list[tuple[str, object]] = []
+    run_token = object()
+
+    monkeypatch.setattr(
+        app_agentserver,
+        "ensure_default_builtin_skills",
+        lambda workspace_dir: events.append(("ensure", workspace_dir)),
+    )
+    monkeypatch.setattr(
+        app_agentserver,
+        "install_async_dump_handler",
+        lambda _name: None,
+    )
+    monkeypatch.setattr(
+        app_agentserver,
+        "_run",
+        lambda **_kwargs: run_token,
+    )
+    monkeypatch.setattr(
+        app_agentserver.asyncio,
+        "run",
+        lambda awaitable: events.append(("run", awaitable)),
+    )
+    monkeypatch.setattr(
+        app_agentserver.sys,
+        "argv",
+        ["jiuwenswarm-agentserver"],
+    )
+    monkeypatch.delenv("AGENT_SERVER_PORT", raising=False)
+    monkeypatch.delenv("AGENT_PORT", raising=False)
+
+    app_agentserver.main()
+
+    assert events == [
+        ("ensure", app_agentserver._workspace_dir),
+        ("run", run_token),
+    ]
+
+
 @pytest.mark.asyncio
 async def test_run_does_not_delete_agent_teams_directory(monkeypatch: pytest.MonkeyPatch) -> None:
     removed_paths: list[Path] = []

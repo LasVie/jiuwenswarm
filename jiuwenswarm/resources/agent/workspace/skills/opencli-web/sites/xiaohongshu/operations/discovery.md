@@ -10,5 +10,6 @@ Search, browse, recommend, or discover site content.
 
 ## Operation-specific constraints
 
-- `feed`: sensitive output: private content, account identifiers
-- `search`: sensitive output: private content, account identifiers
+- `ask`: Treat a citation URL as usable only when it contains a non-empty xsec_token. Before presenting citations or passing one to note, comments, or download, resolve every unsigned source with search using its title and author, require the returned note ID to match, and copy the signed search result URL unchanged. Never expose a bare /explore/<note-id> URL as a clickable link; if resolution fails, report that source as unavailable without a link
+- `feed`: Preserve every returned note URL unchanged, including its non-empty xsec_token and complete query string; never shorten it to a bare /explore/<note-id> URL; sensitive output: private content, account identifiers
+- `search`: Preserve every returned note URL unchanged, including its non-empty xsec_token and complete query string; never shorten it to a bare /explore/<note-id> URL; sensitive output: private content, account identifiers
