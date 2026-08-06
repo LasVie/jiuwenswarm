@@ -1,0 +1,8 @@
+# Midjourney: write-actions
+
+Change remote service state.
+
+| Command | Effect / risk | Exact usage | Arguments | Runtime |
+|---|---|---|---|---|
+| `action` | `reversible_remote_write` / `high` | `opencli midjourney action "<job>" "<operation>" [--index "<index>"] [--video-resolution "<video-resolution>"] [--batch-size "<batch-size>"] [--prompt "<prompt>"] [--end-frame "<end-frame>"] [--wait <true\|false>] [--timeout <timeout>] [--dry-run <true\|false>] [--max-minutes "<max-minutes>"] [--reserve-minutes "<reserve-minutes>"] -f json`<br>Run a typed Creation Action: vary, upscale, rerun, edit, animate, loop, extend, or cancel | `job` (str, required, positional); `operation` (str, required, positional); `index` (str, optional, default=1); `video-resolution` (str, optional, default='auto'); `batch-size` (str, optional, default='auto'); `prompt` (str, optional); `end-frame` (str, optional); `wait` (boolean, optional, default=True); `timeout` (int, optional, default=300); `dry-run` (boolean, optional, default=False); `max-minutes` (str, optional, default=2); `reserve-minutes` (str, optional, default=0) | auth=required; transport=browser_dom; fallback_before=browser_agent; fallback_after=none |
+| `describe` | `reversible_remote_write` / `high` | `opencli midjourney describe "<image>" [--timeout <timeout>] -f json`<br>Upload one image and return Midjourney's four Describe prompt suggestions without generating images | `image` (str, required, positional); `timeout` (int, optional, default=60) | auth=required; transport=browser_dom; fallback_before=browser_agent; fallback_after=none |

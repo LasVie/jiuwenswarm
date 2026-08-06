@@ -1,114 +1,64 @@
 schema_version: 2
 catalog_version: opencli-1.8.6
-site: linkedin
-display_name: Linkedin
+site: pinterest
+display_name: Pinterest
 domains:
-- www.linkedin.com
+- www.pinterest.com
 aliases: []
 terminal: operation
 operations:
-  account:
-    purpose: Read account identity or account-scoped metadata.
+  account-actions:
+    purpose: Change reversible account relationship or saved state.
     commands:
-    - profile-analytics
-    - profile-experience
-    - profile-projects
-    - profile-read
-    - whoami
-  authentication:
-    purpose: Open, change, or clear an authenticated browser session.
+    - save
+  destructive-actions:
+    purpose: Delete, remove, revoke, or perform administrative changes.
     commands:
-    - login
-  content:
-    purpose: Read site content and metadata.
+    - board-delete
+    - board-section-delete
+    - pin-delete
+  file-operations:
+    purpose: Create or download workspace files.
     commands:
-    - job-detail
-  discovery:
-    purpose: Search, browse, recommend, or discover site content.
-    commands:
-    - search
-  messaging:
-    purpose: Send messages, replies, comments, invitations, or contacts.
-    commands:
-    - connect
-    - safe-send
-    - salesnav-message
+    - download
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - company
-    - connections
-    - inbox
-    - jobs-preferences
-    - people-search
-    - post-analytics
-    - posts
-    - salesnav-inbox
-    - salesnav-search
-    - salesnav-thread
-    - sent-invitations
-    - services-read
-    - thread-snapshot
-    - timeline
+    - board-pins
+    - board-sections
+    - pin
+    - search-boards
+    - search-pins
+    - search-users
+    - user
+    - user-boards
+    - user-pins
+  publishing:
+    purpose: Publish, create, edit, or upload remote content.
+    commands:
+    - board-create
+    - board-section-create
+    - board-update
+    - pin-create
+    - pin-update
 commands:
-  company:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
-  connect:
-    operation: messaging
-    semantic_effect: message_send
+  board-create:
+    operation: publishing
+    semantic_effect: public_write
     risk: high
     auth: required
-    transport: browser_dom
+    transport: browser_cookie
     fallback_before: browser_agent
     fallback_after: none
-    file_inputs: []
+    file_inputs:
+    - workspace-relative input when declared by adapter
     file_outputs: []
     sensitive_output: []
     notes: ''
-  connections:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
-  inbox:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
-  job-detail:
-    operation: content
-    semantic_effect: public_read
-    risk: low
+  board-delete:
+    operation: destructive-actions
+    semantic_effect: destructive_or_admin
+    risk: critical
     auth: required
     transport: browser_cookie
     fallback_before: browser_agent
@@ -117,7 +67,7 @@ commands:
     file_outputs: []
     sensitive_output: []
     notes: ''
-  jobs-preferences:
+  board-pins:
     operation: private-content
     semantic_effect: private_content_read
     risk: medium
@@ -131,130 +81,37 @@ commands:
     - private content
     - account identifiers
     notes: ''
-  login:
-    operation: authentication
-    semantic_effect: auth_session_change
-    risk: high
-    auth: interactive
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output: []
-    notes: ''
-  people-search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
-  post-analytics:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
-  posts:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
-  profile-analytics:
-    operation: account
-    semantic_effect: private_account_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - account identifiers
-    notes: ''
-  profile-experience:
-    operation: account
-    semantic_effect: private_account_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - account identifiers
-    notes: ''
-  profile-projects:
-    operation: account
-    semantic_effect: private_account_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - account identifiers
-    notes: ''
-  profile-read:
-    operation: account
-    semantic_effect: private_account_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - account identifiers
-    notes: ''
-  safe-send:
-    operation: messaging
-    semantic_effect: message_send
+  board-section-create:
+    operation: publishing
+    semantic_effect: public_write
     risk: high
     auth: required
-    transport: browser_dom
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs:
+    - workspace-relative input when declared by adapter
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  board-section-delete:
+    operation: destructive-actions
+    semantic_effect: destructive_or_admin
+    risk: critical
+    auth: required
+    transport: browser_cookie
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
     file_outputs: []
     sensitive_output: []
     notes: ''
-  salesnav-inbox:
+  board-sections:
     operation: private-content
     semantic_effect: private_content_read
     risk: medium
     auth: required
-    transport: browser_dom
+    transport: browser_cookie
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
@@ -263,50 +120,88 @@ commands:
     - private content
     - account identifiers
     notes: ''
-  salesnav-message:
-    operation: messaging
-    semantic_effect: message_send
+  board-update:
+    operation: publishing
+    semantic_effect: public_write
     risk: high
     auth: required
-    transport: browser_dom
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs:
+    - workspace-relative input when declared by adapter
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  download:
+    operation: file-operations
+    semantic_effect: local_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs:
+    - workspace-relative output
+    sensitive_output: []
+    notes: ''
+  pin:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  pin-create:
+    operation: publishing
+    semantic_effect: public_write
+    risk: high
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs:
+    - workspace-relative input when declared by adapter
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  pin-delete:
+    operation: destructive-actions
+    semantic_effect: destructive_or_admin
+    risk: critical
+    auth: required
+    transport: browser_cookie
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
     file_outputs: []
     sensitive_output: []
     notes: ''
-  salesnav-search:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
+  pin-update:
+    operation: publishing
+    semantic_effect: public_write
+    risk: high
     auth: required
-    transport: browser_dom
+    transport: browser_cookie
     fallback_before: browser_agent
     fallback_after: none
-    file_inputs: []
+    file_inputs:
+    - workspace-relative input when declared by adapter
     file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
+    sensitive_output: []
     notes: ''
-  salesnav-thread:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_dom
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
-  search:
-    operation: discovery
-    semantic_effect: public_read
-    risk: low
+  save:
+    operation: account-actions
+    semantic_effect: reversible_remote_write
+    risk: high
     auth: required
     transport: browser_cookie
     fallback_before: browser_agent
@@ -315,21 +210,7 @@ commands:
     file_outputs: []
     sensitive_output: []
     notes: ''
-  sent-invitations:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_dom
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
-  services-read:
+  search-boards:
     operation: private-content
     semantic_effect: private_content_read
     risk: medium
@@ -343,21 +224,7 @@ commands:
     - private content
     - account identifiers
     notes: ''
-  thread-snapshot:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_dom
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private content
-    - account identifiers
-    notes: ''
-  timeline:
+  search-pins:
     operation: private-content
     semantic_effect: private_content_read
     risk: medium
@@ -371,9 +238,9 @@ commands:
     - private content
     - account identifiers
     notes: ''
-  whoami:
-    operation: account
-    semantic_effect: private_account_read
+  search-users:
+    operation: private-content
+    semantic_effect: private_content_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -382,5 +249,48 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  user:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  user-boards:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  user-pins:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
     - account identifiers
     notes: ''

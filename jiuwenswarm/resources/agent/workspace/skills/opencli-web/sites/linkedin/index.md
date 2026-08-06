@@ -13,4 +13,4 @@
 | `content` | Read site content and metadata. | `job-detail` | `sites/linkedin/operations/content.md` |
 | `discovery` | Search, browse, recommend, or discover site content. | `search` | `sites/linkedin/operations/discovery.md` |
 | `messaging` | Send messages, replies, comments, invitations, or contacts. | `connect`, `safe-send`, `salesnav-message` | `sites/linkedin/operations/messaging.md` |
-| `private-content` | Read content that depends on an authenticated account. | `inbox`, `jobs-preferences`, `people-search`, `post-analytics`, `posts`, `salesnav-inbox`, `salesnav-search`, `salesnav-thread`, `sent-invitations`, `services-read`, `thread-snapshot`, `timeline` | `sites/linkedin/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `company`, `connections`, `inbox`, `jobs-preferences`, `people-search`, `post-analytics`, `posts`, `salesnav-inbox`, `salesnav-search`, `salesnav-thread`, `sent-invitations`, `services-read`, `thread-snapshot`, `timeline` | `sites/linkedin/operations/private-content.md` |

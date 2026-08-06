@@ -132,18 +132,18 @@ def test_browser_read_commands_cannot_use_a_site_terminal() -> None:
             {"content": operation},
             {"read": public},
         )
-def test_frozen_catalog_matches_pinned_opencli_release() -> None:
+def test_frozen_catalog_matches_pinned_opencli_snapshot() -> None:
     catalog = load_catalog(CATALOG_PATH)
 
     assert catalog.opencli_version == OPENCLI_VERSION == "1.8.6"
     assert catalog.source_sha256 == (
-        "310a143b41ea677de88f05bfd9c525e3b1e19c14f88d0377356508b161adf3e6"
+        "c126b09ea1efe2b059676cdd5f0be1f090e09fe013651889269419ab339aceab"
     )
-    assert len(catalog.commands) == CATALOG_COMMAND_COUNT == 1275
+    assert len(catalog.commands) == CATALOG_COMMAND_COUNT == 1331
     assert (
         len({command.site for command in catalog.commands})
         == (CATALOG_SITE_COUNT)
-        == 173
+        == 176
     )
     assert (
         catalog.canonical_sha256
@@ -170,7 +170,7 @@ def test_ownership_is_exact_and_unique() -> None:
         }
     )
 
-    assert len(assigned) == GENERATED_SITE_COUNT == 161
+    assert len(assigned) == GENERATED_SITE_COUNT == 164
     assert len(set(assigned)) == len(assigned)
     assert sorted(assigned) == expected
     assert ownership.completed == ("xiaohongshu",)
@@ -191,7 +191,7 @@ def test_policies_cover_each_catalog_command_exactly_once() -> None:
             for operation in site.operations.values()
         )
         == GENERATED_COMMAND_COUNT + 25
-        == 1123
+        == 1179
     )
 
     for site_slug, site in model.sites.items():
@@ -231,6 +231,7 @@ def test_physical_depth_follows_safety_boundary_not_command_count_alone() -> Non
     }
     assert model.sites["google"].terminal == "operation"
     assert set(model.sites["google"].operations) == {
+        "private-content",
         "public-data",
         "web-search",
     }
@@ -340,15 +341,15 @@ def test_generation_is_deterministic_and_links_are_complete(
         manual_skill_root=BUILTIN_SKILL_ROOT,
     )
 
-    assert first_result.site_count == second_result.site_count == 162
-    assert first_result.command_count == second_result.command_count == 1123
+    assert first_result.site_count == second_result.site_count == 165
+    assert first_result.command_count == second_result.command_count == 1179
     assert _tree_digest(first) == _tree_digest(second)
 
     manifest = json.loads(
         (first / "generated-manifest.json").read_text(encoding="utf-8")
     )
-    assert manifest["site_count"] == 162
-    assert manifest["command_count"] == 1123
+    assert manifest["site_count"] == 165
+    assert manifest["command_count"] == 1179
     assert manifest["files"] == {
         relative: digest
         for relative, digest in _tree_digest(first).items()
@@ -434,7 +435,7 @@ def test_every_catalog_command_has_an_execution_contract(tmp_path: Path) -> None
                 assert f"`{invocation}`" in content
                 exposed += 1
 
-    assert exposed == 1123
+    assert exposed == 1179
 
 
 def test_full_generation_matches_checked_in_tree(tmp_path: Path) -> None:

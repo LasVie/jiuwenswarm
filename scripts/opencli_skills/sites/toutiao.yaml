@@ -21,6 +21,7 @@ operations:
     purpose: Read site content and metadata.
     commands:
     - hot
+    - recommend
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
@@ -60,6 +61,18 @@ commands:
     transport: browser_cookie
     fallback_before: browser_agent
     fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  recommend:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    fallback_before: browser_agent
+    fallback_after: browser_agent
     file_inputs: []
     file_outputs: []
     sensitive_output: []

@@ -17,7 +17,25 @@ operations:
     purpose: Read browser-rendered web search results.
     commands:
     - search
+  private-content:
+    purpose: Read content that depends on an authenticated account.
+    commands:
+    - images
 commands:
+  images:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_dom
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
   news:
     operation: public-data
     semantic_effect: public_read

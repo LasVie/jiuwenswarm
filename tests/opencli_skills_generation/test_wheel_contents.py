@@ -15,8 +15,8 @@ from scripts.opencli_skills.verify_wheel import (
 )
 
 
-EXPECTED_SITE_COUNT = 162
-EXPECTED_COMMAND_COUNT = 1123
+EXPECTED_SITE_COUNT = 165
+EXPECTED_COMMAND_COUNT = 1179
 
 
 def _json_bytes(value: object) -> bytes:

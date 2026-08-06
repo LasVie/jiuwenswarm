@@ -40,9 +40,9 @@ description: Catalog of OpenCLI-supported websites, aliases, domains, and termin
 | Confluence | none | atlassian.net | `sites/confluence/index.md` |
 | Coupang | none | coupang.com, www.coupang.com | `sites/coupang/index.md` |
 | Crates | none | crates.io | `sites/crates/index.md` |
-| Ctrip | none | ctrip.com, flights.ctrip.com, hotels.ctrip.com, m.ctrip.com | `sites/ctrip/index.md` |
+| Ctrip | none | ctrip.com, flights.ctrip.com, hotels.ctrip.com, m.ctrip.com, bus.ctrip.com, cruise.ctrip.com, ship.ctrip.com, trains.ctrip.com, vacations.ctrip.com, you.ctrip.com | `sites/ctrip/index.md` |
 | Dblp | none | dblp.org | `sites/dblp/index.md` |
-| Deepseek | none | chat.deepseek.com | `sites/deepseek/index.md` |
+| Deepseek | none | chat.deepseek.com, platform.deepseek.com | `sites/deepseek/index.md` |
 | Defillama | none | defillama.com | `sites/defillama/index.md` |
 | Devto | none | dev.to | `sites/devto/index.md` |
 | Dianping | none | dianping.com, www.dianping.com | `sites/dianping/index.md` |
@@ -99,6 +99,7 @@ description: Catalog of OpenCLI-supported websites, aliases, domains, and termin
 | Mdn | none | developer.mozilla.org | `sites/mdn/index.md` |
 | Medium | none | medium.com | `sites/medium/index.md` |
 | Mercury | none | app.mercury.com | `sites/mercury/index.md` |
+| Midjourney | none | www.midjourney.com | `sites/midjourney/index.md` |
 | Mubu | none | mubu.com | `sites/mubu/index.md` |
 | Notebooklm | none | google.com, notebooklm.google.com | `sites/notebooklm/index.md` |
 | Nowcoder | none | nowcoder.com, www.nowcoder.com | `sites/nowcoder/index.md` |
@@ -113,6 +114,7 @@ description: Catalog of OpenCLI-supported websites, aliases, domains, and termin
 | Osv | none | osv.dev | `sites/osv/index.md` |
 | Packagist | none | packagist.org | `sites/packagist/index.md` |
 | Paperreview | none | paperreview.ai | `sites/paperreview/index.md` |
+| Pinterest | none | www.pinterest.com | `sites/pinterest/index.md` |
 | Pixiv | none | pixiv.net, www.pixiv.net | `sites/pixiv/index.md` |
 | Powerchina | none | bid.powerchina.cn, powerchina.cn | `sites/powerchina/index.md` |
 | Producthunt | none | www.producthunt.com | `sites/producthunt/index.md` |
@@ -142,6 +144,7 @@ description: Catalog of OpenCLI-supported websites, aliases, domains, and termin
 | Tieba | none | tieba.baidu.com | `sites/tieba/index.md` |
 | Tiktok | none | tiktok.com, www.tiktok.com | `sites/tiktok/index.md` |
 | Toutiao | none | mp.toutiao.com, toutiao.com, www.toutiao.com | `sites/toutiao/index.md` |
+| Trip | none | trip.com | `sites/trip/index.md` |
 | Tvmaze | none | tvmaze.com | `sites/tvmaze/index.md` |
 | Twitter | none | x.com | `sites/twitter/index.md` |
 | Uisdc | none | www.uisdc.com | `sites/uisdc/index.md` |

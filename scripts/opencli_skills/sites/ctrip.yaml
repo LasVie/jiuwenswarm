@@ -7,6 +7,12 @@ domains:
 - flights.ctrip.com
 - hotels.ctrip.com
 - m.ctrip.com
+- bus.ctrip.com
+- cruise.ctrip.com
+- ship.ctrip.com
+- trains.ctrip.com
+- vacations.ctrip.com
+- you.ctrip.com
 aliases: []
 terminal: operation
 operations:
@@ -25,7 +31,75 @@ operations:
     - hotel-search
     - hotel-suggest
     - search
+  private-content:
+    purpose: Read content that depends on an authenticated account.
+    commands:
+    - attraction
+    - bus
+    - cruise
+    - ferry
+    - flight-round
+    - hotel
+    - package
+    - tour
+    - train
 commands:
+  attraction:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  bus:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  cruise:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  ferry:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
   flight:
     operation: discovery
     semantic_effect: public_read
@@ -38,6 +112,34 @@ commands:
     file_outputs: []
     sensitive_output: []
     notes: Source-audited against OpenCLI 1.8.6 ctrip/flight.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
+  flight-round:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  hotel:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
   hotel-search:
     operation: discovery
     semantic_effect: public_read
@@ -74,6 +176,20 @@ commands:
     file_outputs: []
     sensitive_output: []
     notes: ''
+  package:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
   search:
     operation: discovery
     semantic_effect: public_read
@@ -85,6 +201,34 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output: []
+    notes: ''
+  tour:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  train:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
     notes: ''
   whoami:
     operation: account

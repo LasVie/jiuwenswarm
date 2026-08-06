@@ -1,5 +1,5 @@
 {
-  "canonical_sha256": "dffbc72ed12277d8e8492b4a5d16ffeec820ec5773527812b06a5e203174551a",
+  "canonical_sha256": "7bb1ca51599ace374327603e5cf7873adb4b2b5762369cd47373e9f5856521bf",
   "commands": [
     {
       "access": "write",
@@ -6286,6 +6286,15 @@
         "status",
         "report",
         "sources",
+        "progress",
+        "asyncTaskConversationId",
+        "widgetSessionId",
+        "asyncStatus",
+        "venusMessageType",
+        "venusStatus",
+        "waitingForUserUntil",
+        "planTitle",
+        "planId",
         "url",
         "method",
         "diagnostics"
@@ -6504,11 +6513,19 @@
             "x-high",
             "extra-high",
             "超高",
+            "gpt-5.6-pro",
+            "gpt-5-6-pro",
+            "gpt-5.6-sol-pro",
+            "gpt-5-6-sol-pro",
+            "gpt-5.6",
+            "gpt-5-6",
+            "5.6-pro",
+            "5.6",
             "pro",
             "professional",
             "专业"
           ],
-          "help": "Intelligence level to switch to",
+          "help": "ChatGPT model or intelligence level to switch to",
           "name": "model",
           "positional": true,
           "required": true,
@@ -6527,7 +6544,7 @@
         "Status",
         "Model"
       ],
-      "description": "Switch ChatGPT web intelligence level (fast, balanced, advanced, very-high, pro)",
+      "description": "Switch ChatGPT web model or intelligence level (GPT-5.6 Pro, fast, balanced, advanced, very-high, pro)",
       "domain": "chatgpt.com",
       "modulePath": "chatgpt/model.js",
       "name": "model",
@@ -8866,6 +8883,187 @@
       "access": "read",
       "args": [
         {
+          "help": "Numeric Ctrip city id (from `ctrip search`, e.g. 1 for 北京)",
+          "name": "city",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of attractions (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "name",
+        "rating",
+        "reviews",
+        "url"
+      ],
+      "description": "列出携程某城市的热门景点（评分/点评数，城市 id 经 ctrip search 获取）",
+      "domain": "you.ctrip.com",
+      "modulePath": "ctrip/attraction.js",
+      "name": "attraction",
+      "navigateBefore": false,
+      "site": "ctrip",
+      "sourceFile": "ctrip/attraction.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Departure city name (e.g. 北京 / 上海)",
+          "name": "from",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Arrival city name (e.g. 天津 / 杭州)",
+          "name": "to",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Departure date (YYYY-MM-DD)",
+          "name": "date",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of departures (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "departureTime",
+        "fromStation",
+        "toStation",
+        "duration",
+        "price",
+        "status",
+        "url"
+      ],
+      "description": "搜索携程汽车票（按出发/到达城市名 + 日期）",
+      "domain": "bus.ctrip.com",
+      "modulePath": "ctrip/bus.js",
+      "name": "bus",
+      "navigateBefore": false,
+      "site": "ctrip",
+      "sourceFile": "ctrip/bus.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Departure cruise port name (e.g. 上海 / 威尼斯 / 罗马)",
+          "name": "port",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of cruises (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "title",
+        "star",
+        "boarding",
+        "sailingDate",
+        "tags",
+        "price",
+        "url"
+      ],
+      "description": "搜索携程邮轮线路（按出发港名）",
+      "domain": "cruise.ctrip.com",
+      "modulePath": "ctrip/cruise.js",
+      "name": "cruise",
+      "navigateBefore": false,
+      "site": "ctrip",
+      "sourceFile": "ctrip/cruise.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Departure city name (e.g. 大连 / 海口)",
+          "name": "from",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Arrival city name (e.g. 烟台 / 海安)",
+          "name": "to",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Departure date (YYYY-MM-DD)",
+          "name": "date",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of sailings (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "shipName",
+        "departureTime",
+        "fromPort",
+        "arrivalTime",
+        "toPort",
+        "duration",
+        "price",
+        "status",
+        "url"
+      ],
+      "description": "搜索携程船票（按出发/到达城市名 + 日期）",
+      "domain": "ship.ctrip.com",
+      "modulePath": "ctrip/ferry.js",
+      "name": "ferry",
+      "navigateBefore": false,
+      "site": "ctrip",
+      "sourceFile": "ctrip/ferry.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
           "help": "Departure IATA code (e.g. BJS / PEK)",
           "name": "from",
           "positional": true,
@@ -8890,7 +9088,7 @@
           "help": "Number of flights (1-50)",
           "name": "limit",
           "required": false,
-          "type": "int"
+          "type": "str"
         }
       ],
       "browser": true,
@@ -8923,6 +9121,108 @@
       "access": "read",
       "args": [
         {
+          "help": "Departure IATA code (e.g. BJS / PEK)",
+          "name": "from",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Arrival IATA code (e.g. SHA / PVG)",
+          "name": "to",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Outbound date (YYYY-MM-DD)",
+          "name": "depart",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Return date (YYYY-MM-DD), on or after depart",
+          "name": "return",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of flights (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "airline",
+        "flightNo",
+        "aircraft",
+        "departureTime",
+        "departureAirport",
+        "arrivalTime",
+        "arrivalAirport",
+        "terminal",
+        "price",
+        "currency",
+        "cabin",
+        "url"
+      ],
+      "description": "搜索携程往返机票（按出发/到达 IATA 三字码 + 去/返日期，返回去程腿含往返总价）",
+      "domain": "flights.ctrip.com",
+      "modulePath": "ctrip/flight-round.js",
+      "name": "flight-round",
+      "navigateBefore": false,
+      "site": "ctrip",
+      "sourceFile": "ctrip/flight-round.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Numeric Ctrip hotel id (use `ctrip hotel-suggest` to discover; e.g. 375539)",
+          "name": "id",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "hotelId",
+        "name",
+        "enName",
+        "star",
+        "score",
+        "scoreLabel",
+        "reviewCount",
+        "ratingBreakdown",
+        "facilities",
+        "checkInOut",
+        "cityName",
+        "address",
+        "lat",
+        "lon",
+        "url"
+      ],
+      "description": "查看携程单个酒店详情（评分细分、热门设施、入离政策、位置）",
+      "domain": "hotels.ctrip.com",
+      "modulePath": "ctrip/hotel.js",
+      "name": "hotel",
+      "navigateBefore": false,
+      "site": "ctrip",
+      "sourceFile": "ctrip/hotel.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
           "help": "Numeric Ctrip city ID (use `ctrip search` or `ctrip hotel-suggest` to discover)",
           "name": "city",
           "positional": true,
@@ -8946,7 +9246,7 @@
           "help": "Number of hotels (1-30); SSR first page returns ~13 entries",
           "name": "limit",
           "required": false,
-          "type": "int"
+          "type": "str"
         }
       ],
       "browser": true,
@@ -8993,7 +9293,7 @@
           "help": "Number of results (1-50)",
           "name": "limit",
           "required": false,
-          "type": "int"
+          "type": "str"
         }
       ],
       "browser": false,
@@ -9057,6 +9357,46 @@
       "access": "read",
       "args": [
         {
+          "help": "Destination keyword (e.g. 三亚 / 北京 / 曼谷)",
+          "name": "destination",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of packages (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "title",
+        "subtitle",
+        "tags",
+        "score",
+        "sold",
+        "reviews",
+        "price",
+        "url"
+      ],
+      "description": "搜索携程机+酒自由行套餐（按目的地关键词）",
+      "domain": "vacations.ctrip.com",
+      "modulePath": "ctrip/package.js",
+      "name": "package",
+      "navigateBefore": false,
+      "site": "ctrip",
+      "sourceFile": "ctrip/package.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
           "help": "Search keyword (city, scenic spot, landmark)",
           "name": "query",
           "positional": true,
@@ -9068,7 +9408,7 @@
           "help": "Number of results (1-50)",
           "name": "limit",
           "required": false,
-          "type": "int"
+          "type": "str"
         }
       ],
       "browser": false,
@@ -9094,6 +9434,100 @@
       "site": "ctrip",
       "sourceFile": "ctrip/search.js",
       "strategy": "public",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Destination keyword (e.g. 北京 / 三亚 / 马尔代夫)",
+          "name": "destination",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of packages (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "title",
+        "subtitle",
+        "tags",
+        "score",
+        "sold",
+        "reviews",
+        "price",
+        "url"
+      ],
+      "description": "搜索携程旅游线路（按目的地关键词，跟团/自由行）",
+      "domain": "vacations.ctrip.com",
+      "modulePath": "ctrip/tour.js",
+      "name": "tour",
+      "navigateBefore": false,
+      "site": "ctrip",
+      "sourceFile": "ctrip/tour.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Departure station or city name (e.g. 北京 / 上海虹桥)",
+          "name": "from",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Arrival station or city name (e.g. 上海 / 杭州东)",
+          "name": "to",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Departure date (YYYY-MM-DD)",
+          "name": "date",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of trains (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "trainNo",
+        "departureTime",
+        "departureStation",
+        "arrivalTime",
+        "arrivalStation",
+        "duration",
+        "fromPrice",
+        "seats",
+        "url"
+      ],
+      "description": "搜索携程火车票（按出发/到达站名 + 日期）",
+      "domain": "trains.ctrip.com",
+      "modulePath": "ctrip/train.js",
+      "name": "train",
+      "navigateBefore": false,
+      "site": "ctrip",
+      "sourceFile": "ctrip/train.js",
+      "strategy": "cookie",
       "type": "js"
     },
     {
@@ -9794,6 +10228,34 @@
       "site": "deepseek",
       "siteSession": "persistent",
       "sourceFile": "deepseek/status.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [],
+      "browser": true,
+      "columns": [
+        "balance",
+        "bonusBalance",
+        "cumulativeSpend",
+        "monthlySpend",
+        "monthlyApiCalls",
+        "monthlyTokens",
+        "currentTokenEstimation",
+        "timePeriod",
+        "periodSpend",
+        "periodApiCalls",
+        "periodTokens"
+      ],
+      "description": "Read DeepSeek platform usage: balance, cumulative spending, time-dimension spending, API requests, and Tokens.",
+      "domain": "platform.deepseek.com",
+      "modulePath": "deepseek/usage.js",
+      "name": "usage",
+      "navigateBefore": true,
+      "site": "deepseek",
+      "siteSession": "persistent",
+      "sourceFile": "deepseek/usage.js",
       "strategy": "cookie",
       "type": "js"
     },
@@ -12332,7 +12794,7 @@
       "access": "read",
       "args": [
         {
-          "help": "用户 sec_uid（URL 末尾部分）",
+          "help": "用户 sec_uid（个人主页 URL 末尾部分，也可直接传整条主页 URL）",
           "name": "sec_uid",
           "positional": true,
           "required": true,
@@ -12385,15 +12847,8 @@
       "args": [
         {
           "default": 20,
-          "help": "每页数量",
+          "help": "最多返回多少个作品（跨页自动收集）",
           "name": "limit",
-          "required": false,
-          "type": "int"
-        },
-        {
-          "default": 1,
-          "help": "页码",
-          "name": "page",
           "required": false,
           "type": "int"
         },
@@ -12418,6 +12873,10 @@
         "status",
         "play_count",
         "digg_count",
+        "comment_count",
+        "collect_count",
+        "share_count",
+        "duration",
         "create_time"
       ],
       "description": "获取作品列表",
@@ -12580,7 +13039,7 @@
       "args": [
         {
           "default": "turnover",
-          "help": "排序：turnover / change / drop / price / premium",
+          "help": "排序：turnover / change / drop / price / premium / value / put-trigger",
           "name": "sort",
           "required": false,
           "type": "string"
@@ -12607,8 +13066,8 @@
         "convPrice",
         "convValue",
         "convPremiumPct",
-        "remainingYears",
-        "ytm",
+        "pureBondPremiumPct",
+        "putTriggerPrice",
         "listDate"
       ],
       "description": "可转债行情列表（默认按成交额排序）",
@@ -13515,7 +13974,7 @@
       "domain": "www.facebook.com",
       "modulePath": "facebook/search.js",
       "name": "search",
-      "navigateBefore": "https://www.facebook.com",
+      "navigateBefore": false,
       "site": "facebook",
       "sourceFile": "facebook/search.js",
       "strategy": "cookie",
@@ -14622,6 +15081,59 @@
       "name": "repos",
       "site": "github-trending",
       "sourceFile": "github-trending/repos.js",
+      "strategy": "public",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Image search query",
+          "name": "keyword",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of image results (1-100)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        },
+        {
+          "default": "en",
+          "help": "Language short code (e.g. en, zh)",
+          "name": "lang",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": true,
+          "help": "Click image previews to resolve original imgurl values",
+          "name": "resolve",
+          "required": false,
+          "type": "bool"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "title",
+        "imageUrl",
+        "thumbnailUrl",
+        "sourceUrl",
+        "source",
+        "width",
+        "height"
+      ],
+      "description": "Search Google Images for photos and image results",
+      "domain": "google.com",
+      "modulePath": "google/images.js",
+      "name": "images",
+      "navigateBefore": false,
+      "site": "google",
+      "sourceFile": "google/images.js",
       "strategy": "public",
       "type": "js"
     },
@@ -21118,16 +21630,20 @@
       "args": [],
       "browser": true,
       "columns": [
-        "weeklyUsagePct",
-        "weeklyResetIn",
-        "rateLimitPct",
-        "rateLimitResetIn",
         "membershipName",
-        "membershipTier",
-        "modelPermission",
-        "modelCost"
+        "membershipValidUntil",
+        "totalUsagePct",
+        "totalResetIn",
+        "fiveHourUsagePct",
+        "fiveHourResetIn",
+        "sevenDayUsagePct",
+        "sevenDayResetIn",
+        "giftUsagePct",
+        "giftValidUntil",
+        "balance",
+        "monthlySpend"
       ],
-      "description": "Read Kimi Code console usage cards: weekly quota, rate limit, membership, and model permission.",
+      "description": "Read Kimi membership quota usage from the subscription page: total usage, rate limits, gift quota, and booster balance.",
       "domain": "kimi.com",
       "modulePath": "kimi/usage.js",
       "name": "usage",
@@ -21710,6 +22226,40 @@
       "type": "js"
     },
     {
+      "access": "read",
+      "args": [
+        {
+          "help": "Company universal name (nvidia), /company/<name> path, or full URL",
+          "name": "company",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "name",
+        "industry",
+        "size",
+        "headquarters",
+        "founded",
+        "website",
+        "specialties",
+        "followers",
+        "about",
+        "url"
+      ],
+      "description": "Read a LinkedIn company page: industry, size, HQ, founded, website, followers, about",
+      "domain": "www.linkedin.com",
+      "modulePath": "linkedin/company.js",
+      "name": "company",
+      "navigateBefore": "https://www.linkedin.com",
+      "site": "linkedin",
+      "sourceFile": "linkedin/company.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
       "access": "write",
       "args": [
         {
@@ -21765,6 +22315,36 @@
       "site": "linkedin",
       "sourceFile": "linkedin/connect.js",
       "strategy": "ui",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "default": 20,
+          "help": "Number of connections to return (max 500)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "name",
+        "occupation",
+        "public_id",
+        "connected_at",
+        "url"
+      ],
+      "description": "List your LinkedIn first-degree connections (name, headline, profile URL)",
+      "domain": "www.linkedin.com",
+      "modulePath": "linkedin/connections.js",
+      "name": "connections",
+      "navigateBefore": "https://www.linkedin.com",
+      "site": "linkedin",
+      "sourceFile": "linkedin/connections.js",
+      "strategy": "cookie",
       "type": "js"
     },
     {
@@ -24291,6 +24871,600 @@
       "site": "mercury",
       "sourceFile": "mercury/reimbursement-plan.js",
       "strategy": "local",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "Source job UUID or /jobs/<uuid> URL",
+          "name": "job",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "rerun, rerun-hd, vary-subtle, vary-strong, upscale-subtle, upscale-creative, open-editor, animate-low, animate-high, loop-low, loop-high, extend-low, extend-high, cancel",
+          "name": "operation",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 1,
+          "help": "Source candidate 1..4",
+          "name": "index",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "auto",
+          "help": "auto, sd, or hd",
+          "name": "video-resolution",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "auto",
+          "help": "auto, 1, 2, or 4",
+          "name": "batch-size",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Manual motion/extension prompt",
+          "name": "prompt",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "One local path, HTTPS image URL, or Midjourney job URL",
+          "name": "end-frame",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": true,
+          "help": "Wait for a derived job to complete",
+          "name": "wait",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "default": 300,
+          "help": "Maximum submission/generation seconds (1..900)",
+          "name": "timeout",
+          "required": false,
+          "type": "int"
+        },
+        {
+          "default": false,
+          "help": "Validate and estimate without clicking the action",
+          "name": "dry-run",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "default": 2,
+          "help": "Maximum estimated Fast GPU minutes allowed",
+          "name": "max-minutes",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": 0,
+          "help": "Minimum Fast GPU minutes to keep after this command",
+          "name": "reserve-minutes",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "job_id",
+        "parent_job_id",
+        "status",
+        "operation",
+        "requested_model",
+        "effective_model",
+        "routing_reason",
+        "estimated_minutes",
+        "observed_minutes",
+        "index",
+        "file",
+        "url"
+      ],
+      "defaultFormat": "plain",
+      "defaultWindowMode": "foreground",
+      "description": "Run a typed Creation Action: vary, upscale, rerun, edit, animate, loop, extend, or cancel",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney action <job> vary-subtle --index 1 --dry-run",
+      "modulePath": "midjourney/action.js",
+      "name": "action",
+      "navigateBefore": "https://www.midjourney.com/imagine",
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/action.js",
+      "strategy": "ui",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "Local PNG, JPEG, WEBP, or GIF (10MB maximum)",
+          "name": "image",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 60,
+          "help": "Maximum seconds to wait for four suggestions",
+          "name": "timeout",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "prompt",
+        "source",
+        "created_at"
+      ],
+      "defaultWindowMode": "background",
+      "description": "Upload one image and return Midjourney's four Describe prompt suggestions without generating images",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney describe /path/reference.png -f json",
+      "modulePath": "midjourney/describe.js",
+      "name": "describe",
+      "navigateBefore": "https://www.midjourney.com/imagine",
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/describe.js",
+      "strategy": "ui",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "Job UUID or Midjourney /jobs/<uuid> URL",
+          "name": "job",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": "all",
+          "help": "Candidate 1..4 or all",
+          "name": "index",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "auto",
+          "help": "auto, image, video-raw, video-social, or gif",
+          "name": "kind",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "~/Pictures/Midjourney",
+          "help": "Output directory",
+          "name": "output",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": false,
+          "help": "Overwrite existing non-empty files",
+          "name": "force",
+          "required": false,
+          "type": "boolean"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "job_id",
+        "status",
+        "kind",
+        "index",
+        "file",
+        "bytes",
+        "mime",
+        "url"
+      ],
+      "defaultFormat": "plain",
+      "description": "Download original images, raw video, social MP4, or GIF with MIME and atomic-write checks",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney download <job> --kind auto --index all",
+      "modulePath": "midjourney/download.js",
+      "name": "download",
+      "navigateBefore": "https://www.midjourney.com/imagine",
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/download.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "Prompt with any native Midjourney --parameters",
+          "name": "prompt",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": "auto",
+          "help": "auto, v8.2, v8.1, v7, v6.1, v6, niji7, or niji6",
+          "name": "model",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "auto",
+          "help": "auto, sd, or hd",
+          "name": "resolution",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "auto",
+          "help": "auto, fast, relax, or turbo",
+          "name": "speed",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Local path, HTTPS URL, job URL, or JSON array",
+          "name": "image-ref",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Local path, HTTPS URL, job URL, style code, or JSON array",
+          "name": "style-ref",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Exactly one local path, HTTPS URL, or job URL; auto routes to V7",
+          "name": "omni-ref",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Image Prompt weight, 0..3",
+          "name": "image-weight",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Style Reference weight, 0..1000",
+          "name": "style-weight",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Omni Reference weight, 0..1000",
+          "name": "omni-weight",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Personalization profile or Moodboard ID",
+          "name": "profile",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Repeat/permutation job count; defaults to 1 (plan limit applies)",
+          "name": "repeat",
+          "required": false,
+          "type": "int"
+        },
+        {
+          "default": true,
+          "help": "Wait for completion; false returns after unique job association",
+          "name": "wait",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "default": "all",
+          "help": "Download candidate 1..4 or all",
+          "name": "index",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "~/Pictures/Midjourney",
+          "help": "Output directory",
+          "name": "output",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": false,
+          "help": "Do not write completed images",
+          "name": "skip-download",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "default": 300,
+          "help": "Maximum submission/generation seconds (1..900)",
+          "name": "timeout",
+          "required": false,
+          "type": "int"
+        },
+        {
+          "default": false,
+          "help": "Validate and estimate without uploading or submitting",
+          "name": "dry-run",
+          "required": false,
+          "type": "boolean"
+        },
+        {
+          "default": 2,
+          "help": "Maximum estimated Fast GPU minutes allowed",
+          "name": "max-minutes",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": 0,
+          "help": "Minimum Fast GPU minutes to keep after this command",
+          "name": "reserve-minutes",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": false,
+          "help": "Overwrite existing non-empty output files",
+          "name": "force",
+          "required": false,
+          "type": "boolean"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "job_id",
+        "parent_job_id",
+        "status",
+        "operation",
+        "requested_model",
+        "effective_model",
+        "routing_reason",
+        "estimated_minutes",
+        "observed_minutes",
+        "index",
+        "file",
+        "url"
+      ],
+      "defaultFormat": "plain",
+      "defaultWindowMode": "background",
+      "description": "Generate Midjourney images with references, model routing, cost guards, recovery, and optional download",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney generate \"a blue ceramic teapot --ar 1:1\" --dry-run",
+      "modulePath": "midjourney/generate.js",
+      "name": "generate",
+      "navigateBefore": "https://www.midjourney.com/imagine",
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/generate.js",
+      "strategy": "ui",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "default": 10,
+          "help": "Number of matching jobs (1..100)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        },
+        {
+          "default": "all",
+          "help": "all, image, or video",
+          "name": "type",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": "all",
+          "help": "all, queued, running, completed, failed, or cancelled",
+          "name": "status",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "help": "Case-insensitive prompt substring",
+          "name": "query",
+          "required": false,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "job_id",
+        "parent_job_id",
+        "status",
+        "type",
+        "operation",
+        "model",
+        "resolution",
+        "created_at",
+        "batch_size",
+        "command",
+        "url"
+      ],
+      "description": "List recent Midjourney image, video, and derived jobs with real lifecycle status",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney history --limit 10 --type all -f json",
+      "modulePath": "midjourney/history.js",
+      "name": "history",
+      "navigateBefore": "https://www.midjourney.com/imagine",
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/history.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "default": 300,
+          "help": "Maximum seconds to wait for interactive login (1..900)",
+          "name": "timeout",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "status",
+        "logged_in",
+        "site",
+        "plan",
+        "subscription_status"
+      ],
+      "defaultWindowMode": "foreground",
+      "description": "Open Midjourney in a foreground Chrome window and wait for login to complete",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney login --timeout 300",
+      "modulePath": "midjourney/login.js",
+      "name": "login",
+      "navigateBefore": false,
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/login.js",
+      "strategy": "ui",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "aliases": [
+        "account"
+      ],
+      "args": [],
+      "browser": true,
+      "columns": [
+        "plan",
+        "period_end",
+        "allocated_minutes",
+        "used_minutes",
+        "remaining_minutes",
+        "used_pct",
+        "days_remaining",
+        "avg_daily_minutes",
+        "projected_exhaustion_date",
+        "sd_batches_remaining",
+        "hd_batches_remaining",
+        "omni_batches_remaining"
+      ],
+      "description": "Show Midjourney quota, conservative batch estimates, and account-consumption trend",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney quota -f yaml",
+      "modulePath": "midjourney/quota.js",
+      "name": "quota",
+      "navigateBefore": "https://www.midjourney.com/imagine",
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/quota.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [],
+      "browser": true,
+      "columns": [
+        "model",
+        "image_resolution",
+        "personalization",
+        "raw",
+        "speed",
+        "video_resolution",
+        "video_batch_size"
+      ],
+      "description": "Read the currently selected Midjourney image and video settings from the visible Create UI",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney settings -f yaml",
+      "modulePath": "midjourney/settings.js",
+      "name": "settings",
+      "navigateBefore": "https://www.midjourney.com/imagine",
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/settings.js",
+      "strategy": "ui",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Job UUID or Midjourney /jobs/<uuid> URL",
+          "name": "job",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "job_id",
+        "parent_job_id",
+        "status",
+        "progress_pct",
+        "operation",
+        "model",
+        "resolution",
+        "created_at",
+        "batch_size",
+        "error",
+        "url"
+      ],
+      "description": "Show the current state and metadata of one Midjourney job",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney status d5664250-5f1f-4cd0-9637-2ce0153dd30a -f yaml",
+      "modulePath": "midjourney/status.js",
+      "name": "status",
+      "navigateBefore": "https://www.midjourney.com/imagine",
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/status.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [],
+      "browser": true,
+      "columns": [
+        "logged_in",
+        "site",
+        "plan",
+        "subscription_status"
+      ],
+      "description": "Verify the current Midjourney login and show non-identifying subscription state",
+      "domain": "www.midjourney.com",
+      "example": "opencli midjourney whoami -f json",
+      "modulePath": "midjourney/whoami.js",
+      "name": "whoami",
+      "navigateBefore": "https://www.midjourney.com/imagine",
+      "site": "midjourney",
+      "siteSession": "persistent",
+      "sourceFile": "midjourney/whoami.js",
+      "strategy": "cookie",
       "type": "js"
     },
     {
@@ -26961,6 +28135,787 @@
       "site": "paperreview",
       "sourceFile": "paperreview/submit.js",
       "strategy": "public",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "Board name",
+          "name": "name",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "Board description",
+          "name": "description",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "choices": [
+            "public",
+            "secret"
+          ],
+          "default": "public",
+          "help": "public or secret",
+          "name": "privacy",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "boardId",
+        "name",
+        "privacy",
+        "url"
+      ],
+      "description": "Create a new board on your account",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/board-create.js",
+      "name": "board-create",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/board-create.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "<username>/<slug>, a board URL, or a numeric board id, e.g. janedoe/my-board",
+          "name": "board",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": false,
+          "help": "Actually delete — without it the board is only previewed",
+          "name": "confirm",
+          "required": false,
+          "type": "bool"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "boardId",
+        "name",
+        "pinCount",
+        "deleted"
+      ],
+      "description": "Delete one of your own boards",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/board-delete.js",
+      "name": "board-delete",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/board-delete.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "<username>/<slug>, a board URL, or a numeric board id, e.g. janedoe/my-board",
+          "name": "board",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": 25,
+          "help": "Number of pins (max 100)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "pinId",
+        "title",
+        "description",
+        "pinner",
+        "board",
+        "imageUrl",
+        "url"
+      ],
+      "description": "List pins inside a Pinterest board",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/board-pins.js",
+      "name": "board-pins",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/board-pins.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "<username>/<slug>, a board URL, or a numeric board id, e.g. janedoe/my-board",
+          "name": "board",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "help": "Section title",
+          "name": "title",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "sectionId",
+        "title",
+        "slug",
+        "board",
+        "url"
+      ],
+      "description": "Create a section inside one of your boards",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/board-section-create.js",
+      "name": "board-section-create",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/board-section-create.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "<username>/<slug>, a board URL, or a numeric board id, e.g. janedoe/my-board",
+          "name": "board",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "help": "Section id or slug (from `board-sections`)",
+          "name": "section",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": false,
+          "help": "Actually delete — without it nothing is removed",
+          "name": "confirm",
+          "required": false,
+          "type": "bool"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "sectionId",
+        "board",
+        "deleted"
+      ],
+      "description": "Delete a section from one of your boards",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/board-section-delete.js",
+      "name": "board-section-delete",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/board-section-delete.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "<username>/<slug>, a board URL, or a numeric board id, e.g. janedoe/my-board",
+          "name": "board",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": 50,
+          "help": "Number of sections (max 250)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "sectionId",
+        "title",
+        "slug",
+        "pinCount",
+        "url"
+      ],
+      "description": "List the sections inside a Pinterest board",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/board-sections.js",
+      "name": "board-sections",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/board-sections.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "<username>/<slug>, a board URL, or a numeric board id, e.g. janedoe/my-board",
+          "name": "board",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "New board name",
+          "name": "name",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "help": "New board description (pass \"\" to clear)",
+          "name": "description",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "choices": [
+            "public",
+            "secret"
+          ],
+          "help": "New privacy: public or secret",
+          "name": "privacy",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "boardId",
+        "name",
+        "privacy",
+        "url"
+      ],
+      "description": "Update the name, description, or privacy of your board",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/board-update.js",
+      "name": "board-update",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/board-update.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Pin id or pin URL, e.g. 1234567890123456",
+          "name": "pin",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": "./pinterest-downloads",
+          "help": "Output directory",
+          "name": "output",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "pinId",
+        "status",
+        "size",
+        "path"
+      ],
+      "description": "Download a pin's original image to disk",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/download.js",
+      "name": "download",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/download.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Pin id or pin URL, e.g. 1234567890123456",
+          "name": "pin",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "pinId",
+        "title",
+        "description",
+        "pinner",
+        "board",
+        "saveCount",
+        "commentCount",
+        "link",
+        "imageUrl",
+        "url"
+      ],
+      "description": "Get details of a Pinterest pin",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/pin.js",
+      "name": "pin",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/pin.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "Direct image URL Pinterest can fetch (not a page URL), e.g. https://example.com/image.jpg",
+          "name": "image",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "help": "Target board: <username>/<slug>, board URL, or board id (a new pin always needs a board)",
+          "name": "board",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "Optional board section id or slug",
+          "name": "section",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "Pin title",
+          "name": "title",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "Pin description (Pinterest may override it for scraped images)",
+          "name": "description",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "Destination link for the pin",
+          "name": "link",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "pinId",
+        "board",
+        "title",
+        "url"
+      ],
+      "description": "Create a pin from a remote image URL onto a board",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/pin-create.js",
+      "name": "pin-create",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/pin-create.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "Pin id or pin URL, e.g. 1234567890123456",
+          "name": "pin",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": false,
+          "help": "Actually delete — without it the pin is only previewed",
+          "name": "confirm",
+          "required": false,
+          "type": "bool"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "pinId",
+        "title",
+        "board",
+        "deleted"
+      ],
+      "description": "Delete one of your own pins",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/pin-delete.js",
+      "name": "pin-delete",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/pin-delete.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "Pin id or pin URL, e.g. 1234567890123456",
+          "name": "pin",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "New pin title",
+          "name": "title",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "help": "New pin description (pass \"\" to clear)",
+          "name": "description",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "help": "New destination link (pass \"\" to clear)",
+          "name": "link",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "Move the pin to this board: <username>/<slug>, board URL, or board id",
+          "name": "board",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "Move the pin to this board section id or slug (requires --board)",
+          "name": "section",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "pinId",
+        "title",
+        "board",
+        "url"
+      ],
+      "description": "Update a pin's title, description, link, or board",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/pin-update.js",
+      "name": "pin-update",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/pin-update.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "write",
+      "args": [
+        {
+          "help": "Pin id or pin URL to repin, e.g. 1234567890123456",
+          "name": "pin",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "help": "Target board: <username>/<slug>, board URL, or board id (omit to save to your profile)",
+          "name": "board",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "default": "",
+          "help": "Optional board section id or slug (requires --board)",
+          "name": "section",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "pinId",
+        "sourcePinId",
+        "board",
+        "url"
+      ],
+      "description": "Save a pin to your profile or a board",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/save.js",
+      "name": "save",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/save.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Search keyword",
+          "name": "query",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": 25,
+          "help": "Number of boards (max 100)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "boardId",
+        "name",
+        "pinCount",
+        "owner",
+        "description",
+        "url"
+      ],
+      "description": "Search for boards on Pinterest",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/search-boards.js",
+      "name": "search-boards",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/search-boards.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Search keyword",
+          "name": "query",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": 25,
+          "help": "Number of pins (max 100)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "pinId",
+        "title",
+        "description",
+        "pinner",
+        "board",
+        "imageUrl",
+        "url"
+      ],
+      "description": "Search pins on Pinterest",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/search-pins.js",
+      "name": "search-pins",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/search-pins.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Search keyword",
+          "name": "query",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": 25,
+          "help": "Number of users (max 100)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "username",
+        "fullName",
+        "followerCount",
+        "pinCount",
+        "url"
+      ],
+      "description": "Search for users on Pinterest",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/search-users.js",
+      "name": "search-users",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/search-users.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Username or profile URL, e.g. janedoe",
+          "name": "username",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "username",
+        "fullName",
+        "followerCount",
+        "followingCount",
+        "interestFollowingCount",
+        "pinCount",
+        "boardCount",
+        "about",
+        "website",
+        "url"
+      ],
+      "description": "Get a Pinterest user's public profile stats",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/user.js",
+      "name": "user",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/user.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Username or profile URL, e.g. janedoe",
+          "name": "username",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": 25,
+          "help": "Number of boards (max 250)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        },
+        {
+          "choices": [
+            "last_pinned_to",
+            "alphabetical",
+            "custom"
+          ],
+          "default": "last_pinned_to",
+          "help": "Board sort order",
+          "name": "sort",
+          "required": false,
+          "type": "string"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "boardId",
+        "name",
+        "pinCount",
+        "sectionCount",
+        "privacy",
+        "url"
+      ],
+      "description": "List a user's boards",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/user-boards.js",
+      "name": "user-boards",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/user-boards.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Username or profile URL, e.g. janedoe",
+          "name": "username",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": 25,
+          "help": "Number of pins (max 100)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "pinId",
+        "title",
+        "description",
+        "pinner",
+        "board",
+        "imageUrl",
+        "url"
+      ],
+      "description": "List pins created by a Pinterest user",
+      "domain": "www.pinterest.com",
+      "modulePath": "pinterest/user-pins.js",
+      "name": "user-pins",
+      "navigateBefore": "https://www.pinterest.com",
+      "site": "pinterest",
+      "sourceFile": "pinterest/user-pins.js",
+      "strategy": "cookie",
       "type": "js"
     },
     {
@@ -30041,7 +31996,7 @@
         },
         {
           "default": false,
-          "help": "Include nested replies (楼中楼)",
+          "help": "Include nested replies; reply_to is the direct target shown by the page",
           "name": "with-replies",
           "required": false,
           "type": "boolean"
@@ -30055,7 +32010,8 @@
         "likes",
         "time",
         "is_reply",
-        "reply_to"
+        "reply_to",
+        "images"
       ],
       "description": "Read comments from a rednote note (supports nested replies)",
       "domain": "www.rednote.com",
@@ -34127,7 +36083,7 @@
           "type": "int"
         }
       ],
-      "browser": true,
+      "browser": false,
       "columns": [
         "rank",
         "name",
@@ -34136,13 +36092,12 @@
         "tags"
       ],
       "description": "同花顺热股榜",
-      "domain": "eq.10jqka.com.cn",
+      "domain": "dq.10jqka.com.cn",
       "modulePath": "ths/hot-rank.js",
       "name": "hot-rank",
-      "navigateBefore": true,
       "site": "ths",
       "sourceFile": "ths/hot-rank.js",
-      "strategy": "cookie",
+      "strategy": "public",
       "type": "js"
     },
     {
@@ -34974,6 +36929,46 @@
       "siteSession": "persistent",
       "sourceFile": "toutiao/auth.js",
       "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "default": "__all__",
+          "help": "频道 (__all__, news_tech, news_finance, news_world, news_sports, news_entertainment, news_military)",
+          "name": "category",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "default": 20,
+          "help": "返回条数 (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": false,
+      "columns": [
+        "rank",
+        "group_id",
+        "title",
+        "abstract",
+        "source",
+        "tag",
+        "comments",
+        "published_at",
+        "url",
+        "image_url"
+      ],
+      "description": "今日头条频道推荐流（公开 API，无需登录）",
+      "domain": "www.toutiao.com",
+      "modulePath": "toutiao/recommend.js",
+      "name": "recommend",
+      "site": "toutiao",
+      "sourceFile": "toutiao/recommend.js",
+      "strategy": "public",
       "type": "js"
     },
     {
@@ -36331,6 +38326,566 @@
       "access": "read",
       "args": [
         {
+          "help": "Destination or attraction keyword (e.g. Tokyo / Paris / Louvre)",
+          "name": "query",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of results (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "name",
+        "rating",
+        "reviews",
+        "booked",
+        "price",
+        "currency",
+        "url"
+      ],
+      "description": "Search Trip.com attractions and experiences by destination keyword",
+      "domain": "trip.com",
+      "modulePath": "trip/attraction.js",
+      "name": "attraction",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/attraction.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Numeric Trip.com carhire city id (discover via the carhire search box)",
+          "name": "city",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of vehicles (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "category",
+        "vehicle",
+        "seats",
+        "price",
+        "currency",
+        "url"
+      ],
+      "description": "List Trip.com car-rental vehicles for a city (category, model, seats, daily price)",
+      "domain": "trip.com",
+      "modulePath": "trip/car.js",
+      "name": "car",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/car.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "default": 20,
+          "help": "Number of deals (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "title",
+        "offer",
+        "discount",
+        "url"
+      ],
+      "description": "List Trip.com live promotions from the Top Deals hub: campaign title, offer, discount, and link",
+      "domain": "trip.com",
+      "modulePath": "trip/deals.js",
+      "name": "deals",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/deals.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Departure IATA code (e.g. LON / LHR)",
+          "name": "from",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Arrival IATA code (e.g. NYC / JFK)",
+          "name": "to",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Departure date (YYYY-MM-DD)",
+          "name": "date",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of flights (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "airline",
+        "departureTime",
+        "departureAirport",
+        "arrivalTime",
+        "arrivalAirport",
+        "duration",
+        "stops",
+        "price",
+        "currency",
+        "url"
+      ],
+      "description": "Search Trip.com one-way flights by IATA route + departure date",
+      "domain": "trip.com",
+      "modulePath": "trip/flight.js",
+      "name": "flight",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/flight.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Departure IATA code (e.g. LON / LHR)",
+          "name": "from",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Arrival IATA code (e.g. NYC / JFK)",
+          "name": "to",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Outbound date (YYYY-MM-DD)",
+          "name": "depart",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Return date (YYYY-MM-DD)",
+          "name": "return",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of flights (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "airline",
+        "departureTime",
+        "departureAirport",
+        "arrivalTime",
+        "arrivalAirport",
+        "duration",
+        "stops",
+        "price",
+        "currency",
+        "url"
+      ],
+      "description": "Search Trip.com round-trip flights by IATA route + depart/return dates",
+      "domain": "trip.com",
+      "modulePath": "trip/flight-round.js",
+      "name": "flight-round",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/flight-round.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Numeric Trip.com hotel id (discover via the hotels list; e.g. 715233)",
+          "name": "id",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "hotelId",
+        "name",
+        "enName",
+        "star",
+        "score",
+        "scoreLabel",
+        "reviewCount",
+        "ratingBreakdown",
+        "facilities",
+        "checkInOut",
+        "cityName",
+        "address",
+        "lat",
+        "lon",
+        "url"
+      ],
+      "description": "Show a Trip.com hotel detail by id (rating breakdown, amenities, check-in/out policy)",
+      "domain": "trip.com",
+      "modulePath": "trip/hotel.js",
+      "name": "hotel",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/hotel.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Numeric Trip.com city id (discover via the hotels search box; e.g. 338 for London)",
+          "name": "city",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Check-in date (YYYY-MM-DD)",
+          "name": "checkin",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Check-out date (YYYY-MM-DD)",
+          "name": "checkout",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of hotels (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "name",
+        "score",
+        "reviewLabel",
+        "reviews",
+        "location",
+        "room",
+        "price",
+        "currency",
+        "url"
+      ],
+      "description": "List Trip.com hotels for a city id + check-in/out date range",
+      "domain": "trip.com",
+      "modulePath": "trip/hotel-search.js",
+      "name": "hotel-search",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/hotel-search.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Origin city keyword (e.g. Seoul / London / Bangkok)",
+          "name": "from",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Destination city keyword (e.g. Tokyo / Paris / Singapore)",
+          "name": "to",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Outbound date (YYYY-MM-DD)",
+          "name": "depart",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Return date (YYYY-MM-DD)",
+          "name": "return",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 2,
+          "help": "Number of adults (1-9, default 2)",
+          "name": "adults",
+          "required": false,
+          "type": "int"
+        },
+        {
+          "default": 20,
+          "help": "Number of packages (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": false,
+      "columns": [
+        "rank",
+        "airline",
+        "flightNo",
+        "from",
+        "to",
+        "departure",
+        "arrival",
+        "stops",
+        "price",
+        "currency"
+      ],
+      "description": "Search Trip.com flight+hotel packages by route + dates; lists the package flight options priced at the bundle rate",
+      "domain": "trip.com",
+      "modulePath": "trip/package.js",
+      "name": "package",
+      "site": "trip",
+      "sourceFile": "trip/package.js",
+      "strategy": "public",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Destination keyword (e.g. Tokyo / Bali / London)",
+          "name": "query",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of suggestions (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": false,
+      "columns": [
+        "rank",
+        "name",
+        "type",
+        "cityId",
+        "airportCode",
+        "province",
+        "country"
+      ],
+      "description": "Suggest Trip.com destinations (cities, airports) for a keyword; resolves the ids the other commands take",
+      "domain": "trip.com",
+      "modulePath": "trip/search.js",
+      "name": "search",
+      "site": "trip",
+      "sourceFile": "trip/search.js",
+      "strategy": "public",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Destination or tour keyword (e.g. Tokyo / Kyoto / Bali)",
+          "name": "query",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": "private",
+          "help": "Tour line: private or group (default private)",
+          "name": "type",
+          "required": false,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of tours (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "name",
+        "type",
+        "rating",
+        "reviews",
+        "price",
+        "currency",
+        "url"
+      ],
+      "description": "Search Trip.com tour packages by destination keyword (private or group tours)",
+      "domain": "trip.com",
+      "modulePath": "trip/tour.js",
+      "name": "tour",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/tour.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Departure city (e.g. London / Paris / Shanghai)",
+          "name": "from",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Arrival city (e.g. Manchester / Lyon / Beijing)",
+          "name": "to",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "Route country slug (e.g. uk / france / italy / spain / germany / china)",
+          "name": "country",
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of journeys (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "departureTime",
+        "fromStation",
+        "arrivalTime",
+        "toStation",
+        "duration",
+        "changes",
+        "url"
+      ],
+      "description": "Show a Trip.com train route timetable (departure/arrival times, duration, changes)",
+      "domain": "trip.com",
+      "modulePath": "trip/train.js",
+      "name": "train",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/train.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Airport city (e.g. Bangkok / Beijing / Da Nang)",
+          "name": "city",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "help": "3-letter airport IATA code (e.g. DMK / PKX / DAD)",
+          "name": "airport",
+          "positional": true,
+          "required": true,
+          "type": "str"
+        },
+        {
+          "default": 20,
+          "help": "Number of vehicles (1-50)",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "rank",
+        "type",
+        "passengers",
+        "luggage",
+        "price",
+        "currency",
+        "url"
+      ],
+      "description": "List Trip.com airport-transfer vehicles for a city + airport (type, seats, from-price)",
+      "domain": "trip.com",
+      "modulePath": "trip/transfer.js",
+      "name": "transfer",
+      "navigateBefore": false,
+      "site": "trip",
+      "sourceFile": "trip/transfer.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
           "help": "TV show title or fragment to search for",
           "name": "query",
           "positional": true,
@@ -36609,14 +39164,39 @@
       "args": [
         {
           "default": 20,
-          "help": "Maximum number of bookmarks to return (default 20).",
+          "help": "Maximum number of bookmarks to return (default 20). Ignored when --all is set.",
           "name": "limit",
           "required": false,
           "type": "int"
         },
         {
+          "default": false,
+          "help": "Fetch all bookmark pages until exhausted. Prefer --output-file for large archives.",
+          "name": "all",
+          "required": false,
+          "type": "bool"
+        },
+        {
+          "help": "Resume file for long-running all-pages bookmark syncs.",
+          "name": "resume-file",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "help": "Write all-page results to JSONL. Requires --all and --resume-file.",
+          "name": "output-file",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "help": "Optional pagination safety cap (default 100; raised automatically with --all).",
+          "name": "max-pages",
+          "required": false,
+          "type": "int"
+        },
+        {
           "default": 0,
-          "help": "When set to N>0, re-rank the bookmarks by weighted engagement (likes×1 + retweets×3 + replies×2 + bookmarks×5 + log10(views+1)×0.5) and return the top N. Default 0 keeps the API's native (saved-time) ordering.",
+          "help": "When set to N>0, re-rank the bookmarks by weighted engagement (likes×1 + retweets×3 + replies×2 + bookmarks×5 + log10(views+1)×0.5) and return the top N. Default 0 keeps the API's native (saved-time) ordering. Incompatible with --output-file.",
           "name": "top-by-engagement",
           "required": false,
           "type": "int"
@@ -36643,6 +39223,52 @@
       "navigateBefore": "https://x.com",
       "site": "twitter",
       "sourceFile": "twitter/bookmarks.js",
+      "strategy": "cookie",
+      "type": "js"
+    },
+    {
+      "access": "read",
+      "args": [
+        {
+          "help": "Twitter screen name (with or without @).",
+          "name": "username",
+          "positional": true,
+          "required": true,
+          "type": "string"
+        },
+        {
+          "help": "RFC3339 lower time boundary that must be reached or exhausted.",
+          "name": "until",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "default": 10000,
+          "help": "Safety ceiling; reaching it is a typed failure.",
+          "name": "limit",
+          "required": false,
+          "type": "int"
+        },
+        {
+          "default": 2,
+          "help": "Seconds to wait between cursor pages.",
+          "name": "page-delay",
+          "required": false,
+          "type": "int"
+        }
+      ],
+      "browser": true,
+      "columns": [
+        "posts",
+        "receipt"
+      ],
+      "description": "Fetch a user timeline with relationship facts and a bounded completion receipt.",
+      "domain": "x.com",
+      "modulePath": "twitter/collection.js",
+      "name": "collection",
+      "navigateBefore": "https://x.com",
+      "site": "twitter",
+      "sourceFile": "twitter/collection.js",
       "strategy": "cookie",
       "type": "js"
     },
@@ -36955,14 +39581,39 @@
         },
         {
           "default": 20,
-          "help": "Maximum number of liked tweets to return (default 20).",
+          "help": "Maximum number of liked tweets to return (default 20). Ignored when --all is set.",
           "name": "limit",
           "required": false,
           "type": "int"
         },
         {
+          "default": false,
+          "help": "Fetch all liked-tweet pages until exhausted. Prefer --output-file for large archives.",
+          "name": "all",
+          "required": false,
+          "type": "bool"
+        },
+        {
+          "help": "Resume file for long-running all-pages likes syncs.",
+          "name": "resume-file",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "help": "Write all-page results to JSONL. Requires --all and --resume-file.",
+          "name": "output-file",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "help": "Optional pagination safety cap (default 100; raised automatically with --all).",
+          "name": "max-pages",
+          "required": false,
+          "type": "int"
+        },
+        {
           "default": 0,
-          "help": "When set to N>0, re-rank the liked tweets by weighted engagement (likes×1 + retweets×3 + replies×2 + bookmarks×5 + log10(views+1)×0.5) and return the top N. Default 0 keeps the API's native (recency) ordering.",
+          "help": "When set to N>0, re-rank the liked tweets by weighted engagement (likes×1 + retweets×3 + replies×2 + bookmarks×5 + log10(views+1)×0.5) and return the top N. Default 0 keeps the API's native (recency) ordering. Incompatible with --output-file.",
           "name": "top-by-engagement",
           "required": false,
           "type": "int"
@@ -41380,6 +44031,7 @@
         {
           "help": "Full Xiaohongshu note URL with xsec_token",
           "name": "note-id",
+          "placeholder": "full-note-url-with-xsec-token",
           "positional": true,
           "required": true,
           "type": "str"
@@ -41393,7 +44045,7 @@
         },
         {
           "default": false,
-          "help": "Include nested replies (楼中楼)",
+          "help": "Include nested replies; reply_to is the direct target shown by the page",
           "name": "with-replies",
           "required": false,
           "type": "boolean"
@@ -41409,7 +44061,8 @@
         "likes",
         "time",
         "is_reply",
-        "reply_to"
+        "reply_to",
+        "images"
       ],
       "description": "获取小红书笔记评论（支持楼中楼子回复）",
       "domain": "www.xiaohongshu.com",
@@ -41615,6 +44268,7 @@
         {
           "help": "Full Xiaohongshu note URL with xsec_token, or xhslink short link",
           "name": "note-id",
+          "placeholder": "full-note-url-with-xsec-token-or-xhslink",
           "positional": true,
           "required": true,
           "type": "str"
@@ -41823,8 +44477,9 @@
       "access": "write",
       "args": [
         {
-          "help": "User ID (e.g. 5d8f88dc0000000001005d3a) or profile URL",
+          "help": "Full profile URL preferred; a raw user ID remains supported for compatibility",
           "name": "user-id",
+          "placeholder": "full-profile-url",
           "positional": true,
           "required": true,
           "type": "str"
@@ -41920,6 +44575,7 @@
         {
           "help": "Full Xiaohongshu note URL with xsec_token",
           "name": "note-id",
+          "placeholder": "full-note-url-with-xsec-token",
           "positional": true,
           "required": true,
           "type": "str"
@@ -42118,8 +44774,9 @@
       "access": "write",
       "args": [
         {
-          "help": "User ID (e.g. 5d8f88dc0000000001005d3a) or profile URL",
+          "help": "Full profile URL preferred; a raw user ID remains supported for compatibility",
           "name": "user-id",
+          "placeholder": "full-profile-url",
           "positional": true,
           "required": true,
           "type": "str"
@@ -45451,5 +48108,5 @@
   "opencli_version": "1.8.6",
   "schema_version": 1,
   "source": "cli-manifest.json",
-  "source_sha256": "310a143b41ea677de88f05bfd9c525e3b1e19c14f88d0377356508b161adf3e6"
+  "source_sha256": "c126b09ea1efe2b059676cdd5f0be1f090e09fe013651889269419ab339aceab"
 }

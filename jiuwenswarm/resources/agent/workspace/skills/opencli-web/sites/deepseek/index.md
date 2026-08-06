@@ -1,7 +1,7 @@
 # Deepseek
 
 - Site slug: `deepseek`
-- Domains: `chat.deepseek.com`
+- Domains: `chat.deepseek.com`, `platform.deepseek.com`
 - Aliases: none
 
 ## Operations
@@ -12,4 +12,4 @@
 | `authentication` | Open, change, or clear an authenticated browser session. | `login` | `sites/deepseek/operations/authentication.md` |
 | `generation` | Generate remote content, start AI work, or consume quota. | `ask`, `new` | `sites/deepseek/operations/generation.md` |
 | `messaging` | Send messages, replies, comments, invitations, or contacts. | `send` | `sites/deepseek/operations/messaging.md` |
-| `private-content` | Read content that depends on an authenticated account. | `detail`, `history`, `read` | `sites/deepseek/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `detail`, `history`, `read`, `usage` | `sites/deepseek/operations/private-content.md` |

@@ -16,8 +16,8 @@ from typing import Any, Mapping, Sequence
 
 OPENCLI_SKILL_PREFIX = "jiuwenswarm/resources/agent/workspace/skills/opencli-web/"
 EXPECTED_OPENCLI_VERSION = "1.8.6"
-EXPECTED_SITE_COUNT = 162
-EXPECTED_COMMAND_COUNT = 1123
+EXPECTED_SITE_COUNT = 165
+EXPECTED_COMMAND_COUNT = 1179
 MANAGED_MANIFEST_NAME = "generated-manifest.json"
 REQUIRED_SKILL_RESOURCES = frozenset(
     {

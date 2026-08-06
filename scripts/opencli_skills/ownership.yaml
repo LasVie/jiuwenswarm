@@ -44,6 +44,7 @@ owners:
     - linkedin
     - mdn
     - medium
+    - midjourney
     - mubu
     - oeis
     - ones
@@ -107,6 +108,7 @@ owners:
     - nvd
     - openalex
     - packagist
+    - pinterest
     - pixiv
     - qwen
     - reuters
@@ -170,6 +172,7 @@ owners:
     - taobao
     - tieba
     - tiktok
+    - trip
     - tvmaze
     - v2ex
     - wechat-channels

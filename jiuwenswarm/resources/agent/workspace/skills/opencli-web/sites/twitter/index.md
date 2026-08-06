@@ -16,6 +16,6 @@
 | `discovery` | Search, browse, recommend, or discover site content. | `followers`, `following`, `search`, `trending` | `sites/twitter/operations/discovery.md` |
 | `file-operations` | Create or download workspace files. | `download` | `sites/twitter/operations/file-operations.md` |
 | `messaging` | Send messages, replies, comments, invitations, or contacts. | `hide-reply`, `reply`, `reply-dm` | `sites/twitter/operations/messaging.md` |
-| `private-content` | Read content that depends on an authenticated account. | `bookmark-folder`, `bookmark-folders`, `bookmarks`, `device-follow`, `likes`, `list-tweets`, `lists`, `notifications`, `timeline` | `sites/twitter/operations/private-content.md` |
+| `private-content` | Read content that depends on an authenticated account. | `bookmark-folder`, `bookmark-folders`, `bookmarks`, `collection`, `device-follow`, `likes`, `list-tweets`, `lists`, `notifications`, `timeline` | `sites/twitter/operations/private-content.md` |
 | `publishing` | Publish, create, edit, or upload remote content. | `list-create`, `post` | `sites/twitter/operations/publishing.md` |
 | `write-actions` | Change remote service state. | `accept`, `list-add`, `list-add-batch`, `quote`, `retweet`, `unblock`, `unbookmark`, `unlike`, `unretweet` | `sites/twitter/operations/write-actions.md` |

@@ -11,7 +11,7 @@ Read one public item, record, page, or resource.
 
 ## Operation-specific constraints
 
-- `answer-comments`: Source-audited against OpenCLI 1.8.6 zhihu/answer-comments.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
+- `answer-comments`: Source-audited against OpenCLI 1.8.6 zhihu/answer-comments.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended. If answer-detail for the same answer ID reports comments=0, skip answer-comments and report a confirmed empty comment list. Treat EMPTY_RESULT from answer-comments as the same legitimate empty state; do not retry or use browser fallback. Do not substitute another answer unless the user permits it.
 - `answer-detail`: Source-audited against OpenCLI 1.8.6 zhihu/answer-detail.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
 - `question`: Source-audited against OpenCLI 1.8.6 zhihu/question.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.
 - `user`: Source-audited against OpenCLI 1.8.6 zhihu/user.js; reads public site content through the browser session. Login may affect availability, but no account-private fields are intended.

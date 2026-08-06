@@ -1,143 +1,35 @@
 schema_version: 2
 catalog_version: opencli-1.8.6
-site: deepseek
-display_name: Deepseek
+site: trip
+display_name: Trip
 domains:
-- chat.deepseek.com
-- platform.deepseek.com
+- trip.com
 aliases: []
 terminal: operation
 operations:
-  account:
-    purpose: Read account identity or account-scoped metadata.
+  content:
+    purpose: Read site content and metadata.
     commands:
-    - status
-    - whoami
-  authentication:
-    purpose: Open, change, or clear an authenticated browser session.
+    - package
+  discovery:
+    purpose: Search, browse, recommend, or discover site content.
     commands:
-    - login
-  generation:
-    purpose: Generate remote content, start AI work, or consume quota.
-    commands:
-    - ask
-    - new
-  messaging:
-    purpose: Send messages, replies, comments, invitations, or contacts.
-    commands:
-    - send
+    - search
   private-content:
     purpose: Read content that depends on an authenticated account.
     commands:
-    - detail
-    - history
-    - read
-    - usage
+    - attraction
+    - car
+    - deals
+    - flight
+    - flight-round
+    - hotel
+    - hotel-search
+    - tour
+    - train
+    - transfer
 commands:
-  ask:
-    operation: generation
-    semantic_effect: quota_consumption
-    risk: high
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output: []
-    notes: ''
-  detail:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private conversation content
-    - account identifiers
-    notes: 'Source-audited against OpenCLI 1.8.6 deepseek/detail.js; reads authenticated or session-scoped content that can expose private account data.'
-  history:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private conversation content
-    - account identifiers
-    notes: 'Source-audited against OpenCLI 1.8.6 deepseek/history.js; reads authenticated or session-scoped content that can expose private account data.'
-  login:
-    operation: authentication
-    semantic_effect: auth_session_change
-    risk: high
-    auth: interactive
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output: []
-    notes: ''
-  new:
-    operation: generation
-    semantic_effect: quota_consumption
-    risk: high
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output: []
-    notes: ''
-  read:
-    operation: private-content
-    semantic_effect: private_content_read
-    risk: medium
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - private conversation content
-    - account identifiers
-    notes: 'Source-audited against OpenCLI 1.8.6 deepseek/read.js; reads authenticated or session-scoped content that can expose private account data.'
-  send:
-    operation: messaging
-    semantic_effect: message_send
-    risk: high
-    auth: required
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output: []
-    notes: ''
-  status:
-    operation: account
-    semantic_effect: private_account_read
-    risk: medium
-    auth: optional
-    transport: browser_cookie
-    fallback_before: browser_agent
-    fallback_after: none
-    file_inputs: []
-    file_outputs: []
-    sensitive_output:
-    - account identifiers
-    notes: 'Source-audited against OpenCLI 1.8.6 deepseek/status.js; reads current browser-session authentication state without changing it.'
-  usage:
+  attraction:
     operation: private-content
     semantic_effect: private_content_read
     risk: medium
@@ -151,9 +43,9 @@ commands:
     - private content
     - account identifiers
     notes: ''
-  whoami:
-    operation: account
-    semantic_effect: private_account_read
+  car:
+    operation: private-content
+    semantic_effect: private_content_read
     risk: medium
     auth: required
     transport: browser_cookie
@@ -162,5 +54,142 @@ commands:
     file_inputs: []
     file_outputs: []
     sensitive_output:
+    - private content
     - account identifiers
-    notes: 'Source-audited against OpenCLI 1.8.6 deepseek/auth.js; reads current browser-session or account-scoped metadata.'
+    notes: ''
+  deals:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  flight:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  flight-round:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  hotel:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  hotel-search:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  package:
+    operation: content
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  search:
+    operation: discovery
+    semantic_effect: public_read
+    risk: low
+    auth: none
+    transport: public_http
+    fallback_before: browser_agent
+    fallback_after: browser_agent
+    file_inputs: []
+    file_outputs: []
+    sensitive_output: []
+    notes: ''
+  tour:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  train:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''
+  transfer:
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
+    auth: required
+    transport: browser_cookie
+    fallback_before: browser_agent
+    fallback_after: none
+    file_inputs: []
+    file_outputs: []
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: ''

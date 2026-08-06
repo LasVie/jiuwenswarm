@@ -4,6 +4,8 @@ Read content that depends on an authenticated account.
 
 | Command | Effect / risk | Exact usage | Arguments | Runtime |
 |---|---|---|---|---|
+| `company` | `private_content_read` / `medium` | `opencli linkedin company "<company>" -f json`<br>Read a LinkedIn company page: industry, size, HQ, founded, website, followers, about | `company` (string, required, positional) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
+| `connections` | `private_content_read` / `medium` | `opencli linkedin connections [--limit <limit>] -f json`<br>List your LinkedIn first-degree connections (name, headline, profile URL) | `limit` (int, optional, default=20) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 | `inbox` | `private_content_read` / `medium` | `opencli linkedin inbox [--limit <limit>] [--unread-only <true\|false>] -f json`<br>List LinkedIn messaging inbox conversations and unread messages | `limit` (int, optional, default=40); `unread-only` (bool, optional, default=False) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 | `jobs-preferences` | `private_content_read` / `medium` | `opencli linkedin jobs-preferences -f json`<br>Read visible LinkedIn Jobs preferences and alert settings without changing them | none | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
 | `people-search` | `private_content_read` / `medium` | `opencli linkedin people-search "<keywords>" [--limit <limit>] -f json`<br>Search standard LinkedIn (not Sales Navigator) for people by keyword. Each invocation consumes against LinkedIn's monthly Commercial Use Limit on people search; throttle accordingly. | `keywords` (string, required, positional); `limit` (int, optional, default=5) | auth=required; transport=browser_cookie; fallback_before=browser_agent; fallback_after=none |
@@ -19,6 +21,8 @@ Read content that depends on an authenticated account.
 
 ## Operation-specific constraints
 
+- `company`: sensitive output: private content, account identifiers
+- `connections`: sensitive output: private content, account identifiers
 - `inbox`: sensitive output: private content, account identifiers
 - `jobs-preferences`: sensitive output: private content, account identifiers
 - `people-search`: sensitive output: private content, account identifiers
