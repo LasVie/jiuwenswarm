@@ -365,7 +365,7 @@ async def test_web_routing_rails_define_one_concise_opencli_routing_contract():
         "Scope",
         "Disclosure",
         "Execution",
-        "Seriality",
+        "Concurrency",
         "Consent",
         "Fallback/retry",
     }
@@ -410,9 +410,21 @@ async def test_web_routing_rails_define_one_concise_opencli_routing_contract():
         )
     )
     assert all(
-        term in bullets["Seriality"]
-        for term in ("at most one OpenCLI command", "await it", "concurrently")
+        term in bullets["Concurrency"]
+        for term in (
+            "independent OpenCLI calls",
+            "concurrently",
+            "journal",
+            "tab/session leases",
+            "persistent writes",
+            "Preserve dependencies",
+            "Never overlap `browser_agent`",
+            "`session_busy`",
+            "ambiguous writes",
+            "fallback/retry",
+        )
     )
+    assert "at most one OpenCLI command" not in prompt
     assert all(
         term in bullets["Consent"]
         for term in (
