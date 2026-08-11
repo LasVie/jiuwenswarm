@@ -214,6 +214,28 @@ def test_policies_cover_each_catalog_command_exactly_once() -> None:
             assert "confirmation" not in command
 
 
+def test_bilibili_favorite_overrides_incorrect_upstream_access() -> None:
+    model = build_generation_model(
+        load_catalog(CATALOG_PATH),
+        load_ownership(OWNERSHIP_PATH),
+        load_policies(POLICY_ROOT),
+    )
+    site = model.sites["bilibili"]
+    favorite = site.command("favorite")
+
+    # Preserve the frozen upstream fact while enforcing the source-audited policy.
+    assert favorite.catalog.access == "write"
+    assert favorite.operation == "private-content"
+    assert favorite.semantic_effect == "private_content_read"
+    assert favorite.risk == "medium"
+    assert favorite.sensitive_output == (
+        "private content",
+        "account identifiers",
+    )
+    assert "favorite" in site.operations["private-content"].commands
+    assert "favorite" not in site.operations["account-actions"].commands
+
+
 def test_physical_depth_follows_safety_boundary_not_command_count_alone() -> None:
     model = build_generation_model(
         load_catalog(CATALOG_PATH),

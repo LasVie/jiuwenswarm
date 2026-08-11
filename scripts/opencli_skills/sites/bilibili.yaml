@@ -15,7 +15,6 @@ operations:
   account-actions:
     purpose: Change reversible account relationship or saved state.
     commands:
-    - favorite
     - follow
   authentication:
     purpose: Open, change, or clear an authenticated browser session.
@@ -51,6 +50,7 @@ operations:
     purpose: Read content that depends on an authenticated account.
     commands:
     - dynamic
+    - favorite
     - feed
     - feed-detail
     - following
@@ -108,17 +108,21 @@ commands:
     - account identifiers
     notes: ''
   favorite:
-    operation: account-actions
-    semantic_effect: reversible_remote_write
-    risk: high
+    operation: private-content
+    semantic_effect: private_content_read
+    risk: medium
     auth: required
     transport: browser_cookie
     fallback_before: browser_agent
     fallback_after: none
     file_inputs: []
     file_outputs: []
-    sensitive_output: []
-    notes: ''
+    sensitive_output:
+    - private content
+    - account identifiers
+    notes: >-
+      Source-audited against OpenCLI 1.8.6. Although upstream declares
+      access=write, this command only reads favorite folders and resources.
   feed:
     operation: private-content
     semantic_effect: private_content_read

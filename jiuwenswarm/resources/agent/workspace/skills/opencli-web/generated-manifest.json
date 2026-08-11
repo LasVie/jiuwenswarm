@@ -52,8 +52,8 @@
     "sites/barchart/index.md": "b4aea34b80ac7286a22922ed042a2f4ba0243af4d52005e3259cf33b281c3ee8",
     "sites/barchart/operations/analytics.md": "a2453dc112b4783e12c533db1060e0a470324b6bfa42016ae2cfcfd1da96c5df",
     "sites/bbc/index.md": "3737e85b9a1fa41edd00c7cf7d21fe87507abe2b60c317da4105c18bc4d31441",
-    "sites/bilibili/index.md": "b3d7756c8bb1191ddf2dfcf9e0a266527b008cb36e8b2c62e80db13a5ee62118",
-    "sites/bilibili/operations/account-actions.md": "5ba770cf5c49c79148dd24674a069d8c8bb065ea96a385d3445e9d16efe741c5",
+    "sites/bilibili/index.md": "583edfa46ade284986ee7da563a355460890fdb9dd9c771213368b6b6c4fcd03",
+    "sites/bilibili/operations/account-actions.md": "08f49da3adf9848b6ba34c38641364f0899b0da23f87910ced21baf2f23e4dfe",
     "sites/bilibili/operations/account.md": "fed38746ea3d50f22177b84f50ba0553e6e03184ef800913f2de22f9a3b5b44d",
     "sites/bilibili/operations/authentication.md": "5914fc7a3c0fe7f8ca242f15fc7afe713ed1991837a142285460c515a47099bc",
     "sites/bilibili/operations/content.md": "9d946a7fe6b8c898037b68b71cf11de22b689c461c932431477e657c79d35004",
@@ -61,7 +61,7 @@
     "sites/bilibili/operations/discovery.md": "bdf7ed42548a8ca16d331e9e5ef0e72a6eaedc4025fc6262c3c693bfd593858d",
     "sites/bilibili/operations/file-operations.md": "827228854b79f5bcc82783008bc3d4345e234afc2c03228acf73647f3e52f067",
     "sites/bilibili/operations/messaging.md": "ecd35d1a746faca169fb29df64992eb0a43aec36007bab10a92904858ed26f83",
-    "sites/bilibili/operations/private-content.md": "043fc15a1058971e95d7c848d9337cccc51ca632ca7bb3adcd44335f0c215b1b",
+    "sites/bilibili/operations/private-content.md": "a44f8c3eb80697699deb00fa4e79186b576de230650726ab7d04a1e838c8e5b4",
     "sites/binance/index.md": "a0360fe72a0b3fbf119f1172bfaf873982fca8e4ff446ad94774c17822535a94",
     "sites/binance/operations/content.md": "832e3f8dd86f3ffb7ca971071108f356cda575db37422e33b729d75378d8080d",
     "sites/bloomberg/index.md": "72eb148b1b86e63481dbed76e15ef219fefcaa40c59743f26abf4266a6ea120b",
@@ -668,7 +668,7 @@
   },
   "generator_version": "2",
   "opencli_version": "1.8.6",
-  "policy_sha256": "6c0fec9e24c832086964fa21b4410bb725076175b8e628140b493825b31e8f0d",
+  "policy_sha256": "4229c70f53ff01e8c1d804fd437ba51062c9a92eab525eaf601cab009b1347e3",
   "schema_version": 1,
   "site_count": 165
 }
