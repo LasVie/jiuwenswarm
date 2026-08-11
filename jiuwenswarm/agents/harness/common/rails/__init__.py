@@ -10,6 +10,12 @@ from jiuwenswarm.agents.harness.common.rails.avatar_rail import AvatarPromptRail
 from jiuwenswarm.agents.harness.common.rails.project_memory_rail import ProjectMemoryRail
 from jiuwenswarm.agents.harness.common.rails.response_prompt_rail import ResponsePromptRail
 from jiuwenswarm.agents.harness.common.rails.runtime_prompt_rail import RuntimePromptRail
+from jiuwenswarm.agents.harness.common.rails.browser_task_prompt_rail import (
+    BrowserTaskPromptRail,
+)
+from jiuwenswarm.agents.harness.common.rails.web_tool_routing_rail import (
+    WebToolRoutingRail,
+)
 from jiuwenswarm.agents.harness.common.rails.symphony import (
     SymphonyOrchestrationRail,
 )
@@ -25,9 +31,11 @@ __all__ = [
     "MultimodalImageRail",
     "PermissionInterruptRail",
     "AvatarPromptRail",
+    "BrowserTaskPromptRail",
     "ProjectMemoryRail",
     "ResponsePromptRail",
     "RuntimePromptRail",
+    "WebToolRoutingRail",
     "SymphonyOrchestrationRail",
     "MemberSkillToolkitRail",
     "StructuredAskUserRail",

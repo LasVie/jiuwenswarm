@@ -422,7 +422,7 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
 
     # 固定 Rails 名字集合 — 用于动态 Rails 去重
     _FIXED_RAIL_NAMES = frozenset({
-        "RuntimePromptRail", "ResponsePromptRail",
+        "RuntimePromptRail", "WebToolRoutingRail", "ResponsePromptRail",
         "JiuSwarmStreamEventRail", "SecurityRail",
         "LspRail", "ProjectMemoryRail", "PermissionInterruptRail",
         "ContextProcessorRail",
@@ -651,6 +651,7 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
         # 固定 Rails — code 模式特有
         rail_infos = [
             _RailBuildInfo("_runtime_prompt_rail", self._build_runtime_prompt_rail),
+            _RailBuildInfo("_web_tool_routing_rail", self._build_web_tool_routing_rail),
             _RailBuildInfo("_response_prompt_rail", self._build_response_prompt_rail),
             _RailBuildInfo("_skill_retrieval_prompt_rail", self._build_skill_retrieval_prompt_rail),
             _RailBuildInfo("_stream_event_rail", self._build_stream_event_rail),
@@ -1196,6 +1197,9 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
                 project_dir=runtime_config.project_dir or self._project_dir,
             )
             self._runtime_prompt_rail.set_session_id(runtime_config.session_id)
+        web_tool_routing_rail = getattr(self, "_web_tool_routing_rail", None)
+        if web_tool_routing_rail is not None:
+            web_tool_routing_rail.set_channel(resolved_channel)
         # PermissionInterruptRail: per-request trusted_dirs 注入，使 external_directory
         # 检查将这些子树视为 internal 而跳过 ask/deny（与 RuntimePromptRail 对齐）。
         # 用 getattr 兼容绕过 __init__ 的测试构造（_permission_rail 仅在 rail 构建流程赋值）。
@@ -1231,6 +1235,13 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
 
         # code 模式始终走 _update_rails_for_mode 的 code 逻辑
         await self._update_rails_for_mode(runtime_config.mode)
+        subagent_set_channel = getattr(
+            getattr(self, "_subagent_rail", None),
+            "set_channel",
+            None,
+        )
+        if callable(subagent_set_channel):
+            subagent_set_channel(resolved_channel)
         await self._set_user_interaction_enabled(runtime_config.supports_user_interaction)
         await self._update_tools_for_mode(runtime_config.mode, runtime_config.session_id, runtime_config.request_id)
         await self._update_session_tools(

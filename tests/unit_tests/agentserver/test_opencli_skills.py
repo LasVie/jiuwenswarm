@@ -15,8 +15,11 @@ from openjiuwen.harness.prompts.prompt_attachment_manager import (
 )
 from openjiuwen.harness.tools import SkillTool
 
-from jiuwenswarm.agents.harness.common.rails.runtime_prompt_rail import (
-    RuntimePromptRail,
+from jiuwenswarm.agents.harness.common.rails.browser_task_prompt_rail import (
+    BrowserTaskPromptRail,
+)
+from jiuwenswarm.agents.harness.common.rails.web_tool_routing_rail import (
+    WebToolRoutingRail,
 )
 
 
@@ -333,10 +336,14 @@ async def test_acceptance_trace_discloses_each_needed_operation_sequentially(
 
 
 @pytest.mark.asyncio
-async def test_web_runtime_prompt_defines_one_concise_opencli_routing_contract():
+async def test_web_routing_rails_define_one_concise_opencli_routing_contract():
     builder = SystemPromptBuilder(language="en")
-    rail = RuntimePromptRail(language="en", channel="web")
-    rail.init(_FakeAgent(builder))
+    agent = _FakeAgent(builder)
+    routing_rail = WebToolRoutingRail(channel="web")
+    routing_rail.init(agent)
+    browser_rail = BrowserTaskPromptRail(channel="web")
+    browser_rail.system_prompt_builder = builder
+    browser_rail.tools = [object()]
     ctx = AgentCallbackContext(
         agent=None,
         inputs=None,
@@ -344,11 +351,12 @@ async def test_web_runtime_prompt_defines_one_concise_opencli_routing_contract()
         extra={},
     )
 
-    await rail.before_model_call(ctx)
+    await routing_rail.before_model_call(ctx)
+    await browser_rail.before_model_call(ctx)
 
     prompt = builder.build()
-    opencli_policy = _extract_markdown_section(prompt, "# OpenCLI Web Policy")
-    browser_policy = _extract_markdown_section(prompt, "# Browser Tool Policy")
+    opencli_policy = _extract_markdown_section(prompt, "# Web Tool Routing Policy")
+    browser_policy = _extract_markdown_section(prompt, "## Browser Agent Delegation")
     bullets = _extract_labeled_bullets(opencli_policy)
 
     assert len(opencli_policy.split()) <= 275

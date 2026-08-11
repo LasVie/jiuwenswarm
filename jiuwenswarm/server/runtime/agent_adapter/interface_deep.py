@@ -168,12 +168,14 @@ from jiuwenswarm.agents.harness.common.tools.todo_compat import (
 )
 from jiuwenswarm.agents.harness.common.prompt.prompt_builder import build_agent_identity_prompt
 from jiuwenswarm.agents.harness.common.rails import (
+    BrowserTaskPromptRail,
     JiuSwarmStreamEventRail,
     MultimodalImageRail,
     ResponsePromptRail,
     RuntimePromptRail,
     StructuredAskUserRail,
     SymphonyOrchestrationRail,
+    WebToolRoutingRail,
 )
 from jiuwenswarm.agents.harness.common.rails.execution_guard import (
     CircuitBreakerRail,
@@ -1086,6 +1088,7 @@ class JiuWenSwarmDeepAdapter:
         self._context_assemble_mode: str | None = None
         self._context_processor_rail: ContextProcessorRail | None = None
         self._runtime_prompt_rail: RuntimePromptRail | None = None
+        self._web_tool_routing_rail: WebToolRoutingRail | None = None
         self._response_prompt_rail: ResponsePromptRail | None = None
         self._security_rail: SecurityRail | None = None
         self._memory_rail: MemoryRail | None = None
@@ -4292,13 +4295,16 @@ class JiuWenSwarmDeepAdapter:
         return task_planning_rail
 
     @staticmethod
-    def _build_subagent_rail() -> SubagentRail | None:
-        """Build SubagentRail for subagent delegation."""
+    def _build_subagent_rail() -> BrowserTaskPromptRail | None:
+        """Build the task_tool rail with Web-only browser delegation guidance."""
         try:
-            subagent_rail = SubagentRail()
-            logger.info("[JiuWenSwarmDeepAdapter] SubagentRail create success")
+            subagent_rail = BrowserTaskPromptRail()
+            logger.info("[JiuWenSwarmDeepAdapter] BrowserTaskPromptRail create success")
         except Exception as exc:
-            logger.warning("[JiuWenSwarmDeepAdapter] SubagentRail create failed: %s", exc)
+            logger.warning(
+                "[JiuWenSwarmDeepAdapter] BrowserTaskPromptRail create failed: %s",
+                exc,
+            )
             subagent_rail = None
         return subagent_rail
 
@@ -4562,6 +4568,24 @@ class JiuWenSwarmDeepAdapter:
             rail = None
         return rail
 
+    def _build_web_tool_routing_rail(self) -> WebToolRoutingRail | None:
+        """Build the OpenCLI-first router for Web tool requests."""
+        try:
+            default_channel = (
+                "acp"
+                if self._is_acp_tool_profile(self._instance_overrides)
+                else self._resolve_prompt_channel()
+            )
+            rail = WebToolRoutingRail(channel=default_channel)
+            logger.info("[JiuWenSwarmDeepAdapter] WebToolRoutingRail create success")
+        except Exception as exc:
+            logger.warning(
+                "[JiuWenSwarmDeepAdapter] WebToolRoutingRail create failed: %s",
+                exc,
+            )
+            rail = None
+        return rail
+
     def _build_skill_retrieval_prompt_rail(self) -> SkillRetrievalPromptRail | None:
         """Build lightweight agentic skill retrieval prompt guidance."""
         if not is_skill_retrieval_enabled():
@@ -4726,6 +4750,7 @@ class JiuWenSwarmDeepAdapter:
         """Build DeepAgent rails consistently for cold start and hot reload."""
         rail_infos = [
             _RailBuildInfo("_runtime_prompt_rail", self._build_runtime_prompt_rail),
+            _RailBuildInfo("_web_tool_routing_rail", self._build_web_tool_routing_rail),
             _RailBuildInfo("_response_prompt_rail", self._build_response_prompt_rail),
             _RailBuildInfo(
                 "_multimodal_image_rail",
@@ -6343,6 +6368,16 @@ class JiuWenSwarmDeepAdapter:
             self._runtime_prompt_rail.set_session_id(runtime_config.session_id)
         if self._response_prompt_rail:
             self._response_prompt_rail.set_channel(resolved_channel)
+        web_tool_routing_rail = getattr(self, "_web_tool_routing_rail", None)
+        if web_tool_routing_rail is not None:
+            web_tool_routing_rail.set_channel(resolved_channel)
+        subagent_set_channel = getattr(
+            getattr(self, "_subagent_rail", None),
+            "set_channel",
+            None,
+        )
+        if callable(subagent_set_channel):
+            subagent_set_channel(resolved_channel)
         # PermissionInterruptRail: per-request trusted_dirs 注入，使 external_directory
         # 检查将这些子树视为 internal 而跳过 ask/deny（与 RuntimePromptRail 对齐）。
         # 用 getattr 兼容绕过 __init__ 的测试构造（_permission_rail 仅在 rail 构建流程赋值）。

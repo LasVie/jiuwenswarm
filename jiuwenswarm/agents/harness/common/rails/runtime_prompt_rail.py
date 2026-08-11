@@ -71,8 +71,6 @@ class RuntimePromptRail(DeepAgentRail):
             self.system_prompt_builder.remove_section("runtime.model_answer_policy")
             self.system_prompt_builder.remove_section("language_output")
             self.system_prompt_builder.remove_section("env")
-            self.system_prompt_builder.remove_section("opencli_web_policy")
-            self.system_prompt_builder.remove_section("browser_tool_policy")
             self.system_prompt_builder.remove_section("tui_current_project_policy")
             self.system_prompt_builder.remove_section("trusted_dirs_policy")
         self._agent = None
@@ -229,8 +227,6 @@ class RuntimePromptRail(DeepAgentRail):
             "runtime.model_answer_policy",
             "language_output",
             "env",
-            "opencli_web_policy",
-            "browser_tool_policy",
             "tui_current_project_policy",
             "trusted_dirs_policy"):
             self.system_prompt_builder.remove_section(name)
@@ -477,58 +473,6 @@ class RuntimePromptRail(DeepAgentRail):
                 ctx,
                 section="git_status",
             )
-
-        # ── Channel: OpenCLI / browser policies or trusted_dirs_policy ──
-        if self._channel == "web":
-            opencli_web_policy = (
-                "# OpenCLI Web Policy\n\n"
-                "- Scope: before `browser_agent` handles live-site interaction or page/account state, use the "
-                "installed, enabled `opencli-web` Skill. Exclude discussion, local web development, and "
-                "purpose-built non-browser capabilities; never search, install, or ask the user to select it.\n"
-                "- Disclosure: the main agent alone reads the root, listed site via `relative_file_path`, then "
-                "each operation needed by the task, one at a time. Use the site terminal or each operation's "
-                "full listed path. No unrelated modules, `general-purpose`/`browser_agent` delegation, or "
-                "filesystem reads.\n"
-                "- Execution: a terminal row declares adapter capability, not readiness, authentication, or "
-                "consent. Copy its exact documented command and arguments. Preserve opaque URLs, signed URLs, "
-                "tokens, identifiers, and paths verbatim at execution, including query strings and fragments. "
-                "Use separate shell arguments and unchanged absolute paths; prefer documented `-f json`. On "
-                "Windows use `shell_type: \"auto\"`, never `bash`/`sh`.\n"
-                "- Seriality: issue at most one OpenCLI command per model response/tool batch and await it. "
-                "Never run OpenCLI and `browser_agent` concurrently for the same operation.\n"
-                "- Consent: confirm `high`/`critical` and side-effecting commands with the action and material "
-                "non-secret arguments, using A2UI when available. Redact credentials, tokens, and signed-URL "
-                "secrets in confirmation while preserving them at execution.\n"
-                "- Fallback/retry: use `browser_agent` only if capability is absent or the terminal row permits "
-                "it. `fallback_before` requires proof the adapter process did not start; if start is possible or "
-                "unclear, only `fallback_after` applies. `COMMAND_EXEC` is after-start. For `ARGUMENT`, reread "
-                "the contract and correct a read at most once without switching; never automatically retry "
-                "writes. With `fallback_after=none`, or after a failed, timed-out, or ambiguous write, use no "
-                "browser fallback; verify read-only or stop with uncertainty.\n"
-            )
-            self.system_prompt_builder.add_section(PromptSection(
-                name="opencli_web_policy",
-                content={"cn": opencli_web_policy, "en": opencli_web_policy},
-                priority=99,
-            ))
-
-            browser_tool_policy = (
-                "# Browser Tool Policy\n\n"
-                "- After applying the OpenCLI Web Policy, for browser-only tasks or a browser fallback it "
-                "permits, use `task_tool` with "
-                '`subagent_type` set to `"browser_agent"` and put the full browser objective in '
-                "`task_description`, including opening pages, navigation, clicking, typing, login, screenshots, "
-                "page inspection, or extracting data from a live website.\n"
-                "- Do not use bash, execute_code, subprocess, shell commands, or direct Chrome/Edge launches "
-                "for browser automation. Do not launch browsers or run ad-hoc browser scripts from the shell.\n"
-                "- If `task_tool` or `browser_agent` is unavailable, say that the browser "
-                "subagent is unavailable before trying to start a browser through commands."
-            )
-            self.system_prompt_builder.add_section(PromptSection(
-                name="browser_tool_policy",
-                content={"cn": browser_tool_policy, "en": browser_tool_policy},
-                priority=98,
-            ))
 
         if self._channel in ("tui", "web"):
             # Trusted directories policy for TUI and Web mode

@@ -24,10 +24,16 @@ from jiuwenswarm.agents.harness.common.prompt.prompt_builder import (
     build_agent_identity_prompt,
 )
 from jiuwenswarm.agents.harness.common.rails import skill_retrieval_prompt_rail as _skill_retrieval_prompt_mod
+from jiuwenswarm.agents.harness.common.rails.browser_task_prompt_rail import (
+    BrowserTaskPromptRail,
+)
 from jiuwenswarm.agents.harness.common.rails.runtime_prompt_rail import RuntimePromptRail
 from jiuwenswarm.agents.harness.common.rails.skill_retrieval_prompt_rail import SkillRetrievalPromptRail
 from jiuwenswarm.agents.harness.common.rails.symphony import (
     SymphonyOrchestrationRail,
+)
+from jiuwenswarm.agents.harness.common.rails.web_tool_routing_rail import (
+    WebToolRoutingRail,
 )
 
 
@@ -511,15 +517,14 @@ async def test_runtime_dynamic_sections_go_to_prompt_attachment_when_manager_ava
     assert "# Time Description" in prompt
     assert "# Runtime State" not in prompt
     assert "# Language" in prompt
-    assert "# OpenCLI Web Policy" in prompt
-    assert "# Browser Tool Policy" in prompt
+    assert "# Web Tool Routing Policy" not in prompt
+    assert "## Browser Agent Delegation" not in prompt
     assert "browser_preflight_submit" not in prompt
     assert "hotel_option_select" not in prompt
     assert "gmail_email_select" not in prompt
     assert "social_post_draft_select" not in prompt
     assert "social_post_confirm" not in prompt
     assert "Mandatory Web A2UI account-action gate" not in prompt
-    assert 'subagent_type` set to `"browser_agent"`' in prompt
     assert "# Environment" in prompt
 
     items = await agent.prompt_attachment_manager.collect_for_session("sess1")
@@ -527,7 +532,50 @@ async def test_runtime_dynamic_sections_go_to_prompt_attachment_when_manager_ava
     rendered = agent.prompt_attachment_manager.render(items)
     assert "model-x" in rendered
     assert "Always respond in English" in prompt
-    assert "# Browser Tool Policy" in prompt
+
+
+@pytest.mark.asyncio
+async def test_web_routing_and_browser_rules_are_owned_by_dedicated_rails():
+    builder = SystemPromptBuilder(language="en")
+    agent = _FakeAgent(builder)
+    ctx = AgentCallbackContext(
+        agent=agent,
+        inputs=None,
+        session=_FakeSession(),
+        extra={},
+    )
+
+    routing_rail = WebToolRoutingRail(channel="web")
+    routing_rail.init(agent)
+    await routing_rail.before_model_call(ctx)
+
+    browser_rail = BrowserTaskPromptRail(channel="web")
+    browser_rail.system_prompt_builder = builder
+    browser_rail.tools = [object()]
+    await browser_rail.before_model_call(ctx)
+
+    prompt = builder.build()
+    assert "# Web Tool Routing Policy" in prompt
+    assert "## Browser Agent Delegation" in prompt
+    assert '`subagent_type` set to `"browser_agent"`' in prompt
+    assert not builder.has_section("opencli_web_policy")
+    assert not builder.has_section("browser_tool_policy")
+
+    routing_rail.set_channel("tui")
+    browser_rail.set_channel("tui")
+    await routing_rail.before_model_call(ctx)
+    await browser_rail.before_model_call(ctx)
+
+    prompt = builder.build()
+    assert "# Web Tool Routing Policy" not in prompt
+    assert "## Browser Agent Delegation" not in prompt
+
+
+def test_deep_adapter_builds_the_web_routing_rail_chain():
+    adapter = JiuWenSwarmDeepAdapter()
+
+    assert isinstance(adapter._build_web_tool_routing_rail(), WebToolRoutingRail)
+    assert isinstance(adapter._build_subagent_rail(), BrowserTaskPromptRail)
 
 
 @pytest.mark.asyncio
