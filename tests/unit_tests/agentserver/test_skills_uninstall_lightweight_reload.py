@@ -11,6 +11,10 @@ from types import SimpleNamespace
 import pytest
 from openjiuwen.harness.rails import SkillUseRail
 
+from jiuwenswarm.agents.harness.common import web_agent as web_agent_module
+from jiuwenswarm.agents.harness.common.rails.web_tool_routing_rail import (
+    WebToolRoutingRail,
+)
 from jiuwenswarm.common.schema.agent import AgentRequest
 from jiuwenswarm.common.schema.message import ReqMethod
 from jiuwenswarm.server.runtime.agent_adapter.interface import JiuWenSwarm
@@ -177,7 +181,42 @@ async def test_refresh_skill_rails_removes_deleted_skill_from_real_skill_use_rai
     await adapter.refresh_skill_rails()
 
     assert [skill.name for skill in skill_rail.skills] == ["keep_me"]
-    assert skill_rail.disabled_skills == {"disabled_skill"}
+    assert skill_rail.disabled_skills == {"disabled_skill", "opencli-web"}
     assert all("delete_me" not in key for key in skill_rail._skill_cache)
     assert all("delete_me" not in key for key in skill_rail._skill_order)
     assert skill_rail._skills_snapshot_signature == skill_rail._build_skills_snapshot_signature()
+
+
+@pytest.mark.asyncio
+async def test_refresh_skill_rails_removes_uninstalled_opencli_from_browser_agent(
+    monkeypatch,
+    tmp_path,
+):
+    """Lightweight uninstall must leave Browser Agent on plain Playwright."""
+    skills_root = tmp_path / "skills"
+    skills_root.mkdir()
+    opencli_dir = _write_skill(skills_root, "opencli-web", "OpenCLI browser adapters")
+    monkeypatch.setattr(web_agent_module, "get_agent_skills_dir", lambda: skills_root)
+
+    preserved_rail = object()
+    browser_spec = SimpleNamespace(
+        agent_card=SimpleNamespace(name="browser_agent"),
+        rails=[
+            preserved_rail,
+            *web_agent_module.build_web_agent_routing_rails(skills_dir=skills_root),
+        ],
+    )
+    adapter = JiuWenSwarmDeepAdapter.__new__(JiuWenSwarmDeepAdapter)
+    adapter._skill_manager = _NoDisabledSkillManager()
+    adapter._skill_rail = None
+    adapter._skill_evolution_rail = None
+    adapter._instance = SimpleNamespace(
+        deep_config=SimpleNamespace(subagents=[browser_spec]),
+    )
+
+    shutil.rmtree(opencli_dir)
+    await adapter.refresh_skill_rails()
+
+    assert browser_spec.rails == [preserved_rail]
+    assert not any(isinstance(rail, SkillUseRail) for rail in browser_spec.rails)
+    assert not any(isinstance(rail, WebToolRoutingRail) for rail in browser_spec.rails)

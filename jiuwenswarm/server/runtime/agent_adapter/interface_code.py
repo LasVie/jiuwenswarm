@@ -36,7 +36,6 @@ from openjiuwen.harness.rails import (
 from openjiuwen.harness.rails.context_engineer.context_assemble_rail import ContextAssembleRail
 from openjiuwen.harness.lsp import InitializeOptions
 from openjiuwen.harness.schema.config import SubAgentConfig
-from openjiuwen.harness.subagents.browser_agent import build_browser_agent_config
 from openjiuwen.harness.subagents.code_agent import build_code_agent_config
 from openjiuwen.harness.subagents.plan_agent import build_plan_agent_config
 from openjiuwen.harness.tools import WebFetchWebpageTool, WebFreeSearchTool, WebPaidSearchTool
@@ -57,6 +56,7 @@ from jiuwenswarm.agents.harness.common.rails.interrupt.interrupt_helpers import 
 from jiuwenswarm.agents.harness.common.browser_defaults import (
     DEFAULT_BROWSER_AGENT_MAX_ITERATIONS,
 )
+from jiuwenswarm.agents.harness.common.web_agent import build_web_agent_config
 from jiuwenswarm.agents.harness.code.prompt.code_prompt_builder import (
     build_code_system_prompt,
 )
@@ -422,7 +422,7 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
 
     # 固定 Rails 名字集合 — 用于动态 Rails 去重
     _FIXED_RAIL_NAMES = frozenset({
-        "RuntimePromptRail", "WebToolRoutingRail", "ResponsePromptRail",
+        "RuntimePromptRail", "BrowserTaskPromptRail", "ResponsePromptRail",
         "JiuSwarmStreamEventRail", "SecurityRail",
         "LspRail", "ProjectMemoryRail", "PermissionInterruptRail",
         "ContextProcessorRail",
@@ -651,7 +651,6 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
         # 固定 Rails — code 模式特有
         rail_infos = [
             _RailBuildInfo("_runtime_prompt_rail", self._build_runtime_prompt_rail),
-            _RailBuildInfo("_web_tool_routing_rail", self._build_web_tool_routing_rail),
             _RailBuildInfo("_response_prompt_rail", self._build_response_prompt_rail),
             _RailBuildInfo("_skill_retrieval_prompt_rail", self._build_skill_retrieval_prompt_rail),
             _RailBuildInfo("_stream_event_rail", self._build_stream_event_rail),
@@ -681,6 +680,7 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
             ),
             _RailBuildInfo("_context_processor_rail", self._build_context_processor_rail),
             _RailBuildInfo("_code_task_planning_rail", self._build_code_task_planning_rail),
+            _RailBuildInfo("_subagent_rail", self._build_subagent_rail),
             _RailBuildInfo("_code_agent_rail", self._build_code_agent_rail),
             _RailBuildInfo("_code_plan_approval_rail", self._build_plan_approval_rail),
         ]
@@ -1043,16 +1043,21 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
                         "[JiuwenSwarmCodeAdapter] browser subagent enabled without BROWSER_DRIVER; "
                         "defaulting to managed mode"
                     )
-                browser_spec = build_browser_agent_config(
+                browser_spec = build_web_agent_config(
                     model,
                     workspace=workspace,
                     language=resolved_language,
+                    disabled_skills=self._execution_disabled_skill_names(),
+                    sys_operation=self._sys_operation,
                     max_iterations=parse_int(
                         browser_agent_cfg.get("max_iterations") if isinstance(browser_agent_cfg, dict) else None,
                         DEFAULT_BROWSER_AGENT_MAX_ITERATIONS,
                     )
                 )
-                browser_spec.factory_kwargs = {"auto_create_workspace": False}
+                browser_spec.factory_kwargs = {
+                    **(browser_spec.factory_kwargs or {}),
+                    "auto_create_workspace": False,
+                }
                 subagents.append(browser_spec)
 
         # ── 自定义 agent 不加入 deep_config.subagents ──
@@ -1197,9 +1202,13 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
                 project_dir=runtime_config.project_dir or self._project_dir,
             )
             self._runtime_prompt_rail.set_session_id(runtime_config.session_id)
-        web_tool_routing_rail = getattr(self, "_web_tool_routing_rail", None)
-        if web_tool_routing_rail is not None:
-            web_tool_routing_rail.set_channel(resolved_channel)
+        subagent_set_channel = getattr(
+            getattr(self, "_subagent_rail", None),
+            "set_channel",
+            None,
+        )
+        if callable(subagent_set_channel):
+            subagent_set_channel(resolved_channel)
         # PermissionInterruptRail: per-request trusted_dirs 注入，使 external_directory
         # 检查将这些子树视为 internal 而跳过 ask/deny（与 RuntimePromptRail 对齐）。
         # 用 getattr 兼容绕过 __init__ 的测试构造（_permission_rail 仅在 rail 构建流程赋值）。

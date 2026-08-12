@@ -2338,7 +2338,7 @@ def test_browser_subagent_provider_passes_correct_browser_key(
         spec.factory_kwargs = {}
         return spec
 
-    monkeypatch.setattr(_cs, "build_browser_agent_config", _fake_build)
+    monkeypatch.setattr(_cs, "build_web_agent_config", _fake_build)
 
     fake_model = object()
     ctx = SwarmBuildContext(
@@ -2376,7 +2376,7 @@ def test_browser_subagent_teammates_get_distinct_keys(
         spec.factory_kwargs = {}
         return spec
 
-    monkeypatch.setattr(_cs, "build_browser_agent_config", _fake_build)
+    monkeypatch.setattr(_cs, "build_web_agent_config", _fake_build)
     fake_model = object()
 
     for name in ("browser-usd-sgd", "browser-eur-usd"):

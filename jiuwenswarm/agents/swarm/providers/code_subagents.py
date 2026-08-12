@@ -11,7 +11,7 @@ sub-agent providers resolved via ``SubAgentSpec.factory_name`` during
 
 ``browser_agent`` (``swarm.browser_agent``) gives each swarm member its own
 isolated browser by passing a unique ``browser_key`` (derived from the session
-id + member name) to ``build_browser_agent_config``. agent-core turns that key
+id + member name) to ``build_web_agent_config``. agent-core turns that key
 into a per-member ``BrowserInstanceConfig``: a suffixed MCP ``server_id`` (own
 ``@playwright/mcp`` subprocess), an auto-allocated debug port, and an own
 ``.browser-profiles/<key>`` user-data-dir under managed mode. Without a key,
@@ -37,12 +37,12 @@ from openjiuwen.agent_teams.harness.manifest import (
     harness_element,
     param_field,
 )
-from openjiuwen.harness.subagents.browser_agent import build_browser_agent_config
 from openjiuwen.harness.subagents.code_agent import build_code_agent_config
 
 from jiuwenswarm.agents.harness.common.browser_defaults import (
     DEFAULT_BROWSER_AGENT_MAX_ITERATIONS,
 )
+from jiuwenswarm.agents.harness.common.web_agent import build_web_agent_config
 from jiuwenswarm.agents.swarm.context import SwarmBuildContext
 from jiuwenswarm.agents.swarm.providers.code_rails import (
     code_runtime_language,
@@ -157,7 +157,7 @@ class BrowserAgentInput(ConstructionInput):
 
 
 def _browser_key(session_id: str, member_name: str, role: str) -> str:
-    """Return the per-member ``browser_key`` for ``build_browser_agent_config``.
+    """Return the per-member ``browser_key`` for ``build_web_agent_config``.
 
     ``role`` is only ever 'leader'/'teammate', so it collides across teammates;
     ``member_name`` is unique per member (the leader/template specs carry only a
@@ -189,14 +189,14 @@ def build_swarm_browser_agent(factory_kwargs: dict[str, Any], ctx: SwarmBuildCon
         return None
 
     browser_key = _browser_key(inp.session_id, inp.member_name, inp.role)
-    spec = build_browser_agent_config(
+    spec = build_web_agent_config(
         model,
         workspace=str(inp.workspace_root or "./"),
         language=inp.language,
         max_iterations=inp.max_iterations,
         browser_key=browser_key,
     )
-    # build_browser_agent_config bakes the resolved RuntimeSettings (carrying the
+    # build_web_agent_config preserves Browser Agent RuntimeSettings (carrying the
     # per-key BrowserInstanceConfig) into spec.factory_kwargs; preserve it and
     # only add the workspace flag.
     spec.factory_kwargs = {**(spec.factory_kwargs or {}), "auto_create_workspace": False}

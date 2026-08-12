@@ -17,6 +17,7 @@ from openjiuwen.harness.prompts import PromptSection, SystemPromptBuilder
 from jiuwenswarm.agents.harness.common.browser_defaults import (
     DEFAULT_BROWSER_AGENT_MAX_ITERATIONS,
 )
+from jiuwenswarm.agents.harness.common.web_agent import build_web_agent_routing_rails
 from jiuwenswarm.common import utils as _utils_mod
 from jiuwenswarm.server.runtime.agent_adapter import interface_deep as interface_module
 from jiuwenswarm.server.runtime.agent_adapter.interface_deep import JiuWenSwarmDeepAdapter
@@ -518,7 +519,7 @@ async def test_runtime_dynamic_sections_go_to_prompt_attachment_when_manager_ava
     assert "# Runtime State" not in prompt
     assert "# Language" in prompt
     assert "# Web Tool Routing Policy" not in prompt
-    assert "## Browser Agent Delegation" not in prompt
+    assert "## Browser/Web Agent Delegation" not in prompt
     assert "browser_preflight_submit" not in prompt
     assert "hotel_option_select" not in prompt
     assert "gmail_email_select" not in prompt
@@ -535,47 +536,66 @@ async def test_runtime_dynamic_sections_go_to_prompt_attachment_when_manager_ava
 
 
 @pytest.mark.asyncio
-async def test_web_routing_and_browser_rules_are_owned_by_dedicated_rails():
-    builder = SystemPromptBuilder(language="en")
-    agent = _FakeAgent(builder)
+async def test_web_routing_is_owned_by_browser_agent_and_parent_only_delegates():
+    web_builder = SystemPromptBuilder(language="en")
+    web_agent = _FakeAgent(web_builder)
     ctx = AgentCallbackContext(
-        agent=agent,
+        agent=web_agent,
         inputs=None,
         session=_FakeSession(),
         extra={},
     )
 
-    routing_rail = WebToolRoutingRail(channel="web")
-    routing_rail.init(agent)
+    routing_rail = WebToolRoutingRail()
+    routing_rail.init(web_agent)
     await routing_rail.before_model_call(ctx)
 
+    parent_builder = SystemPromptBuilder(language="en")
     browser_rail = BrowserTaskPromptRail(channel="web")
-    browser_rail.system_prompt_builder = builder
+    browser_rail.system_prompt_builder = parent_builder
     browser_rail.tools = [object()]
     await browser_rail.before_model_call(ctx)
 
-    prompt = builder.build()
-    assert "# Web Tool Routing Policy" in prompt
-    assert "## Browser Agent Delegation" in prompt
-    assert '`subagent_type` set to `"browser_agent"`' in prompt
-    assert not builder.has_section("opencli_web_policy")
-    assert not builder.has_section("browser_tool_policy")
+    web_prompt = web_builder.build()
+    parent_prompt = parent_builder.build()
+    assert "# Web Tool Routing Policy" in web_prompt
+    assert "## Browser/Web Agent Delegation" not in web_prompt
+    assert "## Browser/Web Agent Delegation" in parent_prompt
+    assert "# Web Tool Routing Policy" not in parent_prompt
+    assert '`subagent_type="browser_agent"`' in parent_prompt
+    assert not web_builder.has_section("opencli_web_policy")
+    assert not web_builder.has_section("browser_tool_policy")
 
-    routing_rail.set_channel("tui")
     browser_rail.set_channel("tui")
-    await routing_rail.before_model_call(ctx)
     await browser_rail.before_model_call(ctx)
+    routing_rail.set_enabled(False)
+    await routing_rail.before_model_call(ctx)
 
-    prompt = builder.build()
-    assert "# Web Tool Routing Policy" not in prompt
-    assert "## Browser Agent Delegation" not in prompt
+    assert "# Web Tool Routing Policy" not in web_builder.build()
+    assert "## Browser/Web Agent Delegation" not in parent_builder.build()
 
 
-def test_deep_adapter_builds_the_web_routing_rail_chain():
+def test_deep_adapter_builds_parent_delegation_and_web_agent_routing_chain(
+    monkeypatch,
+    tmp_path,
+):
+    skill_dir = tmp_path / "opencli-web"
+    skill_dir.mkdir()
+    (skill_dir / "SKILL.md").write_text("---\nname: opencli-web\n---\n", encoding="utf-8")
     adapter = JiuWenSwarmDeepAdapter()
+    web_agent_rails = build_web_agent_routing_rails(skills_dir=tmp_path)
+    monkeypatch.setattr(
+        adapter,
+        "_instantiate_rails",
+        lambda rail_infos, _config: [info.attr_name for info in rail_infos],
+    )
+    parent_rail_names = adapter._build_agent_rails({}, {}, mode="agent")
 
-    assert isinstance(adapter._build_web_tool_routing_rail(), WebToolRoutingRail)
     assert isinstance(adapter._build_subagent_rail(), BrowserTaskPromptRail)
+    assert "_subagent_rail" in parent_rail_names
+    assert "_web_tool_routing_rail" not in parent_rail_names
+    assert any(isinstance(rail, SkillUseRail) for rail in web_agent_rails)
+    assert any(isinstance(rail, WebToolRoutingRail) for rail in web_agent_rails)
 
 
 @pytest.mark.asyncio
@@ -1012,7 +1032,7 @@ def test_resolve_skill_mode_accepts_all_and_auto_list(monkeypatch):
 
 
 def test_deep_adapter_visible_skill_names_match_list_skill(monkeypatch, tmp_path):
-    for name in ("alpha", "beta", "_internal", ".hidden"):
+    for name in ("alpha", "beta", "opencli-web", "_internal", ".hidden"):
         skill_dir = tmp_path / name
         skill_dir.mkdir()
         (skill_dir / "SKILL.md").write_text("---\nname: x\n---\n", encoding="utf-8")
@@ -1028,6 +1048,25 @@ def test_deep_adapter_visible_skill_names_match_list_skill(monkeypatch, tmp_path
     )
 
     assert adapter._visible_skill_names_for_list_skill() == {"alpha"}
+
+
+def test_deep_adapter_main_skill_rail_excludes_browser_owned_opencli_skill(
+    monkeypatch,
+    tmp_path,
+):
+    adapter = _TestableJiuWenSwarmDeepAdapter()
+    adapter.set_skill_manager(
+        SimpleNamespace(list_execution_disabled_skills=lambda: ["disabled-skill"])
+    )
+    monkeypatch.setattr(
+        "jiuwenswarm.server.runtime.agent_adapter.interface_deep.get_agent_skills_dir",
+        lambda: tmp_path,
+    )
+
+    rail = adapter._build_skill_rail({"skill_mode": "all"})
+
+    assert rail is not None
+    assert rail.disabled_skills == {"disabled-skill", "opencli-web"}
 
 
 def test_deep_adapter_skill_retrieval_prompt_uses_visible_skill_provider(monkeypatch):
@@ -1212,7 +1251,7 @@ def test_deep_adapter_subagents_includes_optional_browser_and_configured_researc
             return_value="research_spec",
         ) as mock_research,
         patch(
-            "jiuwenswarm.server.runtime.agent_adapter.interface_deep.build_browser_agent_config",
+            "jiuwenswarm.server.runtime.agent_adapter.interface_deep.build_web_agent_config",
             return_value="browser_spec",
         ) as mock_browser,
     ):
@@ -1229,6 +1268,8 @@ def test_deep_adapter_subagents_includes_optional_browser_and_configured_researc
         model,
         workspace="/tmp/jiuwenswarm-workspace",
         language="cn",
+        disabled_skills=set(),
+        sys_operation=None,
         max_iterations=7,
     )
 
@@ -1247,7 +1288,7 @@ def test_deep_adapter_subagents_omits_research_without_explicit_enable():
             return_value="research_spec",
         ) as mock_research,
         patch(
-            "jiuwenswarm.server.runtime.agent_adapter.interface_deep.build_browser_agent_config",
+            "jiuwenswarm.server.runtime.agent_adapter.interface_deep.build_web_agent_config",
             return_value="browser_spec",
         ) as mock_browser,
     ):
@@ -1260,5 +1301,7 @@ def test_deep_adapter_subagents_omits_research_without_explicit_enable():
         model,
         workspace="/tmp/jiuwenswarm-workspace",
         language="cn",
+        disabled_skills=set(),
+        sys_operation=None,
         max_iterations=DEFAULT_BROWSER_AGENT_MAX_ITERATIONS,
     )

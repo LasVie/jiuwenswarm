@@ -199,7 +199,7 @@ def test_deep_adapter_subagents_includes_browser_by_default_when_runtime_enabled
 
     monkeypatch.setattr(
         deep_interface_module,
-        "build_browser_agent_config",
+        "build_web_agent_config",
         lambda *args, **kwargs: {"name": "browser_agent", "kwargs": kwargs},
     )
     monkeypatch.setattr(
@@ -237,7 +237,7 @@ def test_deep_adapter_subagents_only_includes_explicitly_enabled_agents(
     )
     monkeypatch.setattr(
         deep_interface_module,
-        "build_browser_agent_config",
+        "build_web_agent_config",
         lambda *args, **kwargs: {"name": "browser_agent", "kwargs": kwargs},
     )
     monkeypatch.setattr(
@@ -277,7 +277,7 @@ def test_deep_adapter_subagents_skips_browser_without_runtime(
         staticmethod(lambda: False),
     )
     browser_builder = MagicMock()
-    monkeypatch.setattr(deep_interface_module, "build_browser_agent_config", browser_builder)
+    monkeypatch.setattr(deep_interface_module, "build_web_agent_config", browser_builder)
 
     # When browser runtime is disabled and no other subagents are configured,
     # the result should be None

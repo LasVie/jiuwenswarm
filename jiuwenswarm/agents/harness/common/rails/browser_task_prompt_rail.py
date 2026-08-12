@@ -1,6 +1,6 @@
 # Copyright (c) Huawei Technologies Co., Ltd. 2026. All rights reserved.
 
-"""Extend SubagentRail's task_tool section with browser delegation rules."""
+"""Extend SubagentRail with parent-to-Browser/Web Agent delegation rules."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from jiuwenswarm.agents.harness.common.prompt.browser_task_prompt import (
 
 
 class BrowserTaskPromptRail(SubagentRail):
-    """Keep browser invocation guidance inside the standard task_tool section."""
+    """Keep one-hop Web delegation guidance in the parent agent's task section."""
 
     priority = 95
 

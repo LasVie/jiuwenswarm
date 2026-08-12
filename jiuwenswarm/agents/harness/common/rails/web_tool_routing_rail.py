@@ -1,6 +1,6 @@
 # Copyright (c) Huawei Technologies Co., Ltd. 2026. All rights reserved.
 
-"""Inject the OpenCLI-first Web tool routing policy."""
+"""Inject OpenCLI-first routing into Browser/Web Agent."""
 
 from __future__ import annotations
 
@@ -14,15 +14,15 @@ from jiuwenswarm.agents.harness.common.prompt.web_tool_routing_prompt import (
 
 
 class WebToolRoutingRail(DeepAgentRail):
-    """Own routing decisions between OpenCLI and browser_agent on Web requests."""
+    """Let Browser/Web Agent choose OpenCLI or its local Playwright tools."""
 
     priority = 94
     _LEGACY_SECTIONS = ("opencli_web_policy", "browser_tool_policy")
 
-    def __init__(self, channel: str = "web") -> None:
+    def __init__(self, *, enabled: bool = True) -> None:
         super().__init__()
         self.system_prompt_builder = None
-        self._channel = self._normalize_channel(channel)
+        self._enabled = bool(enabled)
 
     def init(self, agent) -> None:
         self.system_prompt_builder = getattr(agent, "system_prompt_builder", None)
@@ -31,16 +31,16 @@ class WebToolRoutingRail(DeepAgentRail):
         self._remove_sections()
         self.system_prompt_builder = None
 
-    def set_channel(self, channel: str | None) -> None:
-        """Update the request channel used by the next model call."""
-        self._channel = self._normalize_channel(channel)
+    def set_enabled(self, enabled: bool) -> None:
+        """Enable or disable OpenCLI routing without changing agent ownership."""
+        self._enabled = bool(enabled)
 
     async def before_model_call(self, ctx: AgentCallbackContext) -> None:
         if self.system_prompt_builder is None:
             return
 
         self._remove_sections()
-        if self._channel == "web":
+        if self._enabled:
             self.system_prompt_builder.add_section(build_web_tool_routing_prompt())
 
     def _remove_sections(self) -> None:
@@ -49,7 +49,3 @@ class WebToolRoutingRail(DeepAgentRail):
         self.system_prompt_builder.remove_section(WEB_TOOL_ROUTING_SECTION)
         for name in self._LEGACY_SECTIONS:
             self.system_prompt_builder.remove_section(name)
-
-    @staticmethod
-    def _normalize_channel(channel: str | None) -> str:
-        return str(channel or "web").strip().lower() or "web"

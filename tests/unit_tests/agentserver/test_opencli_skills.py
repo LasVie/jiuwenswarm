@@ -13,8 +13,10 @@ from openjiuwen.harness.prompts import SystemPromptBuilder
 from openjiuwen.harness.prompts.prompt_attachment_manager import (
     PromptAttachmentManager,
 )
+from openjiuwen.harness.rails import SkillUseRail
 from openjiuwen.harness.tools import SkillTool
 
+from jiuwenswarm.agents.harness.common import web_agent as web_agent_module
 from jiuwenswarm.agents.harness.common.rails.browser_task_prompt_rail import (
     BrowserTaskPromptRail,
 )
@@ -336,13 +338,15 @@ async def test_acceptance_trace_discloses_each_needed_operation_sequentially(
 
 
 @pytest.mark.asyncio
-async def test_web_routing_rails_define_one_concise_opencli_routing_contract():
-    builder = SystemPromptBuilder(language="en")
-    agent = _FakeAgent(builder)
-    routing_rail = WebToolRoutingRail(channel="web")
-    routing_rail.init(agent)
+async def test_parent_and_web_agent_rails_define_one_hop_opencli_routing_contract():
+    web_builder = SystemPromptBuilder(language="en")
+    web_agent = _FakeAgent(web_builder)
+    routing_rail = WebToolRoutingRail()
+    routing_rail.init(web_agent)
+
+    parent_builder = SystemPromptBuilder(language="en")
     browser_rail = BrowserTaskPromptRail(channel="web")
-    browser_rail.system_prompt_builder = builder
+    browser_rail.system_prompt_builder = parent_builder
     browser_rail.tools = [object()]
     ctx = AgentCallbackContext(
         agent=None,
@@ -354,13 +358,14 @@ async def test_web_routing_rails_define_one_concise_opencli_routing_contract():
     await routing_rail.before_model_call(ctx)
     await browser_rail.before_model_call(ctx)
 
-    prompt = builder.build()
-    opencli_policy = _extract_markdown_section(prompt, "# Web Tool Routing Policy")
-    browser_policy = _extract_markdown_section(prompt, "## Browser Agent Delegation")
+    web_prompt = web_builder.build()
+    parent_prompt = parent_builder.build()
+    opencli_policy = _extract_markdown_section(web_prompt, "# Web Tool Routing Policy")
+    browser_policy = _extract_markdown_section(parent_prompt, "## Browser/Web Agent Delegation")
     bullets = _extract_labeled_bullets(opencli_policy)
 
-    assert len(opencli_policy.split()) <= 275
-    assert len(browser_policy.split()) <= 100
+    assert len(opencli_policy.split()) <= 310
+    assert len(browser_policy.split()) <= 160
     assert set(bullets) == {
         "Scope",
         "Disclosure",
@@ -372,28 +377,30 @@ async def test_web_routing_rails_define_one_concise_opencli_routing_contract():
     assert all(
         term in bullets["Scope"]
         for term in (
-            "`browser_agent`",
+            "Browser/Web Agent",
             "live-site",
             "`opencli-web`",
+            "local Playwright",
             "discussion",
             "local web development",
             "purpose-built non-browser",
+            "Do not call `task_tool`",
         )
     )
     assert all(
         term in bullets["Disclosure"]
         for term in (
-            "main agent alone",
+            "this agent alone",
             "relative_file_path",
             "each operation needed",
             "one at a time",
             "full listed path",
             "No unrelated modules",
-            "general-purpose",
+            "subagent delegation",
             "filesystem reads",
         )
     )
-    assert "exactly one listed operation module" not in prompt
+    assert "exactly one listed operation module" not in web_prompt
     assert all(
         term in bullets["Execution"]
         for term in (
@@ -418,29 +425,31 @@ async def test_web_routing_rails_define_one_concise_opencli_routing_contract():
             "tab/session leases",
             "persistent writes",
             "Preserve dependencies",
-            "Never overlap `browser_agent`",
+            "Never overlap OpenCLI and local Playwright",
             "`session_busy`",
             "ambiguous writes",
             "fallback/retry",
         )
     )
-    assert "at most one OpenCLI command" not in prompt
+    assert "at most one OpenCLI command" not in web_prompt
     assert all(
         term in bullets["Consent"]
         for term in (
             "high",
             "critical",
             "side-effecting",
+            "explicit user approval",
             "material non-secret arguments",
-            "A2UI",
-            "Redact credentials",
+            "Parent delegation is not approval",
+            "confirmation_required",
             "signed-URL secrets",
-            "preserving them at execution",
+            "only at execution",
         )
     )
     assert all(
         term in bullets["Fallback/retry"]
         for term in (
+            "local Playwright tools",
             "capability is absent",
             "terminal row permits",
             "adapter process did not start",
@@ -451,13 +460,77 @@ async def test_web_routing_rails_define_one_concise_opencli_routing_contract():
             "read at most once",
             "never automatically retry writes",
             "fallback_after=none",
-            "no browser fallback",
+            "no Playwright fallback",
             "verify read-only",
         )
     )
 
-    assert "opencli" not in browser_policy.lower()
+    assert "call `task_tool` once" in browser_policy
+    assert "owns OpenCLI-first matching" in browser_policy
+    assert "main agent must not read `opencli-web`" in browser_policy
+    assert "purpose-built non-browser capabilities" in browser_policy
+    assert "does not inherit the full parent conversation" in browser_policy
+    assert "confirmation_required" in browser_policy
     assert "social_post_" not in browser_policy
     assert "gmail_" not in browser_policy
     assert "hotel_" not in browser_policy
-    assert "opencli_execute" not in prompt
+    assert "opencli_execute" not in web_prompt + parent_prompt
+
+
+def test_web_agent_config_mounts_opencli_skill_and_routing_on_browser_agent(
+    monkeypatch,
+    tmp_path,
+):
+    skill_dir = tmp_path / "opencli-web"
+    skill_dir.mkdir()
+    (skill_dir / "SKILL.md").write_text("---\nname: opencli-web\n---\n", encoding="utf-8")
+    captured = {}
+
+    def fake_browser_builder(model, **kwargs):
+        captured["model"] = model
+        captured["kwargs"] = kwargs
+        return SimpleNamespace(**kwargs)
+
+    monkeypatch.setattr(web_agent_module, "_build_browser_agent_config", fake_browser_builder)
+    model = object()
+
+    web_agent_module.build_web_agent_config(
+        model,
+        skills_dir=tmp_path,
+        workspace="/tmp/workspace",
+    )
+
+    rails = captured["kwargs"]["rails"]
+    assert captured["model"] is model
+    assert len(rails) == 2
+    assert isinstance(rails[0], SkillUseRail)
+    assert rails[0].enabled_skills == {"opencli-web"}
+    assert rails[0].include_tools is True
+    assert isinstance(rails[1], WebToolRoutingRail)
+
+
+@pytest.mark.parametrize("disabled", [[], ["opencli-web"]])
+def test_web_agent_config_keeps_plain_playwright_fallback_when_opencli_unavailable(
+    monkeypatch,
+    tmp_path,
+    disabled,
+):
+    if disabled:
+        skill_dir = tmp_path / "opencli-web"
+        skill_dir.mkdir()
+        (skill_dir / "SKILL.md").write_text("---\nname: opencli-web\n---\n", encoding="utf-8")
+    captured = {}
+
+    def fake_browser_builder(_model, **kwargs):
+        captured.update(kwargs)
+        return SimpleNamespace(**kwargs)
+
+    monkeypatch.setattr(web_agent_module, "_build_browser_agent_config", fake_browser_builder)
+
+    web_agent_module.build_web_agent_config(
+        object(),
+        skills_dir=tmp_path,
+        disabled_skills=disabled,
+    )
+
+    assert captured["rails"] is None

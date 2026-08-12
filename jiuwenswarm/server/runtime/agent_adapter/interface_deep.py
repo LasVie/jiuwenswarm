@@ -76,7 +76,6 @@ from openjiuwen.harness.rails import (
 from openjiuwen.harness.rails.evolution import EvolutionReviewRuntime
 from openjiuwen.harness.rails.context_engineer.context_assemble_rail import ContextAssembleRail
 from openjiuwen.harness.rails.context_engineer.context_processor_rail import ContextProcessorRail
-from openjiuwen.harness.subagents.browser_agent import build_browser_agent_config
 from openjiuwen.harness.subagents.research_agent import build_research_agent_config
 from openjiuwen.harness.tools import (
     WebFetchWebpageTool,
@@ -155,6 +154,11 @@ from jiuwenswarm.agents.harness.team.a2x.a2x_registry_runtime import (
 from jiuwenswarm.agents.harness.common.browser_defaults import (
     DEFAULT_BROWSER_AGENT_MAX_ITERATIONS,
 )
+from jiuwenswarm.agents.harness.common.web_agent import (
+    OPENCLI_WEB_SKILL_NAME,
+    build_web_agent_config,
+    refresh_web_agent_routing_rails,
+)
 from jiuwenswarm.agents.harness.common.tools.cron.cron_runtime import CronRuntimeBridge
 from jiuwenswarm.agents.harness.common.auto_harness import AutoHarnessService
 from jiuwenswarm.agents.harness.common.rails.interrupt.interrupt_helpers import (
@@ -175,7 +179,6 @@ from jiuwenswarm.agents.harness.common.rails import (
     RuntimePromptRail,
     StructuredAskUserRail,
     SymphonyOrchestrationRail,
-    WebToolRoutingRail,
 )
 from jiuwenswarm.agents.harness.common.rails.execution_guard import (
     CircuitBreakerRail,
@@ -1088,7 +1091,6 @@ class JiuWenSwarmDeepAdapter:
         self._context_assemble_mode: str | None = None
         self._context_processor_rail: ContextProcessorRail | None = None
         self._runtime_prompt_rail: RuntimePromptRail | None = None
-        self._web_tool_routing_rail: WebToolRoutingRail | None = None
         self._response_prompt_rail: ResponsePromptRail | None = None
         self._security_rail: SecurityRail | None = None
         self._memory_rail: MemoryRail | None = None
@@ -2304,10 +2306,12 @@ class JiuWenSwarmDeepAdapter:
                     "defaulting to managed mode"
                 )
             subagents.append(
-                build_browser_agent_config(
+                build_web_agent_config(
                     model,
                     workspace=workspace,
                     language=resolved_language,
+                    disabled_skills=self._execution_disabled_skill_names(),
+                    sys_operation=self._sys_operation,
                     max_iterations=parse_int(
                         (
                             browser_agent_cfg.get("max_iterations")
@@ -3491,14 +3495,24 @@ class JiuWenSwarmDeepAdapter:
         )
         return SkillUseRail.SKILL_MODE_ALL
 
+    def _execution_disabled_skill_names(self) -> set[str]:
+        """Return skills explicitly disabled by the shared skill manager."""
+        manager = getattr(self, "_skill_manager", None)
+        if manager is None:
+            return set()
+        return set(manager.list_execution_disabled_skills())
+
+    def _main_agent_disabled_skill_names(self) -> set[str]:
+        """Keep the Browser/Web Agent's OpenCLI skill out of the parent agent."""
+        return {
+            *self._execution_disabled_skill_names(),
+            OPENCLI_WEB_SKILL_NAME,
+        }
+
     def _visible_skill_names_for_list_skill(self) -> set[str]:
         """Return the skill names exposed by the matching SkillUseRail setup."""
         skills_dir = get_agent_skills_dir()
-        disabled_skills = set(
-            self._skill_manager.list_execution_disabled_skills()
-            if self._skill_manager is not None
-            else []
-        )
+        disabled_skills = self._main_agent_disabled_skill_names()
         visible: set[str] = set()
         try:
             for child in sorted(skills_dir.iterdir(), key=lambda path: path.name.lower()):
@@ -4087,7 +4101,7 @@ class JiuWenSwarmDeepAdapter:
                 skills_dir=str(get_agent_skills_dir()),
                 skill_mode=skill_mode,
                 include_tools=include_tools,
-                disabled_skills=self._skill_manager.list_execution_disabled_skills(),
+                disabled_skills=self._main_agent_disabled_skill_names(),
             )
             logger.info("[JiuWenSwarmDeepAdapter] SkillUseRail create success")
         except Exception as exc:
@@ -4114,7 +4128,7 @@ class JiuWenSwarmDeepAdapter:
                 signal_trigger=evolution_signal_trigger,
                 review_trigger=evolution_review_trigger,
                 auto_save=evolution_auto_save,
-                disabled_skills=self._skill_manager.list_execution_disabled_skills(),
+                disabled_skills=self._main_agent_disabled_skill_names(),
             )
             self._skill_evolution_rail = skill_evolution_rail
             logger.info("[JiuWenSwarmDeepAdapter] SkillEvolutionRail create success")
@@ -4568,24 +4582,6 @@ class JiuWenSwarmDeepAdapter:
             rail = None
         return rail
 
-    def _build_web_tool_routing_rail(self) -> WebToolRoutingRail | None:
-        """Build the OpenCLI-first router for Web tool requests."""
-        try:
-            default_channel = (
-                "acp"
-                if self._is_acp_tool_profile(self._instance_overrides)
-                else self._resolve_prompt_channel()
-            )
-            rail = WebToolRoutingRail(channel=default_channel)
-            logger.info("[JiuWenSwarmDeepAdapter] WebToolRoutingRail create success")
-        except Exception as exc:
-            logger.warning(
-                "[JiuWenSwarmDeepAdapter] WebToolRoutingRail create failed: %s",
-                exc,
-            )
-            rail = None
-        return rail
-
     def _build_skill_retrieval_prompt_rail(self) -> SkillRetrievalPromptRail | None:
         """Build lightweight agentic skill retrieval prompt guidance."""
         if not is_skill_retrieval_enabled():
@@ -4605,7 +4601,7 @@ class JiuWenSwarmDeepAdapter:
         uninstall 后调用：SkillUseRail.reload_skills() 重新扫描 skills_dir，
         增量移除已删除 skill 的缓存；同步更新 disabled_skills。
         """
-        new_disabled = set(self._skill_manager.list_execution_disabled_skills())
+        new_disabled = self._main_agent_disabled_skill_names()
         if self._skill_rail is not None:
             if self._skill_rail.disabled_skills != new_disabled:
                 self._skill_rail.disabled_skills = new_disabled
@@ -4619,6 +4615,20 @@ class JiuWenSwarmDeepAdapter:
                     self._skill_evolution_rail.disabled_skills = new_disabled
                 except (AttributeError, TypeError):
                     pass
+
+        # Browser Agent specs live on the already-created parent agent. Keep
+        # their OpenCLI rails in sync because uninstall deliberately avoids a
+        # full create_instance() rebuild.
+        instance = getattr(self, "_instance", None)
+        deep_config = getattr(instance, "deep_config", None)
+        for spec in getattr(deep_config, "subagents", None) or []:
+            agent_card = getattr(spec, "agent_card", None)
+            if getattr(agent_card, "name", None) != "browser_agent":
+                continue
+            refresh_web_agent_routing_rails(
+                spec,
+                disabled_skills=self._execution_disabled_skill_names(),
+            )
 
     def _build_symphony_orchestration_rail(
         self,
@@ -4750,7 +4760,6 @@ class JiuWenSwarmDeepAdapter:
         """Build DeepAgent rails consistently for cold start and hot reload."""
         rail_infos = [
             _RailBuildInfo("_runtime_prompt_rail", self._build_runtime_prompt_rail),
-            _RailBuildInfo("_web_tool_routing_rail", self._build_web_tool_routing_rail),
             _RailBuildInfo("_response_prompt_rail", self._build_response_prompt_rail),
             _RailBuildInfo(
                 "_multimodal_image_rail",
@@ -4985,7 +4994,7 @@ class JiuWenSwarmDeepAdapter:
             if self._skill_rail.skill_mode != new_skill_mode:
                 self._skill_rail.skill_mode = new_skill_mode
             # Update disabled_skills.
-            new_disabled = set(self._skill_manager.list_execution_disabled_skills())
+            new_disabled = self._main_agent_disabled_skill_names()
             if self._skill_rail.disabled_skills != new_disabled:
                 self._skill_rail.disabled_skills = new_disabled
 
@@ -6368,9 +6377,6 @@ class JiuWenSwarmDeepAdapter:
             self._runtime_prompt_rail.set_session_id(runtime_config.session_id)
         if self._response_prompt_rail:
             self._response_prompt_rail.set_channel(resolved_channel)
-        web_tool_routing_rail = getattr(self, "_web_tool_routing_rail", None)
-        if web_tool_routing_rail is not None:
-            web_tool_routing_rail.set_channel(resolved_channel)
         subagent_set_channel = getattr(
             getattr(self, "_subagent_rail", None),
             "set_channel",
