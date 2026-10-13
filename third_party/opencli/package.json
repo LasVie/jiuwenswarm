@@ -1,0 +1,12 @@
+{
+  "name": "jiuwenswarm-opencli-runtime",
+  "version": "1.8.8",
+  "private": true,
+  "description": "Pinned OpenCLI site-adapter runtime bundled by JiuWenSwarm",
+  "engines": {
+    "node": ">=20.18.1"
+  },
+  "dependencies": {
+    "@jackwener/opencli": "1.8.8"
+  }
+}

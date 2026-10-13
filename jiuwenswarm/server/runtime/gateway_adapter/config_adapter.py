@@ -17,6 +17,13 @@ from typing import Any
 
 from jiuwenswarm.common.config import resolve_env_vars
 from jiuwenswarm.common.e2a.constants import E2A_AUTH_SESSION_PARAM_KEY
+
+from jiuwenswarm.common.browser_config import (
+    browser_config_payload,
+    browser_config_updates,
+    browser_runtime_changed,
+    merge_browser_config,
+)
 from jiuwenswarm.common.schema.agent import AgentRequest, AgentResponse
 from jiuwenswarm.common.schema.message import ReqMethod
 from jiuwenswarm.server.runtime.gateway_adapter.base import GatewayAdapter, build_error_response
@@ -48,31 +55,6 @@ async def _warm_zen_after_free_model_toggle(payload: dict[str, Any]) -> None:
         await warm_zen_free_models(reason="config-toggle")
     except Exception as exc:  # noqa: BLE001
         logger.warning("[ConfigAdapter] warm_zen_free_models failed: %s", exc)
-
-
-def _resolve_browser_path(browser: dict[str, Any]) -> str:
-    """Return the current platform's configured managed-browser binary."""
-    resolved_browser = resolve_env_vars(browser)
-    if not isinstance(resolved_browser, dict):
-        return ""
-    chrome_path = resolved_browser.get("chrome_path", "")
-    if isinstance(chrome_path, str):
-        return chrome_path.strip()
-    if not isinstance(chrome_path, dict):
-        return ""
-
-    platform_map = {
-        "win32": "windows",
-        "cygwin": "windows",
-        "darwin": "macos",
-        "linux": "linux",
-        "linux2": "linux",
-    }
-    for key in (platform_map.get(sys.platform, "default"), "default"):
-        value = chrome_path.get(key, "")
-        if isinstance(value, str) and value.strip():
-            return value.strip()
-    return ""
 
 
 class _ConfigRpcChannel:
@@ -343,27 +325,18 @@ class ConfigAdapter(GatewayAdapter):
 
         config = get_config() or {}
         if request.req_method == ReqMethod.PATH_GET:
-            browser = config.get("browser") or {}
             return AgentResponse(
                 request_id=request.request_id,
                 channel_id=request.channel_id,
                 ok=True,
-                payload={
-                    "chrome_path": _resolve_browser_path(browser) if isinstance(browser, dict) else "",
-                    "headless": browser.get("headless") if isinstance(browser.get("headless"), bool) else True,
-                    **browser_decision_state(config),
-                },
+                payload={**browser_config_payload(config), **browser_decision_state(config)},
                 metadata=request.metadata,
             )
+        try:
+            updates = browser_config_updates(request.params)
+        except ValueError as exc:
+            return build_error_response(request, str(exc), code="BAD_REQUEST")
         params = request.params if isinstance(request.params, dict) else {}
-        chrome_path = params.get("chrome_path")
-        if not isinstance(chrome_path, str):
-            return build_error_response(request, "chrome_path must be string", code="BAD_REQUEST")
-        chrome_path = chrome_path.strip()
-
-        headless = params.get("headless", True)
-        if not isinstance(headless, bool):
-            headless = True
         # Older clients omit the decision fields; the saved values then stay untouched.
         decision_updates, error = browser_decision_updates(
             params.get("decision_mode"), params.get("decision_provider"), config,
@@ -372,19 +345,21 @@ class ConfigAdapter(GatewayAdapter):
         )
         if error:
             return build_error_response(request, error, code="BAD_REQUEST")
-        update_browser_in_config({"chrome_path": chrome_path, "headless": headless})
+        if updates:
+            update_browser_in_config(updates)
         if decision_updates:
             update_browser_decision_in_config(decision_updates)
         metadata = dict(request.metadata or {})
         metadata["config_changed"] = True
-        metadata["browser_runtime_restart"] = True
+        # Launch settings and Jev decision changes rebuild the browser agent; OpenCLI-only
+        # edits take effect on the next browser task without a restart.
+        metadata["browser_runtime_restart"] = bool(decision_updates) or browser_runtime_changed(config, updates)
         return AgentResponse(
             request_id=request.request_id,
             channel_id=request.channel_id,
             ok=True,
             payload={
-                "chrome_path": chrome_path,
-                "headless": headless,
+                **browser_config_payload(merge_browser_config(config, updates)),
                 **browser_decision_state(get_config() or {}),
             },
             metadata=metadata,

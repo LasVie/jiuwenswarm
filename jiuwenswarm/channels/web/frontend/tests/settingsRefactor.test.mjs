@@ -12,6 +12,7 @@ import {
   SETTINGS_CONFIG_FIELDS,
 } from '../node_modules/.cache/settings-refactor/services/settingsContract.js';
 import { SettingsSaveQueue } from '../node_modules/.cache/settings-refactor/services/SettingsSaveQueue.js';
+import { buildBrowserSettingsPatch, normalizeBrowserState } from '../node_modules/.cache/settings-refactor/services/browserSettings.js';
 import { createSettingsRequestRouter } from '../node_modules/.cache/settings-refactor/services/createSettingsRequestRouter.js';
 import {
   createSettingsPageDefinition,
@@ -62,6 +63,29 @@ test('model resource payload explicitly clears reasoning when returning to the p
     assert.equal(payload.model_config_obj.reasoning_level, level);
     assert.equal('api_key' in payload.model_client_config, false);
   }
+});
+
+test('browser edits patch one field without sending stale launch settings or replacing the site restriction', () => {
+  assert.deepEqual(buildBrowserSettingsPatch({ 'opencli.enabled': true }), { opencli: { enabled: true } });
+  assert.deepEqual(buildBrowserSettingsPatch({ 'opencli.worker_page': 'hidden' }), { opencli: { worker_page: 'hidden' } });
+  assert.deepEqual(buildBrowserSettingsPatch({ chrome_path: '/chrome' }), { chrome_path: '/chrome' });
+  assert.deepEqual(buildBrowserSettingsPatch({ headless: false, 'opencli.enabled': false }), {
+    headless: false, opencli: { enabled: false },
+  });
+  assert.throws(() => buildBrowserSettingsPatch({ enabled: false }), /Unsupported browser setting/);
+});
+
+test('browser settings preserve legacy defaults and consume the nested OpenCLI diagnostic', () => {
+  const legacy = normalizeBrowserState({ chrome_path: '/chrome', headless: false });
+  assert.equal(legacy['opencli.enabled'], false);
+  assert.equal(legacy['opencli.worker_page'], 'sidebar');
+  const configured = normalizeBrowserState({
+    chrome_path: '', headless: true, opencli: { enabled: true, worker_page: 'hidden', enabled_sites: ['bilibili'] },
+    opencli_status: { state: 'available', version: '1.8.8', site_count: 1 },
+  });
+  assert.equal(configured['opencli.enabled'], true);
+  assert.equal(configured['opencli.worker_page'], 'hidden');
+  assert.equal(configured.opencli_status.site_count, 1);
 });
 
 function sourceFilesUnder(path) {
@@ -1540,11 +1564,13 @@ test('SettingRow exposes a business-agnostic subSettings slot for dependent rows
   assert.match(itemRenderer, /item\.subItems\?\.show === 'always' \|\| checked/);
   assert.match(itemRenderer, /item\.subItems\?\.disabled === 'when-parent-unchecked'/);
   assert.match(experimentalDefinition, /show: 'always',[\s\S]*disabled: 'when-parent-unchecked'/);
-  assert.doesNotMatch(browserDefinition, /component: 'switch'|key: 'enabled'|subItems:/);
+  assert.doesNotMatch(browserDefinition, /key: 'enabled'/);
   assert.deepEqual(findSettingDefinitionKeys(parseTsx('src/features/settings/modules/browser/definition.ts')), [
     'chrome_path',
     'headless',
     'decision_mode',
+    'opencli.enabled',
+    'opencli.worker_page',
   ]);
   // Provider, model and credential are edited together with existing values prefilled.
   const jevSettings = source('src/features/settings/modules/browser/JevKeySettings.tsx');
@@ -1555,7 +1581,8 @@ test('SettingRow exposes a business-agnostic subSettings slot for dependent rows
   assert.match(jevDialog, /FormDialog/);
   assert.match(jevDialog, /values\.provider === 'custom'/);
   assert.match(jevPanel, /<JevKeySettings disabled=\{disabled\}/);
-  assert.match(sourceProvider, /jev_key_configured: value\?\.jev_key_configured === true/);
+  // Browser state normalization moved to browserSettings.ts with the OpenCLI options.
+  assert.match(source('src/features/settings/services/browserSettings.ts'), /jev_key_configured: value\?\.jev_key_configured === true/);
   for (const mode of ['llm', 'shadow', 'hybrid']) {
     assert.match(browserDefinition, new RegExp(`\{ value: '${mode}', labelKey: 'settingsPanel\.browser\.decision`));
   }
@@ -1564,7 +1591,7 @@ test('SettingRow exposes a business-agnostic subSettings slot for dependent rows
   assert.match(browserDefinition, /\{ value: true, labelKey: 'settingsPanel\.browser\.headless' \}/);
   assert.doesNotMatch(browserDefinition, /browser_type|browserType/);
   assert.match(sourceProvider, /request<Record<string, unknown>>\('path\.get'\)/);
-  assert.match(sourceProvider, /request<Record<string, unknown>>\('path\.set', \{/);
+  assert.match(sourceProvider, /request<Record<string, unknown>>\('path\.set', patch/);
   assert.doesNotMatch(sourceProvider, /enabled|onlyEnabled/);
   assert.doesNotMatch(sourceContract, /\['enabled', 'switch'\]/);
   assert.doesNotMatch(settingsContract, /react\.subagents\.browser_agent\.enabled/);
@@ -2031,7 +2058,7 @@ test('Jev browser settings preserve mode, independent provider credentials and r
   const provider = source('src/features/settings/services/SettingsSourceProvider.tsx');
   const keySettings = source('src/features/settings/modules/browser/JevKeySettings.tsx');
   assert.deepEqual(findSettingDefinitionKeys(parseTsx('src/features/settings/modules/browser/definition.ts')), [
-    'chrome_path', 'headless', 'decision_mode',
+    'chrome_path', 'headless', 'decision_mode', 'opencli.enabled', 'opencli.worker_page',
   ]);
   assert.deepEqual(findSettingDefinitionKeys(parseTsx('src/features/settings/modules/models/JevSettings.tsx')), []);
   for (const mode of ['llm', 'shadow', 'hybrid']) {
@@ -2051,7 +2078,7 @@ test('Jev browser settings preserve mode, independent provider credentials and r
   assert.match(definition, /<JevKeySettings disabled=\{disabled\}/);
   assert.doesNotMatch(definition, /CollaborationJevSettings/);
   assert.match(source('src/features/settings/modules/models/definition.ts'), /id: 'jev'/);
-  assert.match(provider, /jev_key_configured: value\?\.jev_key_configured === true/);
+  assert.match(source('src/features/settings/services/browserSettings.ts'), /jev_key_configured: value\?\.jev_key_configured === true/);
   assert.match(keySettings, /createJevDraft\(\{ decision_provider: provider \}, config\)/);
   assert.match(keySettings, /decision_mode: 'llm'/);
   assert.match(keySettings, /decision_display_name: ''/);
@@ -2074,7 +2101,7 @@ test('legacy page translations and Harness package state are removed without del
   ];
 
   for (const locale of [zh, en]) {
-    assert.deepEqual(Object.keys(locale.browser).sort(), ['downloads', 'errors', 'pane']);
+    assert.deepEqual(Object.keys(locale.browser).sort(), ['downloads', 'errors', 'opencli', 'pane']);
     assert.deepEqual(Object.keys(locale.channels.labels).sort(), supportedChannelIds);
     assert.deepEqual(Object.keys(locale.config).sort(), expectedConfigSections);
     assert.equal(locale.extensions, undefined);

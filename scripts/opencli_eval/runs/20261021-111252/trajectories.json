@@ -1,0 +1,78 @@
+[
+ {
+  "task": "hit-bilibili-hot",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 31.9,
+  "main_in": 78558,
+  "main_out": 844,
+  "main_cache": 36570,
+  "b_calls": 3,
+  "b_in": 52019,
+  "b_out": 809,
+  "b_cache": 22702,
+  "b_elapsed": 18.908,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "list-bilibili-search",
+  "group": "list",
+  "arm": "hybrid",
+  "wall": 28.3,
+  "main_in": 78524,
+  "main_out": 925,
+  "main_cache": 61842,
+  "b_calls": 3,
+  "b_in": 57835,
+  "b_out": 684,
+  "b_cache": 33890,
+  "b_elapsed": 15.88,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "list-v2ex-hot",
+  "group": "list",
+  "arm": "hybrid",
+  "wall": 22.3,
+  "main_in": 77433,
+  "main_out": 765,
+  "main_cache": 61839,
+  "b_calls": 3,
+  "b_in": 47765,
+  "b_out": 617,
+  "b_cache": 33890,
+  "b_elapsed": 12.104,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "multistep-compare",
+  "group": "multi_step",
+  "arm": "hybrid",
+  "wall": 39.3,
+  "main_in": 77974,
+  "main_out": 1441,
+  "main_cache": 61853,
+  "b_calls": 3,
+  "b_in": 56558,
+  "b_out": 1550,
+  "b_cache": 34000,
+  "b_elapsed": 22.855,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 2
+  },
+  "opencli": 4
+ }
+]

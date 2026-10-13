@@ -1,0 +1,3 @@
+task,group,arm,run,session_id,wall_s,timed_out,asked_user,driver_error,delegated,browser_tasks,browser_status,needs_user,unbacked,links,check_passed,main_input_tokens,main_output_tokens,main_cost,browser_model_calls,browser_tool_calls,opencli_calls,page_tool_calls,browser_input_tokens,browser_output_tokens,browser_cost,total_tokens,total_cost,success
+hit-bilibili-hot,hit,browser,1,web_1a1573b15a2_834e5ded3f71,35.6,False,,,True,1,completed,False,5,5,True,76879,858,0.227021,4,3,0,3,65761,1072,0.2132,144570,0.4402,True
+hit-bilibili-hot,hit,hybrid,1,web_1a1573be80d_c92edc8c76e0,39.4,False,,,True,1,completed,False,0,6,True,78536,841,0.23402,4,4,2,2,70767,974,0.2146,151118,0.4486,True

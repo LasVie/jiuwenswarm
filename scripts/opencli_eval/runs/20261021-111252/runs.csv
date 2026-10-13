@@ -1,0 +1,5 @@
+task,group,arm,run,session_id,wall_s,timed_out,asked_user,driver_error,delegated,browser_tasks,browser_status,needs_user,unbacked,links,check_passed,opencli_runs,flow_ok,tool_sequence,main_input_tokens,main_output_tokens,main_cost,browser_model_calls,browser_tool_calls,opencli_calls,page_tool_calls,browser_input_tokens,browser_output_tokens,browser_cost,total_tokens,total_cost,success
+hit-bilibili-hot,hit,hybrid,1,web_1a15c7295d1_9e9d57f11863,31.9,False,,,True,1,completed,False,0,5,True,1,True,d>o,78558,844,0.234128,3,2,2,0,52019,809,0.1673,132230,0.4014,True
+list-bilibili-search,list,hybrid,1,web_1a15c734d0a_509e547bebc3,28.3,False,,,True,1,completed,False,0,3,True,1,True,d>o,78524,925,0.114272,3,2,2,0,57835,684,0.1402,137968,0.2545,True
+list-v2ex-hot,list,hybrid,1,web_1a15c73f62a_4793081fcc33,22.3,False,,,True,1,completed,False,0,5,True,1,True,d>o,77433,765,0.105632,3,2,2,0,47765,617,0.0885,126580,0.1941,True
+multistep-compare,multi_step,hybrid,1,web_1a15c7487cc_9a9cc793ea4c,39.3,False,,,True,1,completed,False,3,9,True,2,True,d>d>o>o,77974,1441,0.12179,3,4,4,0,56558,1550,0.1506,137523,0.2724,True

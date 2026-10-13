@@ -10,6 +10,35 @@ export interface ElectronBrowserState {
   loading: boolean;
   canGoBack: boolean;
   canGoForward: boolean;
+  /** 'opencli' for the OpenCLI worker page; empty for ordinary panels */
+  role?: string;
+  visibility?: 'sidebar' | 'hidden';
+  /** Set while the worker page waits for the user (captcha / login) */
+  hold?: ElectronBrowserHold | null;
+  /** Set while a write command waits for the user's confirmation */
+  pendingConfirm?: ElectronBrowserConfirm | null;
+}
+
+export interface ElectronBrowserHold {
+  blockId: string;
+  reason: string;
+  instructions: string;
+  until: number;
+}
+
+export interface ElectronBrowserConfirm {
+  requestId: string;
+  command: string;
+  args: string[];
+  warnings: string[];
+  expiresAt: number;
+}
+
+export interface ElectronBrowserAttention {
+  sessionId: string;
+  panelId: string;
+  kind: 'human' | 'confirm';
+  visibility?: 'sidebar' | 'hidden';
 }
 
 export interface ElectronBrowserBounds {
@@ -133,5 +162,8 @@ export interface JiuwenElectronDesktopApi {
     listPanels: (sessionId: string) => Promise<ElectronBrowserState[]>;
     onPanelsChanged: (callback: (panels: ElectronBrowserState[]) => void) => () => void;
     onStateChanged: (callback: (state: ElectronBrowserState) => void) => () => void;
+    respondConfirm?: (requestId: string, decision: 'approve' | 'reject') => Promise<boolean>;
+    decideHold?: (panelId: string, blockId: string, decision: 'resolved' | 'abandoned') => Promise<boolean>;
+    onAttention?: (callback: (request: ElectronBrowserAttention) => void) => () => void;
   };
 }

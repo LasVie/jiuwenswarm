@@ -1,0 +1,2158 @@
+[
+ {
+  "task": "hit-bilibili-hot",
+  "group": "hit",
+  "arm": "browser",
+  "wall": 34.0,
+  "main_calls": 2,
+  "main_in": 76761,
+  "main_out": 913,
+  "main_cache": 36360,
+  "b_calls": 3,
+  "b_in": 56111,
+  "b_out": 940,
+  "b_cache": 18692,
+  "b_elapsed": 21.673,
+  "pre_s": 5.109992980957031,
+  "post_s": 7.177205801010132,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_probe_cards": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 3049,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-bilibili-hot",
+  "group": "hit",
+  "arm": "browser",
+  "wall": 32.7,
+  "main_calls": 2,
+  "main_in": 78069,
+  "main_out": 910,
+  "main_cache": 61429,
+  "b_calls": 3,
+  "b_in": 46729,
+  "b_out": 886,
+  "b_cache": 27970,
+  "b_elapsed": 18.945,
+  "pre_s": 6.136875629425049,
+  "post_s": 7.576774597167969,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 3857,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-hackernews-top",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 35.2,
+  "main_calls": 2,
+  "main_in": 81205,
+  "main_out": 1003,
+  "main_cache": 61427,
+  "b_calls": 3,
+  "b_in": 49816,
+  "b_out": 1455,
+  "b_cache": 27895,
+  "b_elapsed": 21.672,
+  "pre_s": 5.220403671264648,
+  "post_s": 8.303003072738647,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 7965,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-hackernews-top",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 35.9,
+  "main_calls": 2,
+  "main_in": 81025,
+  "main_out": 1042,
+  "main_cache": 61427,
+  "b_calls": 3,
+  "b_in": 46556,
+  "b_out": 1333,
+  "b_cache": 27911,
+  "b_elapsed": 20.597,
+  "pre_s": 6.98366904258728,
+  "post_s": 8.18376636505127,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 7744,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-arxiv-search",
+  "group": "hit",
+  "arm": "browser",
+  "wall": 47.4,
+  "main_calls": 2,
+  "main_in": 81921,
+  "main_out": 1253,
+  "main_cache": 61437,
+  "b_calls": 3,
+  "b_in": 51654,
+  "b_out": 1198,
+  "b_cache": 27973,
+  "b_elapsed": 32.499,
+  "pre_s": 6.012607097625732,
+  "post_s": 8.845587491989136,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 8104,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-arxiv-search",
+  "group": "hit",
+  "arm": "browser",
+  "wall": 59.8,
+  "main_calls": 3,
+  "main_in": 129410,
+  "main_out": 1972,
+  "main_cache": 97387,
+  "b_calls": 3,
+  "b_in": 54875,
+  "b_out": 1628,
+  "b_cache": 27993,
+  "b_elapsed": 37.484,
+  "pre_s": 5.431624412536621,
+  "post_s": 16.79608917236328,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 8501,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool",
+   "fetch_webpage",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "hit-github-trending",
+  "group": "hit",
+  "arm": "browser",
+  "wall": 35.9,
+  "main_calls": 2,
+  "main_in": 77457,
+  "main_out": 1088,
+  "main_cache": 61427,
+  "b_calls": 3,
+  "b_in": 48972,
+  "b_out": 1129,
+  "b_cache": 27882,
+  "b_elapsed": 21.792,
+  "pre_s": 5.806757926940918,
+  "post_s": 8.295637130737305,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 4791,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-github-trending",
+  "group": "hit",
+  "arm": "browser",
+  "wall": 34.2,
+  "main_calls": 2,
+  "main_in": 77783,
+  "main_out": 1020,
+  "main_cache": 61427,
+  "b_calls": 3,
+  "b_in": 48518,
+  "b_out": 1164,
+  "b_cache": 27881,
+  "b_elapsed": 19.783,
+  "pre_s": 5.409226655960083,
+  "post_s": 8.937763452529907,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 5078,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "list-bilibili-search",
+  "group": "list",
+  "arm": "browser",
+  "wall": 50.1,
+  "main_calls": 2,
+  "main_in": 88445,
+  "main_out": 994,
+  "main_cache": 61435,
+  "b_calls": 5,
+  "b_in": 114870,
+  "b_out": 1600,
+  "b_cache": 48096,
+  "b_elapsed": 34.685,
+  "pre_s": 5.457533121109009,
+  "post_s": 9.87956953048706,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_probe_cards": 1,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 10270,
+  "n_records": 1,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "list-bilibili-search",
+  "group": "list",
+  "arm": "browser",
+  "wall": 50.6,
+  "main_calls": 2,
+  "main_in": 85483,
+  "main_out": 1047,
+  "main_cache": 61435,
+  "b_calls": 5,
+  "b_in": 105239,
+  "b_out": 1813,
+  "b_cache": 48115,
+  "b_elapsed": 33.988,
+  "pre_s": 6.412228584289551,
+  "post_s": 10.158621788024902,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_probe_cards": 1,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 8569,
+  "n_records": 1,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "list-v2ex-hot",
+  "group": "list",
+  "arm": "browser",
+  "wall": 33.7,
+  "main_calls": 2,
+  "main_in": 76992,
+  "main_out": 847,
+  "main_cache": 61432,
+  "b_calls": 3,
+  "b_in": 47499,
+  "b_out": 958,
+  "b_cache": 27928,
+  "b_elapsed": 20.916,
+  "pre_s": 6.34139347076416,
+  "post_s": 6.434483766555786,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 3157,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "list-v2ex-hot",
+  "group": "list",
+  "arm": "browser",
+  "wall": 34.7,
+  "main_calls": 2,
+  "main_in": 77401,
+  "main_out": 933,
+  "main_cache": 61432,
+  "b_calls": 3,
+  "b_in": 49760,
+  "b_out": 1123,
+  "b_cache": 27945,
+  "b_elapsed": 22.533,
+  "pre_s": 5.333763837814331,
+  "post_s": 6.764562129974365,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 3572,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-wikipedia",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 66.4,
+  "main_calls": 2,
+  "main_in": 79469,
+  "main_out": 1071,
+  "main_cache": 61438,
+  "b_calls": 8,
+  "b_in": 154967,
+  "b_out": 2662,
+  "b_cache": 82368,
+  "b_elapsed": 52.286,
+  "pre_s": 6.056187152862549,
+  "post_s": 8.023906946182251,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 4,
+   "mcp_playwright-official_browser_evaluate": 5
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 6804,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-wikipedia",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 47.2,
+  "main_calls": 2,
+  "main_in": 82022,
+  "main_out": 904,
+  "main_cache": 61438,
+  "b_calls": 5,
+  "b_in": 91349,
+  "b_out": 1612,
+  "b_cache": 48458,
+  "b_elapsed": 34.765,
+  "pre_s": 5.958266496658325,
+  "post_s": 6.468224287033081,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 8947,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-crates",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 32.1,
+  "main_calls": 2,
+  "main_in": 76488,
+  "main_out": 698,
+  "main_cache": 61431,
+  "b_calls": 4,
+  "b_in": 67162,
+  "b_out": 1067,
+  "b_cache": 37615,
+  "b_elapsed": 21.867,
+  "pre_s": 4.385779857635498,
+  "post_s": 5.8216211795806885,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_batch_interact": 1,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 3343,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-crates",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 30.2,
+  "main_calls": 3,
+  "main_in": 121687,
+  "main_out": 1120,
+  "main_cache": 97381,
+  "b_calls": 3,
+  "b_in": 56152,
+  "b_out": 623,
+  "b_cache": 27862,
+  "b_elapsed": 14.692,
+  "pre_s": 4.137138605117798,
+  "post_s": 11.29225206375122,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_probe_cards": 1,
+   "browser_batch_interact": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 3848,
+  "n_records": 1,
+  "main_tool_names": [
+   "task_tool",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "nobrowser-stackoverflow",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 52.7,
+  "main_calls": 2,
+  "main_in": 85733,
+  "main_out": 1129,
+  "main_cache": 61436,
+  "b_calls": 6,
+  "b_in": 92551,
+  "b_out": 2071,
+  "b_cache": 59113,
+  "b_elapsed": 39.015,
+  "pre_s": 5.90214991569519,
+  "post_s": 7.704535961151123,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 14394,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-stackoverflow",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 58.0,
+  "main_calls": 3,
+  "main_in": 129770,
+  "main_out": 1466,
+  "main_cache": 97386,
+  "b_calls": 6,
+  "b_in": 95937,
+  "b_out": 1904,
+  "b_cache": 59688,
+  "b_elapsed": 36.272,
+  "pre_s": 6.4699132442474365,
+  "post_s": 15.187265157699585,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 3,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 10130,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "partial-bilibili-detail",
+  "group": "partial",
+  "arm": "browser",
+  "wall": 44.3,
+  "main_calls": 2,
+  "main_in": 76369,
+  "main_out": 686,
+  "main_cache": 61445,
+  "b_calls": 5,
+  "b_in": 85625,
+  "b_out": 886,
+  "b_cache": 48786,
+  "b_elapsed": 33.537,
+  "pre_s": 6.23138427734375,
+  "post_s": 4.49631142616272,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 2637,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "partial-bilibili-detail",
+  "group": "partial",
+  "arm": "browser",
+  "wall": 53.9,
+  "main_calls": 2,
+  "main_in": 77361,
+  "main_out": 796,
+  "main_cache": 61445,
+  "b_calls": 6,
+  "b_in": 100082,
+  "b_out": 1712,
+  "b_cache": 59232,
+  "b_elapsed": 40.601,
+  "pre_s": 5.616435289382935,
+  "post_s": 7.643634080886841,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 3670,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "partial-hackernews-comments",
+  "group": "partial",
+  "arm": "browser",
+  "wall": 54.4,
+  "main_calls": 2,
+  "main_in": 79058,
+  "main_out": 1160,
+  "main_cache": 61433,
+  "b_calls": 5,
+  "b_in": 86832,
+  "b_out": 2759,
+  "b_cache": 48599,
+  "b_elapsed": 36.753,
+  "pre_s": 6.106330871582031,
+  "post_s": 11.557782888412476,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 3,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 7361,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "partial-hackernews-comments",
+  "group": "partial",
+  "arm": "browser",
+  "wall": 64.9,
+  "main_calls": 2,
+  "main_in": 79531,
+  "main_out": 1209,
+  "main_cache": 61433,
+  "b_calls": 7,
+  "b_in": 120216,
+  "b_out": 2950,
+  "b_cache": 69901,
+  "b_elapsed": 48.341,
+  "pre_s": 6.006402015686035,
+  "post_s": 10.54670763015747,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 5,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 7834,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "miss-ithome",
+  "group": "miss",
+  "arm": "browser",
+  "wall": 44.5,
+  "main_calls": 2,
+  "main_in": 85122,
+  "main_out": 1004,
+  "main_cache": 61439,
+  "b_calls": 4,
+  "b_in": 78744,
+  "b_out": 1619,
+  "b_cache": 37595,
+  "b_elapsed": 31.418,
+  "pre_s": 4.687516689300537,
+  "post_s": 8.408038854598999,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 8795,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "miss-ithome",
+  "group": "miss",
+  "arm": "browser",
+  "wall": 38.5,
+  "main_calls": 2,
+  "main_in": 83040,
+  "main_out": 997,
+  "main_cache": 61439,
+  "b_calls": 3,
+  "b_in": 53712,
+  "b_out": 1529,
+  "b_cache": 27867,
+  "b_elapsed": 25.372,
+  "pre_s": 5.108287811279297,
+  "post_s": 8.01987910270691,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 6992,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "miss-example-page",
+  "group": "miss",
+  "arm": "browser",
+  "wall": 23.7,
+  "main_calls": 2,
+  "main_in": 75168,
+  "main_out": 322,
+  "main_cache": 61423,
+  "b_calls": 3,
+  "b_in": 40759,
+  "b_out": 464,
+  "b_cache": 27812,
+  "b_elapsed": 15.934,
+  "pre_s": 3.982969284057617,
+  "post_s": 3.7733163833618164,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 2102,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "miss-example-page",
+  "group": "miss",
+  "arm": "browser",
+  "wall": 22.2,
+  "main_calls": 2,
+  "main_in": 74447,
+  "main_out": 634,
+  "main_cache": 61423,
+  "b_calls": 2,
+  "b_in": 26655,
+  "b_out": 301,
+  "b_cache": 18588,
+  "b_elapsed": 11.012,
+  "pre_s": 3.7414164543151855,
+  "post_s": 7.3940629959106445,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 1469,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "login-zhihu-search",
+  "group": "login",
+  "arm": "browser",
+  "wall": 63.9,
+  "main_calls": 2,
+  "main_in": 79123,
+  "main_out": 889,
+  "main_cache": 61437,
+  "b_calls": 5,
+  "b_in": 91082,
+  "b_out": 1757,
+  "b_cache": 48203,
+  "b_elapsed": 49.844,
+  "pre_s": 6.842562198638916,
+  "post_s": 7.170805931091309,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_click": 1,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 4991,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "login-zhihu-search",
+  "group": "login",
+  "arm": "browser",
+  "wall": 56.6,
+  "main_calls": 2,
+  "main_in": 79109,
+  "main_out": 899,
+  "main_cache": 61437,
+  "b_calls": 5,
+  "b_in": 90137,
+  "b_out": 1550,
+  "b_cache": 48237,
+  "b_elapsed": 44.47,
+  "pre_s": 5.863605260848999,
+  "post_s": 6.247225284576416,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_click": 1,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 4757,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "multistep-bilibili",
+  "group": "multi_step",
+  "arm": "browser",
+  "wall": 47.5,
+  "main_calls": 2,
+  "main_in": 78901,
+  "main_out": 1213,
+  "main_cache": 61466,
+  "b_calls": 5,
+  "b_in": 88223,
+  "b_out": 1790,
+  "b_cache": 48204,
+  "b_elapsed": 31.744,
+  "pre_s": 8.8713219165802,
+  "post_s": 6.8624818325042725,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 4623,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "multistep-bilibili",
+  "group": "multi_step",
+  "arm": "browser",
+  "wall": 43.7,
+  "main_calls": 2,
+  "main_in": 76466,
+  "main_out": 1159,
+  "main_cache": 61466,
+  "b_calls": 4,
+  "b_in": 67259,
+  "b_out": 1530,
+  "b_cache": 38116,
+  "b_elapsed": 27.501,
+  "pre_s": 7.76418662071228,
+  "post_s": 8.363322973251343,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 2859,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "multistep-compare",
+  "group": "multi_step",
+  "arm": "browser",
+  "wall": 60.0,
+  "main_calls": 3,
+  "main_in": 121068,
+  "main_out": 1596,
+  "main_cache": 97398,
+  "b_calls": 5,
+  "b_in": 83911,
+  "b_out": 2195,
+  "b_cache": 47867,
+  "b_elapsed": 40.151,
+  "pre_s": 6.203239679336548,
+  "post_s": 13.622694969177246,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 3,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 4987,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "multistep-compare",
+  "group": "multi_step",
+  "arm": "browser",
+  "wall": 52.2,
+  "main_calls": 6,
+  "main_in": 253575,
+  "main_out": 2752,
+  "main_cache": 227481,
+  "b_calls": 2,
+  "b_in": 31008,
+  "b_out": 656,
+  "b_cache": 18448,
+  "b_elapsed": 12.242,
+  "pre_s": 7.752617359161377,
+  "post_s": 32.20038199424744,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 2510,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool",
+   "task_tool",
+   "task_tool",
+   "task_tool",
+   "fetch_webpage",
+   "bash"
+  ]
+ },
+ {
+  "task": "routing-hackernews",
+  "group": "routing",
+  "arm": "browser",
+  "wall": 17.2,
+  "main_calls": 3,
+  "main_in": 114268,
+  "main_out": 930,
+  "main_cache": 97364,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage",
+   "bash"
+  ]
+ },
+ {
+  "task": "routing-hackernews",
+  "group": "routing",
+  "arm": "browser",
+  "wall": 13.6,
+  "main_calls": 3,
+  "main_in": 111427,
+  "main_out": 952,
+  "main_cache": 97364,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage",
+   "fetch_webpage",
+   "fetch_webpage",
+   "fetch_webpage",
+   "fetch_webpage",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "routing-bilibili",
+  "group": "routing",
+  "arm": "browser",
+  "wall": 14.3,
+  "main_calls": 2,
+  "main_in": 75745,
+  "main_out": 755,
+  "main_cache": 61417,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "routing-bilibili",
+  "group": "routing",
+  "arm": "browser",
+  "wall": 11.4,
+  "main_calls": 2,
+  "main_in": 75720,
+  "main_out": 578,
+  "main_cache": 61417,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "routing-wikipedia",
+  "group": "routing",
+  "arm": "browser",
+  "wall": 7.5,
+  "main_calls": 2,
+  "main_in": 75302,
+  "main_out": 285,
+  "main_cache": 61418,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "routing-wikipedia",
+  "group": "routing",
+  "arm": "browser",
+  "wall": 8.7,
+  "main_calls": 2,
+  "main_in": 75302,
+  "main_out": 306,
+  "main_cache": 61418,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "hit-bilibili-hot",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 36.7,
+  "main_calls": 2,
+  "main_in": 78427,
+  "main_out": 850,
+  "main_cache": 36557,
+  "b_calls": 5,
+  "b_in": 83132,
+  "b_out": 982,
+  "b_cache": 46219,
+  "b_elapsed": 24.043,
+  "pre_s": 5.740204334259033,
+  "post_s": 6.841834783554077,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_probe_cards": 1
+  },
+  "opencli": 3,
+  "url_in_task": true,
+  "result_chars": 4006,
+  "n_records": 5,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-bilibili-hot",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 34.1,
+  "main_calls": 2,
+  "main_in": 78297,
+  "main_out": 869,
+  "main_cache": 61823,
+  "b_calls": 4,
+  "b_in": 62373,
+  "b_out": 748,
+  "b_cache": 44751,
+  "b_elapsed": 21.062,
+  "pre_s": 6.0749781131744385,
+  "post_s": 6.904982089996338,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 1
+  },
+  "opencli": 3,
+  "url_in_task": true,
+  "result_chars": 3766,
+  "n_records": 5,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-hackernews-top",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 39.2,
+  "main_calls": 2,
+  "main_in": 79315,
+  "main_out": 978,
+  "main_cache": 61821,
+  "b_calls": 3,
+  "b_in": 52915,
+  "b_out": 1961,
+  "b_cache": 32633,
+  "b_elapsed": 25.763,
+  "pre_s": 6.391528844833374,
+  "post_s": 7.026524543762207,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 6120,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-hackernews-top",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 34.0,
+  "main_calls": 2,
+  "main_in": 80966,
+  "main_out": 1041,
+  "main_cache": 61821,
+  "b_calls": 3,
+  "b_in": 51080,
+  "b_out": 1261,
+  "b_cache": 32637,
+  "b_elapsed": 20.94,
+  "pre_s": 5.443291902542114,
+  "post_s": 7.533798456192017,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 7276,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-arxiv-search",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 71.8,
+  "main_calls": 3,
+  "main_in": 130194,
+  "main_out": 1608,
+  "main_cache": 97978,
+  "b_calls": 5,
+  "b_in": 92833,
+  "b_out": 1628,
+  "b_cache": 55515,
+  "b_elapsed": 52.397,
+  "pre_s": 5.715652704238892,
+  "post_s": 13.621860027313232,
+  "tools": {
+   "opencli_describe": 2,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 8508,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "hit-arxiv-search",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 66.3,
+  "main_calls": 2,
+  "main_in": 82996,
+  "main_out": 1343,
+  "main_cache": 61831,
+  "b_calls": 4,
+  "b_in": 72866,
+  "b_out": 1598,
+  "b_cache": 44099,
+  "b_elapsed": 51.6,
+  "pre_s": 5.704315423965454,
+  "post_s": 8.971453666687012,
+  "tools": {
+   "opencli_describe": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 1,
+  "url_in_task": true,
+  "result_chars": 8778,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-github-trending",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 33.2,
+  "main_calls": 2,
+  "main_in": 77948,
+  "main_out": 966,
+  "main_cache": 61821,
+  "b_calls": 3,
+  "b_in": 54254,
+  "b_out": 1151,
+  "b_cache": 32589,
+  "b_elapsed": 21.207,
+  "pre_s": 4.688400030136108,
+  "post_s": 7.260831356048584,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 4871,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-github-trending",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 34.7,
+  "main_calls": 2,
+  "main_in": 77952,
+  "main_out": 1004,
+  "main_cache": 61821,
+  "b_calls": 3,
+  "b_in": 50959,
+  "b_out": 1177,
+  "b_cache": 32584,
+  "b_elapsed": 22.354,
+  "pre_s": 4.665239095687866,
+  "post_s": 7.676115989685059,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 4909,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "list-bilibili-search",
+  "group": "list",
+  "arm": "hybrid",
+  "wall": 52.8,
+  "main_calls": 2,
+  "main_in": 87373,
+  "main_out": 1228,
+  "main_cache": 61829,
+  "b_calls": 6,
+  "b_in": 117556,
+  "b_out": 1804,
+  "b_cache": 67729,
+  "b_elapsed": 37.667,
+  "pre_s": 4.771927833557129,
+  "post_s": 10.280559539794922,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 9608,
+  "n_records": 3,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "list-bilibili-search",
+  "group": "list",
+  "arm": "hybrid",
+  "wall": 49.9,
+  "main_calls": 2,
+  "main_in": 88015,
+  "main_out": 816,
+  "main_cache": 61829,
+  "b_calls": 5,
+  "b_in": 104635,
+  "b_out": 1718,
+  "b_cache": 55791,
+  "b_elapsed": 37.264,
+  "pre_s": 6.385634422302246,
+  "post_s": 6.174124479293823,
+  "tools": {
+   "opencli_describe": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_probe_cards": 1,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 1,
+  "url_in_task": true,
+  "result_chars": 9444,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "list-v2ex-hot",
+  "group": "list",
+  "arm": "hybrid",
+  "wall": 45.7,
+  "main_calls": 2,
+  "main_in": 79073,
+  "main_out": 985,
+  "main_cache": 61826,
+  "b_calls": 5,
+  "b_in": 99007,
+  "b_out": 1743,
+  "b_cache": 56731,
+  "b_elapsed": 32.947,
+  "pre_s": 5.147772550582886,
+  "post_s": 7.545132875442505,
+  "tools": {
+   "opencli_describe": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 1,
+  "url_in_task": true,
+  "result_chars": 4437,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "list-v2ex-hot",
+  "group": "list",
+  "arm": "hybrid",
+  "wall": 46.1,
+  "main_calls": 2,
+  "main_in": 78976,
+  "main_out": 829,
+  "main_cache": 61826,
+  "b_calls": 5,
+  "b_in": 91520,
+  "b_out": 1374,
+  "b_cache": 56978,
+  "b_elapsed": 34.005,
+  "pre_s": 5.318378448486328,
+  "post_s": 6.7206830978393555,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 4331,
+  "n_records": 5,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-wikipedia",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 68.0,
+  "main_calls": 3,
+  "main_in": 134966,
+  "main_out": 1445,
+  "main_cache": 97979,
+  "b_calls": 7,
+  "b_in": 145755,
+  "b_out": 2325,
+  "b_cache": 80935,
+  "b_elapsed": 48.189,
+  "pre_s": 7.324515342712402,
+  "post_s": 12.502530097961426,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 4,
+   "mcp_playwright-official_browser_evaluate": 4
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 13657,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "nobrowser-wikipedia",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 50.9,
+  "main_calls": 2,
+  "main_in": 79977,
+  "main_out": 933,
+  "main_cache": 61832,
+  "b_calls": 5,
+  "b_in": 96384,
+  "b_out": 1959,
+  "b_cache": 56324,
+  "b_elapsed": 37.941,
+  "pre_s": 6.080915212631226,
+  "post_s": 6.79229211807251,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 6333,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-crates",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 70.3,
+  "main_calls": 2,
+  "main_in": 77518,
+  "main_out": 976,
+  "main_cache": 61825,
+  "b_calls": 4,
+  "b_in": 64475,
+  "b_out": 1203,
+  "b_cache": 43977,
+  "b_elapsed": 57.139,
+  "pre_s": 5.104628086090088,
+  "post_s": 8.057080030441284,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_batch_interact": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 4025,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-crates",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 75.2,
+  "main_calls": 3,
+  "main_in": 119845,
+  "main_out": 1185,
+  "main_cache": 97972,
+  "b_calls": 9,
+  "b_in": 167859,
+  "b_out": 2135,
+  "b_cache": 96739,
+  "b_elapsed": 52.371,
+  "pre_s": 5.842888832092285,
+  "post_s": 16.918570280075073,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_batch_interact": 1,
+   "mcp_playwright-official_browser_evaluate": 5,
+   "mcp_playwright-official_browser_find": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 3735,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "nobrowser-stackoverflow",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 67.6,
+  "main_calls": 2,
+  "main_in": 83981,
+  "main_out": 1273,
+  "main_cache": 61830,
+  "b_calls": 7,
+  "b_in": 134554,
+  "b_out": 2463,
+  "b_cache": 81431,
+  "b_elapsed": 51.626,
+  "pre_s": 6.541848659515381,
+  "post_s": 9.364781618118286,
+  "tools": {
+   "opencli_describe": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 4
+  },
+  "opencli": 1,
+  "url_in_task": true,
+  "result_chars": 11596,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-stackoverflow",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 80.9,
+  "main_calls": 3,
+  "main_in": 124240,
+  "main_out": 1308,
+  "main_cache": 97977,
+  "b_calls": 9,
+  "b_in": 218254,
+  "b_out": 2833,
+  "b_cache": 126090,
+  "b_elapsed": 60.332,
+  "pre_s": 5.435900688171387,
+  "post_s": 15.101781129837036,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 6,
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_recall_offload": 4
+  },
+  "opencli": 8,
+  "url_in_task": true,
+  "result_chars": 6311,
+  "n_records": 5,
+  "main_tool_names": [
+   "task_tool",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "partial-bilibili-detail",
+  "group": "partial",
+  "arm": "hybrid",
+  "wall": 39.0,
+  "main_calls": 2,
+  "main_in": 77089,
+  "main_out": 720,
+  "main_cache": 61839,
+  "b_calls": 4,
+  "b_in": 75518,
+  "b_out": 812,
+  "b_cache": 44881,
+  "b_elapsed": 27.394,
+  "pre_s": 5.871709585189819,
+  "post_s": 5.624935626983643,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 3182,
+  "n_records": 5,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "partial-bilibili-detail",
+  "group": "partial",
+  "arm": "hybrid",
+  "wall": 51.0,
+  "main_calls": 2,
+  "main_in": 77867,
+  "main_out": 788,
+  "main_cache": 61839,
+  "b_calls": 6,
+  "b_in": 118668,
+  "b_out": 1673,
+  "b_cache": 71224,
+  "b_elapsed": 39.131,
+  "pre_s": 6.537307262420654,
+  "post_s": 5.311556577682495,
+  "tools": {
+   "opencli_describe": 2,
+   "mcp_playwright-official_browser_navigate": 2,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 3,
+  "url_in_task": true,
+  "result_chars": 3708,
+  "n_records": 3,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "partial-hackernews-comments",
+  "group": "partial",
+  "arm": "hybrid",
+  "wall": 53.4,
+  "main_calls": 2,
+  "main_in": 80081,
+  "main_out": 1145,
+  "main_cache": 61827,
+  "b_calls": 6,
+  "b_in": 108532,
+  "b_out": 2158,
+  "b_cache": 67896,
+  "b_elapsed": 37.861,
+  "pre_s": 5.793515205383301,
+  "post_s": 9.666232585906982,
+  "tools": {
+   "opencli_describe": 1,
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 7822,
+  "n_records": 1,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "partial-hackernews-comments",
+  "group": "partial",
+  "arm": "hybrid",
+  "wall": 52.7,
+  "main_calls": 2,
+  "main_in": 81226,
+  "main_out": 1267,
+  "main_cache": 61827,
+  "b_calls": 5,
+  "b_in": 84245,
+  "b_out": 2284,
+  "b_cache": 56706,
+  "b_elapsed": 35.203,
+  "pre_s": 5.783423900604248,
+  "post_s": 11.700997591018677,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 9055,
+  "n_records": 3,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "miss-ithome",
+  "group": "miss",
+  "arm": "hybrid",
+  "wall": 48.4,
+  "main_calls": 2,
+  "main_in": 80184,
+  "main_out": 861,
+  "main_cache": 61833,
+  "b_calls": 4,
+  "b_in": 76657,
+  "b_out": 1280,
+  "b_cache": 43875,
+  "b_elapsed": 35.373,
+  "pre_s": 4.6416847705841064,
+  "post_s": 8.333895444869995,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 5047,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "miss-ithome",
+  "group": "miss",
+  "arm": "hybrid",
+  "wall": 39.7,
+  "main_calls": 2,
+  "main_in": 83997,
+  "main_out": 939,
+  "main_cache": 61833,
+  "b_calls": 3,
+  "b_in": 57315,
+  "b_out": 1215,
+  "b_cache": 32590,
+  "b_elapsed": 27.175,
+  "pre_s": 4.869271755218506,
+  "post_s": 7.538426637649536,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 6763,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "miss-example-page",
+  "group": "miss",
+  "arm": "hybrid",
+  "wall": 20.2,
+  "main_calls": 2,
+  "main_in": 74766,
+  "main_out": 472,
+  "main_cache": 61817,
+  "b_calls": 2,
+  "b_in": 30999,
+  "b_out": 205,
+  "b_cache": 21592,
+  "b_elapsed": 9.469,
+  "pre_s": 4.17524266242981,
+  "post_s": 6.551317930221558,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 1378,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "miss-example-page",
+  "group": "miss",
+  "arm": "hybrid",
+  "wall": 37.0,
+  "main_calls": 3,
+  "main_in": 114478,
+  "main_out": 660,
+  "main_cache": 97964,
+  "b_calls": 5,
+  "b_in": 73765,
+  "b_out": 464,
+  "b_cache": 54120,
+  "b_elapsed": 44.35,
+  "pre_s": 4.386895179748535,
+  "post_s": 4.895976543426514,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 2565,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool",
+   "task_tool"
+  ]
+ },
+ {
+  "task": "login-zhihu-search",
+  "group": "login",
+  "arm": "hybrid",
+  "wall": 26.8,
+  "main_calls": 2,
+  "main_in": 74865,
+  "main_out": 533,
+  "main_cache": 61831,
+  "b_calls": 3,
+  "b_in": 44820,
+  "b_out": 325,
+  "b_cache": 32643,
+  "b_elapsed": 17.135,
+  "pre_s": 5.259858131408691,
+  "post_s": 4.346723318099976,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 1
+  },
+  "opencli": 3,
+  "url_in_task": true,
+  "result_chars": 1171,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "login-zhihu-search",
+  "group": "login",
+  "arm": "hybrid",
+  "wall": 30.1,
+  "main_calls": 2,
+  "main_in": 75018,
+  "main_out": 720,
+  "main_cache": 61831,
+  "b_calls": 3,
+  "b_in": 45315,
+  "b_out": 384,
+  "b_cache": 32808,
+  "b_elapsed": 18.557,
+  "pre_s": 6.6415205001831055,
+  "post_s": 4.871503591537476,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 1
+  },
+  "opencli": 3,
+  "url_in_task": true,
+  "result_chars": 1171,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "multistep-bilibili",
+  "group": "multi_step",
+  "arm": "hybrid",
+  "wall": 44.9,
+  "main_calls": 2,
+  "main_in": 77832,
+  "main_out": 953,
+  "main_cache": 61860,
+  "b_calls": 5,
+  "b_in": 93463,
+  "b_out": 975,
+  "b_cache": 57372,
+  "b_elapsed": 29.687,
+  "pre_s": 7.382312536239624,
+  "post_s": 7.807909727096558,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1
+  },
+  "opencli": 3,
+  "url_in_task": true,
+  "result_chars": 3634,
+  "n_records": 3,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "multistep-bilibili",
+  "group": "multi_step",
+  "arm": "hybrid",
+  "wall": 41.9,
+  "main_calls": 2,
+  "main_in": 78604,
+  "main_out": 1035,
+  "main_cache": 61860,
+  "b_calls": 5,
+  "b_in": 88732,
+  "b_out": 1092,
+  "b_cache": 58731,
+  "b_elapsed": 27.22,
+  "pre_s": 7.4356279373168945,
+  "post_s": 7.234721660614014,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_batch_interact": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 4237,
+  "n_records": 5,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "multistep-compare",
+  "group": "multi_step",
+  "arm": "hybrid",
+  "wall": 45.0,
+  "main_calls": 2,
+  "main_in": 77632,
+  "main_out": 1418,
+  "main_cache": 61842,
+  "b_calls": 4,
+  "b_in": 73976,
+  "b_out": 1760,
+  "b_cache": 44495,
+  "b_elapsed": 28.077,
+  "pre_s": 6.6040709018707275,
+  "post_s": 10.265743732452393,
+  "tools": {
+   "opencli_describe": 4,
+   "opencli_run": 2
+  },
+  "opencli": 6,
+  "url_in_task": true,
+  "result_chars": 4318,
+  "n_records": 3,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "multistep-compare",
+  "group": "multi_step",
+  "arm": "hybrid",
+  "wall": 69.3,
+  "main_calls": 2,
+  "main_in": 77196,
+  "main_out": 1645,
+  "main_cache": 61842,
+  "b_calls": 6,
+  "b_in": 110598,
+  "b_out": 2652,
+  "b_cache": 68168,
+  "b_elapsed": 50.4,
+  "pre_s": 7.607008934020996,
+  "post_s": 11.180829286575317,
+  "tools": {
+   "opencli_describe": 4,
+   "opencli_run": 2
+  },
+  "opencli": 6,
+  "url_in_task": true,
+  "result_chars": 3464,
+  "n_records": 3,
+  "main_tool_names": [
+   "task_tool",
+   "task_tool"
+  ]
+ },
+ {
+  "task": "routing-hackernews",
+  "group": "routing",
+  "arm": "hybrid",
+  "wall": 18.5,
+  "main_calls": 3,
+  "main_in": 114613,
+  "main_out": 828,
+  "main_cache": 97955,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage",
+   "bash"
+  ]
+ },
+ {
+  "task": "routing-hackernews",
+  "group": "routing",
+  "arm": "hybrid",
+  "wall": 17.9,
+  "main_calls": 3,
+  "main_in": 111854,
+  "main_out": 995,
+  "main_cache": 97955,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage",
+   "fetch_webpage",
+   "fetch_webpage",
+   "fetch_webpage",
+   "fetch_webpage",
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "routing-bilibili",
+  "group": "routing",
+  "arm": "hybrid",
+  "wall": 33.0,
+  "main_calls": 2,
+  "main_in": 77618,
+  "main_out": 669,
+  "main_cache": 61811,
+  "b_calls": 5,
+  "b_in": 80101,
+  "b_out": 747,
+  "b_cache": 57033,
+  "b_elapsed": 21.85,
+  "pre_s": 5.770421028137207,
+  "post_s": 5.300372123718262,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 2
+  },
+  "opencli": 4,
+  "url_in_task": true,
+  "result_chars": 3385,
+  "n_records": 3,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "routing-bilibili",
+  "group": "routing",
+  "arm": "hybrid",
+  "wall": 38.1,
+  "main_calls": 2,
+  "main_in": 77639,
+  "main_out": 661,
+  "main_cache": 61811,
+  "b_calls": 5,
+  "b_in": 90161,
+  "b_out": 721,
+  "b_cache": 57027,
+  "b_elapsed": 25.798,
+  "pre_s": 6.594972848892212,
+  "post_s": 5.655315399169922,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 2
+  },
+  "opencli": 4,
+  "url_in_task": true,
+  "result_chars": 3349,
+  "n_records": 3,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "routing-wikipedia",
+  "group": "routing",
+  "arm": "hybrid",
+  "wall": 8.5,
+  "main_calls": 2,
+  "main_in": 75696,
+  "main_out": 282,
+  "main_cache": 61812,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage"
+  ]
+ },
+ {
+  "task": "routing-wikipedia",
+  "group": "routing",
+  "arm": "hybrid",
+  "wall": 9.0,
+  "main_calls": 2,
+  "main_in": 75227,
+  "main_out": 327,
+  "main_cache": 61812,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "pre_s": null,
+  "post_s": null,
+  "tools": {},
+  "opencli": 0,
+  "url_in_task": false,
+  "result_chars": 0,
+  "n_records": 0,
+  "main_tool_names": [
+   "fetch_webpage"
+  ]
+ }
+]

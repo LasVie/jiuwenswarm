@@ -851,7 +851,21 @@
       "jevKeyMissing": "Jev API key is not configured. Add a Jev model under Models > Decision models first.",
       "clearSharedJevConfirm": "Clear the current Jev model's API key and display name? Connection settings will be retained. Browser decisions will return to LLM only, and JEV decision for multi-model collaboration will be disabled.",
       "jevBaseInvalid": "Enter an HTTPS API base URL without credentials, query parameters or fragments",
-      "jevModelInvalid": "Enter a valid OpenRouter Jev model, such as typesafe/jev-1.13"
+      "jevModelInvalid": "Enter a valid OpenRouter Jev model, such as typesafe/jev-1.13",
+      "opencli": {
+        "title": "OpenCLI site adapters",
+        "sidebar": "Show in sidebar",
+        "hidden": "Run in background",
+        "status": "Availability",
+        "states": {
+          "off": "Off. Browser tasks continue using existing page tools.",
+          "available": "Available · {{count}} websites · OpenCLI {{version}}",
+          "unsupportedBrowser": "Requires the built-in browser. Unavailable with an external browser or without a connected desktop browser.",
+          "runtimeMissing": "The runtime bundle is missing or failed validation. Check your local installation.",
+          "electronUnavailable": "The built-in browser runtime is unavailable or too old.",
+          "noSites": "The current site restriction does not match any available adapters."
+        }
+      }
     },
     "experimental": {
       "taskAsr": "Speech transcription",
@@ -1259,6 +1273,16 @@
         "title": "Enable computer control",
         "description": "Allow the desktop subagent to view and operate local application windows. Requires an image-capable model and the relevant system permissions.",
         "unavailableDescription": "Computer control is unavailable in this environment."
+      },
+      "opencli": {
+        "enabled": {
+          "title": "Enable site adapters",
+          "description": "Use a matching adapter first; the Browser Agent handles the remaining steps with page tools. Changes apply to the next task."
+        },
+        "worker_page": {
+          "title": "Worker page display",
+          "description": "Background pages appear temporarily only for write confirmation or when you need to handle login or verification."
+        }
       }
     },
     "validation": {
@@ -3103,6 +3127,23 @@
       "pauseDownload": "Pause download",
       "resumeDownload": "Resume download",
       "cancelDownload": "Cancel download"
+    },
+    "opencli": {
+      "tabLabel": "OpenCLI",
+      "running": "Running site command",
+      "confirmTitle": "OpenCLI asks to run a write command",
+      "confirmApprove": "Run it",
+      "confirmReject": "Reject",
+      "secondsLeft": "Rejected in {{seconds}}s",
+      "holdTitle": "Your action is needed",
+      "holdDone": "Done, continue",
+      "holdAbandon": "Give up",
+      "continueMessage": "I finished the verification in the sidebar's OpenCLI tab. Please continue the previous task.",
+      "reason": {
+        "captcha": "Complete the captcha or human verification",
+        "login_required": "Sign in to the site",
+        "user_intervention_required": "Complete the security check on the page"
+      }
     }
   },
   "logsPanel": {

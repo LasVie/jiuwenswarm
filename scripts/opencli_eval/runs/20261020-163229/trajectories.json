@@ -1,0 +1,720 @@
+[
+ {
+  "task": "hit-bilibili-hot",
+  "group": "hit",
+  "arm": "browser",
+  "wall": 35.4,
+  "main_in": 77230,
+  "main_out": 1070,
+  "main_cache": 36373,
+  "b_calls": 3,
+  "b_in": 41081,
+  "b_out": 843,
+  "b_cache": 18739,
+  "b_elapsed": 18.618,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "hit-hackernews-top",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 34.5,
+  "main_in": 78581,
+  "main_out": 960,
+  "main_cache": 61438,
+  "b_calls": 3,
+  "b_in": 47976,
+  "b_out": 823,
+  "b_cache": 27919,
+  "b_elapsed": 17.693,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "hit-arxiv-search",
+  "group": "hit",
+  "arm": "browser",
+  "wall": 40.2,
+  "main_in": 82445,
+  "main_out": 1439,
+  "main_cache": 61448,
+  "b_calls": 3,
+  "b_in": 54862,
+  "b_out": 1561,
+  "b_cache": 28005,
+  "b_elapsed": 23.489,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "hit-github-trending",
+  "group": "hit",
+  "arm": "browser",
+  "wall": 36.7,
+  "main_in": 77674,
+  "main_out": 1214,
+  "main_cache": 61438,
+  "b_calls": 3,
+  "b_in": 48856,
+  "b_out": 1106,
+  "b_cache": 28013,
+  "b_elapsed": 22.279,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "list-bilibili-search",
+  "group": "list",
+  "arm": "browser",
+  "wall": 65.5,
+  "main_in": 83849,
+  "main_out": 1031,
+  "main_cache": 61448,
+  "b_calls": 6,
+  "b_in": 121591,
+  "b_out": 2143,
+  "b_cache": 57798,
+  "b_elapsed": 45.585,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 4
+  },
+  "opencli": 0
+ },
+ {
+  "task": "list-v2ex-hot",
+  "group": "list",
+  "arm": "browser",
+  "wall": 36.2,
+  "main_in": 77065,
+  "main_out": 1050,
+  "main_cache": 61445,
+  "b_calls": 3,
+  "b_in": 49361,
+  "b_out": 1126,
+  "b_cache": 27955,
+  "b_elapsed": 22.18,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "nobrowser-wikipedia",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 86.5,
+  "main_in": 82335,
+  "main_out": 1139,
+  "main_cache": 61449,
+  "b_calls": 11,
+  "b_in": 216323,
+  "b_out": 2994,
+  "b_cache": 120320,
+  "b_elapsed": 70.461,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 6,
+   "mcp_playwright-official_browser_evaluate": 5
+  },
+  "opencli": 0
+ },
+ {
+  "task": "nobrowser-crates",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 32.3,
+  "main_in": 76453,
+  "main_out": 862,
+  "main_cache": 61442,
+  "b_calls": 3,
+  "b_in": 47309,
+  "b_out": 716,
+  "b_cache": 27939,
+  "b_elapsed": 19.442,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "nobrowser-stackoverflow",
+  "group": "no_browser",
+  "arm": "browser",
+  "wall": 68.4,
+  "main_in": 88326,
+  "main_out": 1299,
+  "main_cache": 61447,
+  "b_calls": 6,
+  "b_in": 102856,
+  "b_out": 2547,
+  "b_cache": 59025,
+  "b_elapsed": 51.266,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0
+ },
+ {
+  "task": "partial-bilibili-detail",
+  "group": "partial",
+  "arm": "browser",
+  "wall": 53.4,
+  "main_in": 78505,
+  "main_out": 1016,
+  "main_cache": 61458,
+  "b_calls": 5,
+  "b_in": 95386,
+  "b_out": 1316,
+  "b_cache": 52545,
+  "b_elapsed": 37.541,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "browser_probe_cards": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "partial-hackernews-comments",
+  "group": "partial",
+  "arm": "browser",
+  "wall": 62.6,
+  "main_in": 79024,
+  "main_out": 1120,
+  "main_cache": 61444,
+  "b_calls": 5,
+  "b_in": 85294,
+  "b_out": 2421,
+  "b_cache": 48211,
+  "b_elapsed": 44.748,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 3,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0
+ },
+ {
+  "task": "miss-ithome",
+  "group": "miss",
+  "arm": "browser",
+  "wall": 43.7,
+  "main_in": 80593,
+  "main_out": 1113,
+  "main_cache": 61452,
+  "b_calls": 3,
+  "b_in": 49518,
+  "b_out": 1468,
+  "b_cache": 27911,
+  "b_elapsed": 28.416,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "miss-example-page",
+  "group": "miss",
+  "arm": "browser",
+  "wall": 28.3,
+  "main_in": 75344,
+  "main_out": 425,
+  "main_cache": 61434,
+  "b_calls": 3,
+  "b_in": 40955,
+  "b_out": 424,
+  "b_cache": 27839,
+  "b_elapsed": 16.79,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "login-zhihu-search",
+  "group": "login",
+  "arm": "browser",
+  "wall": 79.0,
+  "main_in": 79492,
+  "main_out": 1152,
+  "main_cache": 61450,
+  "b_calls": 7,
+  "b_in": 136823,
+  "b_out": 2165,
+  "b_cache": 70896,
+  "b_elapsed": 63.831,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 3,
+   "mcp_playwright-official_browser_evaluate": 5
+  },
+  "opencli": 0
+ },
+ {
+  "task": "multistep-bilibili",
+  "group": "multi_step",
+  "arm": "browser",
+  "wall": 41.7,
+  "main_in": 76151,
+  "main_out": 1025,
+  "main_cache": 61479,
+  "b_calls": 4,
+  "b_in": 57470,
+  "b_out": 829,
+  "b_cache": 37966,
+  "b_elapsed": 23.543,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "multistep-compare",
+  "group": "multi_step",
+  "arm": "browser",
+  "wall": 64.6,
+  "main_in": 79423,
+  "main_out": 1386,
+  "main_cache": 61459,
+  "b_calls": 6,
+  "b_in": 103405,
+  "b_out": 2215,
+  "b_cache": 57765,
+  "b_elapsed": 47.696,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 2,
+   "mcp_playwright-official_browser_find": 1,
+   "mcp_playwright-official_browser_evaluate": 3
+  },
+  "opencli": 0
+ },
+ {
+  "task": "routing-hackernews",
+  "group": "routing",
+  "arm": "browser",
+  "wall": 14.4,
+  "main_in": 111424,
+  "main_out": 791,
+  "main_cache": 97364,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "tools": {},
+  "opencli": 0
+ },
+ {
+  "task": "routing-bilibili",
+  "group": "routing",
+  "arm": "browser",
+  "wall": 12.2,
+  "main_in": 76024,
+  "main_out": 681,
+  "main_cache": 61417,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "tools": {},
+  "opencli": 0
+ },
+ {
+  "task": "routing-wikipedia",
+  "group": "routing",
+  "arm": "browser",
+  "wall": 8.5,
+  "main_in": 75302,
+  "main_out": 302,
+  "main_cache": 61418,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "tools": {},
+  "opencli": 0
+ },
+ {
+  "task": "hit-bilibili-hot",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 35.7,
+  "main_in": 78569,
+  "main_out": 884,
+  "main_cache": 36570,
+  "b_calls": 3,
+  "b_in": 61311,
+  "b_out": 693,
+  "b_cache": 22737,
+  "b_elapsed": 22.113,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "hit-hackernews-top",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 32.4,
+  "main_in": 79727,
+  "main_out": 989,
+  "main_cache": 61832,
+  "b_calls": 3,
+  "b_in": 55047,
+  "b_out": 1049,
+  "b_cache": 33916,
+  "b_elapsed": 19.486,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "hit-arxiv-search",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 96.9,
+  "main_in": 82736,
+  "main_out": 1532,
+  "main_cache": 61842,
+  "b_calls": 5,
+  "b_in": 97661,
+  "b_out": 1955,
+  "b_cache": 58303,
+  "b_elapsed": 79.622,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "hit-github-trending",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 33.1,
+  "main_in": 78068,
+  "main_out": 1110,
+  "main_cache": 61832,
+  "b_calls": 3,
+  "b_in": 47464,
+  "b_out": 1109,
+  "b_cache": 33970,
+  "b_elapsed": 18.651,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "list-bilibili-search",
+  "group": "list",
+  "arm": "hybrid",
+  "wall": 27.8,
+  "main_in": 78211,
+  "main_out": 802,
+  "main_cache": 61842,
+  "b_calls": 3,
+  "b_in": 58618,
+  "b_out": 596,
+  "b_cache": 33911,
+  "b_elapsed": 15.191,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "list-v2ex-hot",
+  "group": "list",
+  "arm": "hybrid",
+  "wall": 28.7,
+  "main_in": 77906,
+  "main_out": 897,
+  "main_cache": 61839,
+  "b_calls": 3,
+  "b_in": 48728,
+  "b_out": 728,
+  "b_cache": 33942,
+  "b_elapsed": 15.231,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "nobrowser-wikipedia",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 55.9,
+  "main_in": 78507,
+  "main_out": 1010,
+  "main_cache": 61843,
+  "b_calls": 6,
+  "b_in": 130243,
+  "b_out": 2165,
+  "b_cache": 74128,
+  "b_elapsed": 39.951,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 5,
+   "browser_recall_offload": 1
+  },
+  "opencli": 6
+ },
+ {
+  "task": "nobrowser-crates",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 26.8,
+  "main_in": 77646,
+  "main_out": 816,
+  "main_cache": 61836,
+  "b_calls": 3,
+  "b_in": 53209,
+  "b_out": 765,
+  "b_cache": 33902,
+  "b_elapsed": 15.205,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "nobrowser-stackoverflow",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 66.2,
+  "main_in": 80259,
+  "main_out": 1425,
+  "main_cache": 61841,
+  "b_calls": 8,
+  "b_in": 198877,
+  "b_out": 2233,
+  "b_cache": 102087,
+  "b_elapsed": 47.636,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 6,
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_recall_offload": 3
+  },
+  "opencli": 7
+ },
+ {
+  "task": "partial-bilibili-detail",
+  "group": "partial",
+  "arm": "hybrid",
+  "wall": 48.8,
+  "main_in": 77376,
+  "main_out": 907,
+  "main_cache": 61852,
+  "b_calls": 5,
+  "b_in": 97785,
+  "b_out": 1001,
+  "b_cache": 63988,
+  "b_elapsed": 33.252,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "partial-hackernews-comments",
+  "group": "partial",
+  "arm": "hybrid",
+  "wall": 68.1,
+  "main_in": 82193,
+  "main_out": 1199,
+  "main_cache": 61838,
+  "b_calls": 6,
+  "b_in": 120793,
+  "b_out": 2449,
+  "b_cache": 71434,
+  "b_elapsed": 48.422,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 2,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 3
+ },
+ {
+  "task": "miss-ithome",
+  "group": "miss",
+  "arm": "hybrid",
+  "wall": 46.5,
+  "main_in": 78934,
+  "main_out": 1133,
+  "main_cache": 61846,
+  "b_calls": 3,
+  "b_in": 56265,
+  "b_out": 1274,
+  "b_cache": 33914,
+  "b_elapsed": 30.746,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "miss-example-page",
+  "group": "miss",
+  "arm": "hybrid",
+  "wall": 20.6,
+  "main_in": 74704,
+  "main_out": 495,
+  "main_cache": 61828,
+  "b_calls": 2,
+  "b_in": 31029,
+  "b_out": 138,
+  "b_cache": 22436,
+  "b_elapsed": 10.259,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1
+  },
+  "opencli": 0
+ },
+ {
+  "task": "login-zhihu-search",
+  "group": "login",
+  "arm": "hybrid",
+  "wall": 24.3,
+  "main_in": 74947,
+  "main_out": 765,
+  "main_cache": 61844,
+  "b_calls": 2,
+  "b_in": 38605,
+  "b_out": 169,
+  "b_cache": 22436,
+  "b_elapsed": 12.785,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "multistep-bilibili",
+  "group": "multi_step",
+  "arm": "hybrid",
+  "wall": 41.6,
+  "main_in": 78479,
+  "main_out": 984,
+  "main_cache": 61873,
+  "b_calls": 4,
+  "b_in": 84412,
+  "b_out": 876,
+  "b_cache": 48518,
+  "b_elapsed": 25.456,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1,
+   "mcp_playwright-official_browser_navigate": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "multistep-compare",
+  "group": "multi_step",
+  "arm": "hybrid",
+  "wall": 40.4,
+  "main_in": 77635,
+  "main_out": 1323,
+  "main_cache": 61853,
+  "b_calls": 3,
+  "b_in": 56057,
+  "b_out": 1395,
+  "b_cache": 33992,
+  "b_elapsed": 22.706,
+  "tools": {
+   "opencli_describe": 2,
+   "opencli_run": 2
+  },
+  "opencli": 4
+ },
+ {
+  "task": "routing-hackernews",
+  "group": "routing",
+  "arm": "hybrid",
+  "wall": 15.7,
+  "main_in": 111943,
+  "main_out": 950,
+  "main_cache": 97955,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "tools": {},
+  "opencli": 0
+ },
+ {
+  "task": "routing-bilibili",
+  "group": "routing",
+  "arm": "hybrid",
+  "wall": 30.9,
+  "main_in": 77487,
+  "main_out": 683,
+  "main_cache": 61811,
+  "b_calls": 3,
+  "b_in": 60743,
+  "b_out": 591,
+  "b_cache": 33904,
+  "b_elapsed": 18.259,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2
+ },
+ {
+  "task": "routing-wikipedia",
+  "group": "routing",
+  "arm": "hybrid",
+  "wall": 7.7,
+  "main_in": 75696,
+  "main_out": 296,
+  "main_cache": 61812,
+  "b_calls": 0,
+  "b_in": 0,
+  "b_out": 0,
+  "b_cache": 0,
+  "b_elapsed": 0,
+  "tools": {},
+  "opencli": 0
+ }
+]

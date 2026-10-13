@@ -7,7 +7,7 @@ import logging
 import os
 import sys
 from dataclasses import replace
-from typing import Any
+from typing import Any, Mapping
 from urllib.parse import urlsplit
 
 from jiuwenswarm.common.browser_settings import (
@@ -205,3 +205,88 @@ def resolve_chrome_path(config: dict[str, Any] | None) -> str:
         if isinstance(value, str) and value.strip():
             return value.strip()
     return ""
+
+
+# --- Browser settings patch and OpenCLI diagnostics (path.get / path.set) ---
+
+# Jev decision fields the settings page may send alongside a patch.
+DECISION_PARAMS = frozenset({
+    "decision_mode", "decision_provider", "decision_model", "decision_api_base", "decision_display_name",
+})
+
+
+def browser_config_updates(params: Any) -> dict[str, Any]:
+    """Validate a partial patch; omitted fields retain their current values.
+
+    ``decision_*`` fields are validated separately by browser_decision_updates().
+    """
+    if not isinstance(params, dict):
+        raise ValueError("params must be object")
+    updates: dict[str, Any] = {}
+    if "chrome_path" in params:
+        if not isinstance(params["chrome_path"], str):
+            raise ValueError("chrome_path must be string")
+        updates["chrome_path"] = params["chrome_path"].strip()
+    if "headless" in params:
+        # Retain the established browser RPC's fallback for legacy clients.
+        updates["headless"] = params["headless"] if isinstance(params["headless"], bool) else True
+    if "opencli" in params:
+        raw = params["opencli"]
+        if not isinstance(raw, dict):
+            raise ValueError("opencli must be object")
+        if set(raw) - {"enabled", "worker_page", "enabled_sites"}:
+            raise ValueError("unsupported opencli setting")
+        options: dict[str, Any] = {}
+        if "enabled" in raw:
+            if not isinstance(raw["enabled"], bool):
+                raise ValueError("opencli.enabled must be boolean")
+            options["enabled"] = raw["enabled"]
+        if "worker_page" in raw:
+            if raw["worker_page"] not in ("sidebar", "hidden"):
+                raise ValueError("opencli.worker_page must be sidebar or hidden")
+            options["worker_page"] = raw["worker_page"]
+        if "enabled_sites" in raw:
+            sites = raw["enabled_sites"]
+            if sites is not None and (not isinstance(sites, list)
+                                      or any(not isinstance(site, str) or not site.strip() for site in sites)):
+                raise ValueError("opencli.enabled_sites must be null or a list of site names")
+            options["enabled_sites"] = None if sites is None else list(dict.fromkeys(site.strip() for site in sites))
+        if options:
+            updates["opencli"] = options
+    if not updates and not DECISION_PARAMS.intersection(params):
+        raise ValueError("browser settings patch must contain at least one field")
+    return updates
+
+
+def merge_browser_config(config: Mapping[str, Any], updates: Mapping[str, Any]) -> dict[str, Any]:
+    raw_browser = config.get("browser")
+    browser = dict(raw_browser) if isinstance(raw_browser, Mapping) else {}
+    for key, value in updates.items():
+        if key == "opencli":
+            previous = browser.get(key)
+            browser[key] = {**(dict(previous) if isinstance(previous, Mapping) else {}), **value}
+        else:
+            browser[key] = value
+    return {**config, "browser": browser}
+
+
+def browser_runtime_changed(config: Mapping[str, Any], updates: Mapping[str, Any]) -> bool:
+    before = config.get("browser")
+    before = before if isinstance(before, Mapping) else {}
+    after = merge_browser_config(config, updates)["browser"]
+    return (resolve_chrome_path({"browser": dict(before)}), before.get("headless", True)) != (
+        resolve_chrome_path({"browser": dict(after)}), after.get("headless", True)
+    )
+
+
+def browser_config_payload(config: Mapping[str, Any]) -> dict[str, Any]:
+    from jiuwenswarm.extensions.opencli.settings_payload import opencli_settings_payload
+
+    browser = config.get("browser")
+    browser = browser if isinstance(browser, Mapping) else {}
+    chrome_path = resolve_chrome_path({"browser": dict(browser)})
+    return {
+        "chrome_path": chrome_path,
+        "headless": browser.get("headless") if isinstance(browser.get("headless"), bool) else True,
+        **opencli_settings_payload(config, chrome_path),
+    }

@@ -1407,6 +1407,8 @@ async def test_config_adapter_keeps_browser_config_in_agentserver_directory(monk
         "decision_provider": "typesafe", "jev_key_configured": False,
         "decision_model": "jev-1.13.0", "decision_api_base": "https://api.typesafe.ai/v1",
         "decision_display_name": "",
+        "opencli": {"enabled": False, "worker_page": "sidebar", "enabled_sites": None},
+        "opencli_status": {"state": "off"},
     }
     assert updates == [{"chrome_path": "/agent/new-chrome", "headless": True}]
     assert changed.metadata["config_changed"] is True
@@ -1438,6 +1440,8 @@ async def test_config_adapter_resolves_platform_browser_path_for_runtime_restart
         "decision_model": "jev-1.13.0",
         "decision_api_base": "https://api.typesafe.ai/v1",
         "decision_display_name": "",
+        "opencli": {"enabled": False, "worker_page": "sidebar", "enabled_sites": None},
+        "opencli_status": {"state": "off"},
     }
 
 

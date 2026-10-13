@@ -1,5 +1,6 @@
 import { settingsNavigationIcons } from '../../../../assets/settings';
 import type { SettingsModuleDefinition } from '../../registry/types';
+import { OpenCLIStatusSetting } from './OpenCLIStatusSetting';
 
 export const browserModule: SettingsModuleDefinition = {
   id: 'browser',
@@ -30,6 +31,33 @@ export const browserModule: SettingsModuleDefinition = {
             { value: 'hybrid', labelKey: 'settingsPanel.browser.decisionHybrid' },
           ],
         },
+      ],
+    },
+    {
+      id: 'browser-opencli',
+      titleKey: 'settingsPanel.browser.opencli.title',
+      items: [
+        {
+          id: 'browser-opencli-enabled',
+          component: 'switch',
+          key: 'opencli.enabled',
+          subItems: {
+            show: 'when-parent-checked',
+            disabled: 'when-parent-unchecked',
+            items: [
+              {
+                id: 'browser-opencli-worker-page',
+                component: 'select',
+                key: 'opencli.worker_page',
+                options: [
+                  { value: 'sidebar', labelKey: 'settingsPanel.browser.opencli.sidebar' },
+                  { value: 'hidden', labelKey: 'settingsPanel.browser.opencli.hidden' },
+                ],
+              },
+            ],
+          },
+        },
+        { id: 'browser-opencli-status', component: 'custom', render: OpenCLIStatusSetting },
       ],
     },
   ],

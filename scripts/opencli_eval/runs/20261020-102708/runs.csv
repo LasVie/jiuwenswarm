@@ -1,0 +1,2 @@
+task,group,arm,run,session_id,wall_s,timed_out,asked_user,driver_error,delegated,browser_tasks,browser_status,needs_user,unbacked,links,check_passed,main_input_tokens,main_output_tokens,main_cost,browser_model_calls,browser_tool_calls,opencli_calls,page_tool_calls,browser_input_tokens,browser_output_tokens,browser_cost,total_tokens,total_cost,success
+hit-hackernews-top,no_browser,hybrid,1,web_1a157225a61_5b5fa19aa7a3,24.8,False,,,False,0,,False,0,10,True,112675,1004,0.23453,0,0,0,0,0,0,0.0,113679,0.2345,True

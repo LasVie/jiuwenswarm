@@ -128,6 +128,8 @@ import {
   type ExternalCliDetectResult,
   type ExternalCliPendingChoice,
 } from './components/ExternalCliAgentsSection';
+import { SEND_CHAT_MESSAGE_EVENT } from './components/DesktopBrowserPane/OpenCLIPrompt';
+import { useDesktopBrowserAttention } from './components/DesktopBrowserPane/useDesktopBrowserAttention';
 import {
   loadExternalCliPendingChoices,
   persistExternalCliPendingChoices,
@@ -1049,6 +1051,25 @@ function AppContent({
   }, [mode, setSingleAgentPanelExpanded, setTeamAreaActiveTab, setTeamAreaExpanded, teamAreaActiveTab]);
 
   const browserAutoExpandedSessionRef = useRef<string | null>(null);
+  const revealBrowserAttention = useCallback(() => {
+    setHeartbeatPanelOpen(false);
+    setToolPanelHidden(false);
+    if (mode === 'team') {
+      setTeamAreaActiveTab('browser');
+      setTeamAreaExpanded(true);
+    } else {
+      setSingleAgentPanelActiveTab('browser');
+      setSingleAgentPanelExpanded(true);
+    }
+  }, [
+    mode,
+    setToolPanelHidden,
+    setTeamAreaActiveTab,
+    setTeamAreaExpanded,
+    setSingleAgentPanelActiveTab,
+    setSingleAgentPanelExpanded,
+  ]);
+  const browserAttention = useDesktopBrowserAttention(sessionId, revealBrowserAttention);
   useEffect(() => {
     if (browserHeadless) {
       browserAutoExpandedSessionRef.current = null;
@@ -3577,6 +3598,17 @@ function AppContent({
     useSessionStore.getState().setAgentGroupSelectionIntent(NEW_CONVERSATION_ID, { kind: 'select', id: groupId });
   }, [enterNewConversation]);
 
+  // OpenCLI 工作页的「已完成，继续」按钮：以普通用户消息继续该会话。
+  useEffect(() => {
+    const handler = (event: Event) => {
+      const detail = (event as CustomEvent<{ sessionId?: string; content?: string }>).detail;
+      if (!detail?.sessionId || !detail.content) return;
+      void sendMessage(detail.content, detail.sessionId);
+    };
+    window.addEventListener(SEND_CHAT_MESSAGE_EVENT, handler);
+    return () => window.removeEventListener(SEND_CHAT_MESSAGE_EVENT, handler);
+  }, [sendMessage]);
+
   const handleSendMessage = useCallback(async (
     content: string,
     mediaItems?: MediaItem[],
@@ -5146,6 +5178,7 @@ const showWorkspaceDivider = effectiveTeamAreaExpanded && !showConversationNotFo
                 {!toolPanelHidden && trajectoryTaskPanelAvailable && !showConversationNotFound && !heartbeatPanelOpen && (
                   <ToolPanel
                     sessionId={sessionId}
+                    browserAttention={browserAttention}
                     project={sessionProject}
                     isNewSessionPromotion={isNewSessionPromotion}
                     teamAreaExpanded={teamAreaExpanded}

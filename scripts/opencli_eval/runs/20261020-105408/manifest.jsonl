@@ -1,0 +1,2 @@
+{"task": "hit-bilibili-hot", "group": "hit", "arm": "browser", "run": 1, "session_id": "web_1a1573b15a2_834e5ded3f71", "started_at": 1792464852.3917773, "timed_out": false, "asked_user": null, "error": null, "finished_at": 1792464887.9645948, "wall_s": 35.6}
+{"task": "hit-bilibili-hot", "group": "hit", "arm": "hybrid", "run": 1, "session_id": "web_1a1573be80d_c92edc8c76e0", "started_at": 1792464906.2585456, "timed_out": false, "asked_user": null, "error": null, "finished_at": 1792464945.6862488, "wall_s": 39.4}

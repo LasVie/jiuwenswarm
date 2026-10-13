@@ -1,0 +1,116 @@
+[
+ {
+  "task": "hit-hackernews-top",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 31.8,
+  "main_calls": 2,
+  "main_in": 78699,
+  "main_out": 869,
+  "main_cache": 36147,
+  "b_calls": 3,
+  "b_in": 54797,
+  "b_out": 728,
+  "b_cache": 22679,
+  "b_elapsed": 16.76,
+  "pre_s": 8.061669111251831,
+  "post_s": 6.981420516967773,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 5191,
+  "n_records": 10,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-github-trending",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 32.2,
+  "main_calls": 2,
+  "main_in": 78217,
+  "main_out": 1058,
+  "main_cache": 61832,
+  "b_calls": 3,
+  "b_in": 53182,
+  "b_out": 1034,
+  "b_cache": 33939,
+  "b_elapsed": 17.931,
+  "pre_s": 6.722046852111816,
+  "post_s": 7.556811332702637,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 5187,
+  "n_records": 5,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-crates",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 27.2,
+  "main_calls": 2,
+  "main_in": 77347,
+  "main_out": 800,
+  "main_cache": 61836,
+  "b_calls": 3,
+  "b_in": 53191,
+  "b_out": 556,
+  "b_cache": 33932,
+  "b_elapsed": 14.007,
+  "pre_s": 7.255776405334473,
+  "post_s": 5.945807456970215,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 3955,
+  "n_records": 5,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "partial-hackernews-comments",
+  "group": "partial",
+  "arm": "hybrid",
+  "wall": 54.4,
+  "main_calls": 2,
+  "main_in": 79466,
+  "main_out": 1123,
+  "main_cache": 61838,
+  "b_calls": 6,
+  "b_in": 119672,
+  "b_out": 1988,
+  "b_cache": 72289,
+  "b_elapsed": 38.315,
+  "pre_s": 6.603538751602173,
+  "post_s": 9.410807609558105,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 2,
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 3,
+  "url_in_task": true,
+  "result_chars": 6286,
+  "n_records": 3,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ }
+]

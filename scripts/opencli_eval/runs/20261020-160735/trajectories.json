@@ -1,0 +1,116 @@
+[
+ {
+  "task": "hit-hackernews-top",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 38.5,
+  "main_calls": 2,
+  "main_in": 79089,
+  "main_out": 905,
+  "main_cache": 36555,
+  "b_calls": 3,
+  "b_in": 54559,
+  "b_out": 958,
+  "b_cache": 22612,
+  "b_elapsed": 20.64,
+  "pre_s": 11.142383337020874,
+  "post_s": 6.780226945877075,
+  "tools": {
+   "opencli_describe": 1,
+   "opencli_run": 1
+  },
+  "opencli": 2,
+  "url_in_task": true,
+  "result_chars": 5515,
+  "n_records": 10,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "hit-github-trending",
+  "group": "hit",
+  "arm": "hybrid",
+  "wall": 36.6,
+  "main_calls": 2,
+  "main_in": 78233,
+  "main_out": 1053,
+  "main_cache": 61821,
+  "b_calls": 3,
+  "b_in": 54801,
+  "b_out": 1230,
+  "b_cache": 33846,
+  "b_elapsed": 22.885,
+  "pre_s": 5.049817323684692,
+  "post_s": 8.607736825942993,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "mcp_playwright-official_browser_evaluate": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 5087,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "nobrowser-crates",
+  "group": "no_browser",
+  "arm": "hybrid",
+  "wall": 52.0,
+  "main_calls": 2,
+  "main_in": 79908,
+  "main_out": 885,
+  "main_cache": 61825,
+  "b_calls": 8,
+  "b_in": 157558,
+  "b_out": 1804,
+  "b_cache": 98367,
+  "b_elapsed": 40.013,
+  "pre_s": 4.842957973480225,
+  "post_s": 7.127270221710205,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 1,
+   "browser_batch_interact": 1,
+   "mcp_playwright-official_browser_evaluate": 4,
+   "mcp_playwright-official_browser_find": 1
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 7165,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ },
+ {
+  "task": "partial-hackernews-comments",
+  "group": "partial",
+  "arm": "hybrid",
+  "wall": 80.6,
+  "main_calls": 2,
+  "main_in": 79498,
+  "main_out": 1264,
+  "main_cache": 61827,
+  "b_calls": 9,
+  "b_in": 176487,
+  "b_out": 3604,
+  "b_cache": 111864,
+  "b_elapsed": 63.051,
+  "pre_s": 7.125221252441406,
+  "post_s": 10.374031066894531,
+  "tools": {
+   "mcp_playwright-official_browser_navigate": 7,
+   "mcp_playwright-official_browser_evaluate": 2
+  },
+  "opencli": 0,
+  "url_in_task": true,
+  "result_chars": 6193,
+  "n_records": 0,
+  "main_tool_names": [
+   "task_tool"
+  ]
+ }
+]

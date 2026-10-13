@@ -578,16 +578,20 @@ async def handle_config_request(request: AgentRequest) -> AgentResponse:
             browser = {}
         decision = browser.get("decision")
         decision = _resolve_env_vars(decision) if isinstance(decision, dict) else {}
+        from jiuwenswarm.extensions.opencli.settings_payload import opencli_settings_payload
+
+        chrome_path = _resolve_browser_path(browser)
         return AgentResponse(
             request_id=request.request_id,
             channel_id=request.channel_id,
             ok=True,
             payload={
-                "chrome_path": _resolve_browser_path(browser),
+                "chrome_path": chrome_path,
                 "headless": browser.get("headless")
                 if isinstance(browser.get("headless"), bool)
                 else True,
                 **project_browser_decision(decision, _browser_credential_environment()),
+                **opencli_settings_payload(raw, chrome_path),
             },
             metadata=request.metadata,
         )

@@ -8,6 +8,8 @@ const BROWSER_SETTING_COMPONENTS = new Map<string, SimpleSettingComponent>([
   ['headless', 'select'],
   ['decision_mode', 'select'],
   ['decision_provider', 'select'],
+  ['opencli.enabled', 'switch'],
+  ['opencli.worker_page', 'select'],
 ]);
 const LOCALE_SETTING_COMPONENTS = new Map<string, SimpleSettingComponent>([['preferred_language', 'select']]);
 

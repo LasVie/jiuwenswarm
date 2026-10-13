@@ -1,0 +1,5 @@
+task,group,arm,run,session_id,wall_s,timed_out,asked_user,driver_error,delegated,browser_tasks,browser_status,needs_user,unbacked,links,check_passed,main_input_tokens,main_output_tokens,main_cost,browser_model_calls,browser_tool_calls,opencli_calls,page_tool_calls,browser_input_tokens,browser_output_tokens,browser_cost,total_tokens,total_cost,success
+hit-hackernews-top,no_browser,hybrid,1,web_1a1585a0c12_dfc3a4faa9fc,38.5,False,,,True,1,completed,False,0,10,True,79089,905,0.238075,3,2,2,0,54559,958,0.1834,135511,0.4215,True
+hit-github-trending,hit,hybrid,1,web_1a1585add01_80a9a557f8b3,36.6,False,,,True,1,completed,False,4,6,True,78233,1053,0.115478,3,2,0,2,54801,1230,0.1361,135317,0.2516,True
+nobrowser-crates,no_browser,hybrid,1,web_1a1585ba68a_e3362e2ebf40,52.0,False,,,True,1,completed,False,6,6,True,79908,885,0.120474,8,7,0,7,157558,1804,0.3517,240155,0.4722,True
+partial-hackernews-comments,partial,hybrid,1,web_1a1585cac68_8e7f35203c98,80.6,False,,,True,1,completed,False,3,1,True,79498,1264,0.125994,9,9,0,9,176487,3604,0.4175,260853,0.5435,True
