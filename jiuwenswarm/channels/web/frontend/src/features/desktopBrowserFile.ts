@@ -102,6 +102,11 @@ export function openFileInDesktopBrowser(file: DesktopBrowserOpenableFile): bool
   return true;
 }
 
+/** A pending desktop interaction reopens the browser tab for its session. */
+export function requestDesktopBrowserTab(sessionId: string): void {
+  persistDesktopBrowserTabFlags(sessionId, { requested: true, closed: false });
+}
+
 /** 关闭 browser 页签：页签隐藏、DesktopBrowserPane 卸载时自动隐藏 BrowserView。 */
 export function closeDesktopBrowserTab(): void {
   persistDesktopBrowserTabFlags(activeSessionId(), { closed: true });

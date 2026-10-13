@@ -12,6 +12,7 @@ import {
   SETTINGS_CONFIG_FIELDS,
 } from '../node_modules/.cache/settings-refactor/services/settingsContract.js';
 import { SettingsSaveQueue } from '../node_modules/.cache/settings-refactor/services/SettingsSaveQueue.js';
+import { buildBrowserSettingsPatch, normalizeBrowserState } from '../node_modules/.cache/settings-refactor/services/browserSettings.js';
 import { createSettingsRequestRouter } from '../node_modules/.cache/settings-refactor/services/createSettingsRequestRouter.js';
 import {
   createSettingsPageDefinition,
@@ -37,6 +38,29 @@ import {
 
 const root = new URL('../', import.meta.url);
 const source = (path) => readFileSync(new URL(path, root), 'utf8');
+
+test('browser edits patch one field without sending stale launch settings or replacing the site restriction', () => {
+  assert.deepEqual(buildBrowserSettingsPatch({ 'opencli.enabled': true }), { opencli: { enabled: true } });
+  assert.deepEqual(buildBrowserSettingsPatch({ 'opencli.worker_page': 'hidden' }), { opencli: { worker_page: 'hidden' } });
+  assert.deepEqual(buildBrowserSettingsPatch({ chrome_path: '/chrome' }), { chrome_path: '/chrome' });
+  assert.deepEqual(buildBrowserSettingsPatch({ headless: false, 'opencli.enabled': false }), {
+    headless: false, opencli: { enabled: false },
+  });
+  assert.throws(() => buildBrowserSettingsPatch({ enabled: false }), /Unsupported browser setting/);
+});
+
+test('browser settings preserve legacy defaults and consume the nested OpenCLI diagnostic', () => {
+  const legacy = normalizeBrowserState({ chrome_path: '/chrome', headless: false });
+  assert.equal(legacy['opencli.enabled'], false);
+  assert.equal(legacy['opencli.worker_page'], 'sidebar');
+  const configured = normalizeBrowserState({
+    chrome_path: '', headless: true, opencli: { enabled: true, worker_page: 'hidden', enabled_sites: ['bilibili'] },
+    opencli_status: { state: 'available', version: '1.8.8', site_count: 1 },
+  });
+  assert.equal(configured['opencli.enabled'], true);
+  assert.equal(configured['opencli.worker_page'], 'hidden');
+  assert.equal(configured.opencli_status.site_count, 1);
+});
 
 function sourceFilesUnder(path) {
   const walk = (directory) =>
@@ -1426,16 +1450,18 @@ test('SettingRow exposes a business-agnostic subSettings slot for dependent rows
   assert.match(itemRenderer, /item\.subItems\?\.show === 'always' \|\| checked/);
   assert.match(itemRenderer, /item\.subItems\?\.disabled === 'when-parent-unchecked'/);
   assert.match(experimentalDefinition, /show: 'always',[\s\S]*disabled: 'when-parent-unchecked'/);
-  assert.doesNotMatch(browserDefinition, /component: 'switch'|key: 'enabled'|subItems:/);
+  assert.doesNotMatch(browserDefinition, /key: 'enabled'/);
   assert.deepEqual(findSettingDefinitionKeys(parseTsx('src/features/settings/modules/browser/definition.ts')), [
     'chrome_path',
     'headless',
+    'opencli.enabled',
+    'opencli.worker_page',
   ]);
   assert.match(browserDefinition, /\{ value: false, labelKey: 'settingsPanel\.browser\.headed' \}/);
   assert.match(browserDefinition, /\{ value: true, labelKey: 'settingsPanel\.browser\.headless' \}/);
   assert.doesNotMatch(browserDefinition, /browser_type|browserType/);
   assert.match(sourceProvider, /request<Record<string, unknown>>\('path\.get'\)/);
-  assert.match(sourceProvider, /request<Record<string, unknown>>\('path\.set', next/);
+  assert.match(sourceProvider, /request<Record<string, unknown>>\('path\.set', patch/);
   assert.doesNotMatch(sourceProvider, /enabled|onlyEnabled/);
   assert.doesNotMatch(sourceContract, /\['enabled', 'switch'\]/);
   assert.doesNotMatch(settingsContract, /react\.subagents\.browser_agent\.enabled/);
@@ -1913,7 +1939,7 @@ test('legacy page translations and Harness package state are removed without del
   ];
 
   for (const locale of [zh, en]) {
-    assert.deepEqual(Object.keys(locale.browser).sort(), ['errors']);
+    assert.deepEqual(Object.keys(locale.browser).sort(), ['errors', 'opencli', 'pane']);
     assert.deepEqual(Object.keys(locale.channels.labels).sort(), supportedChannelIds);
     assert.deepEqual(Object.keys(locale.config).sort(), expectedConfigSections);
     assert.equal(locale.extensions, undefined);

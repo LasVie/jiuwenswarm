@@ -42,6 +42,7 @@ import { SubagentStatusIcon } from '../subagent/SubagentStatusIcon';
 import { useSubagentStore, selectSubagents } from '../../stores/subagentStore';
 import { useMinWidth } from '../../hooks/useResponsive';
 import { DesktopBrowserPane } from '../DesktopBrowserPane';
+import type { ElectronBrowserAttention } from '../../types/electron';
 import './ToolPanel.css';
 import { applicationTasksToTeamTasks, EMPTY_APPLICATION_TASKS, useApplicationTaskStore } from '../../applicationPlugins/taskProgressStore';
 
@@ -66,6 +67,7 @@ function todoItemToTeamTask(todo: TodoItem): TeamTask {
 
 interface ToolPanelProps {
   sessionId?: string;
+  browserAttention?: ElectronBrowserAttention | null;
   project?: ProjectInfo | null;
   isNewSessionPromotion?: boolean;
   teamAreaExpanded: boolean;
@@ -119,6 +121,7 @@ function mergeById<T>(historyItems: T[], currentItems: T[], getId: (item: T) => 
 
 export function ToolPanel({
   sessionId,
+  browserAttention,
   project = null,
   isNewSessionPromotion = false,
   teamAreaExpanded,
@@ -526,7 +529,7 @@ export function ToolPanel({
                 />
               )
             }
-            renderBrowserContent={() => <DesktopBrowserPane sessionId={resolvedSessionId} />}
+            renderBrowserContent={() => <DesktopBrowserPane sessionId={resolvedSessionId} attention={browserAttention} />}
           />
         </div>
       </div>

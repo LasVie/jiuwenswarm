@@ -192,10 +192,17 @@ def materialize_bundled_runtime(
     *,
     resource_dir: Path | None = None,
     user_workspace_dir: Path | None = None,
+    runtime_name: str = "playwright-mcp",
+    load_manifest: Callable[[Path], dict[str, object]] | None = None,
 ) -> tuple[Path, dict[str, object]]:
-    """Verify and atomically extract the bundled runtime, returning its CLI."""
+    """Verify and atomically extract the bundled runtime, returning its CLI.
+
+    ``runtime_name`` and ``load_manifest`` let another bundled Node runtime
+    (for example OpenCLI) reuse the same verified, locked extraction. The
+    defaults keep the Playwright MCP behaviour unchanged.
+    """
     resources = (resource_dir or _resource_dir()).resolve()
-    manifest = _load_manifest(resources)
+    manifest = (load_manifest or _load_manifest)(resources)
     archive_path = resources / str(manifest["archive"])
     expected_hash = str(manifest["archive_sha256"]).lower()
     try:
@@ -210,7 +217,7 @@ def materialize_bundled_runtime(
     workspace = (user_workspace_dir or get_user_workspace_dir()).expanduser()
     version = str(manifest["version"])
     hash_prefix = expected_hash[:12]
-    version_root = workspace / "runtime" / "playwright-mcp" / version
+    version_root = workspace / "runtime" / runtime_name / version
     target = version_root / hash_prefix
     version_root.mkdir(parents=True, exist_ok=True)
     lock_path = version_root / ".extract.lock"

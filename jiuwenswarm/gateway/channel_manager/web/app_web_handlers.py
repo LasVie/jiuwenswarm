@@ -1284,7 +1284,7 @@ def _build_optional_dependency_install_args(package: str, cli_agent: str) -> lis
     ]
 
 
-async def _clear_agent_config_cache(agent_client=None) -> None:
+async def _clear_agent_config_cache(agent_client=None, *, reload_scopes: list[str] | None = None) -> None:
     """写回 config.yaml 后清除 agent 侧配置缓存，使下次读取时得到最新文件内容。"""
     try:
         if agent_client is not None:
@@ -1295,6 +1295,7 @@ async def _clear_agent_config_cache(agent_client=None) -> None:
                 request_id=f"cfg-reload-{uuid.uuid4().hex[:8]}",
                 channel_id="",
                 req_method=ReqMethod.AGENT_RELOAD_CONFIG,
+                params={"reload_scopes": reload_scopes} if reload_scopes else None,
             )
             await agent_client.send_request(env)
         else:
@@ -3313,7 +3314,8 @@ def _register_web_handlers(bind: WebHandlersBindParams) -> None:
     )
 
     async def _path_get(ws, req_id, params, session_id, user_id=None):
-        """读 browser.chrome_path 并返回给前端（会解析环境变量）。"""
+        """Return browser settings and the optional site-command diagnostic."""
+        from jiuwenswarm.common.browser_config import browser_config_payload
         from jiuwenswarm.gateway.routing.e2a_proxy import is_legacy_shared_directory_client, proxy_unary_request
         from jiuwenswarm.common.schema.message import ReqMethod
 
@@ -3332,43 +3334,31 @@ def _register_web_handlers(bind: WebHandlersBindParams) -> None:
                 ws,
                 req_id,
                 ok=True,
-                payload={"chrome_path": "", "headless": True},
+                payload=browser_config_payload({}),
             )
             return
 
         if not isinstance(config_base, dict):
             config_base = {}
 
-        config = _resolve_env_vars(config_base)
-        browser_cfg = config.get("browser", {}) if isinstance(config, dict) else {}
-        chrome_path = ""
-        headless = True
-        if isinstance(browser_cfg, dict):
-            value = browser_cfg.get("chrome_path", "")
-            if isinstance(value, str):
-                chrome_path = value
-            raw_headless = browser_cfg.get("headless", True)
-            headless = bool(raw_headless) if isinstance(raw_headless, bool) else True
-
         await channel.send_response(
             ws, req_id, ok=True,
-            payload={"chrome_path": chrome_path, "headless": headless},
+            payload=browser_config_payload(config_base),
         )
 
     async def _path_set(ws, req_id, params, session_id, user_id=None):
-        """更新 browser.chrome_path / headless 并写回 config。"""
-        if not isinstance(params, dict):
-            await channel.send_response(ws, req_id, ok=False, error="params must be object", code="BAD_REQUEST")
-            return
+        """Merge browser fields; only browser-launch changes restart the runtime."""
+        from jiuwenswarm.common.browser_config import (
+            browser_config_payload, browser_config_updates, browser_runtime_changed,
+            merge_browser_config, resolve_browser_path,
+        )
 
-        chrome_path = params.get("chrome_path")
-        if not isinstance(chrome_path, str):
-            await channel.send_response(ws, req_id, ok=False, error="chrome_path must be string", code="BAD_REQUEST")
+        try:
+            updates = browser_config_updates(params)
+        except ValueError as exc:
+            await channel.send_response(ws, req_id, ok=False, error=str(exc), code="BAD_REQUEST")
             return
-        chrome_path = chrome_path.strip()
-
-        raw_headless = params.get("headless", True)
-        headless = bool(raw_headless) if isinstance(raw_headless, bool) else True
+        opencli_only = set(updates) == {"opencli"}
 
         from jiuwenswarm.gateway.routing.e2a_proxy import (
             fetch_agent_unary,
@@ -3383,6 +3373,7 @@ def _register_web_handlers(bind: WebHandlersBindParams) -> None:
             # old runtime identity (custom binary / headed mode).
             previous_chrome_path = ""
             previous_headless = True
+            previous_browser = {}
             try:
                 prev_ok, prev_payload = await fetch_agent_unary(
                     agent_client=resolved_client,
@@ -3394,6 +3385,7 @@ def _register_web_handlers(bind: WebHandlersBindParams) -> None:
                     label="path.get (prev)",
                 )
                 if prev_ok and isinstance(prev_payload, dict):
+                    previous_browser = prev_payload
                     prev_chrome = prev_payload.get("chrome_path")
                     if isinstance(prev_chrome, str):
                         previous_chrome_path = prev_chrome
@@ -3408,33 +3400,36 @@ def _register_web_handlers(bind: WebHandlersBindParams) -> None:
                 if not ok:
                     return
                 try:
-                    await _clear_agent_config_cache(resolved_client)
+                    if opencli_only:
+                        await _clear_agent_config_cache(resolved_client, reload_scopes=["agent_runtime"])
+                    else:
+                        await _clear_agent_config_cache(resolved_client)
                 except Exception as e:  # noqa: BLE001
                     logger.warning("[path.set] AgentServer config cache clear failed: %s", e)
-                try:
-                    await _restart_agent_browser_runtime(
-                        resolved_client,
-                        previous_chrome_path=previous_chrome_path,
-                        previous_headless=previous_headless,
-                    )
-                except Exception as e:  # noqa: BLE001
-                    logger.warning("[path.set] browser runtime restart failed: %s", e)
+                if browser_runtime_changed({"browser": previous_browser}, updates):
+                    try:
+                        await _restart_agent_browser_runtime(
+                            resolved_client,
+                            previous_chrome_path=previous_chrome_path,
+                            previous_headless=previous_headless,
+                        )
+                    except Exception as e:  # noqa: BLE001
+                        logger.warning("[path.set] browser runtime restart failed: %s", e)
 
             await proxy_unary_request(
                 channel=channel, agent_client=resolved_client, ws=ws, req_id=req_id,
-                params={"chrome_path": chrome_path, "headless": headless},
+                params=updates,
                 session_id=session_id, user_id=user_id,
                 req_method=ReqMethod.PATH_SET, label="path.set",
                 on_done=_on_path_set_done,
             )
             return
 
-        current_browser_cfg = get_config().get("browser", {})
+        current_config = get_config()
+        current_browser_cfg = current_config.get("browser", {})
         if not isinstance(current_browser_cfg, dict):
             current_browser_cfg = {}
-        previous_chrome_path = current_browser_cfg.get("chrome_path", "")
-        if not isinstance(previous_chrome_path, str):
-            previous_chrome_path = ""
+        previous_chrome_path = resolve_browser_path(current_browser_cfg)
         raw_previous_headless = current_browser_cfg.get("headless", True)
         previous_headless = (
             bool(raw_previous_headless)
@@ -3443,29 +3438,30 @@ def _register_web_handlers(bind: WebHandlersBindParams) -> None:
         )
 
         try:
-            update_browser_in_config({"chrome_path": chrome_path, "headless": headless})
+            update_browser_in_config(updates)
             resolved_agent_client = _resolve(agent_client)
-            await _clear_agent_config_cache(resolved_agent_client)
+            if opencli_only:
+                await _clear_agent_config_cache(resolved_agent_client, reload_scopes=["agent_runtime"])
+            else:
+                await _clear_agent_config_cache(resolved_agent_client)
         except Exception as e:  # noqa: BLE001
             logger.warning("[path.set] 写回 config.yaml 失败: %s", e)
             await channel.send_response(ws, req_id, ok=False, error=str(e), code="INTERNAL_ERROR")
             return
 
-        try:
-            await _restart_agent_browser_runtime(
-                resolved_agent_client,
-                previous_chrome_path=previous_chrome_path,
-                previous_headless=previous_headless,
-            )
-        except Exception as e:  # noqa: BLE001
-            logger.warning(
-                "[path.set] browser config saved but active runtime reset failed: %s",
-                e,
-            )
+        if browser_runtime_changed(current_config, updates):
+            try:
+                await _restart_agent_browser_runtime(
+                    resolved_agent_client,
+                    previous_chrome_path=previous_chrome_path,
+                    previous_headless=previous_headless,
+                )
+            except Exception as e:  # noqa: BLE001
+                logger.warning("[path.set] browser config saved but active runtime reset failed: %s", e)
 
         await channel.send_response(
             ws, req_id, ok=True,
-            payload={"chrome_path": chrome_path, "headless": headless},
+            payload=browser_config_payload(merge_browser_config(current_config, updates)),
         )
 
     async def _path_select_directory(ws, req_id, params, session_id, user_id=None):

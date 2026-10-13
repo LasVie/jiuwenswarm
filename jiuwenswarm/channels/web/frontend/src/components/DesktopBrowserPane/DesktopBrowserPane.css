@@ -135,3 +135,68 @@
     transform: rotate(360deg);
   }
 }
+
+.desktop-browser-opencli-prompt {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border-default);
+  background: var(--color-surface-card);
+  font-size: 13px;
+}
+
+.desktop-browser-run-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border-default);
+  font-size: 12px;
+}
+
+.desktop-browser-opencli-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.desktop-browser-opencli-countdown {
+  margin-left: auto;
+  opacity: 0.7;
+}
+
+.desktop-browser-opencli-command {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.desktop-browser-opencli-warning {
+  margin: 0;
+  color: var(--color-feedback-warning);
+}
+
+.desktop-browser-opencli-instructions {
+  margin: 0;
+}
+
+.desktop-browser-opencli-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.desktop-browser-opencli-actions button {
+  padding: 4px 12px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.desktop-browser-opencli-actions .desktop-browser-opencli-primary {
+  border-color: transparent;
+  background: var(--color-action-primary);
+  color: var(--color-action-primary-text);
+}

@@ -35,10 +35,16 @@ app.whenReady().then(async () => {
       contextIsolation: true, sandbox: true, nodeIntegration: false,
     },
   });
-  // No external traffic, real accounts or user data in this regression fixture.
+  // Local-only by default. An opt-in read-only site check may allow explicit
+  // hosts; it still uses this fresh profile and never inherits real accounts.
   const browserSession = session.fromPartition('persist:jiuwenswarm-browser');
+  const localOrigin = new URL(process.env.SWARM_TEST_URL).origin;
+  const allowedHosts = String(process.env.SWARM_TEST_ALLOW_HOSTS || '').split(',').filter(Boolean);
   browserSession.webRequest.onBeforeRequest((details, callback) => {
-    callback({ cancel: /^https?:/.test(details.url) && !details.url.startsWith(process.env.SWARM_TEST_URL) });
+    const url = new URL(details.url);
+    const allowed = url.origin === localOrigin
+      || allowedHosts.some(host => url.hostname === host || url.hostname.endsWith(`.${host}`));
+    callback({ cancel: /^https?:/.test(details.url) && !allowed });
   });
   global.browserTest.endpoints = await global.browserTest.init(window);
   await window.loadURL(process.env.SWARM_TEST_URL);

@@ -1,19 +1,30 @@
 import { ArrowLeft, ArrowRight, Globe2, LoaderCircle, LockKeyhole, RefreshCw, X } from 'lucide-react';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { ElectronBrowserState } from '../../types/electron';
+import type { ElectronBrowserAttention, ElectronBrowserState } from '../../types/electron';
+import { OpenCLIPrompt } from './OpenCLIPrompt';
 import './DesktopBrowserPane.css';
 
 const DEFAULT_BROWSER_URL = 'https://cn.bing.com/';
 
-export function DesktopBrowserPane({ sessionId }: { sessionId: string }) {
+export function DesktopBrowserPane({
+  sessionId,
+  attention,
+}: {
+  sessionId: string;
+  attention?: ElectronBrowserAttention | null;
+}) {
   const { t } = useTranslation();
   const desktop = window.jiuwenDesktop;
   const viewportRef = useRef<HTMLDivElement>(null);
   const addressFocusedRef = useRef(false);
+  const temporaryPanelRef = useRef<{ panelId: string; returnTo: string } | null>(null);
   const [address, setAddress] = useState(DEFAULT_BROWSER_URL);
   const [panels, setPanels] = useState<ElectronBrowserState[]>([]);
-  const [selectedPanel, setSelectedPanel] = useState({ sessionId, panelId: sessionId });
+  const [selectedPanel, setSelectedPanel] = useState({
+    sessionId,
+    panelId: attention?.sessionId === sessionId ? attention.panelId : sessionId,
+  });
   const panelId = selectedPanel.sessionId === sessionId ? selectedPanel.panelId : sessionId;
   const [browserState, setBrowserState] = useState<ElectronBrowserState>({
     panelId: '',
@@ -50,12 +61,24 @@ export function DesktopBrowserPane({ sessionId }: { sessionId: string }) {
       const current = allPanels.filter((panel) => panel.sessionId === sessionId);
       setPanels(current);
       setSelectedPanel((selected) => {
+        const temporary = temporaryPanelRef.current;
+        if (temporary && !current.some((panel) => panel.panelId === temporary.panelId)) {
+          temporaryPanelRef.current = null;
+          if (selected.panelId === temporary.panelId && current.some((panel) => panel.panelId === temporary.returnTo)) {
+            return { sessionId, panelId: temporary.returnTo };
+          }
+        }
         if (selected.sessionId === sessionId && current.some((panel) => panel.panelId === selected.panelId)) {
           return selected;
         }
         return {
           sessionId,
-          panelId: current.find((panel) => !panel.memberId)?.panelId ?? current[0]?.panelId ?? sessionId,
+          // The OpenCLI worker page never becomes the default tab.
+          panelId:
+            current.find((panel) => !panel.memberId && !panel.role)?.panelId ??
+            current.find((panel) => !panel.role)?.panelId ??
+            current[0]?.panelId ??
+            sessionId,
         };
       });
     };
@@ -66,6 +89,21 @@ export function DesktopBrowserPane({ sessionId }: { sessionId: string }) {
       unsubscribe();
     };
   }, [desktop, sessionId]);
+
+  useEffect(() => {
+    if (attention?.sessionId === sessionId) {
+      setSelectedPanel((selected) => {
+        if (attention.visibility === 'hidden' && temporaryPanelRef.current?.panelId !== attention.panelId) {
+          temporaryPanelRef.current = {
+            panelId: attention.panelId,
+            returnTo:
+              selected.sessionId === sessionId && selected.panelId !== attention.panelId ? selected.panelId : sessionId,
+          };
+        }
+        return { sessionId, panelId: attention.panelId };
+      });
+    }
+  }, [attention, sessionId]);
 
   useEffect(() => {
     if (!desktop) return;
@@ -167,6 +205,8 @@ export function DesktopBrowserPane({ sessionId }: { sessionId: string }) {
       if (browserState.url) setAddress(browserState.url);
     });
   };
+  const currentPanel = panels.find((panel) => panel.panelId === panelId);
+  const workerRunning = currentPanel?.role === 'opencli' && (currentPanel.busy || browserState.loading);
 
   return (
     <div className="desktop-browser-pane-inline" data-testid="desktop-browser-pane">
@@ -258,6 +298,13 @@ export function DesktopBrowserPane({ sessionId }: { sessionId: string }) {
           />
         </form>
       </div>
+      {workerRunning ? (
+        <div className="desktop-browser-run-status" role="status" data-testid="desktop-browser-run-status">
+          <LoaderCircle aria-hidden size={14} className="desktop-browser-loading" />
+          <span data-testid="desktop-browser-run-status-label">{t('browser.opencli.running')}</span>
+        </div>
+      ) : null}
+      <OpenCLIPrompt panel={currentPanel} sessionId={sessionId} />
       <div ref={viewportRef} className="desktop-browser-viewport" data-testid="desktop-browser-viewport">
         <span className="desktop-browser-placeholder" data-testid="desktop-browser-placeholder">
           {t('browser.pane.unavailable')}

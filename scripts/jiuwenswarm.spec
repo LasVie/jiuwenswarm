@@ -165,6 +165,19 @@ for _required_playwright_resource in (_playwright_mcp_zip, _playwright_mcp_manif
             f"{_required_playwright_resource}. Run scripts/update_playwright_mcp_runtime.py."
         )
 
+_opencli_resource_dir = os.path.join(project_root, "jiuwenswarm", "resources", "runtime", "opencli")
+_opencli_zip = os.path.join(_opencli_resource_dir, "opencli-1.8.8.zip")
+for _required_opencli_resource in (
+    _opencli_zip,
+    os.path.join(_opencli_resource_dir, "manifest.json"),
+    os.path.join(_opencli_resource_dir, "catalog.json"),
+):
+    if not os.path.isfile(_required_opencli_resource):
+        raise SystemExit(
+            "ERROR: bundled OpenCLI resource is missing: "
+            f"{_required_opencli_resource}. Run scripts/update_opencli_runtime.py."
+        )
+
 _resource_datas = collect_resources_data_files(
     os.path.join(project_root, "jiuwenswarm", "resources"),
     "jiuwenswarm/resources",
@@ -177,11 +190,15 @@ datas += [
         "jiuwenswarm/resources/runtime/playwright-mcp",
     )
 ]
+datas += [(_opencli_zip, "jiuwenswarm/resources/runtime/opencli")]
+_explicit_runtime_zips = {
+    os.path.normcase(os.path.abspath(_playwright_mcp_zip)),
+    os.path.normcase(os.path.abspath(_opencli_zip)),
+}
 datas += [
     item
     for item in _resource_datas
-    if os.path.normcase(os.path.abspath(item[0]))
-    != os.path.normcase(os.path.abspath(_playwright_mcp_zip))
+    if os.path.normcase(os.path.abspath(item[0])) not in _explicit_runtime_zips
 ]
 datas += [
     (

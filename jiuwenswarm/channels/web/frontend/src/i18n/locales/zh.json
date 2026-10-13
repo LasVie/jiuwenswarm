@@ -353,7 +353,21 @@
       "headless": "无头模式",
       "headlessDescription": "不显示浏览器窗口运行自动化任务。",
       "chromePath": "Chrome 可执行文件路径",
-      "chromePathPlaceholder": "例如 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+      "chromePathPlaceholder": "例如 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "opencli": {
+        "title": "OpenCLI 站点适配器",
+        "sidebar": "侧栏显示",
+        "hidden": "后台运行",
+        "status": "可用状态",
+        "states": {
+          "off": "已关闭。浏览器任务继续使用现有页面操作。",
+          "available": "可用 · {{count}} 个网站 · OpenCLI {{version}}",
+          "unsupportedBrowser": "仅支持内置浏览器。使用外部浏览器或未连接桌面浏览器时不启用。",
+          "runtimeMissing": "运行包缺失或校验失败，请检查本地安装。",
+          "electronUnavailable": "内置浏览器运行环境不可用或版本过旧。",
+          "noSites": "当前站点限制没有匹配到可用的适配器。"
+        }
+      }
     },
     "experimental": {
       "taskAsr": "语音转写",
@@ -418,6 +432,16 @@
       "headless": {
         "title": "浏览器运行方式",
         "description": "选择在前台显示浏览器窗口或以无头模式运行。"
+      },
+      "opencli": {
+        "enabled": {
+          "title": "启用站点适配器",
+          "description": "有适用适配器时优先调用，其余步骤由 Browser Agent 使用页面操作完成。设置在下一次任务中生效。"
+        },
+        "worker_page": {
+          "title": "工作页显示方式",
+          "description": "后台运行时，仅在写操作确认或需要你处理登录、验证时临时显示工作页。"
+        }
       },
       "model_name": { "title": "模型名称", "placeholder": "例如：glm-4.7" },
       "alias": { "title": "自定义别名", "placeholder": "例如：GLM-4.7 生产环境" },
@@ -1756,6 +1780,23 @@
       "stop": "停止",
       "addressPlaceholder": "输入网址或搜索",
       "unavailable": "内置浏览器不可用"
+    },
+    "opencli": {
+      "tabLabel": "OpenCLI",
+      "running": "正在执行站点命令",
+      "confirmTitle": "OpenCLI 请求执行写操作",
+      "confirmApprove": "确认执行",
+      "confirmReject": "拒绝",
+      "secondsLeft": "{{seconds}} 秒后视为拒绝",
+      "holdTitle": "需要你处理",
+      "holdDone": "已完成，继续",
+      "holdAbandon": "放弃",
+      "continueMessage": "我已在侧栏 OpenCLI 标签页完成验证，请继续刚才的任务。",
+      "reason": {
+        "captcha": "需要完成验证码或人机验证",
+        "login_required": "需要登录该网站",
+        "user_intervention_required": "需要完成页面上的安全验证"
+      }
     }
   },
   "logsPanel": {

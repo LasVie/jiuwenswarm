@@ -1237,7 +1237,11 @@ async def test_config_adapter_keeps_browser_config_in_agentserver_directory(monk
         _request(ReqMethod.PATH_SET, {"chrome_path": "/agent/new-chrome", "headless": True})
     )
 
-    assert got.payload == {"chrome_path": "/agent/chrome", "headless": False}
+    assert got.payload == {
+        "chrome_path": "/agent/chrome", "headless": False,
+        "opencli": {"enabled": False, "worker_page": "sidebar", "enabled_sites": None},
+        "opencli_status": {"state": "off"},
+    }
     assert updates == [{"chrome_path": "/agent/new-chrome", "headless": True}]
     assert changed.metadata["config_changed"] is True
     assert changed.metadata["browser_runtime_restart"] is True
@@ -1261,6 +1265,8 @@ async def test_config_adapter_resolves_platform_browser_path_for_runtime_restart
     assert response.payload == {
         "chrome_path": "/agent/chrome",
         "headless": True,
+        "opencli": {"enabled": False, "worker_page": "sidebar", "enabled_sites": None},
+        "opencli_status": {"state": "off"},
     }
 
 

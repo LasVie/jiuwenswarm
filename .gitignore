@@ -77,6 +77,8 @@ logs/
 .browser/
 .browser-profiles/
 .playwright-mcp/
+/console-*.log
+/page-*.yml
 
 # workspace
 workspace/session

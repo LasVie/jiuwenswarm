@@ -10,7 +10,10 @@ const os = require('node:os');
 const path = require('node:path');
 const { Readable } = require('node:stream');
 const { pipeline } = require('node:stream/promises');
-const { SHARED_BROWSER_PARTITION, panelIdentity, hasLiveLease, evictionCandidates, createTargetHandler } = require('./browser_panels.cjs');
+const {
+  SHARED_BROWSER_PARTITION, WORKER_ROLES, panelIdentity, hasLiveLease, holdStatus, applyHoldDecision,
+  evictionCandidates, createTargetHandler,
+} = require('./browser_panels.cjs');
 
 const BACKEND_HOST = '127.0.0.1';
 const FRONTEND_HOST = '127.0.0.1';
@@ -303,6 +306,10 @@ function spawnService(name, ports, extraArgs = []) {
       PLAYWRIGHT_MCP_TARGET_RESOLVER: env.PLAYWRIGHT_MCP_TARGET_RESOLVER,
       PLAYWRIGHT_MCP_TARGET_RESOLVER_TOKEN: browserResolverToken,
       PLAYWRIGHT_MCP_DIAGNOSTIC_LOG: targetMcpDiagnosticLog,
+      // OpenCLI 站点命令以本应用 exe 的 Node 模式运行（ELECTRON_RUN_AS_NODE），
+      // 不依赖用户机器的 Node.js；路径经 ENV_JSON 进入 Browser Agent 的绑定信息。
+      JIUWENSWARM_ELECTRON_NODE: process.execPath,
+      JIUWENSWARM_ELECTRON_NODE_VERSION: process.versions.node,
       // 打包版 MCP 子进程即本应用 exe 以 Node 模式运行 wrapper，需要经由
       // openjiuwen 的 env 白名单转发该开关。
       ...(app.isPackaged ? { ELECTRON_RUN_AS_NODE: '1' } : {}),
@@ -1059,6 +1066,17 @@ function currentBrowserState(entry) {
     memberId: entry?.memberId ?? '',
     label: entry?.label ?? '',
     busy: entry?.leases ? hasLiveLease(entry) : false,
+    role: entry?.role ?? '',
+    visibility: entry?.visibility ?? 'sidebar',
+    hold: holdStatus(entry?.hold) === 'pending'
+      ? {
+        blockId: entry.hold.blockId,
+        reason: entry.hold.reason,
+        instructions: entry.hold.instructions,
+        until: entry.hold.until,
+      }
+      : null,
+    pendingConfirm: entry?.pendingConfirm ?? null,
   };
   const view = entry?.view;
   if (!view || view.webContents.isDestroyed()) {
@@ -1089,14 +1107,94 @@ function emitBrowserState(entry) {
 }
 
 function emitBrowserPanels() {
+  // A hidden worker is visible only while it needs a user decision. Restore
+  // background operation immediately, even if the renderer pane is unmounted.
+  for (const entry of browserViews.values()) {
+    if (entry.visibility === 'hidden' && entry.visible
+      && !entry.pendingConfirm && holdStatus(entry.hold) !== 'pending') {
+      entry.visible = false;
+      if (!entry.view.webContents.isDestroyed()) entry.view.setVisible(false);
+      if (activePaneSessionId === entry.panelId) activePaneSessionId = '';
+    }
+  }
   if (mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.webContents.send('browser:panels-changed', allBrowserPanels());
   }
 }
 
 function allBrowserPanels() {
-  return [...browserPanelIdentities.values()].map(identity =>
-    currentBrowserState(browserViews.get(identity.panelId) || identity));
+  return [...browserPanelIdentities.values()]
+    .filter(identity => {
+      // hidden 模式的工作页只在需要用户处理（确认或验证）时出现在侧栏。
+      if (identity.visibility !== 'hidden') return true;
+      const entry = browserViews.get(identity.panelId);
+      return Boolean(entry?.pendingConfirm) || holdStatus(entry?.hold) === 'pending';
+    })
+    .map(identity => currentBrowserState(browserViews.get(identity.panelId) || identity));
+}
+
+function requestBrowserAttention(entry, kind) {
+  emitBrowserPanels();
+  if (mainWindow && !mainWindow.isDestroyed() && entry) {
+    mainWindow.webContents.send('browser:attention', {
+      sessionId: entry.sessionId, panelId: entry.panelId, kind, visibility: entry.visibility ?? 'sidebar',
+    });
+  }
+}
+
+// 写确认：等待用户在侧栏确认条上的点击，超时视为未确认。决定只来自渲染进程的 IPC。
+const pendingBrowserConfirms = new Map();
+
+async function requestBrowserConfirm(identity, request) {
+  if (!mainWindow || mainWindow.isDestroyed()) return 'timeout';
+  const entry = await ensureBrowserView(identity);
+  if (!entry) return 'timeout';
+  const requestId = randomUUID();
+  return new Promise(resolve => {
+    const finish = decision => {
+      const pending = pendingBrowserConfirms.get(requestId);
+      if (!pending) return;
+      clearTimeout(pending.timer);
+      pendingBrowserConfirms.delete(requestId);
+      if (entry.pendingConfirm?.requestId === requestId) entry.pendingConfirm = null;
+      emitBrowserPanels();
+      resolve(decision);
+    };
+    const timer = setTimeout(() => finish('timeout'), request.timeoutMs);
+    pendingBrowserConfirms.set(requestId, { finish, timer });
+    entry.pendingConfirm = {
+      requestId,
+      command: request.command,
+      args: request.args,
+      warnings: request.warnings,
+      expiresAt: Date.now() + request.timeoutMs,
+    };
+    requestBrowserAttention(entry, 'confirm');
+  });
+}
+
+async function resetBrowserView(identity) {
+  const existing = browserViews.get(identity.panelId);
+  if (existing) {
+    browserViews.delete(identity.panelId);
+    try {
+      mainWindow?.contentView?.removeChildView(existing.view);
+      if (!existing.view.webContents.isDestroyed()) existing.view.webContents.close();
+    } catch (error) {
+      console.warn('[electron] failed to close worker page for reset', identity.panelId, error);
+    }
+  }
+  const entry = await ensureBrowserView(identity);
+  // A reset keeps the panel identity, so the renderer need not send another
+  // activation. Restore only the pane still selected when creation finishes.
+  if (entry && activePaneSessionId === identity.panelId
+    && browserViews.get(identity.panelId) === entry && !entry.view.webContents.isDestroyed()) {
+    entry.visible = true;
+    entry.view.setVisible(true);
+    if (lastBrowserBounds) applyBrowserBounds(entry, lastBrowserBounds);
+    emitBrowserState(entry);
+  }
+  return entry;
 }
 
 function emitLayoutInvalidated() {
@@ -1220,6 +1318,8 @@ async function ensureBrowserView(sessionId, lease = null) {
   browserPanelIdentities.set(key, identity);
   const existing = browserViews.get(key);
   if (existing && !existing.view.webContents.isDestroyed()) {
+    existing.visibility = identity.visibility ?? existing.visibility;
+    existing.label = identity.label;
     existing.lastActive = Date.now();
     if (lease) existing.leases.set(lease.leaseId, lease.ownerPid);
     return existing.ready;
@@ -1284,7 +1384,10 @@ async function initializeBrowserView(entry) {
   }
   // 记录最后浏览的页面：视图被 LRU 回收后重建时据此还原，而不是回到默认页。
   // 仅记录 http(s)；about:blank#jiuwen-session 标记页与空白态不入册。
+  // OpenCLI 工作页不记录也不还原：还原会重新触发页面脚本，adapter 自己会导航。
+  const isWorkerPage = WORKER_ROLES.has(entry.role);
   const recordLastUrl = () => {
+    if (isWorkerPage) return;
     try {
       const url = view.webContents.getURL();
       if (/^https?:/i.test(url)) {
@@ -1331,10 +1434,12 @@ async function initializeBrowserView(entry) {
   // 后台加载最后浏览的页面（视图被回收过则还原，否则默认页）：失败（如离线/
   // 代理受限）不影响启动，也不影响浏览器 Agent 的 target 绑定——TargetID 随
   // WebContents 不随导航变化。
-  const restoreUrl = sessionLastUrls.get(key) || DEFAULT_BROWSER_URL;
-  void view.webContents.loadURL(restoreUrl).catch(error => {
-    console.warn('[electron] initial sideview navigation failed', { sessionId: key, error });
-  });
+  const restoreUrl = isWorkerPage ? '' : (sessionLastUrls.get(key) || DEFAULT_BROWSER_URL);
+  if (restoreUrl) {
+    void view.webContents.loadURL(restoreUrl).catch(error => {
+      console.warn('[electron] initial sideview navigation failed', { sessionId: key, error });
+    });
+  }
   console.log('[electron] sideview CDP target ready', {
     sessionId: key,
     endpoint: `http://${BACKEND_HOST}:${cdpPort}`,
@@ -1399,6 +1504,10 @@ function setBrowserPaneVisible(sessionId, visible, focus = true) {
   void ensureBrowserView(key)
     .then(entry => {
       if (!entry || activePaneSessionId !== key) return;
+      if (entry.visibility === 'hidden' && !entry.pendingConfirm && holdStatus(entry.hold) !== 'pending') {
+        activePaneSessionId = '';
+        return;
+      }
       entry.visible = true;
       entry.view.setVisible(true);
       if (lastBrowserBounds) applyBrowserBounds(entry, lastBrowserBounds);
@@ -1431,6 +1540,8 @@ function buildBrowserEndpointsPayload() {
     PLAYWRIGHT_MCP_CDP_ENDPOINT: cdpEndpoint,
     PLAYWRIGHT_MCP_TARGET_RESOLVER: targetResolver,
     PLAYWRIGHT_MCP_TARGET_RESOLVER_TOKEN: browserResolverToken,
+    JIUWENSWARM_ELECTRON_NODE: process.execPath,
+    JIUWENSWARM_ELECTRON_NODE_VERSION: process.versions.node,
     // 打包版 wrapper 以本应用 exe 的 Node 模式运行；该开关需经
     // PLAYWRIGHT_MCP_ENV_JSON 白名单转发进 MCP 子进程。
     ...(app.isPackaged ? { ELECTRON_RUN_AS_NODE: '1' } : {}),
@@ -1490,6 +1601,10 @@ function startBrowserTargetResolver() {
       ensureView: ensureBrowserView,
       getView: id => browserViews.get(id),
       changed: emitBrowserPanels,
+      pageEndpoint: targetId => `ws://${BACKEND_HOST}:${cdpPort}/devtools/page/${targetId}`,
+      resetView: resetBrowserView,
+      requestConfirm: requestBrowserConfirm,
+      requestAttention: requestBrowserAttention,
     }));
     server.once('error', reject);
     server.listen({ host: BACKEND_HOST, port: 0 }, () => {
@@ -2562,6 +2677,18 @@ function registerIpcHandlers() {
   });
   registerHandler('browser:set-visible', (visible, sessionId, focus) => {
     return setBrowserPaneVisible(sessionId, Boolean(visible), focus !== false);
+  });
+  registerHandler('browser:confirm-response', (requestId, decision) => {
+    const pending = pendingBrowserConfirms.get(String(requestId || ''));
+    if (!pending) return false;
+    pending.finish(decision === 'approve' ? 'approve' : 'reject');
+    return true;
+  });
+  registerHandler('browser:hold-decision', (panelId, blockId, decision) => {
+    const entry = browserViews.get(String(panelId || ''));
+    const applied = applyHoldDecision(entry, String(blockId || ''), String(decision || ''));
+    if (applied) emitBrowserPanels();
+    return applied;
   });
   registerHandler('browser:set-bounds', (bounds, sessionId) => {
     lastBrowserBounds = bounds;

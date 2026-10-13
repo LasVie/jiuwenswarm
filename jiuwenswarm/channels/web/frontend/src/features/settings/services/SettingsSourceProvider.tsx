@@ -5,6 +5,7 @@ import type { SettingValue, SettingsSource } from '../registry/types';
 import { useSettingsServices } from './SettingsServicesProvider';
 import { serializeConfigSettingValue } from './settingsSourceContract';
 import { useSettingsConfig } from './useSettingsConfig';
+import { buildBrowserSettingsPatch, normalizeBrowserState, type BrowserSettingsState } from './browserSettings';
 
 export type SettingsSourceController = {
   values: Readonly<Record<string, unknown>>;
@@ -87,18 +88,6 @@ function ConfigSourceProvider({ children }: { children: ReactNode }) {
   return <SettingsSourceContext.Provider value={value}>{children}</SettingsSourceContext.Provider>;
 }
 
-type BrowserSettingsState = {
-  chrome_path: string;
-  headless: boolean;
-};
-
-function normalizeBrowserState(value: Record<string, unknown> | undefined): BrowserSettingsState {
-  return {
-    chrome_path: typeof value?.chrome_path === 'string' ? value.chrome_path : '',
-    headless: value?.headless === undefined ? true : value.headless === true,
-  };
-}
-
 function BrowserSourceProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
   const { isConnected, request, saveQueue } = useSettingsServices();
@@ -136,32 +125,30 @@ function BrowserSourceProvider({ children }: { children: ReactNode }) {
     async (updates: Record<string, SettingValue>, operation: string) => {
       const keys = Object.keys(updates);
       const previous = values;
-      const next = normalizeBrowserState({ ...values, ...updates });
-      setValues(next);
+      const patch = buildBrowserSettingsPatch(updates);
+      setValues((current) => ({ ...current, ...updates }));
       setError('');
       setSavingKeys((current) => addSavingKeys(current, keys));
       try {
         const result = await saveQueue.enqueue(operation, () =>
-          request<Record<string, unknown>>('path.set', next, { timeoutMs: 600_000 }),
+          request<Record<string, unknown>>('path.set', patch, { timeoutMs: 600_000 }),
         );
-        setValues((current) => normalizeBrowserState({ ...current, ...result }));
+        setValues(normalizeBrowserState(result));
         return result;
       } catch (saveError) {
-        setValues((current) =>
-          normalizeBrowserState({
-            ...current,
-            ...Object.fromEntries(keys.map((key) => [key, previous[key as keyof BrowserSettingsState]])),
-          }),
-        );
+        setValues((current) => ({
+          ...current,
+          ...Object.fromEntries(keys.map((key) => [key, previous[key as keyof BrowserSettingsState]])),
+        }));
         throw saveError;
       } finally {
         setSavingKeys((current) => removeSavingKeys(current, keys));
       }
     },
-    [request, saveQueue, t, values],
+    [request, saveQueue, values],
   );
   const patchLocal = useCallback((updates: Record<string, unknown>) => {
-    setValues((current) => normalizeBrowserState({ ...current, ...updates }));
+    setValues((current) => ({ ...current, ...updates }));
   }, []);
   const value = useMemo<SettingsSourceController>(
     () => ({ values, savingKeys, save, patchLocal }),

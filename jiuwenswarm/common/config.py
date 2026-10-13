@@ -824,13 +824,18 @@ def set_preferred_language_in_config_file(config_path: Path, lang: str) -> None:
 
 
 def update_browser_in_config(updates: dict[str, Any]) -> None:
-    """只更新 browser 段（如 chrome_path）并写回。"""
+    """只更新 browser 段；OpenCLI 子字段合并，保留未提交的设置。"""
     data = load_yaml_round_trip(CONFIG_YAML_PATH)
     if "browser" not in data:
         data["browser"] = {}
     section = data["browser"]
     for k, v in updates.items():
-        section[k] = v
+        if k == "opencli" and isinstance(v, dict):
+            if not isinstance(section.get(k), dict):
+                section[k] = {}
+            section[k].update(v)
+        else:
+            section[k] = v
     dump_yaml_round_trip(CONFIG_YAML_PATH, data)
 
 

@@ -50,6 +50,14 @@ const desktopApi = Object.freeze({
     setVisible: (visible, sessionId, focus) => invoke('browser:set-visible', visible, sessionId, focus !== false),
     getState: sessionId => invoke('browser:get-state', sessionId),
     listPanels: sessionId => invoke('browser:list-panels', sessionId),
+    // OpenCLI worker page: write confirmation and the user's decision on a hold.
+    respondConfirm: (requestId, decision) => invoke('browser:confirm-response', requestId, decision),
+    decideHold: (panelId, blockId, decision) => invoke('browser:hold-decision', panelId, blockId, decision),
+    onAttention: callback => {
+      const listener = (_event, request) => callback(request);
+      ipcRenderer.on('browser:attention', listener);
+      return () => ipcRenderer.removeListener('browser:attention', listener);
+    },
     onPanelsChanged: callback => {
       const listener = (_event, panels) => callback(panels);
       ipcRenderer.on('browser:panels-changed', listener);

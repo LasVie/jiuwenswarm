@@ -1410,6 +1410,15 @@ browser:
   chrome_path: ""
   # true runs Chrome without a visible window; false opens a managed window.
   headless: true
+  # Optional OpenCLI site commands for the Browser Agent. Only used with the
+  # built-in (Electron) browser; an external Chrome never gets them.
+  opencli:
+    enabled: false
+    # sidebar: the OpenCLI worker page is a sidebar tab; hidden: shown only
+    # when the user must confirm a write or complete a login/captcha.
+    worker_page: sidebar
+    # null = every website in the bundled catalog; a list limits the sites.
+    enabled_sites: null
 
 updater:
   enabled: true

@@ -353,7 +353,21 @@
       "headless": "Headless mode",
       "headlessDescription": "Run browser automation without showing a browser window.",
       "chromePath": "Chrome executable path",
-      "chromePathPlaceholder": "For example, /Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+      "chromePathPlaceholder": "For example, /Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "opencli": {
+        "title": "OpenCLI site adapters",
+        "sidebar": "Show in sidebar",
+        "hidden": "Run in background",
+        "status": "Availability",
+        "states": {
+          "off": "Off. Browser tasks continue using existing page tools.",
+          "available": "Available · {{count}} websites · OpenCLI {{version}}",
+          "unsupportedBrowser": "Requires the built-in browser. Unavailable with an external browser or without a connected desktop browser.",
+          "runtimeMissing": "The runtime bundle is missing or failed validation. Check your local installation.",
+          "electronUnavailable": "The built-in browser runtime is unavailable or too old.",
+          "noSites": "The current site restriction does not match any available adapters."
+        }
+      }
     },
     "experimental": {
       "taskAsr": "Speech transcription",
@@ -418,6 +432,16 @@
       "headless": {
         "title": "Browser run mode",
         "description": "Show the browser window in the foreground or run in headless mode."
+      },
+      "opencli": {
+        "enabled": {
+          "title": "Enable site adapters",
+          "description": "Use a matching adapter first; the Browser Agent handles the remaining steps with page tools. Changes apply to the next task."
+        },
+        "worker_page": {
+          "title": "Worker page display",
+          "description": "Background pages appear temporarily only for write confirmation or when you need to handle login or verification."
+        }
       },
       "model_name": { "title": "Model name", "placeholder": "e.g. glm-4.7" },
       "alias": { "title": "Custom alias", "placeholder": "e.g. GLM-4.7 Production" },
@@ -1765,6 +1789,23 @@
       "stop": "Stop",
       "addressPlaceholder": "Enter URL or search",
       "unavailable": "Built-in browser unavailable"
+    },
+    "opencli": {
+      "tabLabel": "OpenCLI",
+      "running": "Running site command",
+      "confirmTitle": "OpenCLI asks to run a write command",
+      "confirmApprove": "Run it",
+      "confirmReject": "Reject",
+      "secondsLeft": "Rejected in {{seconds}}s",
+      "holdTitle": "Your action is needed",
+      "holdDone": "Done, continue",
+      "holdAbandon": "Give up",
+      "continueMessage": "I finished the verification in the sidebar's OpenCLI tab. Please continue the previous task.",
+      "reason": {
+        "captcha": "Complete the captcha or human verification",
+        "login_required": "Sign in to the site",
+        "user_intervention_required": "Complete the security check on the page"
+      }
     }
   },
   "logsPanel": {

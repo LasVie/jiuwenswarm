@@ -829,9 +829,54 @@ async def test_path_set_reloads_config_and_resets_agent_browser_runtime(
         "payload": {
             "chrome_path": "C:\\Chrome\\chrome.exe",
             "headless": False,
+            "opencli": {"enabled": False, "worker_page": "sidebar", "enabled_sites": None},
+            "opencli_status": {"state": "off"},
         },
         "error": None,
         "code": None,
+    }
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("remote", [False, True])
+async def test_opencli_settings_reload_the_next_task_without_browser_restart(monkeypatch, remote):
+    from jiuwenswarm.common.browser_config import browser_config_payload, merge_browser_config
+    from jiuwenswarm.gateway.routing import e2a_proxy
+
+    channel = FakeWebChannel()
+    client = WebSocketAgentServerClient()
+    config = {"browser": {"chrome_path": "", "headless": True,
+                          "opencli": {"enabled": True, "worker_page": "sidebar", "enabled_sites": ["bilibili"]}}}
+    patches = []
+    reloads = []
+    restarts = []
+    monkeypatch.setattr(e2a_proxy, "is_legacy_shared_directory_client", lambda value: not remote)
+    monkeypatch.setattr(app_web_handlers, "get_config", lambda: config)
+    monkeypatch.setattr(app_web_handlers, "update_browser_in_config", patches.append)
+    async def reload(value, **kwargs):
+        reloads.append((value, kwargs))
+    async def forbidden_restart(*args, **kwargs):
+        restarts.append((args, kwargs))
+        raise AssertionError("OpenCLI settings must not reset browser runtime")
+    monkeypatch.setattr(app_web_handlers, "_clear_agent_config_cache", reload)
+    monkeypatch.setattr(app_web_handlers, "_restart_agent_browser_runtime", forbidden_restart)
+
+    async def fetch(**kwargs):
+        return True, browser_config_payload(config)
+    async def proxy(**kwargs):
+        patches.append(kwargs["params"])
+        await kwargs["on_done"](True, {})
+        await channel.send_response(kwargs["ws"], kwargs["req_id"], ok=True,
+            payload=browser_config_payload(merge_browser_config(config, kwargs["params"])))
+    monkeypatch.setattr(e2a_proxy, "fetch_agent_unary", fetch)
+    monkeypatch.setattr(e2a_proxy, "proxy_unary_request", proxy)
+    _register_web_handlers(WebHandlersBindParams(channel=channel, agent_client=client))
+    await channel.methods["path.set"](object(), "opencli-settings", {"opencli": {"worker_page": "hidden"}}, "sess-1")
+    assert patches == [{"opencli": {"worker_page": "hidden"}}]
+    assert reloads == [(client, {"reload_scopes": ["agent_runtime"]})]
+    assert restarts == []
+    assert channel.responses[-1]["payload"]["opencli"] == {
+        "enabled": True, "worker_page": "hidden", "enabled_sites": ["bilibili"],
     }
 
 

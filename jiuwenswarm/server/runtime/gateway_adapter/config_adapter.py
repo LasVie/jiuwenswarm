@@ -9,38 +9,17 @@ its response into an E2A response.
 
 from __future__ import annotations
 
-import sys
 from typing import Any
 
-from jiuwenswarm.common.config import resolve_env_vars
+from jiuwenswarm.common.browser_config import (
+    browser_config_payload,
+    browser_config_updates,
+    browser_runtime_changed,
+    merge_browser_config,
+)
 from jiuwenswarm.common.schema.agent import AgentRequest, AgentResponse
 from jiuwenswarm.common.schema.message import ReqMethod
 from jiuwenswarm.server.runtime.gateway_adapter.base import GatewayAdapter, build_error_response
-
-
-def _resolve_browser_path(browser: dict[str, Any]) -> str:
-    """Return the current platform's configured managed-browser binary."""
-    resolved_browser = resolve_env_vars(browser)
-    if not isinstance(resolved_browser, dict):
-        return ""
-    chrome_path = resolved_browser.get("chrome_path", "")
-    if isinstance(chrome_path, str):
-        return chrome_path.strip()
-    if not isinstance(chrome_path, dict):
-        return ""
-
-    platform_map = {
-        "win32": "windows",
-        "cygwin": "windows",
-        "darwin": "macos",
-        "linux": "linux",
-        "linux2": "linux",
-    }
-    for key in (platform_map.get(sys.platform, "default"), "default"):
-        value = chrome_path.get(key, "")
-        if isinstance(value, str) and value.strip():
-            return value.strip()
-    return ""
 
 
 class _ConfigRpcChannel:
@@ -201,36 +180,28 @@ class ConfigAdapter(GatewayAdapter):
     async def _handle_browser_config(self, request: AgentRequest) -> AgentResponse:
         from jiuwenswarm.common.config import get_config, update_browser_in_config
 
+        config = get_config() or {}
         if request.req_method == ReqMethod.PATH_GET:
-            browser = (get_config() or {}).get("browser") or {}
             return AgentResponse(
                 request_id=request.request_id,
                 channel_id=request.channel_id,
                 ok=True,
-                payload={
-                    "chrome_path": _resolve_browser_path(browser) if isinstance(browser, dict) else "",
-                    "headless": browser.get("headless") if isinstance(browser.get("headless"), bool) else True,
-                },
+                payload=browser_config_payload(config),
                 metadata=request.metadata,
             )
-        params = request.params if isinstance(request.params, dict) else {}
-        chrome_path = params.get("chrome_path")
-        if not isinstance(chrome_path, str):
-            return build_error_response(request, "chrome_path must be string", code="BAD_REQUEST")
-        chrome_path = chrome_path.strip()
-
-        headless = params.get("headless", True)
-        if not isinstance(headless, bool):
-            headless = True
-        update_browser_in_config({"chrome_path": chrome_path, "headless": headless})
+        try:
+            updates = browser_config_updates(request.params)
+        except ValueError as exc:
+            return build_error_response(request, str(exc), code="BAD_REQUEST")
+        update_browser_in_config(updates)
         metadata = dict(request.metadata or {})
         metadata["config_changed"] = True
-        metadata["browser_runtime_restart"] = True
+        metadata["browser_runtime_restart"] = browser_runtime_changed(config, updates)
         return AgentResponse(
             request_id=request.request_id,
             channel_id=request.channel_id,
             ok=True,
-            payload={"chrome_path": chrome_path, "headless": headless},
+            payload=browser_config_payload(merge_browser_config(config, updates)),
             metadata=metadata,
         )
 
