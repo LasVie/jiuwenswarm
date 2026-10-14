@@ -51,6 +51,8 @@ CONFIRM_MARGIN_S = 30.0
 RESULT_LIMIT_BYTES = 7 * 1024 * 1024
 INLINE_LIMIT_CHARS = 8000
 _EXTRACTED_FIELD_LIMIT = 20
+# Rows reported as row-level evidence, so "top N" answers are backed by N rows.
+_RECORD_ROW_LIMIT = 20
 _CAPTCHA_MARKERS = ("captcha", "验证码", "verify", "human", "安全验证", "人机")
 
 
@@ -129,6 +131,16 @@ def _extracted(rows: Any) -> dict[str, str]:
         if len(extracted) >= _EXTRACTED_FIELD_LIMIT:
             break
     return extracted
+
+
+def _records(rows: Any) -> list[dict[str, str]]:
+    """Every row (up to a limit) with the same scalar-field rules as ``_extracted``."""
+    records = []
+    for row in (rows if isinstance(rows, list) else [rows])[:_RECORD_ROW_LIMIT]:
+        record = _extracted([row])
+        if record:
+            records.append(record)
+    return records
 
 
 def _row_count(rows: Any) -> int:
@@ -467,6 +479,7 @@ class OpenCLIRunTool(Tool):
                 data=rows,
                 observed_count=count,
                 extracted=extracted or None,
+                records=_records(rows) or None,
                 field_provenance=provenance or None,
             )
         message = outcome.error_message or category
