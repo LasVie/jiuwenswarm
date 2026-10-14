@@ -103,6 +103,8 @@ async def test_read_ok_returns_rows_and_evidence(env) -> None:
     data = output.data
     assert data["reason"] == "ok" and data["observed_count"] == 1
     assert data["extracted"] == {"title": "t", "url": "u"}
+    # Every row is reported as row-level evidence, not only the first.
+    assert data["records"] == [{"title": "t", "url": "u"}]
     assert "executed" not in data and "status" not in data
     assert source.calls == [("demo/search", "ws://127.0.0.1:1/devtools/page/T")]
     assert "ws://" not in run.render_for_llm(output)
@@ -238,3 +240,11 @@ def test_fitted_result_stays_recallable(cell: str) -> None:
                         ensure_ascii=False, indent=2).encode("utf-8")
     assert len(stored) < 8 * 1024 * 1024
     assert len(json.dumps(rendered, ensure_ascii=False).encode("utf-8")) <= RESULT_LIMIT_BYTES
+
+
+def test_records_cover_every_row_with_scalar_fields() -> None:
+    from jiuwenswarm.extensions.opencli.tools import _records
+
+    rows = [{"title": "a", "url": "u1", "tags": ["x"]}, {"title": "b", "url": "u2"}, "not-a-row", {"title": ""}]
+    assert _records(rows) == [{"title": "a", "url": "u1"}, {"title": "b", "url": "u2"}]
+    assert len(_records([{"title": str(i)} for i in range(50)])) == 20
