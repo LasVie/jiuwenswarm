@@ -240,6 +240,11 @@ def build_swarm_browser_agent(factory_kwargs: dict[str, Any], ctx: SwarmBuildCon
             spec.factory_kwargs["settings"], ctx.config, inp.session_id,
             member_id=inp.member_name or inp.role,
         )
+    # Optional OpenCLI site commands, decided from this member's final browser binding: each
+    # member gets its own worker page; the external Chrome fallback never qualifies.
+    from jiuwenswarm.extensions.opencli import apply_opencli_contribution
+
+    apply_opencli_contribution(spec, ctx.config)
     logger.info(
         "[swarm.browser_agent] member_name=%r role=%r browser_key=%r",
         inp.member_name, inp.role, browser_key,

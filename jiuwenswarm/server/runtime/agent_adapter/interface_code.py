@@ -2073,6 +2073,14 @@ class JiuwenSwarmCodeAdapter(JiuWenSwarmDeepAdapter):
                     browser_spec.factory_kwargs["settings"] = apply_session_sideview_target(
                         browser_spec.factory_kwargs["settings"], _electron_session_id
                     )
+                # 可选的 OpenCLI 站点命令：与单 Agent 相同，只看最终的浏览器绑定（内置 Electron 侧栏），
+                # 关闭或不可用时不追加任何提示与工具。
+                from jiuwenswarm.extensions.opencli import apply_opencli_contribution
+
+                apply_opencli_contribution(
+                    browser_spec,
+                    config_base if isinstance(config_base, dict) else get_config(),
+                )
                 browser_spec.factory_kwargs["auto_create_workspace"] = False
                 subagents.append(browser_spec)
 
