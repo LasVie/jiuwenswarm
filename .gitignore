@@ -108,3 +108,5 @@ report/index.html
 /sub_agents/
 /context/
 /.plans/
+# Code-mode coding memory fallback writes into the backend working directory
+/memory.db*
