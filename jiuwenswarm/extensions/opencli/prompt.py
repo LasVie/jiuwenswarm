@@ -34,7 +34,37 @@ Rules:
 7. When opencli_describe lists unverified writes, verify them before running the same kind of write again."""
 
 
+_CARD_CN = (
+    "另有现成的站点命令（OpenCLI），可直接返回结构化结果，覆盖：{sites}。"
+    "涉及这些站点的任务（搜索、读取、发布，或用户提到 adapter、站点命令）应主动交给本代理，"
+    "由它自行查找合适的命令；这些命令不在主代理的工具目录中。"
+)
+_CARD_EN = (
+    "Also has ready-made site commands (OpenCLI) that return structured results for: {sites}. "
+    "Delegate tasks on these sites (searching, reading, posting, or requests that mention an adapter or "
+    "site command) to this agent proactively; it finds the right command itself. These commands are not "
+    "in the main agent's tool directory."
+)
+# The card goes into the parent agent's subagent list, so keep it short.
+CARD_SITE_LIMIT = 30
+
+
 def build_routing_prompt(catalog: Catalog, language: str = "cn") -> str:
     template = _EN if language == "en" else _CN
     separator = ", " if language == "en" else "、"
     return template.format(sites=separator.join(catalog.sites()))
+
+
+def build_card_note(catalog: Catalog, language: str = "cn") -> str:
+    """Sentence appended to the Browser Agent's card so the parent agent knows to delegate."""
+    sites = list(catalog.sites())
+    shown = sites[:CARD_SITE_LIMIT]
+    if language == "en":
+        text = ", ".join(shown)
+        if len(sites) > len(shown):
+            text += f" and {len(sites) - len(shown)} more"
+        return _CARD_EN.format(sites=text)
+    text = "、".join(shown)
+    if len(sites) > len(shown):
+        text += f" 等 {len(sites)} 个站点"
+    return _CARD_CN.format(sites=text)

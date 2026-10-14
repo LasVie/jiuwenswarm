@@ -4,7 +4,8 @@
 Public surface:
 
 * ``apply_opencli_contribution(spec, config)`` - called by the Browser Agent
-  assembly points; adds two tools and a routing prompt, or does nothing.
+  assembly points; adds two tools, a routing prompt and a card note telling the
+  parent agent to delegate site tasks, or does nothing.
 * ``diagnose(config, electron_node)`` - availability for the settings page.
 
 When the feature is off or unavailable nothing is added, nothing is probed and
@@ -28,6 +29,8 @@ __all__ = ["Contribution", "apply_opencli_contribution", "browser_agent_contribu
 class Contribution:
     tools: list[Any]
     prompt_text: str
+    # Appended to the Browser Agent's card, which the parent agent reads when deciding to delegate.
+    card_note: str = ""
 
 
 def _work_dir(workspace: Any, fallback: Path) -> Path:
@@ -58,7 +61,7 @@ def browser_agent_contribution(
 
     from jiuwenswarm.common.utils import get_user_workspace_dir
     from jiuwenswarm.extensions.opencli.pending import PendingStore
-    from jiuwenswarm.extensions.opencli.prompt import build_routing_prompt
+    from jiuwenswarm.extensions.opencli.prompt import build_card_note, build_routing_prompt
     from jiuwenswarm.extensions.opencli.sources.opencli import (
         OpenCLISource,
         OpenCLIUnavailable,
@@ -93,7 +96,11 @@ def browser_agent_contribution(
         work_dir=_work_dir(workspace, runtime.home_dir),
         language="en" if language == "en" else "cn",
     )
-    return Contribution(tools=build_tools(context), prompt_text=build_routing_prompt(catalog, context.language))
+    return Contribution(
+        tools=build_tools(context),
+        prompt_text=build_routing_prompt(catalog, context.language),
+        card_note=build_card_note(catalog, context.language),
+    )
 
 
 def apply_opencli_contribution(spec: Any, config: Mapping[str, Any] | None) -> bool:
@@ -119,6 +126,11 @@ def apply_opencli_contribution(spec: Any, config: Mapping[str, Any] | None) -> b
         return False
     spec.tools = [*(spec.tools or []), *contribution.tools]
     spec.system_prompt = f"{spec.system_prompt or ''}\n\n{contribution.prompt_text}".strip()
+    card = getattr(spec, "agent_card", None)
+    if card is not None and contribution.card_note:
+        # Copy rather than mutate: the card object may be shared with other specs.
+        description = f"{card.description or ''} {contribution.card_note}".strip()
+        spec.agent_card = card.model_copy(update={"description": description})
     return True
 
 

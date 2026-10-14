@@ -8,12 +8,13 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+from openjiuwen.core.single_agent.schema.agent_card import AgentCard
 
 import jiuwenswarm.common.utils as common_utils
 from jiuwenswarm.extensions.opencli import apply_opencli_contribution, diagnose
 from jiuwenswarm.extensions.opencli.catalog import Catalog
 from jiuwenswarm.extensions.opencli.gate import read_settings, resolve_binding
-from jiuwenswarm.extensions.opencli.prompt import build_routing_prompt
+from jiuwenswarm.extensions.opencli.prompt import CARD_SITE_LIMIT, build_card_note, build_routing_prompt
 from jiuwenswarm.extensions.opencli.sources import opencli as source_module
 from jiuwenswarm.extensions.opencli.sources.opencli import OpenCLIRuntime, OpenCLIUnavailable
 
@@ -38,6 +39,7 @@ def _spec(env: dict | None) -> SimpleNamespace:
         system_prompt="You are a browser automation agent.",
         language="cn",
         workspace=None,
+        agent_card=AgentCard(name="browser_agent", description="Dedicated browser subagent."),
     )
 
 
@@ -76,9 +78,9 @@ def no_probe(monkeypatch):
 ])
 def test_zero_exposure_when_off_or_unbound(no_probe, config, env) -> None:
     spec = _spec(env)
-    before = copy.deepcopy((spec.tools, spec.system_prompt))
+    before = copy.deepcopy((spec.tools, spec.system_prompt, spec.agent_card.description))
     assert apply_opencli_contribution(spec, config) is False
-    assert (spec.tools, spec.system_prompt) == before
+    assert (spec.tools, spec.system_prompt, spec.agent_card.description) == before
 
 
 def test_unavailable_runtime_leaves_the_spec_unchanged(monkeypatch) -> None:
@@ -110,6 +112,20 @@ def test_enabled_contribution_adds_two_tools_and_the_routing_prompt(monkeypatch,
     assert [tool.card.name for tool in spec.tools[1:]] == ["opencli_describe", "opencli_run"]
     assert spec.system_prompt.startswith("You are a browser automation agent.")
     assert "zhihu" in spec.system_prompt and "bilibili" not in spec.system_prompt
+    # The parent agent only sees the card, so it must name the enabled sites too.
+    assert spec.agent_card.description.startswith("Dedicated browser subagent.")
+    assert "OpenCLI" in spec.agent_card.description
+    assert "zhihu" in spec.agent_card.description and "bilibili" not in spec.agent_card.description
+
+
+def test_card_note_is_copied_not_mutated(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(source_module, "prepare_runtime", lambda node_command, **kw: _fake_runtime(tmp_path))
+    monkeypatch.setattr(common_utils, "get_user_workspace_dir", lambda: tmp_path)
+    spec = _spec(ELECTRON_ENV)
+    shared_card = spec.agent_card
+    assert apply_opencli_contribution(spec, ENABLED)
+    assert shared_card.description == "Dedicated browser subagent."
+    assert spec.agent_card is not shared_card and spec.agent_card.name == "browser_agent"
 
 
 def test_routing_prompt_for_the_bundled_catalog_stays_small() -> None:
@@ -121,6 +137,18 @@ def test_routing_prompt_for_the_bundled_catalog_stays_small() -> None:
         assert ("已完成，继续" if language == "cn" else "Done, continue") in prompt
         # Roughly 1k tokens: the site list dominates and stays a single line.
         assert len(prompt) < 4000, len(prompt)
+
+
+def test_card_note_for_the_bundled_catalog_stays_short() -> None:
+    resources = Path(source_module.__file__).resolve().parents[3] / "resources" / "runtime" / "opencli"
+    catalog = Catalog.load(resources / "catalog.json", source="opencli")
+    assert len(catalog.sites()) > CARD_SITE_LIMIT
+    for language in ("cn", "en"):
+        note = build_card_note(catalog, language)
+        assert catalog.sites()[0] in note
+        assert catalog.sites()[-1] not in note
+        assert ("more" if language == "en" else str(len(catalog.sites()))) in note
+        assert len(note) < 700, len(note)
 
 
 def test_diagnose_states(monkeypatch, tmp_path: Path) -> None:
