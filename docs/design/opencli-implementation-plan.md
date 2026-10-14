@@ -1,6 +1,6 @@
 # OpenCLI 接入实现方案
 
-> 更新：2026-10-14。状态：M1 开发联调和 M2 本地产品化已完成（§8.7、§8.8），迁移后的开发环境恢复及回归已通过（§8.9）。真实桌面应用、真实模型与 Bilibili 只读链路已验证，完整应用验收为部分通过，仍有任务分派与结果证据问题（§8.10）；M3 Code/Swarm 装配尚未开始，M4 完整评估尚未完成。当前进度的提交前复验见 §8.11；问题 A 的分派修复见 §8.12，复验通过（小样本）；问题 B、C 的修复及新发现 D、E 见 §8.13；B、C 的完整应用复验通过见 §8.14（B 混合路径未复验，C 的上下文重绑定待确认）。
+> 更新：2026-10-14。状态：M1 开发联调和 M2 本地产品化已完成（§8.7、§8.8），迁移后的开发环境恢复及回归已通过（§8.9）。真实桌面应用、真实模型与 Bilibili 只读链路已验证，完整应用验收为部分通过，仍有任务分派与结果证据问题（§8.10）；M3 Code/Swarm 装配已完成并通过完整应用验收（§8.15），M4 完整评估尚未完成。当前进度的提交前复验见 §8.11；问题 A 的分派修复见 §8.12，复验通过（小样本）；问题 B、C 的修复及新发现 D、E 见 §8.13；B、C 的完整应用复验通过见 §8.14（B 混合路径未复验，C 的上下文重绑定待确认）。
 >
 > 依据：[架构方案](opencli-integration-architecture.md)（下称"设计"）、[CDP 调查](opencli-electron-cdp-research.md)。文中的行号基于 2026-09-28 的 swarm 与 agent-core 代码。
 >
@@ -960,3 +960,33 @@ npm.cmd run test:browser:integration
 **待办**：在真实应用中复验 B 的混合路径（例如"B站热门前 3 条视频是什么？然后打开热门页面截图"）；调查 `rebound_contexts=0`；调查 §8.13 的 D、E；随后开始 M3。
 
 **补充：问题 E 已确认非缺陷**。14:35:06 与 14:36:14 各有一次 `agent.reload_config`，对应用户在设置页关闭再开启 OpenCLI；缺少工具的 Browser Agent 在 14:35:16 创建，位于关闭期间。关闭时不装配工具、不记录警告属于设计行为（零暴露）。E 关闭，仅在今后出现未伴随设置变更的同类情况时重新调查。
+
+### 8.15 M3：Code 与 Swarm 装配（2026-10-14）
+
+**结论**：M3 完成。OpenCLI 站点命令已接入 Code Agent 与 Swarm 成员的 Browser Agent，三项完整应用验收全部通过：Code 模式使用 OpenCLI、两个 Swarm 成员并行使用 OpenCLI、关闭时 Swarm 成员只使用 Playwright。
+
+**修改**：
+
+| 文件 | 改动 |
+| --- | --- |
+| `jiuwenswarm/server/runtime/agent_adapter/interface_code.py` | Code Agent：在侧栏绑定之后调用 `apply_opencli_contribution`，与单 Agent 相同 |
+| `jiuwenswarm/agents/swarm/providers/code_subagents.py` | Swarm 成员：在 `apply_swarm_browser_settings` 之后调用，使用该成员自己的浏览器绑定 |
+| `tests/unit_tests/extensions/opencli/test_opencli_assembly.py` | 新增 5 项测试 |
+
+**为什么只需加调用**：启用判断所需的令牌与 Electron Node 路径来自 Electron 写入的进程级 `PLAYWRIGHT_MCP_ENV_JSON`，所有 `build_browser_agent_config` 调用（包括 Swarm 按成员构建）都会读取；Swarm 成员已有各自的 `member_id`，工作页按（resolver、会话、成员）区分，因此每个成员有独立的工作页、保留状态和待核实记录；外置 Chrome 回退会去掉侧栏绑定，OpenCLI 保持关闭。
+
+**单元测试**：新增 5 项（两个成员均获得工具且工作页状态互不共享；关闭或外置 Chrome 时成员不变；Code Agent 开启时获得工具、关闭时不变）；相关回归共 321 项通过、1 项跳过。
+
+**完整应用验收**（开发版桌面应用，真实模型）：
+
+| 检查 | 会话 | 结果 |
+| --- | --- | --- |
+| Code 模式使用 OpenCLI | `web_1a139bb6cc3_6f24735061da`（`agent.code.normal`，由 `JiuwenSwarmCodeAdapter` 构建） | 委派 `browser_agent`，`external:bilibili/hot`，`completed`，请求/有证据支撑 3/3，答复与行一致 |
+| 两个 Swarm 成员并行 | `web_1a139a2fa8e_16f5b7beb439`（`bili-trending`、`bili-search`） | 两个 Browser Agent 分别调用 `opencli_run`（`bilibili/hot`、`bilibili/search`），运行时间重叠约 17.5 秒，均为 `completed`，各自结果正确未混淆 |
+| 关闭时的 Swarm 成员 | `web_1a139b3be96_cf5702f44205`（17:17 配置重载后创建团队） | 成员 Browser Agent 打开热门页，只使用 Playwright，结果中没有任何 OpenCLI 内容 |
+
+**限制**：团队历史只保存每个工具结果的前 512 个字符，无法据此核对成员的 `records`；没有日志记录工作页请求，按成员分离的工作页由单元测试与运行无冲突佐证。
+
+**新发现 F**：OpenCLI 关闭时的纯页面路径返回 `partial`，title/UP主/链接列为 `unverified_fields`，`field_coverage` 为空；答复内容正确，但 B站热门卡片未被记录为结构化证据。属于 Playwright 路径的卡片识别质量问题，与 M3 无关。
+
+**待办**：B 混合路径复验；`rebound_contexts=0`；§8.13 的 D；F；M4 之前的安全项（自有读写分类、站点默认关闭、按站点限速）；M4 评估。
