@@ -1,6 +1,6 @@
 # OpenCLI 接入实现方案
 
-> 更新：2026-10-14。状态：M1 开发联调和 M2 本地产品化已完成（§8.7、§8.8），迁移后的开发环境恢复及回归已通过（§8.9）。真实桌面应用、真实模型与 Bilibili 只读链路已验证，完整应用验收为部分通过，仍有任务分派与结果证据问题（§8.10）；M3 Code/Swarm 装配尚未开始，M4 完整评估尚未完成。当前进度的提交前复验见 §8.11；问题 A 的分派修复见 §8.12（待真实模型复验）。
+> 更新：2026-10-14。状态：M1 开发联调和 M2 本地产品化已完成（§8.7、§8.8），迁移后的开发环境恢复及回归已通过（§8.9）。真实桌面应用、真实模型与 Bilibili 只读链路已验证，完整应用验收为部分通过，仍有任务分派与结果证据问题（§8.10）；M3 Code/Swarm 装配尚未开始，M4 完整评估尚未完成。当前进度的提交前复验见 §8.11；问题 A 的分派修复见 §8.12，复验通过（小样本）；问题 B、C 的修复及新发现 D、E 见 §8.13（B、C 待完整应用复验）。
 >
 > 依据：[架构方案](opencli-integration-architecture.md)（下称"设计"）、[CDP 调查](opencli-electron-cdp-research.md)。文中的行号基于 2026-09-28 的 swarm 与 agent-core 代码。
 >
@@ -891,3 +891,42 @@ npm.cmd run test:browser:integration
 **验证**：Swarm `tests/unit_tests/extensions/opencli/` 共 76 项通过，零暴露对比扩展到卡片描述，并新增卡片复制与长度测试；Core 渐进式工具、tool_search、prompts 与子代理 rail 相关共 144 项通过。
 
 **待办**：在开发版桌面应用中用真实模型复验 §8.10 的分派对话及若干自然措辞变体，同时加入不应委派的任务，确认规则没有导致过度派发。问题 B、C 仍未处理；M3 尚未开始。
+
+### 8.13 问题 A 复验，问题 B、C 修复（2026-10-14）
+
+**结论**：问题 A 的真实模型复验通过（小样本）；问题 B、C 已在代码层修复并通过单元测试，尚未在完整应用中复验。复验中另发现两个新问题（见下表 D、E）。
+
+**问题 A 复验**（开发版桌面应用，Single Agent，修复后重新启动）：
+
+| 提示 | 主 Agent | Browser Agent | 结果 |
+| --- | --- | --- | --- |
+| §8.10 原失败对话（三步，"使用 Bilibili adapter"） | 首轮即调用 `task_tool → browser_agent` | 第 1、2 步完成（`opencli_run bilibili hot` → 页面）；第 3 步未执行 | A 通过；见 D |
+| "Show me today's top 5 trending videos on Bilibili." | 直接委派，并说明 Bilibili 属于浏览器子代理支持的站点 | 一次 `opencli_run bilibili/hot`，5 行 | 通过 |
+| "用知乎 adapter 搜一下 '大模型 Agent'" | 委派 | 需要登录，返回 `needs_user` 及侧栏处理说明 | 通过（登录流程符合设计） |
+| CDP 解释、17×23、读取 README | 直接回答或使用文件工具，未委派 | — | 通过（规则未导致过度派发） |
+
+**问题 B 修复**（列表与证据不一致）：
+
+- 根因（Core）：字段别名缺少 uploader/UP主；证据每字段只保存一个值（外部结果只读 `extracted` 第一行，卡片探针只取第一张）；结果数量对所有来源取 `max()`，可由其他来源满足；summary 从未与证据比对。
+- Core：外部 action 结果新增可选 `records`（行列表），卡片探针同样按行记录；任一来源报告过行时，"前 N 条"只由同一来源 N 行带齐所需字段满足；终态返回 `records`、`records_source`、`backed_result_count`；summary 中不在证据里的链接列入 `unbacked_items`，状态不变；task_tool 描述要求父 Agent 以 `records` 为准。见 Core `F_08`、`S_05` 不变量 15。
+- Swarm：`opencli_run` 将每行（最多 20 行）作为 `records` 返回。
+
+**问题 C 修复**（`rebind_context_model` 参数不兼容）：Core 分支 `feat/browser-external-tools` 落后 develop 62 个提交，develop 已在 `be7dadd2` 中支持 `model`、`model_config`、`model_client_config`。已将 `origin/develop` 合并进该分支；冲突处理：`runtime.py` 保留 develop 的槽位记录并只对 card_probe 记录行，`S_05`/`S_18` 保留 develop 的新不变量，本分支的不变量顺延编号。使用 Swarm 的实际参数调用已不再报错。
+
+**提交**：
+
+| 仓 | 提交 |
+| --- | --- |
+| Core | `4f7e936c` / `71896391` / `92799ab8`（B：代码 / 测试 / 文档）；`8fe3a978`（合并 develop，C） |
+| Swarm | `01e1acfa`（B：`opencli_run` 输出 `records`） |
+
+**验证**：合并后 Core 浏览器运行时、context engine、prompts、子代理 rail、tool_search 与渐进式工具相关共 1408 项通过、18 项跳过；Swarm OpenCLI、Gateway 适配与 Web 处理相关共 290 项通过。
+
+**新发现**：
+
+| 编号 | 现象 | 判断 |
+| --- | --- | --- |
+| D：多步任务提前结束 | §8.10 三步对话中第 2 步后子会话结束且标记为不可重试，第 3 步需由新的 Browser Agent 执行，不满足"同一 Browser Agent" | 推测为简单任务 240 秒期限（任务描述不含 compare/筛选等复杂词时使用），尚未核对该次耗时 |
+| E：偶发缺少 OpenCLI 工具 | 14:35 的会话中（修复前），连续两次委派，第二次 Browser Agent 报告工具列表中没有 `opencli_describe` / `opencli_run`，日志无 `[opencli]` 警告 | 工具装配偶发问题，原因未定位 |
+
+**待办**：在完整应用中复验 B（"返回B站热门前 3 条视频的标题、UP主和链接"，核对答复链接与 `records` 一致、无 `unbacked_items`）与 C（切换模型后日志不再出现 `unexpected keyword argument 'model'`）；调查 D、E；随后开始 M3。
