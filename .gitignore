@@ -130,3 +130,6 @@ report/index.html
 
 # Local testing handoff documents are not versioned.
 /.agents/agent-docs/designs/testing/
+
+# Code-mode coding memory fallback writes into the backend working directory
+/memory.db*
