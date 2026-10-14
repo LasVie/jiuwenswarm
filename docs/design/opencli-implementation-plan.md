@@ -1,6 +1,6 @@
 # OpenCLI 接入实现方案
 
-> 更新：2026-10-14。状态：M1 开发联调和 M2 本地产品化已完成（§8.7、§8.8），迁移后的开发环境恢复及回归已通过（§8.9）。真实桌面应用、真实模型与 Bilibili 只读链路已验证，完整应用验收为部分通过，仍有任务分派与结果证据问题（§8.10）；M3 Code/Swarm 装配尚未开始，M4 完整评估尚未完成。当前进度的提交前复验见 §8.11；问题 A 的分派修复见 §8.12，复验通过（小样本）；问题 B、C 的修复及新发现 D、E 见 §8.13（B、C 待完整应用复验）。
+> 更新：2026-10-14。状态：M1 开发联调和 M2 本地产品化已完成（§8.7、§8.8），迁移后的开发环境恢复及回归已通过（§8.9）。真实桌面应用、真实模型与 Bilibili 只读链路已验证，完整应用验收为部分通过，仍有任务分派与结果证据问题（§8.10）；M3 Code/Swarm 装配尚未开始，M4 完整评估尚未完成。当前进度的提交前复验见 §8.11；问题 A 的分派修复见 §8.12，复验通过（小样本）；问题 B、C 的修复及新发现 D、E 见 §8.13；B、C 的完整应用复验通过见 §8.14（B 混合路径未复验，C 的上下文重绑定待确认）。
 >
 > 依据：[架构方案](opencli-integration-architecture.md)（下称"设计"）、[CDP 调查](opencli-electron-cdp-research.md)。文中的行号基于 2026-09-28 的 swarm 与 agent-core 代码。
 >
@@ -930,3 +930,31 @@ npm.cmd run test:browser:integration
 | E：偶发缺少 OpenCLI 工具 | 14:35 的会话中（修复前），连续两次委派，第二次 Browser Agent 报告工具列表中没有 `opencli_describe` / `opencli_run`，日志无 `[opencli]` 警告 | 工具装配偶发问题，原因未定位 |
 
 **待办**：在完整应用中复验 B（"返回B站热门前 3 条视频的标题、UP主和链接"，核对答复链接与 `records` 一致、无 `unbacked_items`）与 C（切换模型后日志不再出现 `unexpected keyword argument 'model'`）；调查 D、E；随后开始 M3。
+
+### 8.14 问题 B、C 的完整应用复验（2026-10-14）
+
+**结论**：B、C 在开发版桌面应用中复验通过。B 的混合路径（OpenCLI 加页面浏览）未在真实应用中复验；C 的报错已消失，但模型切换时 `rebound_contexts=0`，上下文是否随新模型重绑定尚待确认。
+
+**环境**：修复与合并后重新启动开发版桌面应用（Single Agent，内置浏览器，OpenCLI 开启），真实模型 `anthropic/claude-opus-5.5`。结果取自会话历史中的 `browser_result` 与 `full.log`。
+
+**问题 B 复验**：
+
+| 项 | "返回B站热门前 3 条视频的标题、UP主和链接" | "Give me the top 5 Bilibili hot videos with uploader names" |
+| --- | --- | --- |
+| 会话 | `web_1a139827d72_8995cffbe51a` | `web_1a139832c3a_261d7febee13` |
+| 状态 | `completed` | `completed` |
+| 请求 / 有证据支撑的行数 | 3 / 3 | 5 / 5 |
+| 证据来源 | `external:bilibili/hot` | `external:bilibili/hot` |
+| 请求字段 | `title`、`author`、`url`（UP主 已识别） | `author`（uploader 已识别） |
+| `unbacked_items` | 无 | 无 |
+| 最终答复与 `records` | 3 条标题、UP 主、链接及顺序全部一致 | 5 条全部一致 |
+
+与 §8.10 相比，答复不再使用其他来源的链接，并包含 UP 主。
+
+**问题 C 复验**：
+
+- 最后一条 `rebind_context_model() got an unexpected keyword argument 'model'` 出现在重启前的 15:21，重启后没有再出现。
+- 会话 `web_1a13983e263_d7afbe7935e6` 中切换到 `deepseek/deepseek-v4-pro` 后，日志记录 `synchronized context model=deepseek/deepseek-v4-pro … rebound_contexts=0`，同步成功，切换后对话正常。
+- 包括切换在内的所有同步记录均为 `rebound_contexts=0`：调用不再报错，但没有找到可重绑定的已缓存上下文。无法据此确认切换后该会话的 token 计数与上下文窗口已跟随新模型；需检查 develop 中 context engine 的上下文缓存键。
+
+**待办**：在真实应用中复验 B 的混合路径（例如"B站热门前 3 条视频是什么？然后打开热门页面截图"）；调查 `rebound_contexts=0`；调查 §8.13 的 D、E；随后开始 M3。
