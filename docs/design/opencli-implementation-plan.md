@@ -1,6 +1,6 @@
 # OpenCLI 接入实现方案
 
-> 更新：2026-10-13。状态：M1 开发联调和 M2 本地产品化已完成（§8.7、§8.8），迁移后的开发环境恢复及回归已通过（§8.9）。真实桌面应用、真实模型与 Bilibili 只读链路已验证，完整应用验收为部分通过，仍有任务分派与结果证据问题（§8.10）；M3 Code/Swarm 装配尚未开始，M4 完整评估尚未完成。当前进度的提交前复验见 §8.11。
+> 更新：2026-10-14。状态：M1 开发联调和 M2 本地产品化已完成（§8.7、§8.8），迁移后的开发环境恢复及回归已通过（§8.9）。真实桌面应用、真实模型与 Bilibili 只读链路已验证，完整应用验收为部分通过，仍有任务分派与结果证据问题（§8.10）；M3 Code/Swarm 装配尚未开始，M4 完整评估尚未完成。当前进度的提交前复验见 §8.11；问题 A 的分派修复见 §8.12（待真实模型复验）。
 >
 > 依据：[架构方案](opencli-integration-architecture.md)（下称"设计"）、[CDP 调查](opencli-electron-cdp-research.md)。文中的行号基于 2026-09-28 的 swarm 与 agent-core 代码。
 >
@@ -870,3 +870,24 @@ npm.cmd run test:browser:integration
 复验日志和 XML 位于 `C:\Users\wangy\Documents\openJiuwen_OpenCLI\.migration-backups\20261013\git-publish\`。
 
 这些提交保存的是当前进度。§8.10 的 A/B/C 发现尚未修复，完整应用验收仍为部分通过；M3 尚未开始，M4 尚未完成。
+
+### 8.12 问题 A：主 Agent 分派修复（2026-10-14）
+
+**结论**：针对 §8.10 的问题 A，在 Swarm 与 Core 两侧各做一处修改，使主 Agent 能得知 Browser Agent 具备站点命令，并且不再仅凭自己的 `tool_search` 未命中就判定能力不存在。单元测试已通过；真实模型复验尚未进行，问题 A 暂不标记为已解决。
+
+**根因**：
+
+- 主 Agent 依据子代理列表（`SubagentRail._build_available_agents_description`）判断能否委派。Browser Agent 卡片描述只写 Playwright，`apply_opencli_contribution` 只改 `spec.tools` 与 `spec.system_prompt`，没有改卡片，主 Agent 看不到站点名。
+- Core 渐进式工具规则写有"最新目录覆盖……task_tool 或子代理描述中的工具名称"，且 `tool_search` 未命中时要求直接说明没有合适工具。
+
+**修改**：
+
+| 仓 | 文件 | 改动 |
+| --- | --- | --- |
+| Swarm | `jiuwenswarm/extensions/opencli/prompt.py` | 新增 `build_card_note()`（中英文），说明 Browser Agent 具备 OpenCLI 站点命令及启用的站点名（最多 30 个，其余以总数表示），提示涉及这些站点（包括提到 adapter 或站点命令）的任务应主动委派 |
+| Swarm | `jiuwenswarm/extensions/opencli/__init__.py` | `Contribution` 增加 `card_note`；启用时用 `model_copy` 追加到 `spec.agent_card.description`，不修改可能共享的原卡片；关闭或不可用时不变 |
+| Core | `openjiuwen/harness/prompts/sections/progressive_tool_rail.py` | 覆盖规则收窄为只针对被标记删除的工具；`tool_search` 未命中时先检查 `task_tool` 中的子代理，网页任务交给浏览器子代理（Core 提交及 `F_07`、`S_06` 不变量 8） |
+
+**验证**：Swarm `tests/unit_tests/extensions/opencli/` 共 76 项通过，零暴露对比扩展到卡片描述，并新增卡片复制与长度测试；Core 渐进式工具、tool_search、prompts 与子代理 rail 相关共 144 项通过。
+
+**待办**：在开发版桌面应用中用真实模型复验 §8.10 的分派对话及若干自然措辞变体，同时加入不应委派的任务，确认规则没有导致过度派发。问题 B、C 仍未处理；M3 尚未开始。
