@@ -1,0 +1,215 @@
+{
+  "version": 2,
+  "notes": "M4 task set (WP11). Each task runs in a fresh Single Agent chat, once with OpenCLI off (browser) and once on (hybrid). Tasks with via_browser=true get a prefix asking for the browser, so both arms go through the Browser Agent; the routing group keeps natural wording to measure how often the main agent bypasses the browser. Live lists change, so checks are structural: the reply must contain at least min_links links on link_domain. No write commands.",
+  "tasks": [
+    {
+      "id": "hit-bilibili-hot",
+      "group": "hit",
+      "site": "bilibili",
+      "prompt": "B站热门前 5 条视频的标题、UP主和链接是什么？",
+      "check": {
+        "min_links": 5,
+        "link_domain": "bilibili.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "hit-hackernews-top",
+      "group": "no_browser",
+      "site": "hackernews",
+      "prompt": "What are the top 10 stories on Hacker News right now? Give title and link for each.",
+      "check": {
+        "min_links": 10,
+        "link_domain": ""
+      },
+      "via_browser": true
+    },
+    {
+      "id": "hit-arxiv-search",
+      "group": "hit",
+      "site": "arxiv",
+      "prompt": "Find 5 recent arXiv papers about LLM agent tool use. Give title, authors and arXiv link.",
+      "check": {
+        "min_links": 5,
+        "link_domain": "arxiv.org"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "hit-github-trending",
+      "group": "hit",
+      "site": "github-trending",
+      "prompt": "List today's top 5 trending repositories on GitHub with their descriptions and links.",
+      "check": {
+        "min_links": 5,
+        "link_domain": "github.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "list-bilibili-search",
+      "group": "list",
+      "site": "bilibili",
+      "prompt": "在B站搜索“原神”，返回前 3 条视频的标题、UP主和链接。",
+      "check": {
+        "min_links": 3,
+        "link_domain": "bilibili.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "list-v2ex-hot",
+      "group": "list",
+      "site": "v2ex",
+      "prompt": "V2EX 现在最热的 5 个话题是什么？给出标题和链接。",
+      "check": {
+        "min_links": 5,
+        "link_domain": "v2ex.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "nobrowser-wikipedia",
+      "group": "no_browser",
+      "site": "wikipedia",
+      "prompt": "Summarize the Wikipedia article on the Chrome DevTools Protocol in three sentences and give the article link.",
+      "check": {
+        "min_links": 1,
+        "link_domain": "wikipedia.org"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "nobrowser-crates",
+      "group": "no_browser",
+      "site": "crates",
+      "prompt": "Search crates.io for 'websocket' and list the top 5 crates with their latest version and link.",
+      "check": {
+        "min_links": 5,
+        "link_domain": "crates.io"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "nobrowser-stackoverflow",
+      "group": "no_browser",
+      "site": "stackoverflow",
+      "prompt": "Find 3 highly voted Stack Overflow questions about Playwright CDP connections. Give title and link.",
+      "check": {
+        "min_links": 3,
+        "link_domain": "stackoverflow.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "partial-bilibili-detail",
+      "group": "partial",
+      "site": "bilibili",
+      "prompt": "先找出B站热门第 2 条视频，然后打开这个视频的页面，告诉我它的简介和发布时间。",
+      "check": {
+        "min_links": 1,
+        "link_domain": "bilibili.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "partial-hackernews-comments",
+      "group": "partial",
+      "site": "hackernews",
+      "prompt": "Take the current #1 Hacker News story, open its comments page, and summarize the top 3 comments.",
+      "check": {
+        "min_links": 1,
+        "link_domain": "ycombinator.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "miss-ithome",
+      "group": "miss",
+      "site": "",
+      "prompt": "打开 https://www.ithome.com/ ，列出首页前 5 条新闻的标题和链接。",
+      "check": {
+        "min_links": 5,
+        "link_domain": "ithome.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "miss-example-page",
+      "group": "miss",
+      "site": "",
+      "prompt": "Open https://example.org and tell me the page title and the text of its only link.",
+      "check": {
+        "min_links": 0,
+        "link_domain": ""
+      },
+      "via_browser": true
+    },
+    {
+      "id": "login-zhihu-search",
+      "group": "login",
+      "site": "zhihu",
+      "prompt": "用知乎搜索“大模型 Agent”，给我前 5 条问题的标题和链接。",
+      "check": {
+        "min_links": 5,
+        "link_domain": "zhihu.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "multistep-bilibili",
+      "group": "multi_step",
+      "site": "bilibili",
+      "prompt": "分三步完成：先获取B站热门第 1 条视频，再打开B站热门页面确认它仍在第 1 位，最后获取热门前 2 条视频的标题和链接。",
+      "check": {
+        "min_links": 2,
+        "link_domain": "bilibili.com"
+      },
+      "via_browser": true
+    },
+    {
+      "id": "multistep-compare",
+      "group": "multi_step",
+      "site": "hackernews",
+      "prompt": "Compare the top 3 Hacker News stories with the top 3 GitHub trending repositories: list both with links and say whether any topic appears in both.",
+      "check": {
+        "min_links": 6,
+        "link_domain": ""
+      },
+      "via_browser": true
+    },
+    {
+      "id": "routing-hackernews",
+      "group": "routing",
+      "site": "hackernews",
+      "via_browser": false,
+      "prompt": "What are the top 5 stories on Hacker News right now? Give title and link.",
+      "check": {
+        "min_links": 5,
+        "link_domain": ""
+      }
+    },
+    {
+      "id": "routing-bilibili",
+      "group": "routing",
+      "site": "bilibili",
+      "via_browser": false,
+      "prompt": "B站热门前 3 条视频是什么？给出标题、UP主和链接。",
+      "check": {
+        "min_links": 3,
+        "link_domain": "bilibili.com"
+      }
+    },
+    {
+      "id": "routing-wikipedia",
+      "group": "routing",
+      "site": "wikipedia",
+      "via_browser": false,
+      "prompt": "Summarize the Wikipedia article on WebSocket in two sentences and give the link.",
+      "check": {
+        "min_links": 1,
+        "link_domain": "wikipedia.org"
+      }
+    }
+  ]
+}
