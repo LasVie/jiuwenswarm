@@ -195,11 +195,13 @@ class OpenCLIDescribeTool(Tool):
                 name=DESCRIBE_TOOL_NAME,
                 description=_text(
                     language,
-                    "查看站点命令：只给 site 返回该站点的命令列表（含读/写类型和待核实的写操作）；"
-                    "同时给 command 返回参数定义和输出列。不会执行任何命令。",
-                    "Look up site commands: with only site, list the site's commands (read/write and "
-                    "unverified writes); with command too, return its arguments and output columns. "
-                    "Never executes anything.",
+                    "查看站点命令：只给 site 即返回该站点全部命令及其参数（含读/写类型和待核实的写操作），"
+                    "每个站点查一次即可直接调用 opencli_run，无需再按命令查询；同时给 command 只在需要完整参数说明"
+                    "和输出列时使用。不会执行任何命令。",
+                    "Look up site commands: with only site, return every command of the site with its "
+                    "arguments (read/write and unverified writes); one call per site is enough to call "
+                    "opencli_run, so do not look up single commands again. Give command too only when you "
+                    "need the full argument help and output columns. Never executes anything.",
                 ),
                 input_params={
                     "type": "object",
@@ -243,7 +245,7 @@ class OpenCLIDescribeTool(Tool):
                 )
             data: dict[str, Any] = {"ok": True, **spec.describe()}
         else:
-            data = {"ok": True, "site": site, "commands": [spec.summary() for spec in specs]}
+            data = {"ok": True, "site": site, "commands": [spec.site_entry() for spec in specs]}
         if pending:
             data["pending_writes"] = [record.public() for record in pending]
             data["pending_note"] = _text(

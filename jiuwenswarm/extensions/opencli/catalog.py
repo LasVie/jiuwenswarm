@@ -100,6 +100,10 @@ def _is_integral(value: Any) -> bool:
     return _is_number(value) and float(value).is_integer()
 
 
+# Argument help is cut in site-level listings; the full text stays in a command-level describe.
+_SITE_HELP_LIMIT = 100
+
+
 @dataclass(frozen=True)
 class CommandSpec:
     source: str
@@ -163,6 +167,20 @@ class CommandSpec:
             "args": [arg.describe() for arg in self.args],
             "columns": list(self.columns),
         }
+
+    def site_entry(self) -> dict[str, Any]:
+        """Summary plus compact arguments, so one site-level describe is enough to run any command."""
+        args = []
+        for arg in self.args:
+            entry = arg.describe()
+            if entry.get("type") == "str":
+                entry.pop("type")
+            if not entry.get("required"):
+                entry.pop("required", None)
+            if "help" in entry:
+                entry["help"] = entry["help"][:_SITE_HELP_LIMIT]
+            args.append(entry)
+        return {**self.summary(), "args": args}
 
 
 @dataclass(frozen=True)
