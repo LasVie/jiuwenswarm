@@ -224,6 +224,10 @@ async def test_describe_lists_commands_and_arguments(env) -> None:
     _, _, _, describe, _ = env
     site = await describe.invoke({"site": "demo"})
     assert [c["command"] for c in site.data["commands"]] == ["follow", "search"]
+    # One site-level call carries every command's arguments, so no per-command round trip is needed.
+    search = next(c for c in site.data["commands"] if c["command"] == "search")
+    assert search["args"][0] == {"name": "query", "required": True, "positional": True}
+    assert all("args" in command for command in site.data["commands"])
     detail = await describe.invoke({"site": "demo", "command": "search"})
     assert detail.data["args"][0] == {"name": "query", "type": "str", "required": True, "positional": True}
     assert (await describe.invoke({"site": "unknown"})).success is False
