@@ -51,10 +51,19 @@ _CARD_EN = (
 CARD_SITE_LIMIT = 30
 
 
+def _site_label(catalog: Catalog, site: str) -> str:
+    """Site name, plus its domain when the name alone does not identify it (hackernews → news.ycombinator.com)."""
+    domain = catalog.site_domain(site)
+    compact = lambda text: "".join(char for char in text.lower() if char.isalnum())  # noqa: E731
+    if not domain or compact(site) in compact(domain):
+        return site
+    return f"{site} ({domain})"
+
+
 def build_routing_prompt(catalog: Catalog, language: str = "cn") -> str:
     template = _EN if language == "en" else _CN
     separator = ", " if language == "en" else "、"
-    return template.format(sites=separator.join(catalog.sites()))
+    return template.format(sites=separator.join(_site_label(catalog, site) for site in catalog.sites()))
 
 
 def build_card_note(catalog: Catalog, language: str = "cn") -> str:

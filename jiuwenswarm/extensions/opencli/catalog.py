@@ -222,6 +222,15 @@ class Catalog:
     def sites(self) -> list[str]:
         return sorted({site for site, _ in self.commands})
 
+    def site_domain(self, site: str) -> str:
+        """The site's most common command domain without "www.", or "" when none is declared."""
+        counts: dict[str, int] = {}
+        for spec in self.site_commands(site):
+            domain = spec.domain.strip().lower().removeprefix("www.")
+            if domain:
+                counts[domain] = counts.get(domain, 0) + 1
+        return max(sorted(counts), key=counts.get) if counts else ""
+
     def site_commands(self, site: str) -> list[CommandSpec]:
         return sorted(
             (spec for (spec_site, _), spec in self.commands.items() if spec_site == site),
