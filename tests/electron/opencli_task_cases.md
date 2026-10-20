@@ -21,10 +21,12 @@ Write commands are excluded: they would act on real accounts.
 | `multi_step` | three-step Bilibili, HN vs GitHub comparison | task budget and longer flows |
 | `routing` | Hacker News, Bilibili, Wikipedia in natural wording | how often the main agent skips the browser |
 
-All groups except `routing` are sent with a prefix asking for the browser ("Use the browser to complete
-this task: " / "请使用浏览器完成这个任务："): the main agent has its own web tools (`fetch_webpage`, `curl`)
-and otherwise often answers public-API tasks without the Browser Agent, which would hide the difference
-between the arms.
+All groups except `routing` are sent with a prefix that hands the task to the Browser Agent without
+prescribing how ("Hand this task to the browser agent and let it decide how to get the data: " /
+"请把这个任务交给浏览器子代理，由它决定如何获取数据："): the main agent has its own web tools
+(`fetch_webpage`, `curl`) and otherwise often answers public-API tasks without the Browser Agent, which
+would hide the difference between the arms. The first two M4 runs used "Use the browser to complete this
+task: ", which pushed the main agent to write page-by-page delegations.
 
 Live lists change, so each task's check is structural: the final reply must contain at least
 `min_links` distinct links on `link_domain`. Read the replies in the session histories for anything
