@@ -35,12 +35,12 @@ import websockets
 
 HERE = Path(__file__).resolve().parent
 MODE = "agent.work.normal"
-_PREFIX_CN = "请使用浏览器完成这个任务："
-_PREFIX_EN = "Use the browser to complete this task: "
+_PREFIX_CN = "请把这个任务交给浏览器子代理，由它决定如何获取数据："
+_PREFIX_EN = "Hand this task to the browser agent and let it decide how to get the data: "
 
 
 def task_prompt(task: dict[str, Any]) -> str:
-    """Prompt as sent; via_browser tasks ask for the browser so both arms use the Browser Agent."""
+    """Prompt as sent; via_browser tasks are handed to the Browser Agent without prescribing page steps."""
     prompt = task["prompt"]
     if not task.get("via_browser", True):
         return prompt
