@@ -138,6 +138,8 @@ def test_routing_prompt_for_the_bundled_catalog_stays_small() -> None:
         assert ("不要再逐个命令查询" if language == "cn" else "do not look up commands one by one") in prompt
         assert ("不要再打开页面重新采集或核对" if language == "cn" else "do not open the page to collect or check it again") in prompt
         # Names that do not reveal the site carry its domain; obvious names stay bare.
+        # Page steps in the task description must not override checking site commands first.
+        assert ("这些只是建议" if language == "cn" else "those are only suggestions") in prompt
         assert "hackernews (news.ycombinator.com)" in prompt and "github-trending (github.com)" in prompt
         assert "bilibili (" not in prompt and "crates (" not in prompt
         assert ("已完成，继续" if language == "cn" else "Done, continue") in prompt

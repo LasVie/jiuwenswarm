@@ -11,7 +11,7 @@ _CN = """# 站点命令（OpenCLI）
 {sites}
 
 使用规则：
-1. 任务涉及上面的站点时（即使任务里写了该站点的网址），先用 opencli_describe 查一次该站点：结果已包含全部命令及参数，不要再逐个命令查询；有适用的命令就直接用 opencli_run 执行，没有再用页面工具。
+1. 任务涉及上面的站点时（即使任务写了该站点的网址或页面操作步骤，这些只是建议），先用 opencli_describe 查一次该站点：结果已包含全部命令及参数，不要再逐个命令查询；有适用的命令就直接用 opencli_run 执行，没有再用页面工具。
 2. 命令返回了任务要求的数据时，直接用这些数据完成任务，不要再打开页面重新采集或核对；只有用户明确要求查看、截图或在页面上核对，或命令结果缺少要求的字段时，才使用页面工具。
 3. 命令只覆盖部分步骤时，按步骤组合两种工具；页面工具接手某一步之后，后续步骤仍可回到命令。两者使用不同的页面，接续只依赖 URL、业务 ID 和共享的登录态。
 4. 用户明确要求打开页面、截图或在页面上核对时，这一步用页面工具完成，例如打开命令结果中的 URL。
@@ -26,7 +26,7 @@ These sites have ready-made commands that return structured results faster than 
 {sites}
 
 Rules:
-1. When the task involves a site above (even if the task gives that site's URL), call opencli_describe once for that site: the result already lists every command with its arguments, so do not look up commands one by one. If a command fits, run it directly with opencli_run; otherwise use the page tools.
+1. When the task involves a site above (even if the task gives that site's URL or page steps; those are only suggestions), call opencli_describe once for that site: the result already lists every command with its arguments, so do not look up commands one by one. If a command fits, run it directly with opencli_run; otherwise use the page tools.
 2. When a command returns the data the task asks for, complete the task from that data; do not open the page to collect or check it again. Use the page tools only when the user explicitly asks to see, screenshot or check the page, or when the command result lacks a required field.
 3. When commands cover only part of the task, combine both tools step by step; after the page tools take over a step, later steps may return to commands. They use different pages, so hand-offs rely only on URLs, business IDs and the shared sign-in state.
 4. When the user explicitly asks to open a page, take a screenshot or check something on the page, do that step with the page tools, for example by opening a URL from the command result.
