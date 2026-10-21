@@ -180,9 +180,17 @@ def _instructions(language: str, reason: str, needs_browser: bool) -> str:
     return text
 
 
-def _render(output: ToolOutput) -> str:
+def _render(output: ToolOutput, *, hide: tuple[str, ...] = ()) -> str:
     payload = output.data if isinstance(output.data, dict) else {"result": output.data}
+    if hide:
+        payload = {key: value for key, value in payload.items() if key not in hide}
     return json.dumps(payload, ensure_ascii=False, separators=(",", ":"), default=str)
+
+
+# Evidence copies of the rows for the Browser runtime (row-backed counts, field slots). Core reads them
+# from ToolOutput.data; the model already gets the full rows in ``data``, so they are not repeated in
+# the text it reads.
+_CORE_ONLY_FIELDS = ("records", "extracted", "field_provenance")
 
 
 class OpenCLIDescribeTool(Tool):
@@ -308,7 +316,7 @@ class OpenCLIRunTool(Tool):
         self._context = context
 
     def render_for_llm(self, output: Any) -> str:
-        return _render(output) if isinstance(output, ToolOutput) else str(output)
+        return _render(output, hide=_CORE_ONLY_FIELDS) if isinstance(output, ToolOutput) else str(output)
 
     async def stream(self, inputs: Mapping[str, Any], **kwargs: Any) -> AsyncIterator[ToolOutput]:
         yield await self.invoke(inputs, **kwargs)

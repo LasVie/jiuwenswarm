@@ -108,6 +108,11 @@ async def test_read_ok_returns_rows_and_evidence(env) -> None:
     assert "executed" not in data and "status" not in data
     assert source.calls == [("demo/search", "ws://127.0.0.1:1/devtools/page/T")]
     assert "ws://" not in run.render_for_llm(output)
+    # The model reads the rows once; the evidence copies stay in data for the Browser runtime.
+    shown = json.loads(run.render_for_llm(output))
+    assert shown["data"] == [{"title": "t", "url": "u"}] and shown["reason"] == "ok"
+    assert not {"records", "extracted", "field_provenance"} & set(shown)
+    assert data["records"] and data["extracted"] and data["field_provenance"]
 
 
 async def test_browser_free_command_never_takes_the_page(env) -> None:
