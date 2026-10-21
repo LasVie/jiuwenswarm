@@ -28,6 +28,8 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 SESSIONS = Path.home() / ".jiuwenswarm" / "agent" / "sessions"
+# The Browser runtime's own step log (on by default; written in the backend's working directory).
+BROWSER_LOG = HERE.parents[1] / "logs" / "browser_agent.log"
 LINK_RE = re.compile(r"https?://[^\s<>\"'`()\[\]，。；、|]+")
 
 
@@ -50,6 +52,48 @@ def _browser_results(text: str) -> list[dict[str, Any]]:
         except (ValueError, KeyError):
             break
     return found
+
+
+def load_browser_steps(log_path: Path) -> dict[str, list[dict[str, Any]]]:
+    """Ordered Browser Agent steps per sub-session, from the existing [BROWSER_SUBAGENT] status events."""
+    steps: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    if not log_path.is_file():
+        return steps
+    with log_path.open(encoding="utf-8", errors="replace") as handle:
+        for line in handle:
+            marker = line.find("[BROWSER_SUBAGENT] {")
+            if marker < 0:
+                continue
+            try:
+                event = json.loads(line[marker + len("[BROWSER_SUBAGENT] "):])
+            except ValueError:
+                continue
+            if event.get("phase") in ("tool_start", "model_end", "task_end"):
+                steps[str(event.get("session_id") or "")].append(event)
+    return steps
+
+
+def tool_sequence(steps: dict[str, list[dict[str, Any]]], session_id: str) -> list[str]:
+    """Tool names in call order across this chat's Browser Agent sub-sessions."""
+    prefix = f"{session_id}_sub_browser_agent_"
+    return [event["tool_name"] for sub, events in steps.items() if sub.startswith(prefix)
+            for event in events if event.get("phase") == "tool_start" and event.get("tool_name")]
+
+
+def _kind(tool: str) -> str:
+    return "opencli" if tool == "opencli_run" else ("describe" if tool == "opencli_describe" else "page")
+
+
+def follows(sequence: list[str], pattern: list[str]) -> bool:
+    """Whether the tool kinds contain ``pattern`` in order, e.g. ["opencli", "page", "opencli"]."""
+    kinds, index = [_kind(tool) for tool in sequence], 0
+    for kind in kinds:
+        if index < len(pattern) and kind == pattern[index]:
+            index += 1
+    return index == len(pattern)
+
+
+STEPS: dict[str, list[dict[str, Any]]] = {}
 
 
 def analyse(record: dict[str, Any], tasks: dict[str, dict[str, Any]]) -> dict[str, Any]:
@@ -77,6 +121,14 @@ def analyse(record: dict[str, Any], tasks: dict[str, dict[str, Any]]) -> dict[st
         for name, count in (model.get("tool_calls_by_name") or {}).items():
             by_name[name] += int(count)
     opencli_calls = sum(count for name, count in by_name.items() if name.startswith("opencli_"))
+    opencli_runs = int(by_name.get("opencli_run", 0))
+    page_tools = sum(count for name, count in by_name.items() if not name.startswith("opencli_"))
+    # Flow checks for chain tasks: enough command runs and page steps (counts only; order is not recorded).
+    flow_ok = opencli_runs >= int(check.get("min_opencli_runs") or 0) and page_tools >= int(check.get("min_page_tools") or 0)
+    sequence = tool_sequence(STEPS, str(record.get("session_id")))
+    if check.get("flow_order"):
+        # Order needs the step log; without it the count check above is all we can say.
+        flow_ok = flow_ok and (follows(sequence, list(check["flow_order"])) if sequence else False)
     statuses = [str(r.get("status")) for r in results]
     row.update(
         delegated=calls[:1] == ["task_tool"] and "browser_agent" in first_args,
@@ -87,6 +139,9 @@ def analyse(record: dict[str, Any], tasks: dict[str, dict[str, Any]]) -> dict[st
         unbacked=sum(len(r.get("unbacked_items") or []) for r in results),
         links=len(set(links)),
         check_passed=bool(reply) and len(set(links)) >= int(check.get("min_links") or 0),
+        opencli_runs=opencli_runs,
+        flow_ok=flow_ok,
+        tool_sequence=">".join(_kind(tool)[0] if _kind(tool) != "page" else tool.rsplit("_", 1)[-1] for tool in sequence),
         main_input_tokens=int(usage.get("input_tokens") or 0),
         main_output_tokens=int(usage.get("output_tokens") or 0),
         main_cost=float(usage.get("total_cost") or 0),
@@ -101,7 +156,7 @@ def analyse(record: dict[str, Any], tasks: dict[str, dict[str, Any]]) -> dict[st
     row["total_tokens"] = (row["main_input_tokens"] + row["main_output_tokens"]
                            + row["browser_input_tokens"] + row["browser_output_tokens"])
     row["total_cost"] = round(row["main_cost"] + row["browser_cost"], 4)
-    row["success"] = row["check_passed"] and not row["timed_out"] and not row["driver_error"]
+    row["success"] = row["check_passed"] and row["flow_ok"] and not row["timed_out"] and not row["driver_error"]
     return row
 
 
@@ -130,7 +185,9 @@ def summarize(rows: list[dict[str, Any]], key: str) -> list[str]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("manifest")
+    parser.add_argument("--browser-log", default=str(BROWSER_LOG), help="the Browser runtime's step log")
     args = parser.parse_args()
+    STEPS.update(load_browser_steps(Path(args.browser_log)))
     manifest = Path(args.manifest)
     tasks = {task["id"]: task for task in json.loads((HERE / "tasks.json").read_text(encoding="utf-8"))["tasks"]}
     rows = [analyse(json.loads(line), tasks) for line in manifest.read_text(encoding="utf-8").splitlines() if line.strip()]
