@@ -210,6 +210,25 @@
         "min_links": 1,
         "link_domain": "wikipedia.org"
       }
+    },
+    {
+      "id": "chain-bilibili-related",
+      "group": "chain",
+      "site": "bilibili",
+      "via_browser": true,
+      "prompt": "B站当前热门第 1 的视频，它播放页右侧“相关推荐”里排第一的是哪个视频、是谁发的？再列出这位 UP 主最近发布的 3 个视频（标题、发布日期、链接）。",
+      "check": {
+        "min_links": 4,
+        "link_domain": "bilibili.com",
+        "min_opencli_runs": 2,
+        "min_page_tools": 1,
+        "flow_order": [
+          "opencli",
+          "page",
+          "opencli"
+        ]
+      },
+      "expected_flow": "Evaluator only, never sent: (1) bilibili hot -> #1 video; (2) open its play page and read the first item in the related-videos sidebar, its uploader and uid (no command covers related videos; bilibili video returns only the video's own metadata); (3) bilibili user-videos uid=<uploader> limit=3 instead of navigating the uploader's space page."
     }
   ]
 }
