@@ -1485,6 +1485,15 @@ extensions:
   # EXTENSION_DIRS="E:/a;D:/b"
   extension_dirs: ${EXTENSION_DIRS:-jiuwenswarm/extensions}
 
+# Claude Code 插件（.claude-plugin 格式），放在以下目录即自动加载：
+#   ~/.jiuwenswarm/plugins/<name>/  或  <项目>/.jiuwenswarm/plugins/<name>/
+# 当前支持 agents/*.md（以 "<插件名>:<agent名>" 注册）与 skills/<name>/SKILL.md。
+# 默认启用，按插件名关闭：
+# claude_plugins:
+#   code-simplifier:
+#     enabled: false
+claude_plugins: {}
+
 # ============================================================
 # Hooks 配置
 # 17 个事件类型，支持 command / prompt 两种 hook 类型

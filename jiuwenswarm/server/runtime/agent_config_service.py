@@ -6,6 +6,7 @@ Agent 定义来源（优先级从高到低）：
 - project: <workspace>/.jiuwenswarm/agents/*.md
 - user:    ~/.jiuwenswarm/agents/*.md
 - local:   <workspace>/.jiuwenswarm/agents-local/*.md
+- plugin:  Claude Code 插件的 agents/*.md，名称为 ``<插件名>:<agent 名>``（见 common/claude_plugins.py）
 - builtin: 代码内置
 
 文件格式为 YAML frontmatter + Markdown body。
@@ -20,6 +21,7 @@ from typing import Literal
 
 import yaml
 
+from jiuwenswarm.common.claude_plugins import CLAUDE_MODEL_ALIASES, discover_claude_plugins
 from jiuwenswarm.common.utils import get_user_workspace_dir
 from jiuwenswarm.server.runtime.agent_adapter.statusline_setup_agent import (
     DEFAULT_STATUSLINE_SETUP_MAX_ITERATIONS,
@@ -63,7 +65,7 @@ _TOOL_DESCRIPTIONS: dict[str, str] = {
 # ---------------------------------------------------------------------------
 
 
-AgentSource = Literal["builtin", "user", "project", "local"]
+AgentSource = Literal["builtin", "plugin", "user", "project", "local"]
 
 
 @dataclass
@@ -181,7 +183,7 @@ BUILTIN_AGENTS: list[AgentDefinition] = [
     ),
 ]
 
-_SOURCE_SORT_ORDER: dict[str, int] = {"builtin": 0, "local": 1, "user": 2, "project": 3}
+_SOURCE_SORT_ORDER: dict[str, int] = {"builtin": 0, "plugin": 1, "local": 2, "user": 3, "project": 4}
 
 
 def _source_sort_key(agent: AgentDefinition) -> int:
@@ -221,11 +223,12 @@ class AgentConfigService:
         """列出所有 agent（内置 + 自定义），按优先级合并。
 
         加载顺序决定优先级：后加载的覆盖先加载的，因此
-        project > user > local > builtin。被覆盖的同名 agent 标记 shadowed_by。
-        同时从 config.yaml 的 react.subagents 读取 enabled 状态。
+        project > user > local > plugin > builtin。被覆盖的同名 agent 标记 shadowed_by。
+        同时从 config.yaml 的 react.subagents 读取 enabled 状态；插件 agent 默认启用。
         """
         sources: list[tuple[list[AgentDefinition], AgentSource]] = [
             (list(BUILTIN_AGENTS), "builtin"),
+            (self._load_plugin_agents(), "plugin"),
             (self._load_from_dir(self._get_local_agents_dir(), "local"), "local"),
             (self._load_from_dir(self._get_user_agents_dir(), "user"), "user"),
             (self._load_from_dir(self._get_project_agents_dir(), "project"), "project"),
@@ -334,6 +337,8 @@ class AgentConfigService:
             raise ValueError(f"Agent 不存在: {name}")
         if agent.source == "builtin":
             raise ValueError(f"不能修改内置 agent: {name}")
+        if agent.source == "plugin":
+            raise ValueError(f"不能修改插件 agent: {name}（请修改插件本身）")
         if not agent.file_path:
             raise ValueError(f"Agent 无文件路径: {name}")
 
@@ -357,6 +362,8 @@ class AgentConfigService:
             return False
         if agent.source == "builtin":
             raise ValueError(f"不能删除内置 agent: {name}")
+        if agent.source == "plugin":
+            raise ValueError(f"不能删除插件 agent: {name}（请在 config.yaml 的 claude_plugins 中禁用插件）")
         if agent.file_path:
             p = Path(agent.file_path)
             if p.exists():
@@ -430,6 +437,21 @@ class AgentConfigService:
             raise ValueError(f"无效的 location: {location}，有效值: user, project, local")
         return mapping[location]
 
+    def _load_plugin_agents(self) -> list[AgentDefinition]:
+        """加载已启用 Claude Code 插件的 agent，名称加 ``<插件名>:`` 前缀。"""
+        agents: list[AgentDefinition] = []
+        try:
+            plugins = discover_claude_plugins(self._workspace_dir)
+        except Exception:
+            logger.warning("Failed to discover Claude plugins", exc_info=True)
+            return agents
+        for plugin in plugins:
+            for agent in self._load_from_dir(plugin.agents_dir, "plugin"):
+                agent.name = f"{plugin.name}:{agent.name}"
+                agent.enabled = True
+                agents.append(agent)
+        return agents
+
     @staticmethod
     def _load_from_dir(dir_path: Path, source: AgentSource) -> list[AgentDefinition]:
         """从目录加载所有 .md agent 定义文件。"""
@@ -451,6 +473,17 @@ class AgentConfigService:
 # ---------------------------------------------------------------------------
 
 
+def _parse_tool_list(value: object) -> list[str]:
+    """兼容列表与 Claude Code 的逗号分隔字符串（如 ``"Read, Grep, Glob"``）。"""
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [t.strip() for t in value.split(",") if t.strip()]
+    if isinstance(value, list):
+        return [str(t).strip() for t in value if str(t).strip()]
+    return []
+
+
 def _parse_agent_file(file_path: Path, source: AgentSource) -> AgentDefinition | None:
     """解析 YAML frontmatter + Markdown body 格式的 agent 文件。"""
     content = file_path.read_text(encoding="utf-8")
@@ -463,6 +496,9 @@ def _parse_agent_file(file_path: Path, source: AgentSource) -> AgentDefinition |
     prompt = parts[2].strip()
     if not frontmatter or "name" not in frontmatter:
         return None
+    model = frontmatter.get("model")
+    if source == "plugin" and model in CLAUDE_MODEL_ALIASES:
+        model = None
     return AgentDefinition(
         name=frontmatter["name"],
         description=frontmatter.get("description", ""),
@@ -470,9 +506,11 @@ def _parse_agent_file(file_path: Path, source: AgentSource) -> AgentDefinition |
         prompt=prompt,
         source=source,
         file_path=str(file_path),
-        model=frontmatter.get("model"),
-        tools=frontmatter.get("tools", ["*"]),
-        disallowed_tools=frontmatter.get("disallowed_tools", []),
+        model=model,
+        tools=_parse_tool_list(frontmatter.get("tools")) or ["*"],
+        disallowed_tools=_parse_tool_list(
+            frontmatter.get("disallowed_tools", frontmatter.get("disallowedTools"))
+        ),
         color=frontmatter.get("color"),
         permission_mode=frontmatter.get("permission_mode"),
         memory_scope=frontmatter.get("memory_scope"),

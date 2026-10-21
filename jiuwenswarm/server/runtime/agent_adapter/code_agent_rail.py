@@ -10,6 +10,7 @@ CodeAgentRail 只管理自定义 agent。
 from __future__ import annotations
 
 import asyncio
+import re
 import uuid
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -185,7 +186,9 @@ class AgentTool(Tool):
         self._custom_agents: dict[str, object] = {a.name: a for a in custom_agents}
 
     def _build_sub_session_id(self, parent_session_id: str, subagent_type: str) -> str:
-        return f"{parent_session_id}_custom_{subagent_type}_{uuid.uuid4().hex[:8]}"
+        # 插件 agent 名含 ":"（如 "code-simplifier:code-simplifier"），该 id 会用作目录名
+        safe_type = re.sub(r"[^A-Za-z0-9_.-]", "_", subagent_type)
+        return f"{parent_session_id}_custom_{safe_type}_{uuid.uuid4().hex[:8]}"
 
     def _create_sub_agent(self, agent_def, sub_session_id: str) -> DeepAgent:
         """从 AgentDefinition 直接创建子 DeepAgent，绕过 deep_config.subagents。"""

@@ -9257,8 +9257,8 @@ class JiuWenSwarmDeepAdapter:
         return skill_rail
 
     def _skill_scan_dirs(self) -> list[str]:
-        """Skill scan roots: agent skills dir + this session's selected MCP
-        skill dirs.
+        """Skill scan roots: agent skills dir + enabled Claude Code plugins'
+        skills/ dirs + this session's selected MCP skill dirs.
 
         Centralized so _build_skill_rail (init) and refresh_skill_rails
         (reload) compute the same roots. Only a session-scoped child scans MCP
@@ -9273,6 +9273,16 @@ class JiuWenSwarmDeepAdapter:
         cron/admin root runs).
         """
         roots = [str(get_agent_skills_dir())]
+        try:
+            from jiuwenswarm.common.claude_plugins import claude_plugin_skill_dirs
+
+            for d in claude_plugin_skill_dirs(
+                getattr(self, "_project_dir", None), self._config_base_cache
+            ):
+                if d not in roots:
+                    roots.append(d)
+        except Exception:  # noqa: BLE001
+            logger.warning("[JiuWenSwarmDeepAdapter] Claude plugin skill dirs failed", exc_info=True)
         if not getattr(self, "_is_session_scoped_adapter", False):
             return roots
         try:

@@ -36,6 +36,7 @@
   - [Skills](Skills.md)
   - [Symphony](symphony.md)
   - [Team Skills](SwarmSkills.md)
+  - [Claude Code Plugins](ClaudePlugins.md)
   - [Skill self-evolution](SkillSelfEvolution.md)
   - [TTSE dual-track self-evolution](TTSE.md)
   - [Agent & workspace](Agent.md)
