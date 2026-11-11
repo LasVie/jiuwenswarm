@@ -136,7 +136,10 @@ def test_routing_prompt_for_the_bundled_catalog_stays_small() -> None:
         assert "opencli_describe" in prompt
         # Describe each site once, and answer from command data instead of re-collecting it on the page.
         assert ("不要再逐个命令查询" if language == "cn" else "do not look up commands one by one") in prompt
-        assert ("不要再打开页面重新采集或核对" if language == "cn" else "do not open the page to collect or check it again") in prompt
+        assert ("不要再打开页面重新采集或核对" if language == "cn" else "do not reopen the page to check it") in prompt
+        # Finish with the browser_progress text protocol, not by calling browser_phase.
+        assert '<browser_progress>{"status":"completed","next_action":""}</browser_progress>' in prompt
+        assert ("不再调用任何工具（包括 browser_phase）" if language == "cn" else "call no further tools (including browser_phase)") in prompt
         # Names that do not reveal the site carry its domain; obvious names stay bare.
         # Page steps in the task description must not override checking site commands first.
         assert ("这些只是建议" if language == "cn" else "those are only suggestions") in prompt
