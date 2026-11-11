@@ -1236,3 +1236,35 @@ npm.cmd run test:browser:integration
 **限制**：每任务 2 次；成功为结构化检查；Stack Overflow 一项对总量影响很大，因此同时给出包含与不包含它的合计。
 
 **建议的后续**：在 Core 中让外部操作预算耗尽时终止任务；放宽 HN 评论任务的检查（接受故事本身的链接）；统一 `needs_user` 与绕行登录的行为。
+
+### 8.23 变基到 develop 与已知问题（2026-11-11）
+
+**结论**：Swarm、agent-core 已分别变基到 `openJiuwen-ai/jiuwenswarm:develop`、`openJiuwen-ai/agent-core:develop`；因 Gateway 已拆为独立仓 `agent-gateway`，新增其本地分支。OpenCLI 端到端可用（设置页、工作页、CDP、运行包、外部证据、答复正确），但 Browser Agent 在取得命令数据后不能可靠结束，任务常以 `partial` 超时结束。
+
+**三个仓库**：
+
+| 仓库 | 分支 | 基线 | 说明 |
+| --- | --- | --- | --- |
+| jiuwenswarm | `feat/openJiuwen_opencli` | develop `4e12eee22` | 依赖从本地 `../agent-core`、`../agent-gateway` 解析；OpenTelemetry 覆盖为 `>=1.45.1,<1.50` |
+| agent-core | `feat/browser-external-tools` | develop | 外部工具契约并入上游重写的 Browser runtime |
+| agent-gateway | `feat/opencli-browser-settings` | Swarm 钉住的 `54e5330` | `path.set` 接受补丁并转发 `opencli`；`path.get`/`path.set` 附带 AgentServer 的 `opencli`、`opencli_status` |
+
+**变基中的适配**：
+
+- 上游拆出 Gateway 后，桌面端浏览器设置由 Gateway 直接读写 `config.yaml`，不经 AgentServer；原先改在 Swarm 内 `app_web_handlers.py` 的逻辑移到 `agent-gateway`。
+- 上游新增 Jev 决策设置：`browserSettings.ts`、`browser_config.py`、`config_adapter.py` 同时承载 Jev 与 OpenCLI 字段；Front 的 `path.get`（`server/control/config_service.py`）也返回 OpenCLI 字段，相关逻辑移到不依赖 `common.config` 的 `extensions/opencli/settings_payload.py`。
+- 运行包改到 `get_infra_data_dir()`；外部观察带 `raw_text`，以进入上游的 `source_observations()`。
+- Jev 决策变更需要重启浏览器运行时，仅改 OpenCLI 时只重载 `agent_runtime`。
+- agent-core develop 要求 OpenTelemetry `>=1.45.1`，而 `agent-gateway` 钉 `<1.42`，两个 develop 无法共同解析；SDK 1.45 设置 W3C Level 2 随机 trace 标志，`agent-gateway` 中 3 个比较完整 flags 字节的测试失败，运行时只用 `sampled` 位，不受影响。
+
+**验证**：agent-core 浏览器相关 1,598 项通过；agent-gateway 3,332 项通过、3 项为上述 trace flags 断言；Swarm 相关 56 个测试文件 1,908 项通过，9 项失败与上游 develop 同一环境下相同；前端构建通过，设置测试 68/69，失败项上游同样失败。应用内：设置页开关可保存并读回；arXiv 命令遇 HTTP 429 后改用页面工具完成；B站 `history` 经工作页返回 17 行外部证据，答复正确。
+
+**已知问题：取得命令数据后不能结束**：
+
+- 现象：B站任务在 `opencli_run` 之后，模型每轮都写出完整答复并声明完成，但同时附带一个工具调用（`browser_phase set/verify`、再次 describe 或重复命令），直至期限，`terminal_reason=task_deadline_insufficient_for_action`，24 次 `browser_phase`、27 次模型调用、约 4 分钟。变基前同一任务 2 次工具调用即 `completed`。
+- 对照：关闭 OpenCLI 后同一任务以 `completed` 结束（模型以工具形式调用 `browser_progress`，runtime 按别名接受并结束）。
+- 已排除：`tool_choice` 为 `auto`；不是 destination 页面判定。
+- 已尝试：规则 2 写明 `<browser_progress>{"status":"completed","next_action":""}</browser_progress>` 与"不再调用任何工具"（提交 `fix(opencli): state the browser_progress completion protocol in routing rule 2`），未消除；外部操作重复上限按预期拒绝第 3 次相同命令。
+- 建议的后续：比较变基前后 Browser Agent 的完整系统提示与工具列表，找出促使模型持续调用工具的变化；或在规则中要求以工具形式调用 `browser_progress`（runtime 已支持该别名），需再做一次应用验证。
+
+**其他说明**：本机在变基后首次运行新代码时，上游的数据目录迁移把用户原有 `config.yaml`、`.env` 改名为 `*.migrated`（测试先写入了模板），已恢复。
